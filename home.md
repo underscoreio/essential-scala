@@ -4,4 +4,42 @@
 
 - Introducing Scala
   - [History](intro/history.md)
-  - [Guiding Principles](intro/guiding-principles.md)
+  - [Guiding principles](intro/guiding-principles.md)
+    - Separate that which is different
+    - Unite that which is the same
+    - Catch errors at compile time
+  - [Course overview](intro/course-overview.md)
+    - Assumptions: You have some experience with Java
+    - Goals
+- The REPL
+  - Using the REPL
+  - REPL tricks
+  - Self help
+- SBT
+  - The shortest introduction to SBT
+  - The Rebel Cut
+  - Starting the REPL
+  - Troubleshooting SBT
+- Introducing Values
+  - Numbers
+  - Strings
+  - Compound values
+  - Everything is an object
+  - Scala's type hierarchy
+    - Any, AnyVal, AnyRef, ScalaObject, and Nothing
+    - Scala's primitives and their relation to Java primitives
+- Introducing Expressions
+  - Simple expressions
+  - Compound expressions
+  - Conditional expressions
+  - Objects
+    - Instance variables
+    - Instance methods
+  - Functions: abstracting over expressions
+    - Functions are objects: apply
+- Introducing Definitions
+  - val
+  - var
+  - Defining classes
+  - Creating instances
+  - Case classes
