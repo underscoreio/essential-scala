@@ -1,0 +1,104 @@
+body {
+  background-color: #eee;
+}
+.container-smooth {
+  border-top: 3px solid #339922;
+}
+#container-navigation {
+  width: 300px;
+  padding-top: 100px;
+  float: left;
+}
+#container-navigation a {
+  color: inherit;
+  text-decoration: none;
+}
+#container-navigation h1 {
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+  font-size: 40px;
+  color: #333;
+}
+#container-navigation p {
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 18px;
+  padding-bottom: 10px;
+  font-weight: 200;
+  color: #333;
+}
+#container-navigation ul {
+  list-style-type: none;
+  margin: 0;
+}
+#container-navigation ul li:first-child {
+  border-top: 1px solid #ccddcc;
+}
+#container-navigation ul li {
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #ccddcc;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-weight: 200;
+  font-size: 14px;
+}
+#container-navigation ul li:hover {
+  background-color: #339922;
+  color: white;
+}
+#container-navigation ul li a {
+  color: inherit;
+  width: 100%;
+  display: block;
+}
+#container-content {
+  padding: 0;
+  margin: 0;
+  border-left: 1px solid #ccddcc;
+  margin-left: 300px;
+  background-color: #fff;
+  min-height: 600px;
+}
+#container-content #content {
+  padding-left: 40px;
+  padding-top: 20px;
+  width: 600px;
+}
+#container-content #content .page {
+  padding-top: 20px;
+}
+#container-content #content .page h1 {
+  padding-bottom: 10px;
+}
+#container-content #content .post {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #ccddcc;
+}
+#container-content #content .post h1 {
+  padding-bottom: 10px;
+}
+#container-content #content .post h1 .date {
+  font-weight: 200;
+  font-size: 25px;
+}
+#container-content #content .post h1 a {
+  color: black;
+}
+#container-content #content .post code {
+  color: #333;
+}
+#container-content #content .post:last-child {
+  border-bottom: none;
+}
+#footer {
+  border-top: 1px solid #ccddcc;
+  clear: both;
+}
+footer {
+  padding-top: 20px;
+}

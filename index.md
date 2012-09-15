@@ -1,0 +1,76 @@
+---
+layout: page
+---
+
+# Core Scala
+
+## Table of Contents
+
+- Introducing Scala
+  - [History](intro/history.html)
+  - [Guiding principles](intro/guiding-principles.html)
+    - Separate that which is different
+    - Unite that which is the same
+    - Catch errors at compile time
+  - [Course overview](intro/course-overview.html)
+    - Assumptions: You have some experience with Java
+    - Goals
+- The REPL
+  - Using the REPL
+  - REPL tricks
+  - Self help
+- ScalaDoc
+  - The secret trait/object switcher
+- SBT
+  - The shortest introduction to SBT
+  - The Rebel Cut
+  - Starting the REPL
+  - Troubleshooting SBT
+- Introducing Values
+  - Numbers
+  - Strings
+  - Compound values
+  - Everything is an object
+  - Scala's type hierarchy
+    - Any, AnyVal, AnyRef, ScalaObject, and Nothing
+    - Scala's primitives and their relation to Java primitives
+- Introducing Expressions
+  - Simple expressions
+  - Compound expressions
+    - Operators vs methods
+    - Shortcuts for operations
+      - Apply, update
+  - Conditional expressions
+  - Objects
+    - Instance variables
+    - Instance methods
+  - Functions: abstracting over expressions
+    - Functions are objects: apply
+- Introducing Definitions
+  - val
+  - var
+  - Defining classes
+  - Creating instances
+  - Case classes
+- Collections
+  - [Introduction](collections/intro.html)
+  - [Introducing Sequences](collections/seq.html)
+    - Defining a sequence (Seq)
+    - Interfaces vs implementations (Seq vs List)
+    - Some basic operations on sequences
+      - length, indexOf, apply, +:, :+, sorted, reverse, ++
+    - Mutable and immutable collections
+      - Updating an element
+  - [Working with Sequences](collections/working-with-seq.html)
+    - Transforming every element
+      - map
+      - flatMap
+      - filter
+      - find
+      - fold
+    - Performance characteristics of sequences
+    - Concrete implementations
+      - Immutable sequences
+      - Mutable sequences
+  - ???
+  - The collection hierarchy

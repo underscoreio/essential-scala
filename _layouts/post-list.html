@@ -1,0 +1,11 @@
+---
+layout: default
+---
+{% include JB/setup %}
+{% for post in site.posts limit:5 %}
+<div class="post">
+  <h1><a href="{{ post.url }}">{{ post.title }} <span class="date">{{ post.date | date: "%d %b %Y"}}</span></a></h1>
+
+  {{ post.content }}
+</div>
+{% endfor %}

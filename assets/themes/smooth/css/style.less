@@ -1,0 +1,128 @@
+@border-color: #cdc;
+@accent-color: #392;
+@sidebar-width: 300px;
+
+body {
+  background-color: #eee;
+}
+
+.container-smooth {
+  border-top: 3px solid @accent-color;
+}
+
+#container-navigation {
+
+  @indent: 30px;
+
+  width: @sidebar-width;
+  padding-top: 100px;
+  float: left;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h1 {
+    padding-left: @indent;
+    padding-right: @indent;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-weight: bold;
+    font-size: 40px;
+    color: #333;
+  }
+
+  p {
+    padding-left: @indent;
+    padding-right: @indent;
+    font-size: 18px;
+    padding-bottom: 10px;
+    font-weight: 200;
+    color: #333;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+
+    li:first-child {
+      border-top: 1px solid @border-color;
+    }
+
+    li {
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid @border-color;
+      padding-left: @indent;
+      padding-right: @indent;
+      font-weight: 200;
+      font-size: 14px;
+
+      &:hover {
+        background-color: @accent-color;
+        color: white;
+      }
+
+      a {
+        color: inherit;
+        width: 100%;
+        display: block;
+      }
+    }
+  }
+}
+
+#container-content {
+  padding: 0;
+  margin: 0;
+  border-left: 1px solid @border-color;
+  margin-left: @sidebar-width;
+  background-color: #fff;
+  min-height: 600px;
+
+  #content {
+    padding-left: 40px;
+    padding-top: 20px;
+    width: 600px;
+
+    .page {
+      padding-top: 20px;
+
+      h1 {
+        padding-bottom: 10px;
+      }
+    }
+
+    .post {
+      padding-top: 20px;
+      h1 {
+        padding-bottom: 10px;
+
+        .date {
+          font-weight: 200;
+          font-size: 25px;
+        }
+
+        a { color: black; }
+      }
+      padding-bottom: 40px;
+      border-bottom: 1px solid @border-color;
+
+      code { color: #333; }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+#footer {
+  border-top: 1px solid @border-color;
+  clear: both;
+}
+
+footer {
+  padding-top: 20px;
+}
