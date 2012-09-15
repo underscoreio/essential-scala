@@ -68,6 +68,7 @@ layout: page
       - filter
       - find
       - fold
+      - Algebra of transformations
     - for comprehensions
     - Performance characteristics of sequences
     - Concrete implementations
