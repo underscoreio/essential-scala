@@ -68,6 +68,7 @@ layout: page
       - filter
       - find
       - fold
+    - for comprehensions
     - Performance characteristics of sequences
     - Concrete implementations
       - Immutable sequences
