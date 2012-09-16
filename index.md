@@ -74,10 +74,13 @@ layout: page
       - IndexedSeq and LinearSeq
     - Immutable sequences
     - Mutable sequences
-  - Introducing Maps
-  - Introducing Sets
-  - [For Comprehensions](collections/for-comprehensions.html)
+  - Maps
+  - Sets
+  - [Introducing For Comprehensions](collections/for-comprehensions.html)
+  - [Working with For Comprehensions](collections/working-with-for-comprehensions.html)
     - Ranges
+    - val
+    - Filtering
     - Monads
   - Arrays
   - Streams and Iterators

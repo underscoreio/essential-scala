@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# For Comprehensions
+# Introducing For Comprehensions
 
 We've discucssed the main collection transformation functions, `map`, `flatMap`, `fold`, and `foreach`, and seen that they provide a powerful way of working with collections. Then can become unwiedly to work with when dealing with many collections of many nested transformations. Scala has special syntax for working with collections (in fact any class that implements `map`, and `flatMap`) that makes complicated operations simpler to write. This syntax is known as a for comprehension.
 
@@ -75,7 +75,7 @@ for (
 
 Conventional style is to use parentheses when there is only one expression, and to use braces otherwise.
 
-Note if we omit the `yield` keyword, the final expression is executed for its side-effects, and any result is ignored. For example, to print the elements of a sequence
+Note if we omit the `yield` keyword the final expression is executed for its side-effects, and any result is ignored. For example, to print the elements of a sequence
 
 {% highlight scala %}
 scala> for(x <- Seq(1, 2, 3)) println(x)
@@ -83,6 +83,8 @@ scala> for(x <- Seq(1, 2, 3)) println(x)
 2
 3
 {% endhighlight %}
+
+The equivalent code uses `foreach` in place of `flatMap` and `map`.
 
 ## Exercises
 
@@ -93,13 +95,3 @@ Complete the following using for comprehensions
 1. As above, but return a `Seq[Seq[String]]`.
 1. Sum the elements of `Seq(1, 2, 3)`.
 1. Write your own implementation of `foldLeft`.
-
-## Additional Features of For Comprehensions
-
-filter
-
-val
-
-## Ranges
-
-## Monads
