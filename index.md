@@ -63,18 +63,23 @@ layout: page
     - Mutable and immutable collections
       - Updating an element
   - [Working with Sequences](collections/working-with-seq.html)
-    - Transforming every element
-      - map
-      - flatMap
-      - fold
-      - foreach
-      - Algebra of transformations
-      - filter
-      - find
-    - for comprehensions
+    - map
+    - flatMap
+    - fold
+    - foreach
+    - Algebra of transformations
+    - filter
+    - find
+  - Sequence Implementations
     - Performance characteristics of sequences
-    - Concrete implementations
-      - Immutable sequences
-      - Mutable sequences
-  - ???
-  - The collection hierarchy
+      - IndexedSeq and LinearSeq
+    - Immutable sequences
+    - Mutable sequences
+  - Introducing Maps
+  - Introducing Sets
+  - [For Comprehensions](collections/for-comprehensions.html)
+  - Arrays
+  - Streams and Iterators
+  - Traversable and Iterable
+    - TraversableOnce
+  - Interoperating with Java
