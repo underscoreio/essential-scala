@@ -78,6 +78,7 @@ layout: page
   - Introducing Sets
   - [For Comprehensions](collections/for-comprehensions.html)
     - Ranges
+    - Monads
   - Arrays
   - Streams and Iterators
   - Traversable and Iterable
