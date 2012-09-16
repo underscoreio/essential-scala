@@ -52,6 +52,7 @@ layout: page
   - Defining classes
   - Creating instances
   - Case classes
+  - Option
 - Collections
   - [Introduction](collections/intro.html)
   - [Introducing Sequences](collections/seq.html)
@@ -65,10 +66,11 @@ layout: page
     - Transforming every element
       - map
       - flatMap
+      - fold
+      - foreach
+      - Algebra of transformations
       - filter
       - find
-      - fold
-      - Algebra of transformations
     - for comprehensions
     - Performance characteristics of sequences
     - Concrete implementations
