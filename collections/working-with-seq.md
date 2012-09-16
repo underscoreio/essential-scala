@@ -124,7 +124,7 @@ We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `fo
 7. Write your own implementation of `foldRight` that uses `foreach` and mutable state.
 
 
-### Other useful functions
+### Other Useful Functions
 
 There are many other useful methods defined on `Seq`. We've seen `contains` in the exercises above (you did do the exercises, right?) Similar functions are `filter` and `find`. Filter returns a sequence containing all the element that pass a test. For example, to get just the positive elements of sequence:
 
