@@ -53,8 +53,7 @@ layout: page
   - Creating instances
   - Case classes
   - Option
-- Collections
-  - [Introduction](collections/intro.html)
+- [Collections](collections/index.html)
   - [Introducing Sequences](collections/seq.html)
     - Defining a sequence (Seq)
     - Interfaces vs implementations (Seq vs List)
@@ -78,6 +77,7 @@ layout: page
   - Introducing Maps
   - Introducing Sets
   - [For Comprehensions](collections/for-comprehensions.html)
+    - Ranges
   - Arrays
   - Streams and Iterators
   - Traversable and Iterable
