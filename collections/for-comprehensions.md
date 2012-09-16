@@ -36,3 +36,70 @@ scala> for {
 } yield elt * 2
 res3: Seq[Int] = List(2, 4, 6, 8, 10, 12)
 {% endhighlight %}
+
+This gives us an idea of what the for comprehensions does. A for comprehsion
+
+{% highlight scala %}
+for {
+  x <- a
+  y <- b
+  z <- c
+} yield e
+{% endhighlight %}
+
+translates to
+
+{% highlight scala %}
+a.flatMap(x => b.flatMap(y => c.map(z => e)))
+{% endhighlight %}
+
+Recall that in Scala parentheses and braces are equivalent, except we must use semicolons to delimit expressions in the former. Thus
+
+{% highlight scala %}
+for {
+  x <- a
+  y <- b
+  z <- c
+} yield e
+{% endhighlight %}
+
+in the same as
+
+{% highlight scala %}
+for (
+  x <- a;
+  y <- b;
+  z <- c;
+) yield e
+{% endhighlight %}
+
+Conventional style is to use parentheses when there is only one expression, and to use braces otherwise.
+
+Note if we omit the `yield` keyword, the final expression is executed for its side-effects, and any result is ignored. For example, to print the elements of a sequence
+
+{% highlight scala %}
+scala> for(x <- Seq(1, 2, 3)) println(x)
+1
+2
+3
+{% endhighlight %}
+
+## Exercises
+
+Complete the following using for comprehensions
+
+1. Create a sequence with containing every element of `Seq(2, 4, 6)` halved.
+1. Create a sequence containing every permutation of the elements of `Seq("a", "wet", "dog")`. The result should be a `Seq[String]`, not `Seq[Seq[String]]`. Hint: `"foo".permutations.toList` will give you all the permutations of `"foo"` as a list.
+1. As above, but return a `Seq[Seq[String]]`.
+1. Sum the elements of `Seq(1, 2, 3)`.
+1. Write your own implementation of `foldLeft`.
+
+## Additional Features of For Comprehensions
+
+filter
+
+val
+
+## Ranges
+
+## Monads
