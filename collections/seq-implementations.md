@@ -78,7 +78,21 @@ The mutable collections are probably more familiar. In addition to linked lists 
 
 ### Buffers
 
-Buffers are used when you want to create efficiently create a data structure an item at a time. An `ArrayBuffer` is an `IndexedSeq` which also has constant time appends. A `ListBuffer` is like a `List` with constant time prepend *and* append (though note it is mutable, unlike `List`).
+`Buffer`s are used when you want to create efficiently create a data structure an item at a time. An `ArrayBuffer` is an `IndexedSeq` which also has constant time appends. A `ListBuffer` is like a `List` with constant time prepend *and* append (though note it is mutable, unlike `List`).
+
+Buffers add methods to support destructive prepends and appends. For example, the `+=` is destructive append.
+
+{% highlight scala %}
+scala> val buffer = new scala.collection.mutable.ArrayBuffer[Int]()
+buffer: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer()
+
+scala> buffer += 1
+res16: buffer.type = ArrayBuffer(1)
+
+scala> buffer
+res17: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1)
+{% endhighlight %}
+
 
 ### StringBuilder
 
