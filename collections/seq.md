@@ -15,12 +15,11 @@ sequence: Seq[Int] = List(1, 2, 3)
 
 This immediately shows off a key feature of Scala's collections, the **separation between interface and implementation**. In the above, the value has type `Seq[Int]` but is implemented by a `List`.
 
-
-## Basic Operations on Sequences
+## Basic operations
 
 Sequences implement [many methods](http://docs.scala-lang.org/overviews/collections/seqs.html). Let's look at some of the most common.
 
-### Accessing an element
+### Accessing elements
 
 Accessing an element is done by calling the `apply` method with an index. Indices start from 0. As you'd expect, the element at the index is returned.
 
@@ -44,7 +43,16 @@ java.lang.IndexOutOfBoundsException: 3
 ...
 {% endhighlight %}
 
-### Length of a sequence
+### Determining membership
+
+The `contains` method determines whether a sequence contains an element:
+
+{% highlight scala %}
+scala> sequence.contains("a")
+res2: Boolean = true
+{% endhighlight %}
+
+### Determining length
 
 Finding the length of a sequence is straightforward.
 
@@ -92,7 +100,6 @@ scala> sequence ++ Seq(4, 5, 6)
 res10: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 {% endhighlight %}
 
-
 ## Mutable and Immutable Sequences
 
 The astute will have noticed that none of the operations above modified our original sequence. In fact we haven't even show a method to modify a `Seq` -- this is because there is none! Throughout the collections framework, the default implementations are immutable. Immutability makes reasoning about programs easier, and plays well with concurrency.
@@ -132,3 +139,28 @@ res16: scala.collection.mutable.Seq[Int] = ArrayBuffer(7, 2, 3)
 {% endhighlight %}
 
 As with `apply`, this assignment syntax is just syntactic sugar built on top of the `update` method.
+
+## In summary
+
+Here is a type table of all the methods we have seen so far:
+
+|------------+------------+--------------------+-------------|
+| Method     | We have    | We provide         | We get      |
+|------------+------------+--------------------+-------------|
+| `Seq(...)` |            | `A]`, ...          | `Seq[A]`    |
+| `apply`    | `Seq[A]`   | `Int`              | `A`         |
+| `:+`, `+:` | `Seq[A]`   | `A`                | `Seq[A]`    |
+| `++`       | `Seq[A]`   | `Seq[A]`           | `Seq[A]`    |
+| `contains` | `Seq[A]`   | `A`                | `Boolean`   |
+| `length`   | `Seq[A]`   |                    | `Int`       |
+|============================================================|
+
+and the extras for mutable sequences:
+
+|------------+------------+-------------------+-------------|
+| Method     | We have    | We provide        | We get      |
+|------------+------------+-------------------+-------------|
+| `+=`       | `Seq[A]`   | `A`               | `Seq[A]`    |
+| `-=`       | `Seq[A]`   | `A`               | `Seq[A]`    |
+| `update`   | `Seq[A]`   | `Int`, `A`        | `Unit`      |
+|===========================================================|

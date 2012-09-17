@@ -173,7 +173,7 @@ computationOne() match {
     }
   case None => None
 }
-{% end highlight %}
+{% endhighlight %}
 
 Or we could write
 
