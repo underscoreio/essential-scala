@@ -132,3 +132,16 @@ res16: scala.collection.mutable.Seq[Int] = ArrayBuffer(7, 2, 3)
 {% endhighlight %}
 
 As with `apply`, this assignment syntax is just syntactic sugar built on top of the `update` method.
+
+Methods defined on both mutable and immutable sequences will never perform destructive updates. For example, appending an element with `:+` will never modify the original sequence.
+
+{% highlight scala %}
+scala> val mutable = scala.collection.mutable.Seq[Int](1, 2, 3)
+mutable: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3)
+
+scala> mutable :+ 4
+res10: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3, 4)
+
+scala> mutable
+res11: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3)
+{% endhighlight %}
