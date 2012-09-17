@@ -173,7 +173,7 @@ computationOne() match {
     }
   case None => None
 }
-{% end highlight %}
+{% endhighlight %}
 
 Or we could write
 
@@ -187,10 +187,12 @@ computationOne() flatMap {
 
 Both are rather cumbersome. With a for comprehension we can simply write
 
+{% highlight scala %}
 for {
   x <- computationOne()
   y <- computationTwo(x)
   ...
 } yield ...
+{% endhighlight %}
 
 Here we've done something completely different to our previous examples using collections. Yet the same basic abstraction applies! The more you look the more examples of monads you'll find, and for comprehensions give us a powerful and generic way to work with them.
