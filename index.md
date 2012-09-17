@@ -69,7 +69,7 @@ layout: page
     - Algebra of transformations
     - filter
     - find
-  - Sequence Implementations
+  - [Sequence Implementations](collections/seq-implementations.html)
     - Performance characteristics of sequences
       - IndexedSeq and LinearSeq
     - Immutable sequences
@@ -82,7 +82,7 @@ layout: page
     - val
     - Filtering
     - Monads
-  - Arrays
+  - Arrays and Strings
   - Streams and Iterators
   - Traversable and Iterable
     - TraversableOnce
