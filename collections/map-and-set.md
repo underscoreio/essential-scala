@@ -164,23 +164,86 @@ res16: scala.collection.immutable.ListMap[java.lang.String,Int] =
 
 Scala's separation of interface and implementation means that the methods on ordered and unordered maps are almost identical, although their performance may vary. See [this useful page](http://docs.scala-lang.org/overviews/collections/performance-characteristics.html) for more information on the performance characteristics of the various types of collection.
 
+### map and flatMap
+
+Maps, like sequences, extend the `Traversable` trait, which means they inherit the standard `map` and `flatMap` methods. In fact, a `Map[A,B]` is a `Traversable[Tuple2[A,B]]`, which means that `map` and `flatMap` operate on instances of `Tuple2`.
+
+Here is an example of `map`:
+
+{% highlight scala %}
+scala> example.map(pair => pair._1 => pair._2 * 2)
+res17: scala.collection.immutable.Map[java.lang.String,Int] =
+         Map(a -> 2, b -> 4, c -> 6)
+{% endhighlight %}
+
+Note that the resulting object is also a `Map` as you might expect. However, what happens when the function we supply doesn't return a pair? What does `map` return then? Is it a compile error? Let's try it:
+
+{% highlight scala %}
+scala> example.map(pair => pair._1 + " = " + pair._2)
+res18: scala.collection.immutable.Iterable[java.lang.String] =
+         List(a = 1, b = 2, c = 3)
+{% endhighlight %}
+
+It turns out the code does work, but we get back an `Iterable` result (look the type, not the value) -- a far more general data type.
+
+Scala's collections framework is built in a clever (and complicated) way that always ensures you get something sensible back out of one of the standard operations like `map` and `flatMap`. We won't go into the details here (it's practically a training course in its own right), suffice to say that you can normally guess using common sense (and judicious use of the REPL) the type of collection you will get back from any operation.
+
+Here is a more complicated example using `flatMap`:
+
+{% highlight scala %}
+scala> example.flatMap {
+         case (str, num) =>
+           (1 to 3).map(x => (str + x) -> (num * x))
+       }
+res18: scala.collection.immutable.Map[String,Int] =
+         Map(c3 -> 9, b2 -> 4, b3 -> 6, c2 -> 6, b1 -> 2,
+             c1 -> 3, a3 -> 3, a1 -> 1, a2 -> 2)
+{% endhighlight %}
+
+and the same example written using `for` syntax:
+
+{% highlight scala %}
+scala> for{
+         (str, num) <- example
+          x         <- 1 to 3
+       } yield (str + x) -> (num * x)
+res19: scala.collection.immutable.Map[String,Int] =
+         Map(c3 -> 9, b2 -> 4, b3 -> 6, c2 -> 6, b1 -> 2,
+             c1 -> 3, a3 -> 3, a1 -> 1, a2 -> 2)
+{% endhighlight %}
+
+Note that the result is a `Map` again. The argument to `flatMap` returns a sequence of pairs, so in the end we are able to make a new `Map` from them. If our function returns a sequence of non-pairs, we get back a more generic data type:
+
+{% highlight scala %}
+scala> for{
+         (str, num) <- example
+          x         <- 1 to 3
+       } yield (x + str) + "=" + (x * num)
+res20: scala.collection.immutable.Iterable[java.lang.String] =
+         List(1a=1, 2a=2, 3a=3, 1b=2, 2b=4, 3b=6, 1c=3, 2c=6, 3c=9)
+{% endhighlight %}
+
 ### In summary
 
 Here is a type table of all the methods we have seen so far:
 
-|------------+------------+--------------------+-------------|
-| Method     | We have    | We provide         | We get      |
-|------------+------------+--------------------+-------------|
-| `Map(...)` |            | `Tuple2[A,B]`, ... | `Map[A,B]`  |
-| `apply`    | `Map[A,B]` | `A`                | `B`         |
-| `get`      | `Map[A,B]` | `A`                | `Option[B]` |
-| `+`        | `Map[A,B]` | `Tuple2[A,B]`, ... | `Map[A,B]`  |
-| `-`        | `Map[A,B]` | `Tuple2[A,B]`, ... | `Map[A,B]`  |
-| `++`       | `Map[A,B]` | `Map[A,B]`         | `Map[A,B]`  |
-| `--`       | `Map[A,B]` | `Map[A,B]`         | `Map[A,B]`  |
-| `contains` | `Map[A,B]` | `A`                | `Boolean`   |
-| `size`     | `Map[A,B]` |                    | `Int`       |
-|============================================================|
+|------------+------------+-------------------------------------------+---------------|
+| Method     | We have    | We provide                                | We get        |
+|------------+------------+-------------------------------------------+---------------|
+| `Map(...)` |            | `Tuple2[A,B]`, ...                        | `Map[A,B]`    |
+| `apply`    | `Map[A,B]` | `A`                                       | `B`           |
+| `get`      | `Map[A,B]` | `A`                                       | `Option[B]`   |
+| `+`        | `Map[A,B]` | `Tuple2[A,B]`, ...                        | `Map[A,B]`    |
+| `-`        | `Map[A,B]` | `Tuple2[A,B]`, ...                        | `Map[A,B]`    |
+| `++`       | `Map[A,B]` | `Map[A,B]`                                | `Map[A,B]`    |
+| `--`       | `Map[A,B]` | `Map[A,B]`                                | `Map[A,B]`    |
+| `contains` | `Map[A,B]` | `A`                                       | `Boolean`     |
+| `size`     | `Map[A,B]` |                                           | `Int`         |
+| `map`      | `Map[A,B]` | `Tuple2[A,B] => Tuple2[C,D]`              | `Map[C,D]`    |
+| `map`      | `Map[A,B]` | `Tuple2[A,B] => E`                        | `Iterable[E]` |
+| `flatMap`  | `Map[A,B]` | `Tuple2[A,B] => Traversable[Tuple2[C,D]]` | `Map[C,D]`    |
+| `flatMap`  | `Map[A,B]` | `Tuple2[A,B] => Traversable[E]`           | `Iterable[E]` |
+|=====================================================================================|
 
 and the extras for mutable Sets:
 
@@ -196,17 +259,19 @@ and the extras for mutable Sets:
 
 Sets are unordered collections that contain no duplicate elements. You can think of them as sequences without an order, or maps with keys and no values. Here is a type table of the most important methods:
 
-|------------+----------+------------+-----------|
-| Method     | We have  | We provide | We get    |
-|------------+----------+------------+-----------|
-| `+`        | `Set[A]` | `A`        | `Set[A]`  |
-| `-`        | `Set[A]` | `A`        | `Set[A]`  |
-| `++`       | `Set[A]` | `Set[A]`   | `Set[A]`  |
-| `--`       | `Set[A]` | `Set[A]`   | `Set[A]`  |
-| `contains` | `Set[A]` | `A`        | `Boolean` |
-| `apply`    | `Set[A]` | `A`        | `Boolean` |
-| `size`     | `Set[A]` |            | `Int`     |
-|================================================|
+|------------+----------+-----------------------+-----------|
+| Method     | We have  | We provide            | We get    |
+|------------+----------+-----------------------+-----------|
+| `+`        | `Set[A]` | `A`                   | `Set[A]`  |
+| `-`        | `Set[A]` | `A`                   | `Set[A]`  |
+| `++`       | `Set[A]` | `Set[A]`              | `Set[A]`  |
+| `--`       | `Set[A]` | `Set[A]`              | `Set[A]`  |
+| `contains` | `Set[A]` | `A`                   | `Boolean` |
+| `apply`    | `Set[A]` | `A`                   | `Boolean` |
+| `size`     | `Set[A]` |                       | `Int`     |
+| `map`      | `Set[A]` | `A => B`              | `Set[B]`  |
+| `flatMap`  | `Set[A]` | `A => Traversable[B]` | `Set[B]`  |
+|===========================================================|
 
 and the extras for mutable Sets:
 
