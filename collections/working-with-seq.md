@@ -9,7 +9,11 @@ In the [previous section](seq.html) with looked at the basic operations on seque
 
 ## Bulk Processing of Elements
 
-When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. For example, we might want to double every element of a sequence. In Java we'd write a loop to do this. In Scala we can do this more simply, using the `map` method. Map takes a function and applies this function to every element, creating a sequence containing the results. So to double every element we can write
+When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. In Java we have to do this using loops. Scala gives us a number of powerful options that allow us to solve many problems much more elegantly.
+
+### map
+
+Let's take a common example to start -- suppose we want to double every element of a sequence. In Java we would do this using a `for` or a `while` loop. In Scala we can simply use the `map` method that exists on any type of sequence. `map` takes a function and applies it to every element, creating a sequence containing the results. To double every element we can write:
 
 {% highlight scala %}
 scala> val sequence = Seq(1, 2, 3)
@@ -47,7 +51,7 @@ scala> Seq("a", "wet", "dog").map(_.permutations.toList)
 res14: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), List(dog, dgo, odg, ogd, gdo, god))
 {% endhighlight %}
 
-but we end up with a sequence of sequences. Let's look at the types in more detail to see what's gone wrong
+but we end up with a sequence of sequences. Let's look at the types in more detail to see what's gone wrong:
 
 | Method | We have  | We provide | We get   |
 |--------+----------+------------+----------|
@@ -56,6 +60,8 @@ but we end up with a sequence of sequences. Let's look at the types in more deta
 | `???`  | `Seq[A]` | `A => Seq[B]` | `Seq[B]` |
 |===========================================|
 
+### flatMap
+
 To answer to our mystery method `???` is `flatMap`. If we simply replace `map` with `flatMap` we get the answer we want.
 
 {% highlight scala %}
@@ -63,14 +69,35 @@ scala> Seq("a", "wet", "dog").flatMap(_.permutations.toList)
 res15: Seq[String] = List(a, wet, wte, ewt, etw, twe, tew, dog, dgo, odg, ogd, gdo, god)
 {% endhighlight %}
 
-Now let's look at another kind of operation. Say we have a `Seq[Int]` and we want to add all the numbers. The operation we want to provide is `+`, which is a binary function. Neither `map` nor `flatMap` will do, as they both expect a unary function. There is a further wrinkle: what result do we expect if the sequence is empty? Zero is a natural choice. Finally, `+` is associative, so the order we apply it doesn't matter, but in general we must specify an order (from lowest to highest index, or the reverse). Let's make another type table to see what we're looking for.
+`flatMap` is similar to `map` except that it expects your function to return a sequence. The sequences for each input element are appended together. For example:
+
+{% highlight scala %}
+scala> Seq(1, 2, 3).flatMap(num => Seq(num, num * 10))
+res16: List[Int] = List(1, 10, 2, 20, 3, 30)
+{% endhighlight %}
+
+The end result is (nearly) always the same type as the original sequence: `aList.flatMap(...)` returns another `List`, `anArrayBuffer.flatMap(...)` returns another `ArrayBuffer`, and so on:
+
+{% highlight scala %}
+scala> scala.collection.mutable.ArrayBuffer(1, 2, 3).flatMap(num => Seq(num, num * 10))
+res17: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1, 10, 2, 20, 3, 30)
+{% endhighlight %}
+
+### fold, foldLeft, and foldRight
+
+Now let's look at another kind of operation. Say we have a `Seq[Int]` and we want to add all the numbers together. `map` and `flatMap` don't apply here for two reasons:
+
+ - they expect a *unary* function, whereas `+` is a *binary* operation;
+ - they both return sequences of items, whereas we want to return a single `Int`.
+
+There is a further wrinkle: what result do we expect if the sequence is empty? Zero is a natural choice. Finally, although `+` is associative, in general we may need to specify an order in which to pass arguments to our binary function. Let's make another type table to see what we're looking for.
 
 | Method | We have  | We provide | We get   |
 |--------+----------+------------+----------|
 | `???`  | `Seq[Int]` | `0` and `(Int, Int) => Int` | `Int` |
 |===========================================|
 
-The method that fills the bill is `fold`, and its ordered variants `foldLeft` and `foldRight`. The types are:
+The method that fits the bill is `fold`, with its ordered variants `foldLeft` and `foldRight`. The job of these methods is to traverse a sequence and accumulate a result. The types are as follows:
 
 | Method | We have  | We provide | We get   |
 |--------+----------+------------+----------|
@@ -79,7 +106,7 @@ The method that fills the bill is `fold`, and its ordered variants `foldLeft` an
 | `foldRight` | `Seq[B]` | `B` and `(A, B) => B` | `B` |
 |===========================================|
 
-Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the fold methods calculate the following:
+Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the following:
 
 | Method                         | Operations     | Notes
 |--------------|
@@ -88,16 +115,25 @@ Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the fold methods calculate the f
 | `Seq(1, 2, 3).foldRight(0)(_ + _)`  | `(1 + (2 + (3 + 0)))`    | Evaluation is right to left
 |===========================================|
 
-The fold methods are very flexible. In fact we can write any transformation on a sequence in terms of fold! This is very deep result, and it goes beyond sequences. For any *algebraic datatype* there is a systematic process to define a fold that is a universal transformation for that datatype. We're not going to go deeper in this here, but be aware of it in your future study of functional programming.
+The fold methods are very flexible. In fact we can write *any* transformation on a sequence in terms of fold! This is very deep theoretical result, and it goes beyond sequences. For any *algebraic datatype* there is a systematic process to define a fold that is a universal transformation for that datatype. We're not going to go deeper into this here, but be aware of the power and fundamental nature of fold in your future study of functional programming.
 
-There is one more traversal method that is commonly used: `foreach`. Unlike `map`, `flatMap` and the `fold`s, `foreach` is executed purely for its sideffects. The type table is:
+### foreach
+
+There is one more traversal method that is commonly used: `foreach`. Unlike `map`, `flatMap` and the `fold`s, `foreach` does not return a useful result -- we use it purely for its side-effects. The type table is:
 
 | Method | We have  | We provide | We get   |
 |--------+----------+------------+----------|
 | `foreach` | `Seq[A]` | `A => Unit` | `Unit` |
 |==========|
 
-An example of when you'd use `foreach` is if you were printing the elements of a sequence.
+A great example using `foreach` is printing the elements of a sequence:
+
+{% highlight scala %}
+scala> List(1, 2, 3).foreach(num => println("And a " + num + "..."))
+And a 1...
+And a 2...
+And a 3...
+{% endhighlight %}
 
 ### Algebra of transformations
 
@@ -113,6 +149,8 @@ We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `fo
 | `Seq[A]` | `B` and `(A, B) => B` | `B` | `foldRight` |
 |============|
 
+This type of analysis may see mforeign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
+
 ## Exercises
 
 1. Print every element of the sequence `Seq(1, 2, 3)`.
@@ -124,7 +162,7 @@ We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `fo
 7. Write your own implementation of `foldRight` that uses `foreach` and mutable state.
 
 
-## Other Useful Functions
+## Other useful functions
 
 There are many other useful methods defined on `Seq`. We've seen `contains` in the exercises above (you did do the exercises, right?) Similar functions are `filter` and `find`. Filter returns a sequence containing all the element that pass a test. For example, to get just the positive elements of sequence:
 
@@ -143,4 +181,4 @@ scala> Seq(-1, -2).find(elt => elt > 0)
 res18: Option[Int] = None
 {% endhighlight %}
 
-There are many more methods on sequences. Consult the documentation for more.
+There are many more methods on sequences. Consult the documentation for more. You can find many of them on the [Scaladoc page](http://www.scala-lang.org/api/current/scala/collection/Seq.html) for `Seq`.

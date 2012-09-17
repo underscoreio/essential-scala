@@ -95,6 +95,15 @@ body {
 #container-content #content .post:last-child {
   border-bottom: none;
 }
+#container-content #content table {
+  width: 100%;
+  margin-bottom: 9px;
+  border-collapse: collapse;
+}
+#container-content #content table td,
+#container-content #content table th {
+  border: 1px solid #ccc;
+}
 #footer {
   border-top: 1px solid #ccddcc;
   clear: both;
