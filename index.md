@@ -82,7 +82,7 @@ layout: page
     - val
     - Filtering
     - Monads
-  - Arrays and Strings
+  - [Arrays and Strings](collections/arrays-and-strings.html)
   - Streams and Iterators
   - Traversable and Iterable
     - TraversableOnce

@@ -74,7 +74,7 @@ Vectors are a good choice if you want both random access and immutability.
 
 ## Mutable Implementations
 
-The mutable collections are probably more familiar. In addition to linked lists and arrays (which have [their own section](arrays.html)) there are a buffers which allow for efficient construction of certain data structures.
+The mutable collections are probably more familiar. In addition to linked lists and arrays (which have [their own section](arrays-and-strings.html)) there are a buffers which allow for efficient construction of certain data structures.
 
 ### Buffers
 
