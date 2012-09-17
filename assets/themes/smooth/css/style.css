@@ -103,6 +103,7 @@ body {
 #container-content #content table td,
 #container-content #content table th {
   border: 1px solid #ccc;
+  padding: 3px;
 }
 #footer {
   border-top: 1px solid #ccddcc;

@@ -74,8 +74,7 @@ layout: page
       - IndexedSeq and LinearSeq
     - Immutable sequences
     - Mutable sequences
-  - Maps
-  - Sets
+  - [Maps and Sets](collections/map-and-set.html)
   - [Introducing For Comprehensions](collections/for-comprehensions.html)
   - [Working with For Comprehensions](collections/working-with-for-comprehensions.html)
     - Ranges
