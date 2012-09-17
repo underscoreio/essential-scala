@@ -95,7 +95,7 @@ res10: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 
 ## Mutable and Immutable Sequences
 
-The astute will have noticed that none of the operations above modified our sequence. In fact we haven't even show a method to modify a `Seq` -- this is because there is none! Throughout the collections framework, the default implementations are immutable. Immutability makes reasoning about programs easier, and plays well with concurrency.
+The astute will have noticed that none of the operations above modified our original sequence. In fact we haven't even show a method to modify a `Seq` -- this is because there is none! Throughout the collections framework, the default implementations are immutable. Immutability makes reasoning about programs easier, and plays well with concurrency.
 
 A sequence can be functionality updated. That is, we can create a copy with a single element changed.
 
@@ -130,3 +130,5 @@ scala> mutable(0) = 7
 scala> mutable
 res16: scala.collection.mutable.Seq[Int] = ArrayBuffer(7, 2, 3)
 {% endhighlight %}
+
+As with `apply`, this assignment syntax is just syntactic sugar built on top of the `update` method.
