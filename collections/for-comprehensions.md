@@ -20,7 +20,7 @@ scala> for(x <- Seq(1, 2, 3)) yield x * 2
 res1: Seq[Int] = List(2, 4, 6)
 {% endhighlight %}
 
-We call the expression containing the `<-` a generator, with a pattern on the left hand side and a generator expression on the right. We see that a for comprehension iterates over the elements in generator expression binding them to the pattern. The results of the expression following the yield are combined into the result.
+We call the expression containing the `<-` a *generator*, with a *pattern* on the left hand side and a *generator expression* on the right. We see that a for comprehension iterates over the elements in generator expression binding them to the pattern. The results of the expression following the yield are combined into the result.
 
 This example doesn't show the power of for comprehensions, so let's try a more complicated example. Say we want to double all the numbers in `Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))` and return a flattened sequence of numbers. To do this with `map` and `flatMap` we must nest calls:
 
