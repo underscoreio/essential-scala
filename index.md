@@ -84,6 +84,6 @@ layout: page
     - Monads
   - [Arrays and Strings](collections/arrays-and-strings.html)
   - [Iterators and Views](collections/iterators.html)
-  - Traversable and Iterable
+  - [Traversable and Iterable](collections/traversable.html)
     - TraversableOnce
-  - Interoperating with Java
+  - [Interoperating with Java](collections/java-interop.html)
