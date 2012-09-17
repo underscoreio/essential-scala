@@ -83,7 +83,7 @@ layout: page
     - Filtering
     - Monads
   - [Arrays and Strings](collections/arrays-and-strings.html)
-  - Streams and Iterators
+  - [Iterators and Views](collections/iterators.html)
   - Traversable and Iterable
     - TraversableOnce
   - Interoperating with Java
