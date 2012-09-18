@@ -33,19 +33,21 @@ layout: page
       - Operators vs methods
       - Shortcuts for operators
         - Apply and update
+  - [Introducing Scala's Type System](scala-basics/types.html)
     - Scala's type hierarchy
       - Everything is an object
       - Any, AnyVal, AnyRef, ScalaObject, and Nothing
       - Scala's primitives and their relation to Java primitives
     - Type Declarations
-    - Generic Types
-      - Type bounds
+  - [More Expressions](scala-basics/more-expressions.html)
     - Conditional expressions
     - Complex Literals
       - Tuples
       - Functions
         - Functions are objects: apply
       - Companion object constructors (not true literals)
+    - Generic Types
+      - Type bounds
     - Object Creation
   - Introducing Definitions
     - val
