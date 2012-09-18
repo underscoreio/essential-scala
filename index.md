@@ -21,11 +21,11 @@ layout: page
   - Self help
 - ScalaDoc
   - The secret trait/object switcher
-- SBT
+- [SBT](sbt/index.html)
   - The shortest introduction to SBT
-  - The Rebel Cut
   - Starting the REPL
-  - Troubleshooting SBT
+  - SBT: The Rebel Cut
+  - Useful SBT commands
 - Introducing Values
   - Numbers
   - Strings
