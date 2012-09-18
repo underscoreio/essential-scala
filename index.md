@@ -26,33 +26,62 @@ layout: page
   - The Rebel Cut
   - Starting the REPL
   - Troubleshooting SBT
-- Introducing Values
-  - Numbers
-  - Strings
-  - Compound values
-  - Everything is an object
-  - Scala's type hierarchy
-    - Any, AnyVal, AnyRef, ScalaObject, and Nothing
-    - Scala's primitives and their relation to Java primitives
-- Introducing Expressions
-  - Simple expressions
-  - Compound expressions
-    - Operators vs methods
-    - Shortcuts for operations
-      - Apply, update
-  - Conditional expressions
-  - Objects
-    - Instance variables
-    - Instance methods
-  - Functions: abstracting over expressions
-    - Functions are objects: apply
-- Introducing Definitions
-  - val
-  - var
+- Scala Basics
+  - Expressions, Definitions, and Statements
+  - Introducing Expressions
+    - Simple Literals
+      - Numbers, Strings, Booleans, Null
+    - Compound expressions
+      - Operators vs methods
+      - Shortcuts for operators
+        - Apply and update
+    - Scala's type hierarchy
+      - Everything is an object
+      - Any, AnyVal, AnyRef, ScalaObject, and Nothing
+      - Scala's primitives and their relation to Java primitives
+    - Type Declarations
+    - Generic Types
+      - Type bounds
+    - Conditional expressions
+    - Complex Literals
+      - Tuples
+      - Functions
+        - Functions are objects: apply
+      - Companion object constructors (not true literals)
+    - Object Creation
+  - Introducing Definitions
+    - val
+    - var
+    - def
+      - Calling methods: brackets and braces
+    - Object literals
+    - Recursive functions
+      - @tailrec
+  - Introducing Statements
+    - Assignment
+    - imports
+- Object Oriented Programming in Scala
   - Defining classes
-  - Creating instances
+    - Instance variables
+    - Methods
+      - Uniform access principle
+    - Constructors and constructor arguments
+    - Creating instances
+  - Working with classes
+    - Abstracting common functionality
+      - Traits
+      - Trait composition
+      - Self types
+    - Objects and modules
+      - Companion objects
+      - Objects as modules
+- Object-Functional Programming
   - Case classes
-  - Option
+    - Option
+  - Pattern matching
+  - Higher-order functions
+  - Structural recursion
+    - @tailrec
 - [Collections](collections/index.html)
   - [Introducing Sequences](collections/seq.html)
     - Defining a sequence (Seq)
