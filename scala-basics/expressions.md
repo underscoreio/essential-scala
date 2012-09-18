@@ -65,6 +65,15 @@ scala> false
 res12: Boolean = false
 {% endhighlight %}
 
+### Char
+
+Characters (`Char`s) are 16-bit Unicode values written as a single character enclosed in single quotes.
+
+{% highlight scala %}
+scala> 'a'
+res34: Char = a
+{% endhighlight %}
+
 ### Null
 
 Null is the same as Java, though not used nearly as often
@@ -74,14 +83,23 @@ scala> null
 res13: Null = null
 {% endhighlight %}
 
-### Char
+### Unit
 
-Characters (`Char`s) are 16-bit Unicode values written as a single character enclosed in single quotes.
+Unit, written `()` is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The REPL doesn't print unit be can ask for the type of an expression to see that unit is in fact the result of some expressions.
 
 {% highlight scala %}
-scala> 'a'
-res34: Char = a
+scala> ()
+
+scala> :type ()
+Unit
+
+scala> println("something")
+something
+
+scala> :type println("something")
+Unit
 {% endhighlight %}
+
 
 ## Compound Expressions
 
