@@ -26,7 +26,7 @@ layout: page
   - The Rebel Cut
   - Starting the REPL
   - Troubleshooting SBT
-- Scala Basics
+- [Scala Basics](scala-basics/index.html)
   - Expressions, Definitions, and Statements
   - Introducing Expressions
     - Simple Literals
@@ -67,6 +67,7 @@ layout: page
       - Uniform access principle
     - Constructors and constructor arguments
     - Creating instances
+    - Case classes
   - Working with classes
     - Abstracting common functionality
       - Traits
@@ -76,9 +77,10 @@ layout: page
       - Companion objects
       - Objects as modules
 - Object-Functional Programming
-  - Case classes
+  - Case classes redux
     - Option
   - Pattern matching
+    - unapply
   - Higher-order functions
   - Structural recursion
     - @tailrec
