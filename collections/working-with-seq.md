@@ -53,12 +53,12 @@ res14: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), Lis
 
 but we end up with a sequence of sequences. Let's look at the types in more detail to see what's gone wrong:
 
-| Method | We have  | We provide | We get   |
-|--------+----------+------------+----------|
-| `map`  | `Seq[A]` | `A => B`   | `Seq[B]` |
+| Method | We have       | We provide               | We get              |
+|--------+---------------+--------------------------+---------------------|
+| `map`  | `Seq[A]`      | `A => B`                 | `Seq[B]`            |
 | `map`  | `Seq[String]` | `String => List[String]` | `Seq[List[String]]` |
-| `???`  | `Seq[A]` | `A => Seq[B]` | `Seq[B]` |
-|===========================================|
+| `???`  | `Seq[A]`      | `A => Seq[B]`            | `Seq[B]`            |
+|=========================================================================|
 
 ### flatMap
 
