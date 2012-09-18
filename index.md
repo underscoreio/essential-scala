@@ -59,7 +59,7 @@ layout: page
   - Introducing Statements
     - Assignment
     - imports
-- Object Oriented Programming in Scala
+- [Object Oriented Programming in Scala](oo/index.html)
   - Defining classes
     - Instance variables
     - Methods
