@@ -26,8 +26,7 @@ layout: page
   - Starting the REPL
   - Troubleshooting SBT
 - [Scala Basics](scala-basics/index.html)
-  - Expressions, Definitions, and Statements
-  - Introducing Expressions
+  - [Introducing Expressions](scala-basics/expressions.html)
     - Simple Literals
       - Numbers, Strings, Booleans, Null
     - Compound expressions
