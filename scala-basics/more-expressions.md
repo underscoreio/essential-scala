@@ -99,31 +99,3 @@ res21: Int = 4
 scala> ((x: Int) => { x * x }) apply 2
 res22: Int = 4
 {% endhighlight %}
-
-## Generic Types
-
-How can we create a function that accepts an object of any type and returns it? Recalling that `Any` is the top of the type hierarchy we could write:
-
-{% highlight scala %}
-scala> (x: Any) => x
-res23: Any => Any = <function1>
-{% endhighlight %}
-
-This works but it loses type information. For example, when we pass in an `Int` the result has type `Any` and as such we can't use it in arthimetic expressions.
-
-{% highlight scala %}
-scala> ((x: Any) => x)(1)
-res24: Any = 1
-
-scala> (((x: Any) => x)(1)) - 1
-<console>:8: error: value - is not a member of Any
-              (((x: Any) => x)(1)) - 1
-{% endhighlight %}
-
-What we want is a *generic type*, so we can say our function accepts a value of some type `A` and returns the same type. Here's how we write it.
-
-**How the heck do we write this?!**
-
-## Creating Objects
-
-new
