@@ -308,6 +308,10 @@ defined module Counter
 
 If we were writing this code in Java, we would define `counters` and `get` as static members of the `Counter` class. In Scala, our singleton `Counter` object is visible in the global namespace so we can access its members directly without having a `static` keyword.
 
+### Singleton objects and constructor functions
+
+ - Get around the limitations of auxiliary constructors by defining `apply` methods on singleton objects.
+
 ### Singleton objects as modules
 
  - Syntax to import from object
