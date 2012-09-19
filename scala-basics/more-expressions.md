@@ -33,7 +33,7 @@ We're now going to look at some more interesting values that have literal repres
 
 ### Tuples
 
-Tuples are a container for other values. They allow us to easily store a values of different types without having to create a class for them. For example, to define a tuple containing an `Int`, and `String`, and a `Boolean` we could write:
+Tuples are a container for a *fixed number* of other values. They allow us to easily store a values of different types without having to create a class for them. For example, to define a tuple containing an `Int`, and `String`, and a `Boolean` we could write:
 
 {% highlight scala %}
 scala> (1, "tuple", true)
@@ -67,7 +67,62 @@ res53: (Double, java.lang.String) = (1.0,foo)
 
 ### Functions
 
+Functions allow us to abstract over values, plugging a value into an expression. For example, here is a function that squares any `Int` it is passed as a parameter.
+
+{% highlight scala %}
+scala> (x: Int) => x * x
+res16: Int => Int = <function1>
+{% endhighlight %}
+
+A function literal consists of two parts, a parameter list and a body, separated by `=>`. Note we must give types to the parameters. If the body is a single expression we don't have to enclose it in braces but we must do so if it contains more than one expression.
+
+{% highlight scala %}
+scala> (x: Int) => { x * x }
+res17: Int => Int = <function1>
+
+scala> (x: Int) => {
+     |   x + 1 // This has no useful purpose
+     |   x * x
+     | }
+res18: Int => Int = <function1>
+{% endhighlight %}
+
+Remember that a function is just an object with a method called `apply`. We can call (or apply) a function in the same way we'd call such an object.
+
+{% highlight scala %}
+scala> ((x: Int) => { x * x }).apply(2)
+res20: Int = 4
+
+scala> ((x: Int) => { x * x })(2)
+res21: Int = 4
+
+scala> ((x: Int) => { x * x }) apply 2
+res22: Int = 4
+{% endhighlight %}
+
 ## Generic Types
+
+How can we create a function that accepts an object of any type and returns it? Recalling that `Any` is the top of the type hierarchy we could write:
+
+{% highlight scala %}
+scala> (x: Any) => x
+res23: Any => Any = <function1>
+{% endhighlight %}
+
+This works but it loses type information. For example, when we pass in an `Int` the result has type `Any` and as such we can't use it in arthimetic expressions.
+
+{% highlight scala %}
+scala> ((x: Any) => x)(1)
+res24: Any = 1
+
+scala> (((x: Any) => x)(1)) - 1
+<console>:8: error: value - is not a member of Any
+              (((x: Any) => x)(1)) - 1
+{% endhighlight %}
+
+What we want is a *generic type*, so we can say our function accepts a value of some type `A` and returns the same type. Here's how we write it.
+
+**How the heck do we write this?!**
 
 ## Creating Objects
 
