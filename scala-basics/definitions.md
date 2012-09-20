@@ -244,13 +244,24 @@ res31: Int = 0
 You've probably been taught that recursion is problematics because it consumes stack space. This is indeed true in many cases.
 
 {% highlight scala %}
-scala> val foo: Int => Int = (x: Int) => 1 + foo(x)
-foo: Int => Int = <function1>
+scala> val fib: Int => Int = (n: Int) => if(n == 0) 1 else n + fib(n-1)
+fib: Int => Int = <function1>
 
-scala> foo(1)
+scala> fib(10)
+res1: Int = 56
+
+scala> fib(100)
+res2: Int = 5051
+
+scala> fib(1000)
+res3: Int = 500501
+
+scala> fib(10000)
 java.lang.StackOverflowError
 	at $anonfun$1.apply$mcII$sp(<console>:7)
 {% endhighlight %}
 
-If the last expression is a
+If the last expression is a function or method is a function call this call is said to be in *tail position* and can be optimised to not use stack space. Due to JVM limitations Scala can only optimise self calls in final methods and in local functions. For these cases the recursive call will *not* use any extra stack space.
+
+
 Tail recursion and `@tailrec`.
