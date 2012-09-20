@@ -218,7 +218,7 @@ We've seen how to define generics that match any type. Sometimes we want to rest
 {% endhighlight %}
 
 
-## Recursive Functions and Loops
+## Recursive Functions
 
 Now that we know how to bind a name to a value we can define recursive functions. A recursive function is one that calls itself. Here is an example:
 
@@ -239,4 +239,18 @@ scala> foo(4)
 res31: Int = 0
 {% endhighlight %}
 
+## Tail-recursive Loops
+
+You've probably been taught that recursion is problematics because it consumes stack space. This is indeed true in many cases.
+
+{% highlight scala %}
+scala> val foo: Int => Int = (x: Int) => 1 + foo(x)
+foo: Int => Int = <function1>
+
+scala> foo(1)
+java.lang.StackOverflowError
+	at $anonfun$1.apply$mcII$sp(<console>:7)
+{% endhighlight %}
+
+If the last expression is a
 Tail recursion and `@tailrec`.
