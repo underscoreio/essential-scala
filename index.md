@@ -57,7 +57,7 @@ layout: page
     - Object literals
     - Recursive functions
       - @tailrec
-  - Introducing Statements
+  - [Introducing Statements](scala-basics/statements.html)
     - Assignment
     - imports
 - [Object Oriented Programming in Scala](oo/index.html)
