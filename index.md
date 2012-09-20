@@ -49,7 +49,7 @@ layout: page
     - Generic Types
       - Type bounds
     - Object Creation
-  - Introducing Definitions
+  - [Introducing Definitions](scala-basics/definitions.html)
     - val
     - var
     - def
