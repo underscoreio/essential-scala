@@ -68,7 +68,7 @@ layout: page
     - Constructors and constructor arguments
     - Creating instances
     - Case classes
-  - Working with classes
+  - [Working with classes](oo/inheritance.html)
     - Abstracting common functionality
       - Traits
       - Trait composition

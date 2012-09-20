@@ -248,9 +248,11 @@ java.lang.Error: Unexpected New
 // stack trace...
 {% endhighlight %}
 
+{% comment %}
 ## Special methods
 
 TODO: Complete ... the important part is introducing `apply` before the next section
+
  - scala makes heavy use of convenion in method names to reduce boilerplate syntax
  - we've already seen three examples of this:
     - use of single-argument methods as infix operators
@@ -261,8 +263,9 @@ TODO: Complete ... the important part is introducing `apply` before the next sec
  - update
  - unapply
  - unary_foo
+{% endcomment %}
 
-## Singleton / companion objects
+## Singleton objects
 
 Scala does not support the concepts of static fields and methods. Instead, it makes it easy to create *singleton objects* containing non-static methods that serve the same purpose. For example, in Scala the infamous `public static void main` method from Java is written as follows:
 
@@ -273,6 +276,8 @@ object MyApp {
   }
 }
 {% endhighlight %}
+
+### Companion objects
 
 A singleton with the same name as a class is called the *companion object* to that class. Due to the way companion objects and classes are compiled, they must be defined in the same file. In this example we use the console's *paste mode* to define the companions at the same time:
 
@@ -286,11 +291,11 @@ object Counter {
   // A Map of counter names to Counters:
   private var counters = Map[String, Counter]()
 
-  def get(name: String) = {
+  def get(name: String): Counter = {
     // If a counter of this name is in the Map...
     if(counters.contains(name)) {
       // ...retrieve and return it...
-      counters.get(name)
+      counters(name)
     } else {
       // ...otherwise create and cache it.
       val ans = new Counter(0)
@@ -306,31 +311,104 @@ defined class Counter
 defined module Counter
 {% endhighlight %}
 
-If we were writing this code in Java, we would define `counters` and `get` as static members of the `Counter` class. In Scala, our singleton `Counter` object is visible in the global namespace so we can access its members directly without having a `static` keyword.
+If we were writing this code in Java, we would define `counters` and `get` as static members of the `Counter` class. In Scala, our singleton `Counter` object is visible in the global namespace so we can access its members directly without having a `static` keyword:
 
-### Singleton objects and constructor functions
+{% highlight scala %}
+scala> Counter.get("a").counter
+res1: Int = 0
 
- - Get around the limitations of auxiliary constructors by defining `apply` methods on singleton objects.
+scala> Counter.get("a").counter += 5
 
-### Singleton objects as modules
+scala> Counter.get("a").counter
+res3: Int = 5
 
- - Syntax to import from object
- - This makes it quite convenient to define libraries of code inside objects
+{% endhighlight %}
 
-{% comment %}
-- Defining classes
-  - Instance variables
-  - Methods
-    - Uniform access principle
-  - Constructors and constructor arguments
-  - Creating instances
-  - Case classes
-- Working with classes
-  - Abstracting common functionality
-    - Traits
-    - Trait composition
-    - Self types
-  - Objects and modules
-    - Companion objects
-    - Objects as modules
-{% endcomment %}
+### Constructor methods
+
+A common practice in Scala is to use define an `apply` method on a companion object to construct instances of the companion class. This provides a simple workaround for the restrictions we have seen regarding auxiliary constructors.
+
+Here we reimplement the auxiliary constructor from our `Vec` example as an `apply`. This allows us to check for the case where `w` is zero and throw an `ArithmeticException`:
+
+{% highlight scala %}
+scala> :paste
+// Entering paste mode (ctrl-D to finish)
+
+class Vec(val x: Double, val y: Double) {
+  println("Created a Vec: x=" + x + ", y=" + y)
+}
+
+object Vec {
+  def apply(x: Double, y: Double, w: Double): Vec = {
+    if(w == 0) {
+      throw new ArithmeticException("w cannot be 0")
+    } else {
+      new Vec(x/w, y/w)
+    }
+  }
+}
+
+// Exiting paste mode, now interpreting.
+
+defined class Vec
+defined module Vec
+
+scala> Vec(6, 8, 2)
+Created a Vec: x=3, y=4
+res0: Vec = Vec@778b3fee
+
+scala> Vec(1, 2, 0)
+java.lang.ArithmeticException: w cannot be 0
+// and so on...
+{% endhighlight %}
+
+## Using objects as modules
+
+Scala's flexible `import` syntax allows you to import members from objects as well as packages. This is a powerful feature that lets you use objects as modules of code.
+
+A simple example but useful example of this is importing identifiers from a singleton object. Returning to the companion object for `Counter` above, we can write the following:
+
+{% highlight scala %}
+scala> import Counter._
+import Counter._
+
+scala> get("foo")
+res0: Counter = Counter@3126cb1a
+{% endhighlight %}
+
+The import statement in the first command gives us direct access to the fields and methods defined in the `Counter` singleton. This allows us to write `get("foo")` instead of `Counter.get("foo")`.
+
+This ability to import from singletons is essentially the same as Java's *static import* feature. However, Scala's imports go way beyond this. First, you can write import statements *anywhere* in your code, which scopes the imported members like local variables. This lets you import identifiers where you need them without polluting the namespace elsewhere (a practice that becomes incredibly useful when using *implicit conversions*):
+
+{% highlight scala %}
+scala> def mmmPi: Double = {
+     |   import scala.math._
+     |   Pi
+     | }
+mmmPi: Double
+
+scala> mmmPi
+res4: Double = 3.141592653589793
+
+scala> Pi
+<console>:13: error: not found: value Pi
+              Pi
+              ^
+{% endhighlight %}
+
+In this example, we import the value of `Pi` from the `scala.math` package. Because the import is inside the method body for `mmmPi`, the identifier is unavailable outside the method, and our attempt to use it in our final console command causes a compilation error.
+
+Second, you can import members from *any stable identifier in scope*. This includes packages, singletons, and any `val` or `lazy val`. This lets you use any dynamically constructed object as a module:
+
+{% highlight scala %}
+scala> val x = "abc"
+x: java.lang.String = abc
+
+scala> import x._
+import x._
+
+scala> length()
+res6: Int = 3
+{% endhighlight %}
+
+In this trivial example, we create an ordinary string and import its fields and methods. We call the `length` method directly by writing `length()` instead of `x.length()`.
