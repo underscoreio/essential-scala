@@ -4,4 +4,4 @@ layout: page
 
 # Statements
 
-TODO
+Statements are the final type of program component.

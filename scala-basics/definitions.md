@@ -221,6 +221,7 @@ scala> foo(scala.swing.Dialog.Result)
 res3: Int = 3
 {% endhighlight %}
 
+You can also declare bounds in the other direction (an upper bound) using `[A >: Enumeration]` and also declare upper and lower bounds.
 
 ## Recursive Functions
 
