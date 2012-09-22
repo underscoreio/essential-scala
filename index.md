@@ -117,3 +117,11 @@ layout: page
   - [Traversable and Iterable](collections/traversable.html)
     - TraversableOnce
   - [Interoperating with Java](collections/java-interop.html)
+- [Growing the Language](dsl/index.html)
+  - [Operators](dsl/operators.html)
+    - Special method names
+  - [Custom Control Structures](dsl/control.html)
+  - [Open Extension of Classes](dsl/implicits.html)
+    - Implicits
+    - Typeclasses
+  - [Syntax Extensions](dsl/macros.html)

@@ -211,12 +211,17 @@ As we can see above, when we actually use `foo` the concrete type of it's argume
 
 ### Type Bounds
 
-We've seen how to define generics that match any type. Sometimes we want to restrict the type to be a subtype or supertype of some other type. This is known as a type bound. So we want to implement a function that can handle only subtypes of `Numeric`. We can use a type bounds like `[A <: Numeric]` to do this.
+We've seen how to define generics that match any type. Sometimes we want to restrict the type to be a subtype or supertype of some other type. This is known as a type bound. So we want to implement a function that can handle only subtypes of `Enumeration`. We can use a type bounds like `[A <: Enumeration]` to do this.
 
 {% highlight scala %}
+scala> def foo[A <: Enumeration](enum: Enumeration) = enum.maxId
+foo: [A <: Enumeration](enum: Enumeration)Int
 
+scala> foo(scala.swing.Dialog.Result)
+res3: Int = 3
 {% endhighlight %}
 
+You can also declare bounds in the other direction (an upper bound) using `[A >: Enumeration]` and also declare upper and lower bounds.
 
 ## Recursive Functions
 
