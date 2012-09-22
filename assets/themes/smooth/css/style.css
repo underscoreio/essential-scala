@@ -5,7 +5,7 @@ body {
   border-top: 3px solid #339922;
 }
 #container-navigation {
-  width: 300px;
+  width: 200px;
   padding-top: 100px;
   float: left;
 }
@@ -59,7 +59,7 @@ body {
   padding: 0;
   margin: 0;
   border-left: 1px solid #ccddcc;
-  margin-left: 300px;
+  margin-left: 200px;
   background-color: #fff;
   min-height: 600px;
 }
