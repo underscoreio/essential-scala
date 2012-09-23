@@ -290,4 +290,16 @@ scala> @tailrec def sumTail(n: Int, accum: Int):Int =
      | sumTail: (n: Int, accum: Int)Int
 {% endhighlight %}
 
-Note that any recursive function can be converted to a tail recursive function by using an accumulator, as we've done with `sumTail` above. Also note that any loop can be written as a recursive function.
+Note that any recursive method can be converted to a tail recursive function by using an accumulator, as we've done with `sumTail` above. Also note that any loop can be written as a recursive method. A typical pattern is to hide the tail recursive method behind a normal method with a more convenient interface.
+
+{% highlight scala %}
+scala> def sum(n: Int): Int = {
+     |   @tailrec def sumTail(n: Int, accum: Int): Int =
+     |     if(n == 0) accum else sumTail(n-1, n + accum)
+     |   sumTail(n, 0)
+     | }
+sum: (n: Int)Int
+
+scala> sum(10000)
+res29: Int = 50005000
+{% endhighlight %}
