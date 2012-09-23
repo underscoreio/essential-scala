@@ -249,21 +249,45 @@ res31: Int = 0
 You've probably been taught that recursion is problematics because it consumes stack space. This is indeed true in many cases.
 
 {% highlight scala %}
-scala> val sum: Int => Int = (n: Int) => if(n == 0) 0 else n + sum(n-1)
-sum: Int => Int = <function1>
+scala> def sum(n: Int): Int = if(n == 0) 0 else n + sum(n-1)
+sum: (n: Int)Int
 
 scala> sum(10)
-res15: Int = 55
+res26: Int = 55
 
 scala> sum(100)
-res16: Int = 5050
+res27: Int = 5050
 
 scala> sum(10000)
 java.lang.StackOverflowError
-	at $anonfun$1.apply$mcII$sp(<console>:7)
+	at .sum(<console>:9)
 {% endhighlight %}
 
-If the last expression is a function or method is a function call this call is said to be in *tail position* and can be optimised to not use stack space. Due to JVM limitations Scala can only optimise self calls in final methods and in local functions. For these cases the recursive call will *not* use any extra stack space.
+If the last expression in a function or method is a function call this call is said to be in *tail position* and can be optimised to not use stack space. Due to JVM limitations Scala can only optimise self calls in final methods and in local functions. For these cases the recursive call will *not* use any extra stack space.
 
+{% highlight scala %}
+scala> def sumTail(n: Int, accum: Int):Int =
+         if(n == 0) accum else sumTail(n-1, n + accum)
+sumTail: (n: Int, accum: Int)Int
 
-Tail recursion and `@tailrec`.
+scala> sumTail(10000, 0)
+res25: Int = 50005000
+{% endhighlight %}
+
+Ensuring a function is tail recursive is an important property, as tail recursive functions are used to implement general purpose loops in Scala. To assist with this, Scala includes a `@tailrec` annotation, available in the package `scala.annotation`. If a method is annotated with `@tailrec` the compiler will raise an warning if a method is not tail recursive.
+
+{% highlight scala %}
+scala> import scala.annotation.tailrec
+import scala.annotation.tailrec
+
+scala> @tailrec def sum(n: Int): Int = if(n == 0) 0 else n + sum(n-1)
+<console>:11: error: could not optimize @tailrec annotated method sum: it contains a recursive call not in tail position
+       @tailrec def sum(n: Int): Int = if(n == 0) 0 else n + sum(n-1)
+                                                           ^
+
+scala> @tailrec def sumTail(n: Int, accum: Int):Int =
+                  if(n == 0) accum else sumTail(n-1, n + accum)
+     | sumTail: (n: Int, accum: Int)Int
+{% endhighlight %}
+
+Note that any recursive function can be converted to a tail recursive function by using an accumulator, as we've done with `sumTail` above. Also note that any loop can be written as a recursive function.
