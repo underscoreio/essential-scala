@@ -4,38 +4,90 @@ layout: page
 
 # Open Extension of Classes
 
-Multiple parameter lists
+## Multiple parameter lists
 
-implicits parameters
+In addition to supporting any number of parameters, Methods and functions in Scala can have any number of *parameter lists*. For example:
 
-Example: RichInt
+{% highlight scala %}
+scala> def add(a: Int, b: Int)(c: Int, d: Int): Int = {
+     |   a + b + c + d
+     | }
+add: (a: Int, b: Int)(c: Int, d: Int)Int
 
-extending a class
+scala> add(1, 2)(3, 4)
+res0: Int = 10
+{% endhighlight %}
 
-implicit resolution order
+There are a number of reasons why this is useful: it allows for more flexibility when assigning default values to optional arguments, it provides support for *currying*, and it provides support for *implicit argument lists*. This section covers the last of these three.
 
-Rules for implicits
-[23/09/2012 20:08:33] Dave Gurnell: Marking Rule: Only definitions marked implicit are available.
-[23/09/2012 20:08:39] Dave Gurnell: Scope Rule: An inserted implicit conversion must be in scope as a single identifier, or be associated with the source or target type of the conver- sion.
-[23/09/2012 20:08:51] Dave Gurnell: Non-Ambiguity Rule: An implicit conversion is only inserted if there is no other possible conversion to insert.
-[23/09/2012 20:08:57] Dave Gurnell: One-at-a-time Rule: Only one implicit is tried.
-[23/09/2012 20:09:05] Dave Gurnell: Explicits-First Rule: Whenever code type checks as it is written, no implicits are attempted.
+{% comment %}
+TODO: Supply examples of currying and default values?
+{% endcomment %}
 
-Must be in scope as a single identifier (i.e. not a.b)
-[23/09/2012 20:12:02] Dave Gurnell: Except...
-[23/09/2012 20:12:14] Dave Gurnell: The compiler will look for definitions in the companion object.
-[23/09/2012 20:12:25] Dave Gurnell: ...
-[23/09/2012 20:12:28] Dave Gurnell: sorry
-[23/09/2012 20:12:43] Dave Gurnell: ...in the companion objects for the source and target types for conversion
+## Implicit parameter lists
 
-explicit implicits
+We can add the keyword `implicit` to the beginning of a parameter list to allow the compiler to implicitly insert arguments to our method calls. For example:
+
+{% highlight scala %}
+scala> class User(val name: String)
+defined class User
+
+scala> def prompt(directory: String)(implicit user: User): String = {
+     |   user.name + ":" + directory + "$"
+     | }
+prompt: (directory: String)(implicit user: User)String
+{% endhighlight %}
+
+When we call prompt, we have the option of supplying all the necessary arguments or allowing the compiler to supply those marked as `implicit`:
+
+{% highlight scala %}
+scala> prompt("~")(new User("john"))
+res1: String = john:~$
+{% endhighlight %}
+
+If we omit the implicit arguments from the method call, the compiler will search for values to insert in their place. It searches local scope (roughly - see below for caveats) for `vals` and argumentless `defs` that have been declared with the `implicit` keyword:
+
+{% highlight scala %}
+scala> implicit def currentUser: User = new User("dave")
+currentUser: User
+
+scala> prompt("~") // compiler expands this to: prompt("~")(currentUser)
+res2: String = date:~$
+{% endhighlight %}
+
+### Rules for implicit resolution
+
+When searching for implicit values, the compiler is restricted by a number of precise rules:
+
+ 1. **Marking Rule:** Only definitions marked `implicit` are available.
+ 2. **Scope Rule:** An implicit must be in *implicit scope* (see below).
+ 3. **Non-Ambiguity Rule:** An implicit can only be used if there are no other applicable implicits in scope.
+
+### Implicit scope
+
+ - Must be in scope as a single identifier (i.e. not a.b)
+ - Except the compiler will look for definitions in the companion objects for the source and target types
+   for conversion.
+
+## Implicit conversions
+
+**TODO: Complete**
+
+ - Example: RichInt
+
+### Rules for implicit conversion resolution
+
+In addition to the rules for implicit resolution above, use of implicit conversions is subject to the following additional rules:
+
+ 4. **One-at-a-time Rule:** Only a single implicit conversion can be used for any given situation
+    (i.e. the compiler does not search for multiple conversions to resolve a conflict).
+ 5. **Explicits-First Rule:** Whenever code type checks as it is written, no implicits are attempted.
 
 ## Exercise
 
-Extend `Int` with a method called `times` that executes the body `n` times, where `n` is the `Int`. Bonus marks for using a call-by-name parameter.
+**TODO: Complete**
 
-
-
+ - Extend `Int` with a method called `times` that executes the body `n` times, where `n` is the `Int`. Bonus marks for using a call-by-name parameter.
 
 ## Type classes
 
