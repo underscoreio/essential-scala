@@ -139,69 +139,57 @@ null
 x: String = null
 {% endhighlight %}
 
-{% comment %}
-
 ## Upper type bounds
 
-TODO: COMPLETE THIS BIT
-
-It is sometimes useful to put *bounds* on the type parameters to a class, trait, or method. This restricts the set of types we can pass, and allows us to rely on certain functionality being present in the type parameter.
-
-For example, suppose we are designing a software application for access by staff and students at a University:
+It is sometimes useful to put *bounds* on the type parameters to a class, trait, or method. This restricts the set of types that can be bound to that parameter and allows us to rely on fields and methods of that type in our code:
 
 {% highlight scala %}
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
-
-trait User {
-  def username: String
-  def isAdmin: Boolean
-}
-
-class Staff(val username: String, val isAdmin: Boolean) extends User
-
-class Student(val username: String) extends User {
-  val isAdmin = false
-}
-
-// Exiting paste mode, now interpreting.
-
+scala> trait User {
+     |   def username: String
+     |   def isAdmin: Boolean
+     | }
 defined trait User
-defined class Student
-defined class Staff
+
+scala> trait AdminOnly[U <: User] {
+     |   def apply(user: U): Unit = {
+     |     if(user.isAdmin) {
+     |       performAction(user)
+     |     } else throw new Exception("Acccess denied!")
+     |   }
+     |
+     |   def performAction(user: U): Unit
+     | }
+defined trait AdminOnly
 {% endhighlight %}
 
-As part of our authentication system, we want to write a function that asserts whether a user is an administrator. We want the authentication function to work with `Staff` or `Student` objects and retain the type information:
+In this example, the `AdminOnly` trait uses the `isAdmin` method of `U`. Scala knows that `isAdmin` will always be available because any potential binding for `U` must be a subclass of `User`.
+
+When we subclass `AdminOnly` for any concrete value of `U`, we gain the ability to use any additional features of the class we're dealing with. For example, we can implement a `NamedUser` and use the `name` field in our code:
 
 {% highlight scala %}
-scala> object Auth {
-     |   def adminOnly(user: U): U = {
-     |     if(user.isAdmin) {
-     |       user
-     |     } else {
-     |       throw new Exception("Acccess denied!")
-     |     }
+scala> class NamedUser(
+     |   var name: String,
+     |   var username: String,
+     |   var isAdmin: Boolean
+     | ) extends User
+defined class Staff
+
+scala> class SayHello extends AdminOnly[NamedUser] {
+     |   def performAction(user: NamedUser) = {
+     |     println("Hi " + user.name + ". Welcome back.")
      |   }
      | }
-<console>:12: error: value saySomething is not a member of type parameter T
-         println(arg.saySomething.toUpperCase)
+
+scala> (new SayHello).apply(new NamedUser("John", "john", true))
+Hi John. Welcome back.
 {% endhighlight %}
 
-The class `Echo` won't compile because the type checker can't guarantee that `T` has a method `saySomething`. We can place an *upper type bound* on `T` using Scala's `<:` operator to tell the type checker that `T` has to be a subtype of `Vocal`:
+{% comment %}
 
-{% highlight scala %}
-scala> class Echo[T <: Vocal](arg: T) {
-     |   println(arg.saySomething.toUpperCase)
-     |   println(arg.saySomething)
-     |   println(arg.saySomething.toLowerCase)
-     | }
-defined class Echo
-{% endhighlight %}
+## Lower type bounds
 
 ## Covariance
 
 ## Contravariance
-
-## Lower type bounds
 
 {% endcomment %}
