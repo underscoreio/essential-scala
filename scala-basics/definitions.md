@@ -249,19 +249,16 @@ res31: Int = 0
 You've probably been taught that recursion is problematics because it consumes stack space. This is indeed true in many cases.
 
 {% highlight scala %}
-scala> val fib: Int => Int = (n: Int) => if(n == 0) 1 else n + fib(n-1)
-fib: Int => Int = <function1>
+scala> val sum: Int => Int = (n: Int) => if(n == 0) 0 else n + sum(n-1)
+sum: Int => Int = <function1>
 
-scala> fib(10)
-res1: Int = 56
+scala> sum(10)
+res15: Int = 55
 
-scala> fib(100)
-res2: Int = 5051
+scala> sum(100)
+res16: Int = 5050
 
-scala> fib(1000)
-res3: Int = 500501
-
-scala> fib(10000)
+scala> sum(10000)
 java.lang.StackOverflowError
 	at $anonfun$1.apply$mcII$sp(<console>:7)
 {% endhighlight %}
