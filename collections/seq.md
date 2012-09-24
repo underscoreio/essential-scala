@@ -160,7 +160,7 @@ Here is a type table of all the methods we have seen so far:
 |------------+------------+--------------------+-------------|
 | Method     | We have    | We provide         | We get      |
 |------------+------------+--------------------+-------------|
-| `Seq(...)` |            | `A]`, ...          | `Seq[A]`    |
+| `Seq(...)` |            | `[A]`, ...         | `Seq[A]`    |
 | `apply`    | `Seq[A]`   | `Int`              | `A`         |
 | `:+`, `+:` | `Seq[A]`   | `A`                | `Seq[A]`    |
 | `++`       | `Seq[A]`   | `Seq[A]`           | `Seq[A]`    |
