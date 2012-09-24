@@ -16,10 +16,72 @@ is equivalent to
 a.b(c)
 {% endhighlight %}
 
-This simple feature allows us to create a more natural notation in many domains. A straightforward example is representing mathematical notation for extended number types. Here's how we can implement some basic operations on complex numbers.
+This simple feature allows us to create a more natural notation in many domains. A straightforward example is representing mathematical notation for extended numeric types. Here we implement a simple vector type with element-wise addition and multiplication.
 
 {% highlight scala %}
-case class Complex(re: Double, im: Double) {
+class Vector(val data: Array[Double]) {
+  def +(other: Vector):Vector =
+    new Vector(
+      data.zip(other.data).map {
+        case (v1, v2) => v1 + v2
+      }
+    )
+
+  def *(other: Vector): Vector =
+    new Vector(
+      data.zip(other.data).map {
+        case (v1, v2) => v1 * v2
+      }
+    )
+}
+
+object Vector {
+  def apply(xs: Double*): Vector = new Vector(xs.toArray)
+}
+
+scala> val vector = Vector(1.0, 2.0) + Vector(3.0, 4.0)
+vector: Vector = Vector@58bead4f
+
+scala> vector.data
+res6: Array[Double] = Array(4.0, 6.0)
+{% endhighlight %}
+
+As a bonus we also defined a companion object with an `apply` constructor. This shows how we use variable arguments in Scala.
+
+### Exercise
+
+Add an element-wise exponentiation operator `**` to `Vector`, which raises each element to the given power. Use `scala.math.pow` for the per-element computation. Return a `Vector` with the results.
+
+## Special Methods
+
+Scala makes heavy use of convention in method names to reduce boilerplate syntax. We've already seen some examples of this:
+
+- Use of single-argument methods as infix operators
+- argumentless methods for field accessor syntax
+- `apply` for function application syntax `foo(...)`
+- `update` for function application update `foo(...) = bar`
+
+There are some more special method names that we either haven't yet seen or have only mentioned in passing:
+
+- `foo_=` methods for assignment syntax
+- `unapply` for extending pattern matching
+- `unary_foo` methods where `foo` can be `+`, `-`, `~`, or `!`.
+
+We can use these methods to make our code more convenient to use. For example, let's add getters and setters to our `Vector` class. Our setter is a destructive operation.
+
+**TODO: Explain restrictions on setters**
+
+{% highlight scala %}
+case class Complex(_re: Double, _im: Double) {
+
+  def re = Complex(_re, 0.0)
+  def im = Complex(0.0, _im)
+
+  def re_=(newRe: Double): Complex =
+    this.copy(re = newRe)
+
+  def im_=(newIm: Double): Complex =
+    this.copy(im = newIm)
 
   def +(other: Complex) = Complex(re + other.re, im + other.im)
 
@@ -31,30 +93,7 @@ case class Complex(re: Double, im: Double) {
 
 }
 
-scala> Complex(1, 2) * Complex(3, 4)
-res10: Complex = Complex(-5.0,10.0)
 {% endhighlight %}
-
-### Exercise
-
-Implement a `Vector` type that wraps an `Array` and provides element-wise addition and multiplication. You can assume an `Array[Double]`. There is no need to check vectors have matching lengths in your implementation, but feel free to do so if you have time.
-
-## Special Methods
-
-Scala makes heavy use of convention in method names to reduce boilerplate syntax. We've already seen some examples of this:
-
-- Use of single-argument methods as infix operators
-- argumentless methods for field accessor syntax
-- `foo_=` methods for assignment syntax
-- `apply` for function application syntax `foo(...)`
-- `update` for function application update `foo(...) = bar`
-
-There are some more special method names you should be aware of
-
-- `unapply`
-- `unary_foo` methods where `foo` can be `+`, `-`, `~`, or `!`.
-
-*TODO*
 
 ### Exercise
 
@@ -71,4 +110,4 @@ Operator associativity is the final wrinkle in Scala's support for operators. An
 
 ## Final Words
 
-Operator syntax, and particularly symbolic operators, can be powerful way for creating a concise syntax to express domain specific operations. However it can also be a great way to obscure your code. When creating symbolic operators you must consider the costs and benefits. Generally, if an operator has a well known meaning (e.g. the arthimetic operators) or is commonly known within a specific domain *and* dealing with the domain is a major part of the program you're writing then symbolic operators can be a good approach. In other cases caution is advised.
+Operator syntax, and particularly symbolic operators, are a powerful way of creating a concise syntax to express domain specific operations. However it can also be a great way to obscure your code. When creating symbolic operators you must consider the costs and benefits. Generally, if an operator has a well known meaning (e.g. the arthimetic operators) or is commonly known within a specific domain *and* dealing with the domain is a major part of the program you're writing then symbolic operators can be a good approach. In other cases caution is advised.
