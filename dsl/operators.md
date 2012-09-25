@@ -64,10 +64,135 @@ Scala makes heavy use of convention in method names to reduce boilerplate syntax
 There are some more special method names that we either haven't yet seen or have only mentioned in passing:
 
 - `foo_=` methods for assignment syntax
-- `unapply` for extending pattern matching
 - `unary_foo` methods where `foo` can be `+`, `-`, `~`, or `!`.
+- `unapply` for extending pattern matching
 
-We can use these methods to make our code more convenient to use. For example, let's add getters and setters to our `Vector` class. Our setter is a destructive operation.
+The first allows us to write custom setters. For example, imagine a bank account class where we want to log to an audit trail whenever we change the balance. We can implement this as follows:
+
+{% highlight scala %}
+object Account {
+  private var _balance = 0
+  def balance = _balance
+  def balance_=(newBalance: Int):Unit = {
+    println("AUDIT TRAIL: Changed balance to "+newBalance)
+    _balance = newBalance
+  }
+}
+
+scala> Account.balance
+res0: Int = 0
+
+scala> Account.balance = 100
+AUDIT TRAIL: Changed balance to 100
+Account.balance: Int = 100
+
+scala> Account.balance
+res1: Int = 100
+{% endhighlight %}
+
+Note how we can write `Account.balance = 100` and the method `balance_=` is called. These setter methods can only be used in tandem with a getter. If a getter is not defined we get instead an error.
+
+{% highlight scala %}
+object NoGetter {
+  private var _balance = 0
+  def balance_=(newBalance: Int):Unit = {
+    println("AUDIT TRAIL: Changed balance to "+newBalance)
+    _balance = newBalance
+  }
+}
+
+scala> NoGetter.balance = 100
+<console>:11: error: value balance is not a member of object NoGetter
+val $ires1 = NoGetter.balance
+                      ^
+<console>:8: error: value balance is not a member of object NoGetter
+       NoGetter.balance = 100
+                ^
+{% endhighlight %}
+
+The unary methods allow us to define prefix operators that can be used with our objects. We can only define `+`, `-`, `~`, or `!`.
+- `unapply` for extending pattern matching
+
+The first allows us to write custom setters. For example, imagine a bank account class where we want to log to an audit trail whenever we change the balance. We can implement this as follows:
+
+{% highlight scala %}
+object Account {
+  private var _balance = 0
+  def balance = _balance
+  def balance_=(newBalance: Int):Unit = {
+    println("AUDIT TRAIL: Changed balance to "+newBalance)
+    _balance = newBalance
+  }
+}
+
+scala> Account.balance
+res0: Int = 0
+
+scala> Account.balance = 100
+AUDIT TRAIL: Changed balance to 100
+Account.balance: Int = 100
+
+scala> Account.balance
+res1: Int = 100
+{% endhighlight %}
+
+Note how we can write `Account.balance = 100` and the method `balance_=` is called. These setter methods can only be used in tandem with a getter. If a getter is not defined we get instead an error.
+
+{% highlight scala %}
+object NoGetter {
+  private var _balance = 0
+  def balance_=(newBalance: Int):Unit = {
+    println("AUDIT TRAIL: Changed balance to "+newBalance)
+    _balance = newBalance
+  }
+}
+
+scala> NoGetter.balance = 100
+<console>:11: error: value balance is not a member of object NoGetter
+val $ires1 = NoGetter.balance
+                      ^
+<console>:8: error: value balance is not a member of object NoGetter
+       NoGetter.balance = 100
+                ^
+{% endhighlight %}
+
+The unary methods allow us to define prefix operators that can be used with our objects. We can only define `+`, `-`, `~`, or `!`. Let's add a `-` prefix operator to our Vector:
+
+{% highlight scala %}
+class Vector(val data: Array[Double]) {
+  def +(other: Vector):Vector =
+    new Vector(
+      data.zip(other.data).map {
+        case (v1, v2) => v1 + v2
+      }
+    )
+
+  def *(other: Vector): Vector =
+    new Vector(
+      data.zip(other.data).map {
+        case (v1, v2) => v1 * v2
+      }
+    )
+  def unary_- : Vector =
+    new Vector(
+      data.map (elt => -elt)
+    )
+}
+
+object Vector {
+  def apply(xs: Double*): Vector = new Vector(xs.toArray)
+}
+
+scala> Vector(1.0, 2.0, 3.0).unary_-.data
+res6: Array[Double] = Array(-1.0, -2.0, -3.0)
+
+scala> (- Vector(1.0, 2.0, 3.0)).data
+res7: Array[Double] = Array(-1.0, -2.0, -3.0)
+{% endhighlight %}
+
+The `unapply` (and `unapplySeq`) method allow us to implement our own patterns for use in pattern matching.
+
+We can use these methods to make our code more convenient to use. For example, let's add `apply` and `update` to our `Vector` class
 
 **TODO: Explain restrictions on setters**
 
