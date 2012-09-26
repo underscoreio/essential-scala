@@ -122,6 +122,5 @@ layout: page
     - Special method names
   - [Custom Control Structures](dsl/control.html)
   - [Open Extension of Classes](dsl/implicits.html)
-    - Implicits
-    - Typeclasses
+  - [Type Classes](dsl/type-classes.html)
   - [Syntax Extensions](dsl/macros.html)

@@ -11,4 +11,6 @@ Creating domain specific languages (DSLs) is one of the more powerful features o
 - [Operators](operators.html)
 - [Custom Control Structures](control.html)
 - [Open Extension of Classes](implicits.html)
+- [Type Classes](type-classes.html)
+- [Pimp My Type Class](pimping.html)
 - [Syntax Extensions](macros.html)
