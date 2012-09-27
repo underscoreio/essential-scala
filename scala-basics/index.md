@@ -12,4 +12,4 @@ In this section we explore the fundamental constructs of Scala. We look at the b
 - [Introducing Scala's Type System](types.html)
 - [Introducing Definitions](definitions.html)
 - [Introducing Statements](statements.html)
-- [More Expressions](more-expressions.html)
+- [More Complex Programs](more-expressions.html)
