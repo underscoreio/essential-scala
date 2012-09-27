@@ -50,32 +50,32 @@ layout: page
       - @tailrec
   - [Introducing Statements](scala-basics/statements.html)
     - Assignment
-    - imports
+    - Packages and Imports
   - [More Complex Programs](scala-basics/more-expressions.html)
-    - Complex Literals
-      - Tuples
-      - Functions
-        - Functions are objects: apply
-      - Companion object constructors (not true literals)
+    - Tuples
+    - Functions
+      - Functions are objects: apply
     - Generic Types
       - Type bounds
-    - Object Creation
 - [Object Oriented Programming in Scala](oo/index.html)
-  - Defining classes
+  - [Defining classes](oo/defining.html)
     - Instance variables
     - Methods
       - Uniform access principle
     - Constructors and constructor arguments
     - Creating instances
-    - Case classes
-  - [Working with classes](oo/inheritance.html)
-    - Abstracting common functionality
-      - Traits
-      - Trait composition
-      - Self types
-    - Objects and modules
-      - Companion objects
-      - Objects as modules
+    - Companion objects
+  - [Inheritance](oo/inheritance.html)
+    - The type hierarchy, in more depth
+    - Inheritance
+    - Overriding
+    - Super constructors
+    - Casts
+  - [Traits](oo/traits.html)
+    - Traits
+    - Trait composition
+    - Self types
+  - [Type Parameters](oo/type-parameters.html)
 - Object-Functional Programming
   - Case classes redux
     - Option
@@ -83,7 +83,6 @@ layout: page
     - unapply
   - Higher-order functions
   - Structural recursion
-    - @tailrec
 - [Collections](collections/index.html)
   - [Introducing Sequences](collections/seq.html)
     - Defining a sequence (Seq)

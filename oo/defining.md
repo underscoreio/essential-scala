@@ -322,7 +322,7 @@ res3: Int = 5
 
 ### Constructor methods
 
-A common practice in Scala is to use define an `apply` method on a companion object to construct instances of the companion class. This provides a simple workaround for the restrictions we have seen regarding auxiliary constructors.
+A common practice in Scala is to define an `apply` method on a companion object to construct instances of the companion class. This provides a simple workaround for the restrictions we have seen regarding auxiliary constructors.
 
 Here we reimplement the auxiliary constructor from our `Vec` example as an `apply`. This allows us to check for the case where `w` is zero and throw an `ArithmeticException`:
 
