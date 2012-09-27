@@ -118,8 +118,8 @@ layout: page
   - [Interoperating with Java](collections/java-interop.html)
 - [Growing the Language](dsl/index.html)
   - [Operators](dsl/operators.html)
-    - Special method names
   - [Custom Control Structures](dsl/control.html)
   - [Open Extension of Classes](dsl/implicits.html)
   - [Type Classes](dsl/type-classes.html)
+  - [Pimp My Type Class](dsl/pimping.html)
   - [Syntax Extensions](dsl/macros.html)
