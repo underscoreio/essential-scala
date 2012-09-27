@@ -10,6 +10,6 @@ In this section we explore the fundamental constructs of Scala. We look at the b
 
 - [Introducing Expressions](expressions.html)
 - [Introducing Scala's Type System](types.html)
-- [More Expressions](more-expressions.html)
 - [Introducing Definitions](definitions.html)
 - [Introducing Statements](statements.html)
+- [More Expressions](more-expressions.html)

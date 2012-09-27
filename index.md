@@ -39,16 +39,6 @@ layout: page
       - Any, AnyVal, AnyRef, ScalaObject, and Nothing
       - Scala's primitives and their relation to Java primitives
     - Type Declarations
-  - [More Expressions](scala-basics/more-expressions.html)
-    - Conditional expressions
-    - Complex Literals
-      - Tuples
-      - Functions
-        - Functions are objects: apply
-      - Companion object constructors (not true literals)
-    - Generic Types
-      - Type bounds
-    - Object Creation
   - [Introducing Definitions](scala-basics/definitions.html)
     - val
     - var
@@ -60,6 +50,16 @@ layout: page
   - [Introducing Statements](scala-basics/statements.html)
     - Assignment
     - imports
+  - [More Complex Programs](scala-basics/more-expressions.html)
+    - Conditional expressions
+    - Complex Literals
+      - Tuples
+      - Functions
+        - Functions are objects: apply
+      - Companion object constructors (not true literals)
+    - Generic Types
+      - Type bounds
+    - Object Creation
 - [Object Oriented Programming in Scala](oo/index.html)
   - Defining classes
     - Instance variables

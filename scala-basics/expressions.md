@@ -155,6 +155,8 @@ scala> "hi there!".(0)
        "hi there!".(0)
 {% endhighlight %}
 
+{% comment %}
+
 If an object `foo` has a method called `update` we can call it using `foo(idx) = value`. `String` doesn't have such a method, but the error message when we attempt to this indicates the compiler has converted the call into a call to `update`.
 
 {% highlight scala %}
@@ -163,3 +165,5 @@ scala> "hi there!"(0) = 'b'
               "hi there!"(0) = 'b'
               ^
 {% endhighlight %}
+
+{% endcomment %}

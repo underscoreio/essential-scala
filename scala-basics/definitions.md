@@ -4,11 +4,27 @@ layout: page
 
 # Definitions
 
-We've seen how to create values but so far we've had to type out the expression creating the value whenever we wanted to use. For example, everytime we wanted to use our function that squares values we had to type out the function literal. In this section we'll see how to give names to values, so we can bind a name to a value once and then use the name wherever we want to use the value. These parts of a program are called *defintions*.
+So far we've had to type out the expression creating a value whenever we wanted to use that value. In this section we'll see how to give names to values, so we can bind a name to a value once and then use the name wherever we want to use the value. These parts of a program are called *defintions*.
 
 ## val
 
-The simplest type of defintion is a `val`. It allows us to give a name to value. So, to define our `square` function we could write:
+The simplest type of defintion is a `val`. It allows us to give a name to value. Let's give a name to the number `42`.
+
+{% highlight scala %}
+scala> val theAnswer = 42
+theAnswer: Int = 42
+{% endhighlight %}
+
+Now whenever we want to refer to this value we can use the name instead.
+
+{% highlight scala %}
+scala> theAnswer
+res0: Int = 42
+{% endhighlight %}
+
+{% comment %}
+
+So, to define our `square` function we could write:
 
 {% highlight scala %}
 scala> val square = (x: Int) => x * x
@@ -22,7 +38,7 @@ scala> square(2)
 res0: Int = 4
 {% endhighlight %}
 
-We can find *any* value to a name using `val`.
+We can bind *any* value to a name using `val`.
 
 {% highlight scala %}
 scala> aTuple
@@ -35,11 +51,19 @@ scala> aString
 res2: java.lang.String = this may be a string
 {% endhighlight %}
 
+{% endcomment %}
+
 ## var
 
 Sometimes (though very rarely in Scala) we will want to change the value that a name is bound to. This is called *reassignment*, *mutation*, a *side-effect* or a *destructive* operation. A `val` does not allow mutation.
 
 {% highlight scala %}
+scala> val aString = "this may be a string"
+aString: java.lang.String = this may be a string
+
+scala> aString
+res2: java.lang.String = this may be a string
+
 scala> aString = "another string"
 <console>:8: error: reassignment to val
        aString = "another string"
@@ -66,7 +90,7 @@ Mutation is strongly discouraged in Scala. It makes reasoning about programs mor
 
 ## def
 
-Another kind of definition in Scala is a `def`. This defines a method. In the REPL a method behaves much like a function. We can define them:
+Another kind of definition in Scala is a `def`. This defines a method. We can define them:
 
 {% highlight scala %}
 scala> def squareMethod(x: Int) = x * x
@@ -80,23 +104,30 @@ scala> squareMethod(2)
 res7: Int = 4
 {% endhighlight %}
 
-just like a function. However a method, unlike a function, is *not* a value!
+Scala requires we declare the types of method parameters, but we can usually omit the return type. However it is good practice to declare the return type.
 
 {% highlight scala %}
-scala> val square = (x: Int) => x * x
-square: Int => Int = <function1>
+scala> def squareMethod(x: Int):Int = x * x
+squareMethod: (x: Int)Int
+{% endhighlight %}
 
-scala> square
-res8: Int => Int = <function1>
+A method is *not* a value. We cannot bind a `val` to a method, nor can we pass a method to a function (or a method), nor can we return a method from a function (or a method).
 
+{% highlight scala %}
 scala> squareMethod
 <console>:9: error: missing arguments for method squareMethod in object $iw;
 follow this method with `_' if you want to treat it as a partially applied function
               squareMethod
               ^
+
+scala> val theMethod = squareMethod
+<console>:8: error: missing arguments for method squareMethod in object $iw;
+follow this method with `_' if you want to treat it as a partially applied function
+       val theMethod = squareMethod
+                       ^
 {% endhighlight %}
 
-We cannot pass a method to a function (or a method) nor can we return a method from a function (or a method). However we can convert a method to a function using the all powerful underscore!
+However we can convert a method to a function using the all powerful underscore! A function is a value.
 
 {% highlight scala %}
 scala> squareMethod _
@@ -105,6 +136,7 @@ res11: Int => Int = <function1>
 
 Given that methods are like restricted functions, why do we have them? The answer is for compatibility with Java. Java has a builtin concept of methods which are heavily optimised. By allowing methods we get both performance and easier interoperation with Java.
 
+We'll have more to say about functions in a later section.
 
 ## Object literals
 
@@ -141,7 +173,7 @@ scala> tricky.theMethod
 res22: java.lang.String = I'm a var!
 {% endhighlight %}
 
-Methods with no arguments and method with a single empty argument are different things in Scala as the example below demonstrates.
+Methods with no arguments and methods with a single empty argument are different things in Scala as the example below demonstrates.
 
 {% highlight scala %}
 scala> object EmptyMethods {
@@ -223,9 +255,9 @@ res3: Int = 3
 
 You can also declare bounds in the other direction (an upper bound) using `[A >: Enumeration]` and also declare upper and lower bounds.
 
-## Recursive Functions
+## Recursive Methods
 
-Now that we know how to bind a name to a value we can define recursive functions. A recursive function is one that calls itself. Here is an example:
+Now that we know how to define methods we can define recursive methods. A recursive method is one that calls itself. Here is an example:
 
 {% highlight scala %}
 scala> val foo = (x: Int) => if (x > 0) foo(x - 1) else x
