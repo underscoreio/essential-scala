@@ -122,6 +122,26 @@ scala> 42.toByte()
 res17: Byte = 42
 {% endhighlight %}
 
+### Conditionals
+
+Conditionals are an essential part of any programming language. Scala's `if` statement has the same syntax as Java's. One difference in Scala is that a conditional returns a value.
+
+{% highlight scala %}
+scala> if(true) {
+         42
+       } else {
+         40
+       }
+res45: Int = 42
+{% endhighlight %}
+
+You can drop the brackets if a single expression follows an arm, and even write a conditional on one line.
+
+{% highlight scala %}
+scala> if(true) 42 else 40
+res47: Int = 42
+{% endhighlight %}
+
 ### Operators versus Methods
 
 In Scala **everything is an object**. This means that `Int` and other primitive types in Java are actually objects in Scala. If this is the case, then `+`, `-`, and so on should be methods on `Int` not operators. Is this correct? Yes!

@@ -6,26 +6,58 @@ layout: page
 
 We're now going to look at more complicated expressions, in particular conditionals, tuples, and functions. We will then look at generic types, which are motivated by tuples and functions.
 
-## Conditionals
+## Generic Types
 
-Conditionals are an essential part of any programming language. Scala's `if` statement has the same syntax as Java's. One difference in Scala is that a conditional returns a value.
-
-{% highlight scala %}
-scala> if(true) {
-         42
-       } else {
-         40
-       }
-res45: Int = 42
-{% endhighlight %}
-
-You can drop the brackets if a single expression follows an arm, and even write a conditional on one line.
+How can we create a method that accepts an object of any type and returns it? Recalling that `Any` is the top of the type hierarchy we could write:
 
 {% highlight scala %}
-scala> if(true) 42 else 40
-res47: Int = 42
+scala> def foo(x: Any) = x
+foo: (x: Any)Any
 {% endhighlight %}
 
+This works but it loses type information. For example, when we pass in an `Int` the result has type `Any` and as such we can't use it in arthimetic expressions.
+
+{% highlight scala %}
+scala> foo(1)
+res32: Any = 1
+
+scala> foo(1) - 1
+<console>:9: error: value - is not a member of Any
+              foo(1) - 1
+                     ^
+{% endhighlight %}
+
+What we want is a *generic type*, so we can say our method accepts a value of some type `A` and returns the same type. Here's how we write it.
+
+{% highlight scala %}
+scala> def foo[A](x: A) = x
+foo: [A](x: A)A
+
+scala> foo(1)
+res34: Int = 1
+
+scala> foo(1) - 1
+res35: Int = 0
+
+scala> foo("hi!")
+res36: java.lang.String = hi!
+{% endhighlight %}
+
+As we can see above, when we actually use `foo` the concrete type of it's argument is substituted for `A`.
+
+### Type Bounds
+
+We've seen how to define generics that match any type. Sometimes we want to restrict the type to be a subtype or supertype of some other type. This is known as a type bound. So we want to implement a function that can handle only subtypes of `Enumeration`. We can use a type bounds like `[A <: Enumeration]` to do this.
+
+{% highlight scala %}
+scala> def foo[A <: Enumeration](enum: Enumeration) = enum.maxId
+foo: [A <: Enumeration](enum: Enumeration)Int
+
+scala> foo(scala.swing.Dialog.Result)
+res3: Int = 3
+{% endhighlight %}
+
+You can also declare bounds in the other direction (an upper bound) using `[A >: Enumeration]` and also declare upper and lower bounds.
 
 ## Complex Literals
 

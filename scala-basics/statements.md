@@ -124,4 +124,4 @@ package bar
 // Code goes here. In scope of package foo.bar, and foo._ is imported
 {% endhighlight %}
 
-In this form everything inside package `foo` is visible to our code, as well as everyting in `foo.bar`. This is not typically a big deal, but can sometimes lead to confusion. Which you use if up to you and your team's convention.
+In this form everything inside package `foo` is visible to our code, as well as everyting in `foo.bar`. This is sometimes convenient and sometimes confusing. Use whichever you feel most comfortable with.

@@ -30,6 +30,7 @@ layout: page
     - Simple Literals
       - Numbers, Strings, Booleans, Null
     - Compound expressions
+      - Conditional expressions
       - Operators vs methods
       - Shortcuts for operators
         - Apply and update
@@ -51,7 +52,6 @@ layout: page
     - Assignment
     - imports
   - [More Complex Programs](scala-basics/more-expressions.html)
-    - Conditional expressions
     - Complex Literals
       - Tuples
       - Functions

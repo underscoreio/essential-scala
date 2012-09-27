@@ -138,6 +138,10 @@ Given that methods are like restricted functions, why do we have them? The answe
 
 We'll have more to say about functions in a later section.
 
+### Exercise
+
+Write a method that computes the absolute value of an `Int`. The body of the method should be a single compound expression. Hint: recall that `if` is an expression in Scala.
+
 ## Object literals
 
 The fourth kind of definition in Scala is an object literal. We define objects using the `object` keyword. An object can contain other definitions, and we can call these using the usual method syntax.
@@ -201,84 +205,24 @@ In summary you can call an argument with an empty argument list with either an e
 
 There is a convention within Scala that methods with no arguments are reserved for methods that don't produce side-effects, while methods with empty arguments do. Furthermore, by convention calls to empty arguments methods (that produce side-effects) should always include the empty argument list.
 
-
-## Generic Types
-
-How can we create a method that accepts an object of any type and returns it? Recalling that `Any` is the top of the type hierarchy we could write:
-
-{% highlight scala %}
-scala> def foo(x: Any) = x
-foo: (x: Any)Any
-{% endhighlight %}
-
-This works but it loses type information. For example, when we pass in an `Int` the result has type `Any` and as such we can't use it in arthimetic expressions.
-
-{% highlight scala %}
-scala> foo(1)
-res32: Any = 1
-
-scala> foo(1) - 1
-<console>:9: error: value - is not a member of Any
-              foo(1) - 1
-                     ^
-{% endhighlight %}
-
-What we want is a *generic type*, so we can say our method accepts a value of some type `A` and returns the same type. Here's how we write it.
-
-{% highlight scala %}
-scala> def foo[A](x: A) = x
-foo: [A](x: A)A
-
-scala> foo(1)
-res34: Int = 1
-
-scala> foo(1) - 1
-res35: Int = 0
-
-scala> foo("hi!")
-res36: java.lang.String = hi!
-{% endhighlight %}
-
-As we can see above, when we actually use `foo` the concrete type of it's argument is substituted for `A`.
-
-### Type Bounds
-
-We've seen how to define generics that match any type. Sometimes we want to restrict the type to be a subtype or supertype of some other type. This is known as a type bound. So we want to implement a function that can handle only subtypes of `Enumeration`. We can use a type bounds like `[A <: Enumeration]` to do this.
-
-{% highlight scala %}
-scala> def foo[A <: Enumeration](enum: Enumeration) = enum.maxId
-foo: [A <: Enumeration](enum: Enumeration)Int
-
-scala> foo(scala.swing.Dialog.Result)
-res3: Int = 3
-{% endhighlight %}
-
-You can also declare bounds in the other direction (an upper bound) using `[A >: Enumeration]` and also declare upper and lower bounds.
-
 ## Recursive Methods
 
 Now that we know how to define methods we can define recursive methods. A recursive method is one that calls itself. Here is an example:
 
 {% highlight scala %}
-scala> val foo = (x: Int) => if (x > 0) foo(x - 1) else x
-<console>:8: error: recursive value foo needs type
-       val foo = (x: Int) => if (x > 0) foo(x - 1) else x
-                                        ^
+scala> def factorial(n: Int): Int =
+     |   if(n == 0) 1 else n * factorial(n - 1)
+factorial: (n: Int)Int
+
+scala> factorial(5)
+res8: Int = 120
 {% endhighlight %}
 
-Note that it does not compile. Up to now we've been fairly lax about defining types. Scala performs a process called *type inference*, which means it works out most of the types for us. This process doesn't work for recursive functions so we must specify the type up-front.
+Note that we must specify the return type on a recursive method.
 
-{% highlight scala %}
-scala> val foo: Int => Int = (x: Int) => if (x > 0) foo(x - 1) else x
-foo: Int => Int = <function1>
+### Tail-recursive Loops
 
-scala> foo(4)
-res31: Int = 0
-{% endhighlight %}
-
-## Tail-recursive Loops
-
-You've probably been taught that recursion is problematics because it consumes stack space. This is indeed true in many cases.
+You've probably been taught that recursion is problematic because it consumes stack space. This is indeed true in many cases.
 
 {% highlight scala %}
 scala> def sum(n: Int): Int = if(n == 0) 0 else n + sum(n-1)
@@ -335,3 +279,7 @@ sum: (n: Int)Int
 scala> sum(10000)
 res29: Int = 50005000
 {% endhighlight %}
+
+### Exercise
+
+Write a tail recursive version of the `factorial` method. Valid it is tail-recursive by annotating it with the `@tailrec` annotation.
