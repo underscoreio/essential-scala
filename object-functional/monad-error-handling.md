@@ -158,7 +158,7 @@ case class Failure[E,A](val failure: E) extends Validation[E,A] {
 }
 {% endhighlight %}
 
-We can now rewrite our original example using `Validation` and receive useful information on error. *Note the implementation of `errorHandling` has not changed!*
+We can now rewrite our original example using `Validation` and receive useful information on error. *Note the implementation of `errorHandling` has not changed!* This is a consequence of using a high-level general abstraction. We can swap out the implementation but keep the code the same.
 
 {% highlight scala %}
 def doSomething(x: Int): Validation[String, Int] =
@@ -180,5 +180,78 @@ scala> errorHandlingExample(-3)
 res16: Validation[String,Int] = Failure(Cannot be zero)
 {% endhighlight %}
 
+### Real World Usage
+
+For real code [Scalaz's](https://github.com/scalaz/scalaz) Validation class is a good implementation. In Scala 2.10 the [Try](http://www.scala-lang.org/api/milestone/index.html#scala.util.Try) type is a credible alternative.
+
+This is a pattern we use extensively in real deployed code. An example is a high-performance REST service. In this scenario the API is the user interface, so returning good error messages is very important. Hence using the type system to enforce error handling is justified in this case.
+
+We represent errors using a type called [`Problem`](https://github.com/bigtop/bigtop/blob/master/core/src/main/scala/bigtop/problem/Problem.scala). The key idea here is that we can convert a `Problem` to an HTTP response.
+
+Here's a snippet of actual deployed code:
+
+{% highlight scala %}
+def newVariant(user: User, expt: String, variant: String): FutureValidation[Problem, Unit] =
+  for {
+    agent <- get(expt)
+    good  <- addVariant(agent, user, variant)
+  } yield ()
+
+def deleteVariant(user: User, expt: String, variant: String): FutureValidation[Problem, Unit] =
+  for {
+    agent <- get(expt)
+    good  <- removeVariant(agent, user, variant)
+  } yield ()
+
+def newExperiment(user: User, name: String): FutureValidation[Problem, JValue] =
+  for {
+    expt    <- addExperiment(user, name)
+    val info = Experiment.externalFormat.write(expt)
+  } yield info
+{% endhighlight %}
+
+You can see that this code is incredibly regular. It is very easy to read and very easy to write. Nonetheless it is a work in progress. We've discovered that it is difficult to localise errors without line numbers, so in the future we'll probably change `Problem` to be a subtype of `Exception`. Note I'm not saying we'll switch to using exceptions instead of monadic error handling! We will solely be using exceptions for their stack traces.
+
 
 ## Monads Again
+
+So far we've looked at monads very informally. Now we will formalise the notation and talk a bit about the kind of things we can model witht e monad abstraction.
+
+A monad implements `map` and `flatMap` with the following signature:
+
+{% highlight scala %}
+trait Monad[A] {
+  def map[B](f: A => B): Monad[B]
+  def flatMap[B](f: A => Monad[B]): Monad[B]
+}
+{% endhighlight %}
+
+We also need a constructor, which in scala we'd typically implement a companion class `apply` method with signature
+
+{% highlight scala %}
+object Monad {
+  def apply[A](in: A): Monad[A]
+}
+{% endhighlight %}
+
+Finally there are some laws that monads should obey. They are:
+
+### Left Identity
+
+{% highlight scala %}
+Monad(a) flatMap { x => f(x) } === f(a)
+{% endhighlight %}
+
+### Right Identity
+
+{% highlight scala %}
+Monad(a) flatMap { x => Monad(x) } === Monad(a)
+{% endhighlight %}
+
+### Associativity
+
+{% highlight scala %}
+(Monad(a) flatMap { x => f(x) }) flatMap { y => g(y) } === Monad(a) flatMap { x => f(x) flatMap { y => g(y) } }
+{% endhighlight %}
+
+A large number of abstractions can be modelled as monads. We've already seen collections of data and error-prone computations. Other common abstractions include state and IO.
