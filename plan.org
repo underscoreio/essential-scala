@@ -1,0 +1,56 @@
+#+TITLE: Core Scala
+* Everything is an object
+  - In Scala, everything is an object. We interact with objects by method calls.
+** Literals
+   - Let's create some objects and interact with them at the REPL.
+   - A literal expression is the simplest way to create an object
+   - What is a literal? A program that literal stands for the value it creates. E.g. "foo", 2
+   - What is an expression? A program that evaluates to a value. Scala is an "expression oriented" language, means most program constructs in Scala are expressions.
+   - Examples of literals
+** Compound Expressions
+** Object Literals
+   - Instance variables (val)
+   - Methods
+     - Methods are expressions (no return)
+     - Types declarations and type inference
+   - The type of an object
+   - Objects are values
+** Classes
+   - Constructors
+   - Classes let us abstract over objects
+   - Apply syntax?
+   - Companion objects
+     - additional constructors
+     - apply method and convention as a constructor
+     - case classes as formalism of common pattern
+   - Functions
+* Object-oriented Programming in Scala
+** Traits
+   - Traits abstract over interface and implementation
+** Things that are this or that
+   - inheritance, subtyping
+   - def vs val in traits / overriding
+   - sealed trait, case classes
+   - pattern matching
+   - final
+** Things that are this and that
+   - Extending multiple traits
+   - Linearization / trait composition
+   - Self types
+** Things that contain other things
+   - Generic types
+     - Tuple and option (introduce via examples)
+   - Type bounds
+   - Generic methods
+   - Contra- and co-variance
+     - Protip: forget this stuff
+* Collections
+* Unscheduled Topics
+  - var
+  - uniform access principle
+    - methods of no arguments
+  - Value objects?
+** Scala's Type System
+   - Any and Nothing
+   - Object
+   - AnyRef and AnyVal
