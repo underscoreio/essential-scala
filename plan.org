@@ -24,20 +24,20 @@
      - apply method and convention as a constructor
      - case classes as formalism of common pattern
    - Functions
-* Object-oriented Programming in Scala
-** Traits
+* Modelling Data with Objects
+** Traits, the Atoms of Objects
    - Traits abstract over interface and implementation
-** Things that are this or that
+** Objects that are this or that
    - inheritance, subtyping
    - def vs val in traits / overriding
    - sealed trait, case classes
    - pattern matching
    - final
-** Things that are this and that
+** Objects that are this and that
    - Extending multiple traits
    - Linearization / trait composition
    - Self types
-** Things that contain other things
+** Objects that contain other objects
    - Generic types
      - Tuple and option (introduce via examples)
    - Type bounds
@@ -45,6 +45,27 @@
    - Contra- and co-variance
      - Protip: forget this stuff
 * Collections
+* Functional Programming Fundamentals
+** Structural Recursion
+** Higher-order Function vs Pattern Matching
+** Combinators
+   - Example: parsing
+* Open Extension of Objects
+** Implicits Classes
+   - Implicit classes
+   - Context bounds
+** Type Classes
+   - Type classes
+   -
+** More Implicit Machinery
+   - Implicit values and implicit parameters
+     - Implicit conversions
+     - View bounds
+   - Design guidelines for implicits
+* Domain Specific Languages
+** Delaying Evaluation
+   - lazy vals
+   - call by name
 * Unscheduled Topics
   - var
   - uniform access principle
