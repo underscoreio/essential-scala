@@ -6,10 +6,12 @@ toc:
     body:
      - /about.html
 
-  - head: /intro/history.html
+  - head: /intro/index.html
     body:
-     - /intro/guiding-principles.html
-     - /intro/course-overview.html
+     - /intro/literals.html
+     - /intro/compound.html
+     - /intro/object-literals.html
+     - /intro/conclusion.html
 
   # - head: /sbt/index.html
 
@@ -67,4 +69,4 @@ permalink   : /:categories/:year/:month/:day/:title
 
 safe        : false
 pygments    : true
-markdown    : kramdown
+markdown    : redcarpet

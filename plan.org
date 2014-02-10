@@ -16,6 +16,7 @@
      - Types declarations and type inference
    - The type of an object
    - Objects are values
+* Modelling Data with Objects
 ** Classes
    - Constructors
    - Classes let us abstract over objects
@@ -25,7 +26,6 @@
      - apply method and convention as a constructor
      - case classes as formalism of common pattern
    - Functions
-* Modelling Data with Objects
 ** Traits, the Atoms of Objects
    - Traits abstract over interface and implementation
 ** Objects that are this or that
