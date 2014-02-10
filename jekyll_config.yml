@@ -1,0 +1,70 @@
+# Table of Contents
+# -----------------
+
+toc:
+  - head: /index.html
+    body:
+     - /about.html
+
+  - head: /intro/history.html
+    body:
+     - /intro/guiding-principles.html
+     - /intro/course-overview.html
+
+  # - head: /sbt/index.html
+
+  # - head: /scala-basics/index.html
+  #   body:
+  #    - /scala-basics/expressions.html
+  #    - /scala-basics/types.html
+  #    - /scala-basics/definitions.html
+  #    - /scala-basics/more-expressions.html
+
+  # - head: /oo/index.html
+  #   body:
+  #    - /oo/defining.html
+  #    - /oo/inheritance.html
+  #    - /oo/traits.html
+  #    - /oo/type-parameters.html
+
+  # - head: /collections/index.html
+  #   body:
+  #    - /collections/seq.html
+  #    - /collections/working-with-seq.html
+  #    - /collections/seq-implementations.html
+  #    - /collections/map-and-set.html
+  #    - /collections/for-comprehensions.html
+  #    - /collections/working-with-for-comprehensions.html
+  #    - /collections/arrays-and-strings.html
+  #    - /collections/iterators.html
+  #    - /collections/traversable.html
+  #    - /collections/java-interop.html
+
+  # - head: /dsl/index.html
+  #   body:
+  #   - /dsl/operators.html
+  #   - /dsl/control.html
+  #   - /dsl/implicits.html
+  #   - /dsl/type-classes.html
+  #   - /dsl/pimping.html
+  #   - /dsl/macros.html
+
+
+# Jekyll Configuration
+# --------------------
+
+source      : src/pages
+posts       : ../posts
+layouts     : ../layouts
+includes    : ../includes
+
+destination : dist
+plugins     : jekyll_plugins
+
+keep_files  : [ 'css', 'js', 'images' ]
+
+permalink   : /:categories/:year/:month/:day/:title
+
+safe        : false
+pygments    : true
+markdown    : kramdown

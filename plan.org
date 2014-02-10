@@ -1,4 +1,5 @@
 #+TITLE: Core Scala
+
 * Everything is an object
   - In Scala, everything is an object. We interact with objects by method calls.
 ** Literals

@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<h1>{{ page.title }}</h1>
+
+{% if page.lead %}
+  <p class="lead">
+    <small>
+      {{ page.lead }}
+    </small>
+  </p>
+{% endif %}
+
+<hr>
+
+<div class="row">
+  <div class="col-lg-3 col-md-3">
+    {% nav_toc %}
+  </div>
+  <div id="content" class="col-lg-9 col-md-9">
+    {{ content }}
+
+    {% nav_pager %}
+  </div>
+</div>

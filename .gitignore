@@ -8,3 +8,6 @@ Thumbs.db
 
 .rbenv-version
 .rvmrc
+/bower_components/
+/dist/
+/node_modules/
