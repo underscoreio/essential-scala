@@ -179,3 +179,4 @@ This shows the difference between the two. The right-hand side of the `val` stat
 
 * Write an object definition with a method called `square` that squares its input.
 * Write an object definition for a person with a `firstName` and a `lastName`. Write an object with a method that takes your person object and combines the `firstName` and `lastName` into a `String`. What is the type of this method? Can we call this method with other objects?
+* Are methods values? Why might this be the case?

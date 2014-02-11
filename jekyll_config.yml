@@ -13,6 +13,10 @@ toc:
      - /intro/object-literals.html
      - /intro/conclusion.html
 
+  - head: /objects/index.html
+    body: 
+     - /objects/classes.html
+
   # - head: /sbt/index.html
 
   # - head: /scala-basics/index.html
