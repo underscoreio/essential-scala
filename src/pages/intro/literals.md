@@ -94,3 +94,5 @@ something
 scala> :type println("something")
 Unit
 ```
+
+Unit is an important concept in Scala. Most of a Scala program consists of expressions, and expressions must evaluate to values. We need a value for expressions that have no useful value, and unit is that value.

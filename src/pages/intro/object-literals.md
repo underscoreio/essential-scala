@@ -8,15 +8,23 @@ So far we've seen how to create objects of built-in types like `Int` and `String
 The simplest object literal is an empty object.
 
 ```scala
+scala> new {}
+res24: AnyRef = $anon$1@4cb1843a
+```
+
+This is simple program but there are some important things to note:
+
+* We have to put the `new` keyword in front of an object literal, as Scala thinks `{}` by itself is an empty expression not a literal object.
+* The Scala REPL tells us our object has the type `AnyRef`.
+
+We can also define an empty object using a slightly different notation.
+
+```scala
 scala> object test {}
 defined module test
 ```
 
-This is simple program but there three important things to note:
-
-* We have to give an object a name. Here we've called it `test`.
-* This program is not an expression because it doesn't evaluate to a value. Rather it binds a name (`test`) to a value (the empty object). This type of program is called a definition or a statement.
-* Finally notice that the Scala REPL tells us it has defined a **module**. We'll see what this means later.
+This program is not an expression because it doesn't evaluate to a value. Rather it binds a name (`test`) to a value (the empty object). This type of program is called a definition or a statement. Notice that the Scala REPL tells us it has defined a **module**. We'll see what this means later.
 
 The expression `test` evaluates to the object we've defined above.
 
@@ -26,6 +34,8 @@ res0: test.type = test$@1668bd43
 ```
 
 Note here the type of the object printed by the REPL: `test.type`. This is not like any type we've seen before -- it is a new type created just for our object.
+
+We'll use the second method for examples in this section. By giving a name to our object we can interact with it later. The results are mostly equivalent to using the first method, replacing `object name` with `new`.
 
 ## Methods
 
@@ -167,4 +177,5 @@ This shows the difference between the two. The right-hand side of the `val` stat
 
 ## Exercises
 
-<TODO>
+* Write an object definition with a method called `square` that squares its input.
+* Write an object definition for a person with a `firstName` and a `lastName`. Write an object with a method that takes your person object and combines the `firstName` and `lastName` into a `String`. What is the type of this method? Can we call this method with other objects?

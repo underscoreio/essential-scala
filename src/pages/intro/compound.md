@@ -3,24 +3,36 @@ layout: page
 title: Interacting with Objects
 ---
 
-Literals on their own aren't very interesting. It's only when we combine expressions into larger expressions that useful programs can be created.
+We interact with objects by calling or invoking methods on them. Method calls are expressions and thus they return values. For example, we can get the uppercase version of a `String` by calling the `toUpperCase` method.
 
-You're probably used to simple arthimetic expressions.
+```scala
+scala> "hello".toUpperCase
+res21: String = HELLO
+```
+
+We can make several methods calls to create a more complex program.
+
+```scala
+scala> "hello".toUpperCase.toLowerCase
+res22: String = hello
+```
+
+## Operators versus Methods
+
+In Scala **everything is an object**. This means that `Int` and other primitive types in Java are actually objects in Scala. If this is the case, then `+`, `-`, and so on should be methods on `Int` not operators. Is this correct? Yes!
 
 ```scala
 scala> 43 - 3 + 2
-res14: Int = 42
+res18: Int = 42
+
+scala> (43).-(3).+(2)
+res20: Int = 42
 ```
 
-You are probably also familiar with the dot-notation to call methods on objects. Here's one way to create shorts and bytes:
+(Note in the second example above I had to bracket `43` to stop `43.` being interpreted as a `Double`.)
 
-```scala
-scala> 42.toShort()
-res16: Short = 42
+This is a general rule in Scala. Any expression you can write as `a.b(c)` you can also write as `a b c`. This is known as *operator style*. Note that `a b c d` is equivalent to `a.b(c).d`, not `a.b(c, d)`. You can only use operator style with methods that take one or no arguments.
 
-scala> 42.toByte()
-res17: Byte = 42
-```
 
 ## Conditionals
 
@@ -42,21 +54,6 @@ scala> if(true) 42 else 40
 res47: Int = 42
 ```
 
-## Operators versus Methods
-
-In Scala **everything is an object**. This means that `Int` and other primitive types in Java are actually objects in Scala. If this is the case, then `+`, `-`, and so on should be methods on `Int` not operators. Is this correct? Yes!
-
-```scala
-scala> 43 - 3 + 2
-res18: Int = 42
-
-scala> (43).-(3).+(2)
-res20: Int = 42
-```
-
-(Note in the second example above I had to bracket `43` to stop `43.` being interpreted as a `Double`.)
-
-This is a general rule in Scala. Any expression you can write as `a.b(c)` you can also write as `a b c`. This is known as *operator style*. Note that `a b c d` is equivalent to `a.b(c).d`, not `a.b(c, d)`. You can only use operator style with methods that take one or no arguments.
 
 ### Operator shortcuts
 
