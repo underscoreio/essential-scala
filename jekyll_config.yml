@@ -73,4 +73,8 @@ permalink   : /:categories/:year/:month/:day/:title
 
 safe        : false
 pygments    : true
-markdown    : redcarpet
+markdown    : kramdown
+markdown_ext: foo
+
+kramdown:
+  parse_block_html: true

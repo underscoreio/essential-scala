@@ -33,6 +33,7 @@ module.exports = (grunt) ->
             "bower_components/bootstrap/js/button.js"
             "bower_components/bootstrap/js/affix.js"
             "bower_components/respond/respond.src.js"
+            "src/js/site.js"
           ]
 
     copy:
