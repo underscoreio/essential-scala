@@ -143,7 +143,7 @@ Why is this useful? We've already seen, with the `Counter` example, a style of p
 
 ## Case Classes
 
-The **case class* is a final trick in Scala that automates much of we've just discussed. If you write
+The **case class* is another trick in Scala that automates much of we've just discussed. If you write
 
 ~~~ scala
 case class Person(val firstName: String, val lastName: String)
@@ -163,4 +163,54 @@ scala> Person("John", "Doe").copy(firstName = "James")
 res12: Person = Person(James,Doe)
 ~~~
 
-Here we see the use of **keyword arguments** in Scala. They are entirely optional
+Here we see the use of **keyword arguments** in Scala. Any method in Scala can be called with keyword arguments. The names of the keywords are simply the names of the parameters in the method definition.
+
+The `copy` method also illustrates the use of **optional arguments**. Optional arguments allow us to omit passing a particular argument and have a default substituted in. For the example above we don't pass any value for `lastName` and the default is the existing value of the object.
+
+Defining default arguments for a method is quite simple. The syntax looks like this:
+
+~~~ scala
+scala> def defaultExample(a: Int = 1, b: Int = 2, c: Int = 3) =
+  a + b + c
+defaultExample: (a: Int, b: Int, c: Int)Int
+~~~
+
+And here is it in use
+
+~~~ scala
+// c takes the default value of 3
+scala> defaultExample(2, 3)
+defaultExample(2, 3)
+res0: Int = 8
+
+// b and c take the default values
+scala> defaultExample(4)
+defaultExample(4)
+res1: Int = 9
+
+// We use keyword arguments and b takes a default value
+scala> defaultExample(a = 4, c = 4)
+defaultExample(a = 4, c = 4)
+res2: Int = 10
+~~~
+
+Use keyword arguments with the `copy` method is a good idea as it ensures our code will still work if we add fields or rearrange fields in the case class, and it will cause a compilation error if we remove that field. The same is not true if we used  normal positional arguments.
+
+There are other benefits to using case classes which we will encounter shortly.
+
+## Exercises
+
+#### Case Class Counter
+
+Reimplement `Counter` as a case class, using `copy` where appropriate. Additionally initialise `count` to a default value of 0.
+
+<div class="solution">
+~~~ scala
+case class Counter(val count: Int = 0) {
+  def dec = copy(count = count - 1)
+  def inc = copy(count = count + 1)
+  def map(f: Int => Int) =
+    copy(count = f(count))
+}
+~~~
+</div>
