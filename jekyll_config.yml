@@ -16,6 +16,7 @@ toc:
   - head: /objects/index.html
     body: 
      - /objects/classes.html
+     - /objects/objects-and-functions.html
 
   # - head: /sbt/index.html
 
