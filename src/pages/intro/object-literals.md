@@ -7,10 +7,10 @@ So far we've seen how to create objects of built-in types like `Int` and `String
 
 The simplest object literal is an empty object.
 
-```scala
+~~~scala
 scala> new {}
 res24: AnyRef = $anon$1@4cb1843a
-```
+~~~
 
 This is simple program but there are some important things to note:
 
@@ -19,19 +19,19 @@ This is simple program but there are some important things to note:
 
 We can also define an empty object using a slightly different notation.
 
-```scala
+~~~scala
 scala> object test {}
 defined module test
-```
+~~~
 
 This program is not an expression because it doesn't evaluate to a value. Rather it binds a name (`test`) to a value (the empty object). This type of program is called a definition or a statement. Notice that the Scala REPL tells us it has defined a **module**. We'll see what this means later.
 
 The expression `test` evaluates to the object we've defined above.
 
-```scala
+~~~scala
 scala> test
 res0: test.type = test$@1668bd43
-```
+~~~
 
 Note here the type of the object printed by the REPL: `test.type`. This is not like any type we've seen before -- it is a new type created just for our object.
 
@@ -41,23 +41,23 @@ We'll use the second method for examples in this section. By giving a name to ou
 
 We interact with objects via methods, so let's create an object with a method.
 
-```scala
+~~~scala
 scala> object test2 {
      | def name: String = "Probably the best object ever"
      | }
 defined module test2
-```
+~~~
 
 Here we've create a method called `name`. We can call it in the usual way.
 
-```scala
+~~~scala
 scala> test2.name
 res3: String = Probably the best object ever
-```
+~~~
 
 Here's an object with a more complex method definition.
 
-```scala
+~~~scala
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
@@ -73,7 +73,7 @@ defined module test3
 
 scala> test3.hello("Noel")
 res7: String = Hello Noel
-```
+~~~
 
 From these examples we can see most of the important bits of method definitions:
 
@@ -88,7 +88,7 @@ From these examples we can see most of the important bits of method definitions:
 
 An object can also contain objects, called instance variables. We introduce these using the `val` statement, which looks like `val name = value`. Here's an example:
 
-```scala
+~~~scala
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
@@ -106,11 +106,11 @@ defined module test4
 scala>
 scala> test4.hello("Dave")
 res8: String = Noel says hi to Dave
-```
+~~~
 
 The right-hand side of a `val` statement can be any expression. So a compound expression like `2 + 1` is valid. We can even have a sequence of statements and expressions, wrapped in braces, in which case the value of the last expression in the sequence becomes the value assigned to the name.
 
-```scala
+~~~scala
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
@@ -129,7 +129,7 @@ defined module test5
 
 scala> test5.name
 res9: String = "Dr Who"
-```
+~~~
 
 This rule also applies to method definitions.
 
@@ -141,37 +141,37 @@ Here's some code the shows the difference. I'm using a short-cut only available 
 
 First let's start with an instance variable where the right-hand side prints out something before returning a value
 
-```scala
+~~~scala
 scala> val instanceVariable = {
      |   println("Evaluating")
      |   42
      | }
 Evaluating
 instanceVariable: Int = 42
-```
+~~~
 
 Notice how `Evaluating` is printed out before the variable is defined.
 
 Here's the same code but as a method.
 
-```scala
+~~~scala
 scala> def noArgMethod = {
      |   println("Evaluating")
      |   42
      | }
 noArgMethod: Int
-```
+~~~
 
 This time nothing is printed out. Now let's evaluate `instanceVariable` and `noArgMethod`.
 
-```scala
+~~~scala
 scala> instanceVariable
 res10: Int = 42
 
 scala> noArgMethod
 Evaluating
 res11: Int = 42
-```
+~~~
 
 This shows the difference between the two. The right-hand side of the `val` statement is evaluated immediately and its value bound to the name. The right-hand side of the `def` statement is evaluated every time the method is called, but not when the method is defined.
 
