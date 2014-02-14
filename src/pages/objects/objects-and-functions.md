@@ -12,7 +12,7 @@ Sometimes we want a method that is independent of any instance, but logically be
 
 Sometimes we want to have more than one constructor for a class. The convention in Scala is to have only one constructor per class[^constructor]. In the last exercises we implemented a rather awkward `PersonFactory` class to construct `Person`s. Really this functionality should just be a method on an object, but again what object should hold it? Ideally it would be a `Person` object, but we already have a class with that name.
 
-[^constructor:] You can have more than one constructor per class, but it is unusual, and we won't cover it here.
+[^constructor]: You can have more than one constructor per class, but it is unusual, and we won't cover it here.
 
 Scala answers this issue with the concept of **companion objects**. A companion object is just an object with the same name as a class. Due to the way companion objects and classes are compiled, they must be defined in the same file. Here's the `PersonFactory` example rewritten with a companion object. In this example we use the console's *paste mode* to define the companions at the same time:
 

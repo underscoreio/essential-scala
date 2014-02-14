@@ -26,13 +26,17 @@
      - apply method and convention as a constructor
      - case classes as formalism of common pattern
    - Functions
-** Traits, the Atoms of Objects
-   - Traits abstract over interface and implementation
 ** Objects that are this or that
-   - inheritance, subtyping
+   - Traits abstract over interface and implementation
+   - uniform access principle
+     - methods of no arguments
    - def vs val in traits / overriding
-   - sealed trait, case classes
+   - inheritance, subtyping
+   - scala's type system
+     - Any and Nothing
+     - AnyRef and AnyVal
    - pattern matching
+   - sealed trait, case classes
    - final
 ** Objects that are this and that
    - Extending multiple traits
@@ -69,11 +73,6 @@
    - call by name
 * Unscheduled Topics
   - var
-  - uniform access principle
-    - methods of no arguments
   - Value objects?
   - private vs public
-** Scala's Type System
-   - Any and Nothing
-   - Object
-   - AnyRef and AnyVal
+  - import
