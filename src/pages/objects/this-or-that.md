@@ -154,3 +154,21 @@ trait EmailService {
   }
 }
 ~~~
+
+Pattern matching is introduced using the `match` keyword. It is followed by a sequence of `case` expressions. After each `case` keyword is a pattern, an `=>`, and an expression. Pattern matching is itself an expression and thus produces a value.
+
+~~~
+expr0 match {
+  case pattern1 => expr1
+  case pattern2 => expr1
+  ...
+}
+~~~
+
+Pattern matching proceeds by checking each pattern in turn, and evaluating the right-hand side expression of the first pattern that matches[^compilation].
+
+[^compilation]: In reality patterns are compiled to a more efficient form than a sequence of tests, but the semantics are the same.
+
+The syntax of pattern matching is very expressive. For case classes the pattern syntax matches the constructor syntax. So the pattern `User(id, address, createdAt)` matches a `User` and binds the names `id`, `address`, and `createdAt` to their respective values. Binding happens by position, not by name, so if we wrote `User(address, createdAt, id)` the name `address` would be bound to the value of the `id` and so on. If there is a value we don't want to bind to a name, we use the `_` symbol. As we only care about the `address` in the example above, we could just write `User(_, address, _)`.
+
+Literals can be used as patterns, which match themselves. So a pattern like `User("a", _, _)` would match the user with `id "a"`.
