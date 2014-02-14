@@ -181,7 +181,38 @@ Bind entire value @
 
 Scala's pattern matching is extensible, meaning we can define our own patterns. This is discussed is a later section.
 
-### Exercise
+## Exercise
+
+We covered a lot of ground already, and it's time to cement our learning with a somewhat larger exercise than we've had before. We'll tackle it in small pieces.
+
+#### Sum Types
+
+Imagine you work for a publisher. A publication can be either a book or a periodical. All publications have an ISBN number (which we'll model as a `String`), and a title. Books have an author, while periodicals have an editor. Encode this greatly simplified model in Scala.
+
+<div class="solution">
+~~~ scala
+trait Publication {
+  def isbn: String
+  def title: String
+}
+
+case class Book(
+  val isbn: String,
+  val title: String,
+  val author: String
+) extends Publication
+
+case class Periodical(
+  val isbn: String,
+  val title: String,
+  val editor: String
+) extends Publication
+~~~
+</div>
+
+#### Pattern Matching
+
+
 
 ## Sealed Traits
 
