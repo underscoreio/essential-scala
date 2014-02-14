@@ -187,7 +187,7 @@ We covered a lot of ground already, and it's time to cement our learning with a 
 
 #### Sum Types
 
-Imagine you work for a publisher. A publication can be either a book or a periodical. All publications have an ISBN number (which we'll model as a `String`), and a title. Books have an author, while periodicals have an editor. Encode this greatly simplified model in Scala.
+Imagine you are working on a system to record publications. A publication can be either a book or a periodical. All publications have an ISBN number (which we'll model as a `String`), and a title. Books have an author, while periodicals have an editor. Encode this greatly simplified model in Scala.
 
 <div class="solution">
 ~~~ scala
@@ -212,7 +212,41 @@ case class Periodical(
 
 #### Pattern Matching
 
+The publisher needs to ship out XML to book merchants. The XML looks like this:
 
+~~~ xml
+<book>
+  <title>The Unbearable Lightness of Being</title>
+  <author>Milan Kundera</author>
+  <isbn>1234567890</isbn>
+</book>
+
+<periodical>
+  <title>Modern Drunkard Magazine</title>
+  <editor></editor>Frank Kelly Rich</editor>
+  <isbn>0987654321</isbn>
+</periodical>
+~~~
+
+Write code to render a `Book` as XML. Note that Scala support XML literals.
+
+~~~ scala
+scala> <foo></foo>
+<foo></foo>
+res11: scala.xml.Elem = <foo></foo>
+
+scala> val name = "Jake"
+val name = "Jake"
+name: String = Jake
+
+scala> <person>{name}</person>
+<person>{name}</person>
+res12: scala.xml.Elem = <person>Jake</person>
+~~~
+
+#### More Pattern Matching
+
+The publisher is sending back sales information as XML. Because they hate you they are using a different format to the one you generate for them.
 
 ## Sealed Traits
 
