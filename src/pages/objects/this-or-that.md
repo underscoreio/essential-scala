@@ -171,4 +171,36 @@ Pattern matching proceeds by checking each pattern in turn, and evaluating the r
 
 The syntax of pattern matching is very expressive. For case classes the pattern syntax matches the constructor syntax. So the pattern `User(id, address, createdAt)` matches a `User` and binds the names `id`, `address`, and `createdAt` to their respective values. Binding happens by position, not by name, so if we wrote `User(address, createdAt, id)` the name `address` would be bound to the value of the `id` and so on. If there is a value we don't want to bind to a name, we use the `_` symbol. As we only care about the `address` in the example above, we could just write `User(_, address, _)`.
 
-Literals can be used as patterns, which match themselves. So a pattern like `User("a", _, _)` would match the user with `id "a"`.
+Literals can be used as patterns, which match themselves. So a pattern like `User(_, "me@example.com", _)` would match the user with email address `me@example.com`.
+
+Following a pattern with an `if` statement, known as a **guard**, allows testing of additional conditions. For example, to match `User`s from `example.com` we could use `User(_, email, _) if email.contains("example.com")`. Note there are no brackets around the condition in the guard, unlike the normal `if` expression.
+
+Type check :
+
+Bind entire value @
+
+Scala's pattern matching is extensible, meaning we can define our own patterns. This is discussed is a later section.
+
+### Exercise
+
+## Sealed Traits
+
+The Scala compiler won't complain if we miss out a case in our pattern matching, but we will get an exception at runtime. For example:
+
+~~~ scala
+scala> def missingCase(v: Visitor) =
+     |   v match {
+     |     case User(_, _, _) => "Got a user"
+     |   }
+missingCase: (v: Visitor)String
+
+scala> missingCase(Anonymous("a"))
+missingCase(Anonymous("a"))
+scala.MatchError: Anonymous(a,Fri Feb 14 19:47:42 GMT 2014) (of class Anonymous)
+	at .missingCase(<console>:12)
+    ...
+~~~
+
+The reason we don't get a compiler error is that other code could extend `Visitor`, creating new subtypes, so the Scala compiler can't be sure that only the two cases exist. This means that even a pattern match that appears complete could be rendered incomplete but additional subclasses. To avoid compilation errors in some cases but not other the compiler is silent in all cases.
+
+However, when we define `Visitor` we can tell the Scala compiler that we are defining at the same time all the possible subtypes. In this case the compiler can correctly flag incomplete matches and the code above would fail to compile. We can do this by using a `sealed` trait.

@@ -28,6 +28,7 @@
    - Functions
 ** Objects that are this or that
    - Traits abstract over interface and implementation
+   - case classes
    - uniform access principle
      - methods of no arguments
    - def vs val in traits / overriding
@@ -36,7 +37,7 @@
      - Any and Nothing
      - AnyRef and AnyVal
    - pattern matching
-   - sealed trait, case classes
+   - sealed trait
    - final
 ** Objects that are this and that
    - Extending multiple traits
@@ -68,6 +69,7 @@
      - View bounds
    - Design guidelines for implicits
 * Domain Specific Languages
+** Custom pattern matching
 ** Delaying Evaluation
    - lazy vals
    - call by name
