@@ -244,14 +244,37 @@ scala> <person>{name}</person>
 res12: scala.xml.Elem = <person>Jake</person>
 ~~~
 
+<div class="solution">
+~~~ scala
+object XmlExportService {
+  def export(p: Publication) =
+    p match {
+      case Book(isbn, title, author) =>
+        <book>
+          <title>{title}</title>
+          <author>{author}</author>
+          <isbn>{isbn}</isbn>
+        </book>
+
+      case Periodical(isbn, title, editor) =>
+        <periodical>
+          <title>{title}</title>
+          <editor>{editor}</editor>
+          <isbn>{isbn}</isbn>
+        </periodical>
+    }
+}
+~~~
+</div>
+
 #### More Pattern Matching
 
 The publisher is sending back sales information as XML. Because they hate you they are using a different format to the one you generate for them. Parse the data into a `case class Sale(item: Publication, quantity: Int, unitPrice: Double)`. The data they send looks like
 
 ~~~ xml
-<sale qty="2" totalPrice="10" type="periodical">
+<sale qty="2" totalPrice="10.0" type="periodical">
   <title>Modern Drunkard Magazine</title>
-  <editor></editor>Frank Kelly Rich</editor>
+  <editor>Frank Kelly Rich</editor>
   <isbn>0987654321</isbn>
 </sale>
 ~~~
@@ -268,10 +291,42 @@ Sale(
 
 Some tips for processing XML:
 
+* import `scala.xml._` to get access to `NodeSeq`, the main type for XML
 * you can pattern match on XML element names but not XML attributes;
 * `xml \ "node"` will get you the child node called `node` of `xml`;
 * `xml \ "@attr"` will get you the attribute called `attr` of `xml`; and
 * `xml.text` will get you the text content of `xml`.
+
+The `toInt` and `toDouble` methods on `String` convert a `String` to `Int` and `Double` respectively.
+
+<div class="solution">
+~~~ scala
+case class Sale(item: Publication, quantity: Int, unitPrice: Double)
+
+object XmlImportService {
+  def parse(in: NodeSeq): Sale = {
+    val quantity = (in \ "@qty").text.toInt
+    val totalPrice = (in \ "@totalPrice").text.toDouble
+    val publication =
+      (in \ "@type").text  match {
+        case "book" =>
+          Book(
+            (in \ "isbn").text,
+            (in \ "title").text,
+            (in \ "author").text
+          )
+        case "periodical" =>
+          Periodical(
+            (in \ "isbn").text,
+            (in \ "title").text,
+            (in \ "editor").text
+          )
+      }
+    Sale(publication, quantity, totalPrice / quantity)
+  }
+}
+~~~
+<\div>
 
 ## Sealed Traits
 
@@ -291,6 +346,68 @@ scala.MatchError: Anonymous(a,Fri Feb 14 19:47:42 GMT 2014) (of class Anonymous)
     ...
 ~~~
 
-The reason we don't get a compiler error is that other code could extend `Visitor`, creating new subtypes, so the Scala compiler can't be sure that only the two cases exist. This means that even a pattern match that appears complete could be rendered incomplete but additional subclasses. To avoid compilation errors in some cases but not other the compiler is silent in all cases.
+The reason we don't get a compiler error is that other code could extend `Visitor`, creating new subtypes, so the Scala compiler can't be sure that only the two cases exist. This means that even a pattern match that appears complete could be rendered incomplete by additional subclasses. To avoid compilation errors in some cases but not others the compiler is silent in all cases.
 
 However, when we define `Visitor` we can tell the Scala compiler that we are defining at the same time all the possible subtypes. In this case the compiler can correctly flag incomplete matches and the code above would fail to compile. We can do this by using a `sealed` trait.
+
+We using a sealed trait we must define all the subtypes in the same file. For the `Visitor` example no other subtypes seem plausible -- either a visitor is anonymous or they are not. In this case we should use a sealed trait.
+
+~~~ scala
+sealed trait Visitor {
+  def id: String // A unique id we assign to each user
+  def createdAt: Date // The date this user first visited our site
+
+  // How long has this visitor been around?
+  def age: Long =
+    new Date().getTime() - createdAt.getTime()
+
+}
+
+case class Anonymous(
+  val id: String,
+  val createdAt: Date = new Date()
+) extends Visitor
+
+case class User(
+  val id: String,
+  val emailAddress: String,
+  val createdAt: Date = new Date()
+) extends Visitor
+~~~
+
+When we do this, the compiler warns us if we don't have exhaustive pattern matching:
+
+~~~ scala
+scala> def missingCase(v: Visitor) =
+       |  v match {
+       |    case User(_, _, _) => "Got a user"
+       |  }
+<console>:21: warning: match may not be exhaustive.
+It would fail on the following input: Anonymous(_, _)
+               v match {
+               ^
+missingCase: (v: Visitor)String
+~~~
+
+Note that we can still extend subtypes of a sealed trait outside of the file where they are defined. For example, in other code we could extend `User` or `Anonymous`. If we want to prevent this possibility we should declare them as `sealed` (if we want to allow extensions within the file) or `final` if we want to disallow all extensions. For the analytics example it probably doesn't make sense to allow any extension, so the simplified code should look like this:
+
+~~~ scala
+sealed trait Visitor { ... }
+final case class User(...) extends Visitor
+final case class Anonymous(...) extends Visitor
+~~~
+
+Now imagine the problem of parsing HTTP headers. Most of the HTTP headers are defined in various RFCs, and we could define types for these as follows:
+
+~~~ scala
+sealed trait Header { ... }
+final case class Accept(...) extends Header
+final case class AcceptCharset(...) extends Header
+...
+~~~
+
+It certainly doesn't make sense to subtype one of the defined headers so we can defined them as `final`. However custom headers are used all the time, so we need to provide some extension point. To achieve this we can define a `CustomHeader` subtype of `Header` that is neither `sealed` nor `final`. This allows the user to extend `CustomHeader` in their code, but we still retain the benefits of `sealed` and `final` types in ours[^http].
+
+[^http]: There are so many HTTP headers that we're unlikely to perform pattern matching on them, but hopefully you can generalise this example to your own problems.
+
+## Conclusion
