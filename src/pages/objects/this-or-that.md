@@ -246,7 +246,32 @@ res12: scala.xml.Elem = <person>Jake</person>
 
 #### More Pattern Matching
 
-The publisher is sending back sales information as XML. Because they hate you they are using a different format to the one you generate for them.
+The publisher is sending back sales information as XML. Because they hate you they are using a different format to the one you generate for them. Parse the data into a `case class Sale(item: Publication, quantity: Int, unitPrice: Double)`. The data they send looks like
+
+~~~ xml
+<sale qty="2" totalPrice="10" type="periodical">
+  <title>Modern Drunkard Magazine</title>
+  <editor></editor>Frank Kelly Rich</editor>
+  <isbn>0987654321</isbn>
+</sale>
+~~~
+
+from which you should get a data structure like
+
+~~~ scala
+Sale(
+  Periodical("Modern Drunkard Magazine", "Frank Kelly Rich", "0987654321")
+  2,
+  5.0
+)
+~~~
+
+Some tips for processing XML:
+
+* you can pattern match on XML element names but not XML attributes;
+* `xml \ "node"` will get you the child node called `node` of `xml`;
+* `xml \ "@attr"` will get you the attribute called `attr` of `xml`; and
+* `xml.text` will get you the text content of `xml`.
 
 ## Sealed Traits
 
