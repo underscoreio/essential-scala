@@ -175,9 +175,9 @@ Literals can be used as patterns, which match themselves. So a pattern like `Use
 
 Following a pattern with an `if` statement, known as a **guard**, allows testing of additional conditions. For example, to match `User`s from `example.com` we could use `User(_, email, _) if email.contains("example.com")`. Note there are no brackets around the condition in the guard, unlike the normal `if` expression.
 
-Type check :
+Sometimes we want to bind a name to the entire value we've matched. For this we can use the syntax `name @ pattern` like so: `user @ User(_, address, _)`. This is useful because after matching the pattern `user` has a more specific type (`User`) than the one we started with (`Visitor`).
 
-Bind entire value @
+Finally, if we just want to test a particular type we can use syntax like `user : User`.
 
 Scala's pattern matching is extensible, meaning we can define our own patterns. This is discussed is a later section.
 
@@ -411,3 +411,7 @@ It certainly doesn't make sense to subtype one of the defined headers so we can 
 [^http]: There are so many HTTP headers that we're unlikely to perform pattern matching on them, but hopefully you can generalise this example to your own problems.
 
 ## Conclusion
+
+We've covered a lot of material. Let's recap the main points.
+
+We've been looking at how to model and use data that can be one of a number of choices. We can create hierarchies using the `extends` keyword, normally starting with a trait at the top of hierarchy, and ending with case classes at the bottom.
