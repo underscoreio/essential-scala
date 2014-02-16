@@ -414,4 +414,8 @@ It certainly doesn't make sense to subtype one of the defined headers so we can 
 
 We've covered a lot of material. Let's recap the main points.
 
-We've been looking at how to model and use data that can be one of a number of choices. We can create hierarchies using the `extends` keyword, normally starting with a trait at the top of hierarchy, and ending with case classes at the bottom.
+We've been looking at data that can be one of a number of choices. We can model this by having each case `extend` a common trait. We usually use case classes as the leaf nodes of our hierarchy.
+
+It is good practice to model our data as value objects, and avoid methods that depend on more than the data present in the objects. Instead we can use pattern matching to decompose data and take appropriate action for each case.
+
+Finally, we saw we can used `sealed` and `final` to control how our data can be extended by external users.
