@@ -43,6 +43,7 @@
    - Extending multiple traits
    - Linearization / trait composition
    - Self types
+   - is-a vs has-a
 ** Objects that contain other objects
    - Generic types
      - Tuple and option (introduce via examples)
