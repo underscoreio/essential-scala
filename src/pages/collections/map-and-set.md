@@ -31,7 +31,7 @@ Let's look at the most common operations on a Map.
 The raison d'etre of a map is to convert keys to values. There are two main methods for doing this: `apply` and `get`:
 
 ~~~ scala
-scala> example.apply("a")
+scala> example("a")
 res2: Int = 1
 
 scala> example.get("a")
@@ -41,7 +41,7 @@ res3: Option[Int] = Some(1)
 `apply` attempts to look up a key and throws an exception if it is not found. By contrast, `get` returns an `Option`, forcing you to handle the not found case in your code:
 
 ~~~ scala
-scala> example.apply("d")
+scala> example("d")
 java.util.NoSuchElementException: key not found: d
 
 scala> example.get("d")
@@ -243,6 +243,7 @@ Here is a type table of all the methods we have seen so far:
 | `flatMap`  | `Map[A,B]` | `Tuple2[A,B] => Traversable[Tuple2[C,D]]` | `Map[C,D]`    |
 | `flatMap`  | `Map[A,B]` | `Tuple2[A,B] => Traversable[E]`           | `Iterable[E]` |
 |=====================================================================================|
+{: .table }
 
 and the extras for mutable Sets:
 
@@ -253,6 +254,7 @@ and the extras for mutable Sets:
 | `-=`       | `Map[A,B]` | `A`               | `Map[A,B]`  |
 | `update`   | `Map[A,B]` | `A`, `B`          | `Unit`      |
 |===========================================================|
+{: .table }
 
 ## Sets
 
@@ -271,6 +273,7 @@ Sets are unordered collections that contain no duplicate elements. You can think
 | `map`      | `Set[A]` | `A => B`              | `Set[B]`  |
 | `flatMap`  | `Set[A]` | `A => Traversable[B]` | `Set[B]`  |
 |===========================================================|
+{: .table }
 
 and the extras for mutable Sets:
 
@@ -280,3 +283,4 @@ and the extras for mutable Sets:
 | `+=`       | `Set[A]` | `A`        | `Set[A]`  |
 | `-=`       | `Set[A]` | `A`        | `Set[A]`  |
 |================================================|
+{: .table }

@@ -3,12 +3,12 @@ layout: page
 title: Working with Sequences
 ---
 
-In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look practical aspects of working with sequences: how to process every element of a sequence at once, and the performance characteristics of different sequence implementations.
+In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences: how to process every element of a sequence at once, and the performance characteristics of different sequence implementations.
 
 
 ## Bulk Processing of Elements
 
-When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. In Java we have to do this using loops. Scala gives us a number of powerful options that allow us to solve many problems much more elegantly.
+When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. In Java we have to do this using loops. Scala gives us a number of powerful options that allow us to solve many problems more elegantly.
 
 ### map
 
@@ -58,6 +58,7 @@ but we end up with a sequence of sequences. Let's look at the types in more deta
 | `map`  | `Seq[String]` | `String => List[String]` | `Seq[List[String]]` |
 | `???`  | `Seq[A]`      | `A => Seq[B]`            | `Seq[B]`            |
 |=========================================================================|
+{: .table }
 
 ### flatMap
 
@@ -95,6 +96,7 @@ There is a further wrinkle: what result do we expect if the sequence is empty? Z
 |--------+----------+------------+----------|
 | `???`  | `Seq[Int]` | `0` and `(Int, Int) => Int` | `Int` |
 |===========================================|
+{: .table }
 
 The method that fits the bill is `fold`, with its ordered variants `foldLeft` and `foldRight`. The job of these methods is to traverse a sequence and accumulate a result. The types are as follows:
 
@@ -104,6 +106,7 @@ The method that fits the bill is `fold`, with its ordered variants `foldLeft` an
 | `foldLeft` | `Seq[A]` | `B` and `(B, A) => B` | `B` |
 | `foldRight` | `Seq[B]` | `B` and `(A, B) => B` | `B` |
 |===========================================|
+{: .table }
 
 Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the following:
 
@@ -113,6 +116,7 @@ Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the follow
 | `Seq(1, 2, 3).foldLeft(0)(_ + _)`  | `(((0 + 1) + 2) + 3)`    | Evaluation is left ot right
 | `Seq(1, 2, 3).foldRight(0)(_ + _)`  | `(1 + (2 + (3 + 0)))`    | Evaluation is right to left
 |===========================================|
+{: .table }
 
 The fold methods are very flexible. In fact we can write *any* transformation on a sequence in terms of fold! This is very deep theoretical result, and it goes beyond sequences. For any *algebraic datatype* there is a systematic process to define a fold that is a universal transformation for that datatype. We're not going to go deeper into this here, but be aware of the power and fundamental nature of fold in your future study of functional programming.
 
@@ -124,6 +128,7 @@ There is one more traversal method that is commonly used: `foreach`. Unlike `map
 |--------+----------+------------+----------|
 | `foreach` | `Seq[A]` | `A => Unit` | `Unit` |
 |==========|
+{: .table }
 
 A great example using `foreach` is printing the elements of a sequence:
 
@@ -147,8 +152,9 @@ We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `fo
 | `Seq[A]` | `B` and `(B, A) => B` | `B` | `foldLeft` |
 | `Seq[A]` | `B` and `(A, B) => B` | `B` | `foldRight` |
 |============|
+{: .table }
 
-This type of analysis may see mforeign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
+This type of analysis may see foreign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
 
 ## Exercises
 

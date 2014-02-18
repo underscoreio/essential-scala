@@ -91,7 +91,7 @@ res8: Seq[Int] = List(4, 5, 6, 16, 20, 24, 36, 45, 54)
 
 So far we've seen lots of ways to iterate over sequences but not much in the way of iterating over numbers. In Java and other languages it is common to write code like
 
-{% highlight java %}
+~~~ java
 for(i = 0; i < array.length; i++) {
   doSomething(array[i])
 }
@@ -99,7 +99,7 @@ for(i = 0; i < array.length; i++) {
 
 We've seen that for comprehensions provide a succinct way of implementing these programs. But what about classics like this?
 
-{% highlight java %}
+~~~ java
 for(i = 99; i > 0; i--) {
   System.out.println(i + "bottles of beer on the wall!")
   // Full text omitted for the sake of brevity

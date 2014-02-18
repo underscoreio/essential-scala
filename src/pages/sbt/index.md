@@ -66,7 +66,7 @@ Hello world!
 
 Issue the command `:quit` to leave the Scala console and return to your OS:
 
-{% highlight bash %}
+~~~ bash
 scala> :quit
 
 [success] Total time: 408 s, completed Sep 18, 2012 12:07:19 PM

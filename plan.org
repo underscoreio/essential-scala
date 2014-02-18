@@ -53,7 +53,9 @@
      - Protip: forget this stuff
 * Collections
 * Functional Programming Fundamentals
+** Higher-order functions
 ** Structural Recursion
+** Functional Error Handling
 ** Higher-order Function vs Pattern Matching
 ** Combinators
    - Example: parsing
@@ -76,6 +78,5 @@
    - call by name
 * Unscheduled Topics
   - var
-  - Value objects?
   - private vs public
   - import

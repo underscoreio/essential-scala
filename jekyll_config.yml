@@ -34,6 +34,10 @@ toc:
      - /collections/traversable.html
      - /collections/java-interop.html
 
+  - head: /fp/index.html
+    body:
+     - /fp/ho-functions.html
+
 
   # - head: /sbt/index.html
 

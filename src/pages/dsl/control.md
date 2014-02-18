@@ -6,7 +6,7 @@ layout: page
 
 Consider implementing logging. Often we'll have a log statement like `logger.debug(anExpensiveOperation())` which we only want to execute if debug logging is enabled. In Java, we'd have to write something like
 
-{% highlight java %}
+~~~ java
 if(logger.isDebugEnabled() {
   logger.debug(anExpensiveOperation());
 }

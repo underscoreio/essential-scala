@@ -166,6 +166,7 @@ Here is a type table of all the methods we have seen so far:
 | `contains` | `Seq[A]`   | `A`                | `Boolean`   |
 | `length`   | `Seq[A]`   |                    | `Int`       |
 |============================================================|
+{: .table }
 
 and the extras for mutable sequences:
 
@@ -176,3 +177,4 @@ and the extras for mutable sequences:
 | `-=`       | `Seq[A]`   | `A`               | `Seq[A]`    |
 | `update`   | `Seq[A]`   | `Int`, `A`        | `Unit`      |
 |===========================================================|
+{: .table }
