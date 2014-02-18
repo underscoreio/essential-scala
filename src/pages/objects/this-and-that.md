@@ -23,7 +23,7 @@ trait MetricsCollector {
 }
 
 trait Authorizer {
-  def authorize(key: ApiKey): Boolean
+  def authorized(key: ApiKey): Boolean
 }
 
 trait AnalyticsService extends DataCollector with MetricsCollector wtih Authorizer {
@@ -33,7 +33,7 @@ trait AnalyticsService extends DataCollector with MetricsCollector wtih Authoriz
 
 ## Is-a vs Has-a
 
-A trait or class is a subtype of every trait it extends. This means that if `A extends B`, `A` **is a** `B` and may be used wherever a `B` is expected. An `AnalyticsService` is a `DataCollector` as it performs that function. Don't confuse an is-a relationship with a **has a* relationship. A book has a publisher but is not a publisher itself, so we would not mixin a `Publisher` trait to a `Book`.
+A trait or class is a subtype of every trait it extends. This means that if `A extends B`, `A` **is a** `B` and may be used wherever a `B` is expected. An `AnalyticsService` is a `DataCollector` as it performs that function. Don't confuse an is-a relationship with a **has a** relationship. A book has a publisher but is not a publisher itself, so we would not mixin a `Publisher` trait to a `Book`.
 
 ## Exercise
 
@@ -157,49 +157,20 @@ Designing with linearization is simple: don't. The metrics example is fine becau
 
 Sometime we want to provide a trait that adds additional functionality to another base trait. We've seen how we can implement this by extending both traits. This makes the extension trait a subtype of the base trait, which may not be sensible. We can instead express this dependency using a self type. The self type says that the extension trait *requires* the base trait but not that the extension trait *is a* base trait.
 
-Take the `MetricsCollector` example we looked at above. It would be nice to wrap our `DataCollector` with various methods to automatically collect metrics. We could have one trait that records the number of requests, one that records response time, and so on. None of these traits are a `DataCollector` but they all require they are mixed in with a `DataCollector`. We can express this constraint using a self type. Here's the code:
+Take the `DataCollector` example we looked at above. When writing `DataCollector` we will probably have a dependency on `Authorizer`, for the obvious reason that we'll need to put some authorization checks in our code. A `DataCollector` is not an `Authorizer` but it does depend on one. We can express this using a self type.
 
 ~~~ scala
-case class ApiKey()
-case class Event()
-
-trait DataCollector {
-  def record(key: ApiKey, event: Event): Unit
+trait Authorizer {
+  def authorized(key: ApiKey): Boolean
 }
 
-trait ResponseTimeCollector { self: DataCollector =>
-
-  def recordTime(start: Long, end: Long): Unit
-
+trait DataCollector { self: Authorizer =>
   def record(key: ApiKey, event: Event): Unit = {
-    val start = System.currentTimeMillis()
-    val result = super.record(key, event)
-    val end = System.currentTimeMillis()
-    recordTime(start, end)
-    result
+    if(self.authorized(key)) {
+      // Collect data
+    } else {
+      // Not authorized to collect data
+    }
   }
-}
-
-trait HitCountCollector { self: DataCollector =>
-  def recordHit(): Unit
-
-  def record(key: ApiKey, event: Event): Unit = {
-    recordHit()
-    super.record(key, event)
-  }
-}
-
-case class RealDataCollector() extends DataCollector with ResponseTimeCollector with HitCountCollector {
-
-  def recordTime(start: Long, end: Long): Unit = {
-    println("recordTime")
-  }
-
-  def recordHit(): Unit = {
-    println("recordHit")
-  }
-
-  override def record(key: ApiKey, event: Event): Unit =
-    super.record(key, event)
 }
 ~~~
