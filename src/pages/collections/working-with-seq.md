@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Working with Sequences
 ---
-
-# Working with Sequences
 
 In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look practical aspects of working with sequences: how to process every element of a sequence at once, and the performance characteristics of different sequence implementations.
 
@@ -15,41 +14,41 @@ When working with sequences we often want to deal with the collection as a whole
 
 Let's take a common example to start -- suppose we want to double every element of a sequence. In Java we would do this using a `for` or a `while` loop. In Scala we can simply use the `map` method that exists on any type of sequence. `map` takes a function and applies it to every element, creating a sequence containing the results. To double every element we can write:
 
-{% highlight scala %}
+~~~ scala
 scala> val sequence = Seq(1, 2, 3)
 sequence: Seq[Int] = List(1, 2, 3)
 
 scala> sequence.map(elt => elt * 2)
 res0: Seq[Int] = List(2, 4, 6)
-{% endhighlight %}
+~~~
 
 If we use the underscore function definition shorthand, we can write this even more compactly:
 
-{% highlight scala %}
+~~~ scala
 scala> sequence.map(_ * 2)
 res1: Seq[Int] = List(2, 4, 6)
-{% endhighlight %}
+~~~
 
 Given a sequence with type `Seq[A]`, the function we pass to `map` must have type `A => B` and we get a `Seq[B]` as a result. This isn't right for every situation. For example, suppose we have a sequence of strings, and we want to generate a sequence of all the permutations of those strings. We can call the `permutations` method on a string to get all permutations of it.
 
-{% highlight scala %}
+~~~ scala
 scala> "dog".permutations
 res12: Iterator[String] = non-empty iterator
-{% endhighlight %}
+~~~
 
 This returns an `Iterable`. We're going to look at Iterables in more detail later. For now all we need to know is tha we can call the `toList` method to convert an `Iterable` to a `List`.
 
-{% highlight scala %}
+~~~ scala
 scala> "dog".permutations.toList
 res13: List[String] = List(dog, dgo, odg, ogd, gdo, god)
-{% endhighlight %}
+~~~
 
 Thus we could write
 
-{% highlight scala %}
+~~~ scala
 scala> Seq("a", "wet", "dog").map(_.permutations.toList)
 res14: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), List(dog, dgo, odg, ogd, gdo, god))
-{% endhighlight %}
+~~~
 
 but we end up with a sequence of sequences. Let's look at the types in more detail to see what's gone wrong:
 
@@ -64,24 +63,24 @@ but we end up with a sequence of sequences. Let's look at the types in more deta
 
 To answer to our mystery method `???` is `flatMap`. If we simply replace `map` with `flatMap` we get the answer we want.
 
-{% highlight scala %}
+~~~ scala
 scala> Seq("a", "wet", "dog").flatMap(_.permutations.toList)
 res15: Seq[String] = List(a, wet, wte, ewt, etw, twe, tew, dog, dgo, odg, ogd, gdo, god)
-{% endhighlight %}
+~~~
 
 `flatMap` is similar to `map` except that it expects your function to return a sequence. The sequences for each input element are appended together. For example:
 
-{% highlight scala %}
+~~~ scala
 scala> Seq(1, 2, 3).flatMap(num => Seq(num, num * 10))
 res16: List[Int] = List(1, 10, 2, 20, 3, 30)
-{% endhighlight %}
+~~~
 
 The end result is (nearly) always the same type as the original sequence: `aList.flatMap(...)` returns another `List`, `anArrayBuffer.flatMap(...)` returns another `ArrayBuffer`, and so on:
 
-{% highlight scala %}
+~~~ scala
 scala> scala.collection.mutable.ArrayBuffer(1, 2, 3).flatMap(num => Seq(num, num * 10))
 res17: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1, 10, 2, 20, 3, 30)
-{% endhighlight %}
+~~~
 
 ### fold, foldLeft, and foldRight
 
@@ -128,12 +127,12 @@ There is one more traversal method that is commonly used: `foreach`. Unlike `map
 
 A great example using `foreach` is printing the elements of a sequence:
 
-{% highlight scala %}
+~~~ scala
 scala> List(1, 2, 3).foreach(num => println("And a " + num + "..."))
 And a 1...
 And a 2...
 And a 3...
-{% endhighlight %}
+~~~
 
 ### Algebra of transformations
 
@@ -166,19 +165,19 @@ This type of analysis may see mforeign at first, but you will quickly get used t
 
 There are many other useful methods defined on `Seq`. We've seen `contains` in the exercises above (you did do the exercises, right?) Similar functions are `filter` and `find`. Filter returns a sequence containing all the element that pass a test. For example, to get just the positive elements of sequence:
 
-{% highlight scala %}
+~~~ scala
 scala> Seq(-1, 1, 2, -2).filter(elt => elt > 0)
 res16: Seq[Int] = List(1, 2)
-{% endhighlight %}
+~~~
 
 Find finds the first element that matches a predicate. Since no element may match, find returns an `Option`.
 
-{% highlight scala %}
+~~~ scala
 scala> Seq(-1, 1, 2, -2).find(elt => elt > 0)
 res17: Option[Int] = Some(1)
 
 scala> Seq(-1, -2).find(elt => elt > 0)
 res18: Option[Int] = None
-{% endhighlight %}
+~~~
 
 There are many more methods on sequences. Consult the documentation for more. You can find many of them on the [Scaladoc page](http://www.scala-lang.org/api/current/scala/collection/Seq.html) for `Seq`.

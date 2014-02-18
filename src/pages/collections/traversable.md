@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Traversable and Iterable
 ---
-
-# Traversable and Iterable
 
 So far we've avoided discussing the finer details of the collection class hierarchy. As we near the end of this section it is time to quickly go over some of the intricacies.
 

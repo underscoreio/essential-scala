@@ -10,10 +10,10 @@ Expressions are the most important program construct in Scala. The defining char
 
 The simplest expressions are literals. A literal represents a fixed value. Here's an example:
 
-{% highlight scala %}
+~~~ scala
 scala> 42
 res0: Int = 42
-{% endhighlight %}
+~~~
 
 This interaction at the REPL shows us that the literal `42` evaluates to the `Int` `42`. Don't confuse a literal with the value it evaluates too! The literal expression is the representation in the program text before the program is run. The value is the representation in the computer's memory after the program has run.
 
@@ -23,7 +23,7 @@ If you have prior programming experience you won't be surprised at the available
 
 Numbers share the same types available in Java: `Int` for 32-bit integers, `Double` for 64-bit floating point, `Float` for 32-bit floating point, and `Long` for 64-bit integers.
 
-{% highlight scala %}
+~~~ scala
 scala> 42
 res0: Int = 42
 
@@ -35,7 +35,7 @@ res2: Float = 42.0
 
 scala> 42.0l
 res3: Long = 42
-{% endhighlight %}
+~~~
 
 Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. We'll see how to create them in a bit.
 
@@ -43,7 +43,7 @@ Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no litera
 
 Strings are exactly Java's strings, and written the same way.
 
-{% highlight scala %}
+~~~ scala
 scala> "this is a string"
 res8: java.lang.String = this is a string
 
@@ -51,43 +51,43 @@ scala> "the\nusual\tescape characters apply"
 res9: java.lang.String =
 the
 usual	escape characters apply
-{% endhighlight %}
+~~~
 
 ### Booleans
 
 Booleans are exactly the same as Java.
 
-{% highlight scala %}
+~~~ scala
 scala> true
 res11: Boolean = true
 
 scala> false
 res12: Boolean = false
-{% endhighlight %}
+~~~
 
 ### Char
 
 Characters (`Char`s) are 16-bit Unicode values written as a single character enclosed in single quotes.
 
-{% highlight scala %}
+~~~ scala
 scala> 'a'
 res34: Char = a
-{% endhighlight %}
+~~~
 
 ### Null
 
 Null is the same as Java, though not used nearly as often
 
-{% highlight scala %}
+~~~ scala
 scala> null
 res13: Null = null
-{% endhighlight %}
+~~~
 
 ### Unit
 
 Unit, written `()` is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The REPL doesn't print unit be can ask for the type of an expression to see that unit is in fact the result of some expressions.
 
-{% highlight scala %}
+~~~ scala
 scala> ()
 
 scala> :type ()
@@ -98,7 +98,7 @@ something
 
 scala> :type println("something")
 Unit
-{% endhighlight %}
+~~~
 
 
 ## Compound Expressions
@@ -107,52 +107,52 @@ Literals on their own aren't very interesting. It's only when we combine express
 
 You're probably used to simple arthimetic expressions.
 
-{% highlight scala %}
+~~~ scala
 scala> 43 - 3 + 2
 res14: Int = 42
-{% endhighlight %}
+~~~
 
 You are probably also familiar with the dot-notation to call methods on objects. Here's one way to create shorts and bytes:
 
-{% highlight scala %}
+~~~ scala
 scala> 42.toShort()
 res16: Short = 42
 
 scala> 42.toByte()
 res17: Byte = 42
-{% endhighlight %}
+~~~
 
 ### Conditionals
 
 Conditionals are an essential part of any programming language. Scala's `if` statement has the same syntax as Java's. One difference in Scala is that a conditional returns a value.
 
-{% highlight scala %}
+~~~ scala
 scala> if(true) {
          42
        } else {
          40
        }
 res45: Int = 42
-{% endhighlight %}
+~~~
 
 You can drop the brackets if a single expression follows an arm, and even write a conditional on one line.
 
-{% highlight scala %}
+~~~ scala
 scala> if(true) 42 else 40
 res47: Int = 42
-{% endhighlight %}
+~~~
 
 ### Operators versus Methods
 
 In Scala **everything is an object**. This means that `Int` and other primitive types in Java are actually objects in Scala. If this is the case, then `+`, `-`, and so on should be methods on `Int` not operators. Is this correct? Yes!
 
-{% highlight scala %}
+~~~ scala
 scala> 43 - 3 + 2
 res18: Int = 42
 
 scala> (43).-(3).+(2)
 res20: Int = 42
-{% endhighlight %}
+~~~
 
 (Note in the second example above I had to bracket `43` to stop `43.` being interpreted as a `Double`.)
 
@@ -162,28 +162,28 @@ This is a general rule in Scala. Any expression you can write as `a.b(c)` you ca
 
 Scala has a few other shortcuts in addition to operator style. If an object `foo` has a method called `apply` we can call that method using `foo(args)`. For example, `String` has an apply method (through a mysterious mechansim we [explain later](/collections/arrays-and-strings.html)) that allows to us to index characters within the string.
 
-{% highlight scala %}
+~~~ scala
 scala> "hi there!"(0)
 res35: Char = h
-{% endhighlight %}
+~~~
 
 Be aware there is no dot before the parenthesis. Adding one is an error!
 
-{% highlight scala %}
+~~~ scala
 scala> "hi there!".(0)
 <console>:1: error: identifier expected but '(' found.
        "hi there!".(0)
-{% endhighlight %}
+~~~
 
 {% comment %}
 
 If an object `foo` has a method called `update` we can call it using `foo(idx) = value`. `String` doesn't have such a method, but the error message when we attempt to this indicates the compiler has converted the call into a call to `update`.
 
-{% highlight scala %}
+~~~ scala
 scala> "hi there!"(0) = 'b'
 <console>:8: error: value update is not a member of java.lang.String
               "hi there!"(0) = 'b'
               ^
-{% endhighlight %}
+~~~
 
 {% endcomment %}

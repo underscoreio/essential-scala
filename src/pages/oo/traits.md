@@ -8,7 +8,7 @@ Scala replaces Java's *interfaces* with a new type of inheritance construct: *tr
 
 A trait is a class-like structure that can contain a mixture of abstract and concrete definitions:
 
-{% highlight scala %}
+~~~ scala
 scala> trait Logger {
      |   def loggingEnabled: Boolean // abstract definition
      |
@@ -19,11 +19,11 @@ scala> trait Logger {
      |   }
      | }
 defined trait Logger
-{% endhighlight %}
+~~~
 
 A trait can be *mixed in* to an existing class using the `with` operator. This process produces a new class with similar overriding and extension semantics to subclassing:
 
-{% highlight scala %}
+~~~ scala
 scala> class A
 defined class A
 
@@ -38,11 +38,11 @@ j: J = J@15dbac11
 
 scala> List(j.isInstanceOf[A], j.isInstanceOf[B])
 res0: List[Boolean] = List(true, true)
-{% endhighlight %}
+~~~
 
 Because the result of mixing is a class, multiple traits can be mixed in in sequence in a single class definition:
 
-{% highlight scala %}
+~~~ scala
 scala> trait C
 defined trait C
 
@@ -51,7 +51,7 @@ defined trait D
 
 scala> class Z extends J with C with D
 defiend class Z
-{% endhighlight %}
+~~~
 
 Methods are resolved by *linearizing* the classes and traits involved. So, for example, the linearization of Z above would be:
 
@@ -63,7 +63,7 @@ Any method call is resolved by first searching for the method in the body of Z, 
 
 Here is an example of simple single-trait inheritance:
 
-{% highlight scala %}
+~~~ scala
 scala> trait NoisyLogger extends AnyRef with Logger {
      |   def loggingEnabled = true
      | }
@@ -75,18 +75,18 @@ scala> class Noisy extends AnyRef with NoisyLogger {
      |   }
      | }
 defined class Noisy
-{% endhighlight %}
+~~~
 
 `NoisyLogger` fills in the abstract `loggingEnabled` method from `Logger` and `Noisy` creates a concrete class from `NoisyLogger`, which we can instantiate and use:
 
-{% highlight scala %}
+~~~ scala
 scala> (new Noisy).saySomething
 OHAI! I CAN HAS SCREEN SPACE?
-{% endhighlight %}
+~~~
 
 We can expand on this to provide an example of inheritance from multiple traits:
 
-{% highlight scala %}
+~~~ scala
 scala> trait FiftyFifty {
      |   def flipCoin: Boolean = {
      |     math.random > .5
@@ -100,7 +100,7 @@ scala> class Unreliable extends AnyRef with Logger with FiftyFifty {
      |     log("There's a 50% chance you won't see this message.")
      |   }
      | }
-{% endhighlight %}
+~~~
 
 `Unreliable` blends concrete functionality from `FiftyFifty` and `Logger`.
 
@@ -108,9 +108,9 @@ scala> class Unreliable extends AnyRef with Logger with FiftyFifty {
 
 We have seen how Scala implicitly extends `AnyRef` when we can omit the `extends` clause from the class header. The same shorthand syntax is also available when we are mixing in traits. For example, we can rewrite the header of `Unreliable` above as follows:
 
-{% highlight scala %}
+~~~ scala
 class Unreliable extends Logger with FiftyFifty { /* ... */ }
-{% endhighlight %}
+~~~
 
 Note that this shorthand syntax is misleading -- it seems to imply that `Logger` is a class, when in fact it is a trait. Don't be fooled -- traits cannot be extended directly -- they must first be mixed into a class. In reality, the word `Logger` in this context is shorthand for `AnyRef with Logger`, which makes sense because it is a class. This distinction is subtle but important as it gives us a clean conceptual model of how class and trait composition works.
 
@@ -118,7 +118,7 @@ Note that this shorthand syntax is misleading -- it seems to imply that `Logger`
 
 Sometimes it only makes sense to mix a trait into a class that already has certain features. For example:
 
-{% highlight scala %}
+~~~ scala
 scala> trait Vocal {
      |   def saySomething: String
      | }
@@ -131,22 +131,22 @@ scala> trait Loud {
      | }
 <console>:9: error: not found: value saySomething
            saySomething.toUpperCase
-{% endhighlight %}
+~~~
 
 The `Loud` trait does not compile here because Scala cannot guarantee that the class it is mixed into will have the method `saySomething`. We can enforce this constraint using an `extends` clause:
 
-{% highlight scala %}
+~~~ scala
 scala> trait Loud extends Vocal {
      |   def shout: Unit = {
      |     saySomething.toUpperCase + "!"
      |   }
      | }
 defined trait Loud
-{% endhighlight %}
+~~~
 
 Whenever we mix the `Loud` trait into a class, the compiler checks to see if `Vocal` is already in the linearization of that class. If it is not, the compiler inserts it just before `Loud`. This means we can extend `Vocal` as follows:
 
-{% highlight scala %}
+~~~ scala
 scala> class Dog extends Loud
 <console>:8: error: class Dog needs to be abstract, since method saySomething in trait Vocal of type => String is not defined
 
@@ -163,11 +163,11 @@ res1: List[Boolean] = List(true, true)
 
 scala> d.shout
 res2: String = BARK!
-{% endhighlight %}
+~~~
 
 In fact, every trait actually extends a class and zero or more other traits -- the `extends` syntax simply has the same `AnyRef` shorthand that we have already seen in class definitions. Classes and mixins are added to the linearization only when they are necessary to fulfill these constraints:
 
-{% highlight scala %}
+~~~ scala
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
@@ -187,7 +187,7 @@ defined trait D
 defined class E
 res3: Int = 3
 
-{% endhighlight %}
+~~~
 
 In this example, the final value of `Counter` is 3. This shows that, despite the redundancy in the way the inheritance constraints are written on `B` through `E`, each trait is only mixed in once to produce the final product.
 
@@ -206,7 +206,7 @@ Sometime we want to provide a trait that adds additional functionality to anothe
 
 Here's how we can implement the example above using a self type.
 
-{% highlight scala %}
+~~~ scala
 scala> trait Vocal {
      |   def saySomething: String
      | }
@@ -220,11 +220,11 @@ scala> trait Loud {
      |   }
      | }
 defined trait Loud
-{% endhighlight %}
+~~~
 
 Now when we implement `Loud` we must also implement `Vocal`.
 
-{% highlight scala %}
+~~~ scala
 scala> class Dog extends Loud {
      |   def saySomething = "Bark"
      | }
@@ -240,4 +240,4 @@ defined class Dog
 
 scala> new Dog().shout
 res13: String = BARK!
-{% endhighlight %}
+~~~

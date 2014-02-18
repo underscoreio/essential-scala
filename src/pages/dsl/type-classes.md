@@ -19,7 +19,7 @@ Let's motivate this with an example: converting data to HTML. This is a fundamen
 
 Let's start by naively implementing `toHtml` using a simple trait:
 
-{% highlight scala %}
+~~~ scala
 scala> import scala.xml._
 
 scala> trait HtmlWriteable {
@@ -34,13 +34,13 @@ defined class Person
 
 scala> new Person("John", "john@example.com").toHtml
 res2: scala.xml.Elem = <span>John &lt;john@example.com&gt;</span>
-{% endhighlight %}
+~~~
 
 This solution has a number of drawbacks. First, we are restricted to having just one way of rendering a `Person`. If we want to list people on our company homepage, for example, it is unlikely we will want to list everybody's email addresses without any kind of obfuscation. Second, this pattern can only be applied to classes that we have written ourselves. If we want to render `java.util.Data` to HTML, for example, we will have to write some other form of library function.
 
 We can overcome both of these problems by moving our HTML rendering function to an adapter class:
 
-{% highlight scala %}
+~~~ scala
 scala> import java.util.Date
 import java.util.Date
 
@@ -61,24 +61,24 @@ defined module DateWriter
 
 scala> PersonWriter.write(new Person("John", "john@example.com"))
 res3: scala.xml.Elem = <span>John &lt;john@example.com&gt;</span>
-{% endhighlight %}
+~~~
 
 Now we can render any type of data in any way we want by simply choosing a different adapter for any given situation. However, there are still problems with the code. Whenever we want to render an object, we have to write out the name of a relevant `HtmlWriter`. This makes our code more verbose and difficult to maintain than the `toHtml` version we had above.
 
 The type class pattern gives us a way of reducing the code overhead of the adapter approach. Let's introduce a simple example now. We know that we can convert anything to HTML as long as we have a compatible `HtmlWriter` in scope. Let's write this out in code:
 
-{% highlight scala %}
+~~~ scala
 scala> object HtmlUtil {
      |   def htmlify[T](data: T)(implicit writer: HtmlWriter[T]): NodeSeq = {
      |     writer.write(data)
      |   }
      | }
 defined module HtmlUtil
-{% endhighlight %}
+~~~
 
 The `htmlify` method accepts two arguments: some `data` to convert to HTML and a `writer` to do the conversion. The `writer` is an implicit argument, so the compiler will automatically use any compatible `HtmlWriter` that is in implicit scope. Let's redefine our adapters so we can bring them into scope:
 
-{% highlight scala %}
+~~~ scala
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
@@ -97,13 +97,13 @@ object HtmlWriters extends HtmlWriters
 
 defined trait HtmlWriters
 defined object HtmlWriters
-{% endhighlight %}
+~~~
 
 This is the idiomatic way of defining a set of adapters for use in a type class: we define everything in a trait, and then instantiate that trait as a singleton of the same name. The singleton gives us direct access to the definitions via an `import` statement, while the trait allows us to replace any adapter with anoter variant to create a custom set.
 
 We can now use our adapters with `htmlify`:
 
-{% highlight scala %}
+~~~ scala
 scala> import HtmlUtil._
 import HtmlUtil._
 
@@ -112,6 +112,6 @@ import HtmlWriters._
 
 scala> htmlify(new Person("John", "john@example.com"))
 res4: scala.xml.NodeSeq = <span>John &lt;john@example.com&gt;</span>
-{% endhighlight %}
+~~~
 
 This final example has much lighter syntax requirements than its predecessor. We have now assembled the complete type class pattern: `HtmlUtil` specifies our HTML rendering functionality, `HtmlWriter` and `HtmlWriters` implement the functionality as a set of adapters, and the implicit argument to `htmlify` implicitly selects the correct adapter for any given argument.

@@ -8,26 +8,26 @@ It is quite common to combine the "pimping" pattern and the type class pattern. 
 
 Let's expand the HTML rendering example to use both pimping and type classes. Our goal is to write a generic `write` method where we can select the output format based on a type. That is, we want to be able to write code like:
 
-{% highlight scala %}
+~~~ scala
 aPerson.write[String]  // Write the person as a String
 aPersom.write[NodeSeq] // Write the person as XML
 aDate.write[String]    // Write the date as a String
 aDate.write[NodeSeq]   // Write the date as XML
-{% endhighlight %}
+~~~
 
 By controlling which implicits are in scope we can change both the available output types and the format of the output.
 
 This construction is quite intricate. To get started we need to define a `Writer` trait, which has the `write` method we'll use.
 
-{% highlight scala %}
+~~~ scala
 trait Writer[In,Out] {
   def write(in: In): Out
 }
-{% endhighlight %}
+~~~
 
 Now we'll define implicit conversions to add a `write` method to our target classes, in this case `Person` and `Date`. This `write` method uses the type class pattern to select a `Writer`.
 
-{% highlight scala %}
+~~~ scala
 case class WriteW[A](data: A) {
   def write[T](implicit writer: Writer[A,T]) = writer.write(data)
 }
@@ -36,11 +36,11 @@ trait WriteWImplicits {
   implicit def personToWriteW(in: Person): WriteW[Person] = WriteW(in)
   implicit def dateToWriteW(in: Date): WriteW[Date] = WriteW(in)
 }
-{% endhighlight %}
+~~~
 
 Finally we need to add some `Writer` implicits to implement the type class side of the pattern.
 
-{% highlight scala %}
+~~~ scala
 trait WriterImplicits {
   implicit object PersonStringWriter extends Writer[Person,String] {
     def write(in: Person): String = in.toString
@@ -58,18 +58,18 @@ trait WriterImplicits {
     def write(in: Date): NodeSeq = <span>{ in.toString }</span>
   }
 }
-{% endhighlight %}
+~~~
 
 Finally it's good practice to add object versions of our implicits. If nothing else this lets us run the code from the REPL!
 
-{% highlight scala %}
+~~~ scala
 object WriteWImplicits extends WriteWImplicits
 object WriterImplicits extends WriterImplicits
-{% endhighlight %}
+~~~
 
 Now we can test the code at the REPL to see it works.
 
-{% highlight scala %}
+~~~ scala
 scala> import WriteWImplicits._
 import WriterImplicits._
 val me  = Person("Noel", "noel@_")
@@ -94,13 +94,13 @@ scala> res1: scala.xml.NodeSeq = <span>Noel &lt;noel@_&gt;</span>
 scala> res2: String = Wed Sep 26 21:24:45 BST 2012
 
 scala> res3: scala.xml.NodeSeq = <span>Wed Sep 26 21:24:45 BST 2012</span>
-{% endhighlight %}
+~~~
 
 If we wanted to make available different output formats available we can simply import different implicits into scope. So, for example, if we wanted to render people with obsfuscated email addresses we could simply define new `Writer`s for `Person` and use them. All in all this is a very flexible system.
 
 Here's the complete code:
 
-{% highlight scala %}
+~~~ scala
 import scala.xml._
 import java.util.Date
 
@@ -148,4 +148,4 @@ me.write[String]
 me.write[NodeSeq]
 now.write[String]
 now.write[NodeSeq]
-{% endhighlight %}
+~~~

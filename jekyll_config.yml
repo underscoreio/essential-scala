@@ -21,6 +21,20 @@ toc:
      - /objects/this-and-that.html
      - /objects/this-contains-that.html
 
+  - head: /collections/index.html
+    body:
+     - /collections/seq.html
+     - /collections/working-with-seq.html
+     - /collections/seq-implementations.html
+     - /collections/map-and-set.html
+     - /collections/for-comprehensions.html
+     - /collections/working-with-for-comprehensions.html
+     - /collections/arrays-and-strings.html
+     - /collections/iterators.html
+     - /collections/traversable.html
+     - /collections/java-interop.html
+
+
   # - head: /sbt/index.html
 
   # - head: /scala-basics/index.html
@@ -37,18 +51,6 @@ toc:
   #    - /oo/traits.html
   #    - /oo/type-parameters.html
 
-  # - head: /collections/index.html
-  #   body:
-  #    - /collections/seq.html
-  #    - /collections/working-with-seq.html
-  #    - /collections/seq-implementations.html
-  #    - /collections/map-and-set.html
-  #    - /collections/for-comprehensions.html
-  #    - /collections/working-with-for-comprehensions.html
-  #    - /collections/arrays-and-strings.html
-  #    - /collections/iterators.html
-  #    - /collections/traversable.html
-  #    - /collections/java-interop.html
 
   # - head: /dsl/index.html
   #   body:

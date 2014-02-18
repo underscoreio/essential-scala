@@ -57,26 +57,26 @@ An aside on the special type `Unit`. You can think of `Unit` as Scala's equivale
 
 When we write a method that does not return an interesting value, we define it as returning `Unit`:
 
-{% highlight scala %}
+~~~ scala
 def setFoo(newFoo: Int): Unit = {
   foo = newFoo
 }
-{% endhighlight %}
+~~~
 
 Scala recognises this and implicitly inserts a literal `()` as the last expression in the method:
 
-{% highlight scala %}
+~~~ scala
 def setFoo(newFoo: Int): Unit = {
   foo = newFoo
   ()
 }
-{% endhighlight %}
+~~~
 
 This means the return value of the method is always `()` -- our last expression is always ignored.
 
 While the distinction between `void` and `Unit` may seem trivial, it is in fact essential for writing things like generic functions. For example, in Scala this is valid code:
 
-{% highlight scala %}
+~~~ scala
 scala> class Function[A, B] {
      |   def apply(a: A): B
      | }
@@ -89,11 +89,11 @@ defined class PrintFunction
 
 scala> (new PrintFunction).apply("Hello world!")
 Hello world!
-{% endhighlight %}
+~~~
 
 whereas the equivalent in Java is not:
 
-{% highlight scala %}
+~~~ scala
 interface Function<A, B> {
    B apply(Arg arg);
 }
@@ -104,7 +104,7 @@ class PrintFunction implements Function<String, void> {
     System.out.println(str);
   }
 }
-{% endhighlight %}
+~~~
 
 The difference is that `Unit` is an actual type with an actual value, instead of just a keyword.
 
@@ -114,7 +114,7 @@ There are two other special types in Scala's type hierarchy, `Null` and `Nothing
 
 `Null` is the type of the value `null`, and is defined as being a *subtype* of everything that extends `AnyRef`. This means that any reference to an object in Scala can be assigned the value `null` without complaint from the type checker:
 
-{% highlight scala %}
+~~~ scala
 scala> var x: String = null
 x: String = null
 
@@ -122,43 +122,43 @@ scala> var y: Int = null
 <console>:7: error: type mismatch;
  found   : Null(null)
  required: Int
-{% endhighlight %}
+~~~
 
 `Nothing` is the type of all `throw` statements (note - the type of the *statement*, not the exception thrown), and is defined as being a subtype of *all other types*. Again, this is for the type checker's sake -- it allows any method to terminate with a `throw` without us having to annotate it with a special return type:
 
-{% highlight scala %}
+~~~ scala
 scala> def x(a: Int) = throw new Exception("Foo")
 x: (a: Int)Nothing
 
 scala> def y(a: Int) = if(a == 0) throw new Exception("Zero!") else a
 y: (a: Int)Int
-{% endhighlight %}
+~~~
 
 ## Class inheritance
 
 Now we get into the meat of inheritance: the `extends` keyword. As we saw above, all classes in Scala are descendants of the type `AnyRef`, which is an alias for `java.lang.Object`. If we omit the `extends` clause from a class definition, Scala implicitly inserts `extends AnyRef` instead:
 
-{% highlight scala %}
+~~~ scala
 scala> class Circle(var radius: Double) { /* ... extends AnyRef */
      |   def area = math.Pi * radius * radius
      |   def diameter = 2 * radius
      | }
 defined class Circle
-{% endhighlight %}
+~~~
 
 As in Java, we can use `extends` to select a different superclass instead:
 
-{% highlight scala %}
+~~~ scala
 scala> class Sphere(radius: Double) extends Circle(radius) {
      |   override def area = 4 * math.Pi * radius * radius
      |   def volume = 4 * math.Pi * radius * radius * radius / 3
      | }
 defined class Sphere
-{% endhighlight %}
+~~~
 
 The usual extension semantics apply as in Java. Here, `Sphere` inherits all of `Circle's` fields and methods. It adds its own method, `volume`, and replaces the implementation of `area`:
 
-{% highlight scala %}
+~~~ scala
 scala> val c = new Circle(10)
 c: Circle = Circle@6d13722b
 
@@ -170,7 +170,7 @@ res1: List[Double] = List(314.1592653589793, 20.0)
 
 scala> List(s.area, s.diameter, s.volume)
 res2: List[Double] = List(1256.6370614359173, 20.0, 4188.790204786391)
-{% endhighlight %}
+~~~
 
 ### Overriding field and methods
 
@@ -178,7 +178,7 @@ Unlike Java, Scala requires us to be *explicit* whenever we override a concrete 
 
 Note that tt is possible to override an argumentless `def` with a `val` or `var` of the same type:
 
-{% highlight scala %}
+~~~ scala
 scala> class Bike {
      |   def wheels: Int = 2
      | }
@@ -186,7 +186,7 @@ scala> class Bike {
 scala> class Tricycle extends Bike {
      |   val wheels = 2
      | }
-{% endhighlight %}
+~~~
 
 This allows us to override a method using a field, which is exceptionally useful when dealing with *abstract methods* as we shall see below.
 
@@ -194,15 +194,15 @@ This allows us to override a method using a field, which is exceptionally useful
 
 Scala's compact constructor syntax was introduced in an earlier section. In that section we saw how constructor arguments are declared in the first line of the class definition: right after the class name. We declare arguments for the superclass constructor in the same way: right after the superclass name. In the example above, the constructor for `Sphere` accepts a single argument, `radius`, and passes it straight to the constructor for `Circle`:
 
-{% highlight scala %}
+~~~ scala
 class Sphere(radius: Double) extends Circle(radius)
-{% endhighlight %}
+~~~
 
 The first action performed by the constructor for any class is to call the constructor of its superclass. This means constructors are executed in inheritance order, from superclass to subclass.
 
 Note that the constructor for `Circle` uses the `var` keyword in its argument definition whereas the constructor for `Sphere` does not. If we expand the constructor for `Circle` we can see why:
 
-{% highlight scala %}
+~~~ scala
 class Circle(somePrivateVariable: Double) {
   def radius = somePrivateVariable
   def radius_=(newRadius: Double) = {
@@ -211,7 +211,7 @@ class Circle(somePrivateVariable: Double) {
 
   // ...
 }
-{% endhighlight %}
+~~~
 
 The `var` keyword effectively creates a public accessor and public mutator for `radius` in the body of the class. Because the accessor and mutator are defined in `Circle`, there is no need to define them again in `Sphere`. We can therefore omit the `var` keyword in `Sphere`.
 
@@ -221,38 +221,38 @@ Java's *instanceof* keyword and *casting* syntax are replaced in Scala by two me
 
 `isInstanceOf` is used to test for class membership. It accepts a single type argument and returns `true` if the callee is a member of that type:
 
-{% highlight scala %}
+~~~ scala
 scala> List(c.isInstanceOf[Any],
             c.isInstanceOf[AnyRef],
             c.isInstanceOf[Circle],
             c.isInstanceOf[Sphere])
 res3: List[Boolean] = List(true, true, true, false)
-{% endhighlight %}
+~~~
 
 Because `isInstanceOf` is defined in the `Any` type, it is available when working with value types as well as reference types:
 
-{% highlight scala %}
+~~~ scala
 scala> List(1.isInstanceOf[Any],
             1.isInstanceOf[AnyVal],
             1.isInstanceOf[Int],
             1.isInstanceOf[Double])
 res4: List[Boolean] = List(true, true, true, false)
-{% endhighlight %}
+~~~
 
 The `asInstanceOf` method is used to perform explicit casting. Use of this method should be avoided wherever possible as it can cause `ClassCastExceptions` at runtime. However, in some situations -- for example when interfacing with Java code or working around type erasure -- its use is unavoidable:
 
-{% highlight scala %}
+~~~ scala
 scala> c.asInstanceOf[AnyRef]
 res4: AnyRef = Circle@6d13722b
 
 scala> c.asInstanceOf[Sphere]
 java.lang.ClassCastException: Circle cannot be cast to Sphere
   // ...stack trace...
-{% endhighlight %}
+~~~
 
 Scala offers a safe way to do casting using the `:` operator (aka *type ascription*). Uses of `:` will only compile in situations where Scala can be 100% sure that the types work out. The difference is that `asInstanceOf` fails at runtime, whereas `:` fails at compile time:
 
-{% highlight scala %}
+~~~ scala
 scala> s : Circle
 res12: Circle = Sphere@e208506
 
@@ -262,7 +262,7 @@ scala> c : Sphere
  required: Sphere
               c : Sphere
               ^
-{% endhighlight %}
+~~~
 
 ## Abstract classes
 
@@ -273,28 +273,28 @@ Scala's `abstract classes` are similar to Java's in that:
 
 We declare a class as abstract using the `abstract` keyword. We declare abstract fields and methods simply by omitting their definitions:
 
-{% highlight scala %}
+~~~ scala
 scala> abstract class Animal {
      |   val species: String // abstract immutable field
      |   var age: Int        // abstract mutable field
      |   def makeNoise: Unit // abstract method
      | }
-{% endhighlight %}
+~~~
 
 Abstract fields and methods can be *implemented* in a subclass to provide a concrete class that can be instantiated:
 
-{% highlight scala %}
+~~~ scala
 scala> class Dog(val species: String) extends Animal {
      |   var age: Int = 0
      |   def makeNoise = println("Bark!")
      | }
-{% endhighlight %}
+~~~
 
 In the example, we override `age` and `makeNoise` in the class body and `species` using the shorthand field definition syntax in the constructor. We don't need to use the `override` keyword because none of the members are overriding concrete definitions from the superclass.
 
 Note that, as with overriding, it is possible to implement an abstract argumentless `def` with a concrete `val` or `var` of the same type:
 
-{% highlight scala %}
+~~~ scala
 scala> abstract class Vehicle {
      |   def wheels: Int
      | }
@@ -302,6 +302,6 @@ scala> abstract class Vehicle {
 scala> class Bicycle extends Vehicle {
      |   val wheels = 2
      | }
-{% endhighlight %}
+~~~
 
 This makes `def` the most flexible type of abstract definition as it can be implemented using a method or an immutable or mutable field. It is usually considered best practice to declare abstract members using `def` unless there is a specific reason to do otherwise.

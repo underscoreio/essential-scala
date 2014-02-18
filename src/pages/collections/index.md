@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Collections
 ---
-
-# Collections
 
 We hardly need to state how important good collection classes are. The Collections API was one of the most significant additions to Java, and Scala's collections framework, completely revised and updated in 2.8, is an equally important addition to Scala.
 
@@ -15,16 +14,3 @@ Next we will cover the other main classes of collections: maps and sets. We will
 After covering the main collection types we turn to for comprehensions, a syntax that allows convenient specification of operations on collections.
 
 We then turn to some of the less used parts of the collections library: arrays, streams, and iterators, and finish with a look at Java interoperation.
-
-## Table of Contents
-
-- [Introducing Sequences](seq.html)
-- [Working with Sequences](working-with-seq.html)
-- [Sequence Implementations](seq-implementations.html)
-- [Maps and Sets](map-and-set.html)
-- [Introducing For Comprehensions](for-comprehensions.html)
-- [Working with For Comprehensions](working-with-for-comprehensions.html)
-- [Arrays and Strings](arrays-and-strings.html)
-- [Iterators and Views](iterators.html)
-- [Traversable and Iterable](traversable.html)
-- [Interoperating with Java](java-interop.html)

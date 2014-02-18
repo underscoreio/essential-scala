@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Sequence Implementations
 ---
-
-# Sequence Implementations
 
 We've seen that the Scala collections seperate interface from implementation. This means we can work with all collections in a generic manner. However different concrete implementations have different performance characteristics, so we must be aware of the available implementations so we can choose appropriately. Here we look at the mostly frequently used implementations of `Seq`. For full details on all the available implementation see [the docs](http://docs.scala-lang.org/overviews/collections/introduction.html).
 
@@ -22,52 +21,52 @@ A `List` is a singly linked list. It has constant time access to the first eleme
 
 A `Stream` is like a list except its elements are computed on demand, and thus it can have infinite size. Like other collections we can create streams by calling the `apply` method on the companion object.
 
-{% highlight scala %}
+~~~ scala
 scala> Stream(1, 2, 3)
 res17: scala.collection.immutable.Stream[Int] = Stream(1, ?)
-{% endhighlight %}
+~~~
 
 Note that only the first element is printed. The others will be computed when we try to access them.
 
 We can also use the `#::` method to construct a stream from individual elements, starting from `Stream.empty`.
 
-{% highlight scala %}
+~~~ scala
 scala> Stream.empty.#::(3).#::(2).#::(1)
 res18: scala.collection.immutable.Stream[Int] = Stream(1, ?)
-{% endhighlight %}
+~~~
 
 We can also use the more natural operator syntax.
 
-{% highlight scala %}
+~~~ scala
 scala> 1 #:: 2 #:: 3 #:: Stream.empty
 res19: scala.collection.immutable.Stream[Int] = Stream(1, ?)
-{% endhighlight %}
+~~~
 
 This method allows us to create a infinite stream. Here's an infinite stream of 1s:
 
-{% highlight scala %}
+~~~ scala
 scala> def streamOnes: Stream[Int] = 1 #:: streamOnes
 streamOnes: Stream[Int]
 
 scala> streamOnes
 res20: Stream[Int] = Stream(1, ?)
-{% endhighlight %}
+~~~
 
 Because elements are only evaluated as requested calling `streamOnes` doesn't lead to infinte recursion. When we take the first five elements (and convert them to a `List`, so they'll all print out) we see we have what we want.
 
-{% highlight scala %}
+~~~ scala
 scala> streamOnes.take(5).toList
 res22: List[Int] = List(1, 1, 1, 1, 1)
-{% endhighlight %}
+~~~
 
 ### Vector
 
 `Vector` is the final immutable sequence we'll consider. Unlike `Stream` and `List` it is an `IndexedSeq`, and thus offers fast random access and updates. It is the default immutable `IndexedSeq` which we can see if we create one.
 
-{% highlight scala %}
+~~~ scala
 scala> scala.collection.immutable.IndexedSeq(1, 2, 3)
 res23: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 2, 3)
-{% endhighlight %}
+~~~
 
 Vectors are a good choice if you want both random access and immutability.
 
@@ -82,7 +81,7 @@ The mutable collections are probably more familiar. In addition to linked lists 
 
 Buffers add methods to support destructive prepends and appends. For example, the `+=` is destructive append.
 
-{% highlight scala %}
+~~~ scala
 scala> val buffer = new scala.collection.mutable.ArrayBuffer[Int]()
 buffer: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer()
 
@@ -91,7 +90,7 @@ res16: buffer.type = ArrayBuffer(1)
 
 scala> buffer
 res17: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1)
-{% endhighlight %}
+~~~
 
 
 ### StringBuilder

@@ -10,7 +10,7 @@ In our DSLs we will often want to use existing classes, such as `Int` and `Strin
 
 Before we can discuss implicits we need to know about multiple parameter lists. In addition to supporting any number of parameters, methods and functions in Scala can have any number of *parameter lists*. For example:
 
-{% highlight scala %}
+~~~ scala
 scala> def add(a: Int, b: Int)(c: Int, d: Int): Int = {
      |   a + b + c + d
      | }
@@ -18,7 +18,7 @@ add: (a: Int, b: Int)(c: Int, d: Int)Int
 
 scala> add(1, 2)(3, 4)
 res0: Int = 10
-{% endhighlight %}
+~~~
 
 There are a number of reasons why this is useful: it allows for more flexibility when assigning default values to optional arguments, it provides support for *currying*, and it provides support for *implicit argument lists*. This section covers the last of these three.
 
@@ -30,7 +30,7 @@ TODO: Supply examples of currying and default values?
 
 We can add the keyword `implicit` to the beginning of a parameter list to allow the compiler to implicitly insert arguments to our method calls. For example:
 
-{% highlight scala %}
+~~~ scala
 scala> class User(val name: String)
 defined class User
 
@@ -38,24 +38,24 @@ scala> def prompt(directory: String)(implicit user: User): String = {
      |   user.name + ":" + directory + "$"
      | }
 prompt: (directory: String)(implicit user: User)String
-{% endhighlight %}
+~~~
 
 When we call prompt, we have the option of supplying all the necessary arguments or allowing the compiler to supply those marked as `implicit`:
 
-{% highlight scala %}
+~~~ scala
 scala> prompt("~")(new User("john"))
 res1: String = john:~$
-{% endhighlight %}
+~~~
 
 If we omit the implicit arguments from the method call, the compiler will search for values to insert in their place. It searches local scope (roughly - see below for caveats) for `vals` and argumentless `defs` that have been declared with the `implicit` keyword:
 
-{% highlight scala %}
+~~~ scala
 scala> implicit def currentUser: User = new User("dave")
 currentUser: User
 
 scala> prompt("~") // compiler expands this to: prompt("~")(currentUser)
 res2: String = dave:~$
-{% endhighlight %}
+~~~
 
 ### Rules for implicit resolution
 
@@ -76,7 +76,7 @@ When searching for implicit values, the compiler is restricted by a number of pr
 
 One of the most basic uses for implicits is as *implicit conversions*. The process works like this: Say we have a class `Foo` with a method `bar`, and a class `Baz` without that method. We would like `Baz` to have the same `bar` method as `Foo` but we don't have access to the source of `Baz` to change it.
 
-{% highlight scala %}
+~~~ scala
 scala> class Foo {
      |   def bar = "This is the best method ever!"
      | }
@@ -89,17 +89,17 @@ scala> new Baz().bar // Sad times
 <console>:9: error: value bar is not a member of Baz
               new Baz().bar // Sad times
                         ^
-{% endhighlight %}
+~~~
 
 We can solve this problem by creating an implicit function or method from `Baz` to `Foo`. Now if we try to call the `bar` method the Scala compiler will insert a call to this function and then call `bar` on the result.
 
-{% highlight scala %}
+~~~ scala
 scala> implicit def bazToFoo(in: Baz):Foo = new Foo()
 bazToFoo: (in: Baz)Foo
 
 scala> new Baz().bar
 res7: java.lang.String = This is the best method ever!
-{% endhighlight %}
+~~~
 
 This pattern is sometimes called pimping, after a [blog post](http://www.artima.com/weblogs/viewpost.jsp?thread=179766) by Martin Odersky.
 
