@@ -11,7 +11,7 @@ There are many times that our programs must deal with missing data. For example,
 
 We're going to approach this problem using structural recursion. What are the types of data we're dealing with? There are clearly two cases: empty and not-empty. Thus we have a sum type.
 
-## Exercises
+## Exercise
 
 #### Call Me Maybe
 
@@ -35,7 +35,7 @@ The two cases are:
 </div>
 
 
-#### Better Than Maybe
+#### Not Just A Maybe
 
 What functions should our `Maybe` type have to be generally useful?
 
@@ -143,3 +143,38 @@ res22: String = ""
 ~~~
 
 [^scalaz]: A `fold` method for `Option` is provided by the Scalaz library.
+
+## Reporting Errors
+
+We saw above how we can use `Option` (or `Maybe` as we called it) to handle errors by returning the empty case. This unfortunately throws away useful information, namely the cause of the error. It would be nice to preserve this information so we can take appropriate action.
+
+Exceptions are the Java way of handling errors. Java's checked exceptions are generally considered a mistake, and Scala doesn't have checked exceptions. Exceptions suffer from the same problem as `null`: there is nothing in the type system that will fail if we don't properly handle exceptions[^concurrency]. We'd like to preserve the information contained in exceptions, such as the stack traces, but we would like to find a better way than throwing exceptions to communicate errors.
+
+[^concurrency]: Exceptions are also a bad idea in concurrent systems. In a single threaded system an exception will halt the program and be printed on the console. In a concurrent programs exceptions can just silently kill threads.
+
+## Exercise
+
+#### Try and Try Again
+
+`Throwable` is the supertype of all the exceptions we should be catching. Implement a type `Try` that represents a successful computation or a `Throwable` on error.
+
+<div class="solution">
+~~~ scala
+sealed trait Try[+A]
+final case class Failure[A](val error: Throwable) extends Try[A]
+final case class Success[A](val elt: A) extends Try[A]
+~~~
+</div>
+
+#### Using Try
+
+Implement the methods we want on `Try`.
+
+## Try in Scala
+
+Scala (2.9.3+) comes with `scala.util.Try`, which works the same as our `Try` with the exception that, like `Option`, it lacks a `fold` method and instead uses `map` and `getOrElse`.
+
+
+## The Bigger Picture
+
+The abstractions we've implemented are all **monads**. We encountered monads briefly in the section on collections. We've now seen other uses for types that implement a very simple interface. There are still more monads out there. For instance, we can represent concurrent programs using the `Future` monad. If you are interested in exploring monads further, I encourage you to look into the Scalaz library.
