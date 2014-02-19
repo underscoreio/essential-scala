@@ -3,7 +3,34 @@ layout: page
 title: Higher-Order Functions
 ---
 
-A **higher-order function** is one we pass to another function. We have seen several uses already, particularly with collections. Here we're going to use higher-order functions in some novel situations, with the aim of solidifying your understanding. This section will be heavy on the examples.
+A **higher-order function** is a function we pass to another function. We have seen several uses already, particularly with collections. Here we're going to use higher-order functions in some novel situations, with the aim of solidifying our understanding. This section will be heavy on the examples.
+
+We're going to spend a lot of time with Scala's `List` type, so a quick overview:
+
+* A `List[A]` is either `Nil` (the empty list) or a pair `::(a: A, as: List[A])`
+* You can write the pair constructor using infix syntax `a :: as`.
+* You can pattern match on the two cases as they are both case classes.
+
+A `List` is built recursively. For example, given the empty list we can prepend an element like so:
+
+~~~ scala
+scala> 1 :: Nil
+res17: List[Int] = List(1)
+~~~
+
+We can build longer lists in the same way.
+
+~~~ scala
+scala> 1 :: (2 :: Nil)
+res19: List[Int] = List(1, 2)
+~~~
+
+As `::` is right associative we can drop the brackets.
+
+~~~ scala
+scala> 1 :: 2 :: Nil
+res20: List[Int] = List(1, 2)
+~~~
 
 ## Spinning Wheels
 
@@ -23,7 +50,7 @@ def copy(in: List[Int]): List[Int] =
 
 This is a simple function that illustrates how the shape of the code follows the shape of the data. A list has two cases, and so does our method. Notice how the individual cases follow the shape of the data. `Nil` goes to `Nil`. The pair (`::`) goes to a pair with a recursive call to `copy`.
 
-#### A Map of the Territory
+## A Map of the Territory
 
 Write a method to add one to all the elements of `List[Int]`. Don't use any methods defined on `List` to do so.
 
@@ -61,9 +88,11 @@ def map[A](f: A => A, in: List[A]): List[A] =
 ~~~
 </div>
 
-There are a few concepts in this example. The first is the idea of the passing functions as reusable computations. As we've seen in the section on collections, we can
+There are a few concepts in this example. The first is the idea of the passing functions as reusable computations. We've already seen in the section on collections the benefits this brings.
 
-#### Folding Up the Map
+More interesting is the similarity of this code to the code for `copy` above. Notice once again the pattern: two cases to match the two cases of `List`, and the computation follows the shape of the data.
+
+## Folding Up the Map
 
 Write a method to sum up the elements of `List[Int]`. Don't use any methods defined on `List` to do so.
 
@@ -92,46 +121,63 @@ def accumulate(f: (Int, Int) => Int, accum: Int, in: List[Int]): Int =
 Now generalise your method to be generic over the type of `List`. What is this function conventionally called?
 
 <div class="solution">
-def fold[A, B](f:  => Int, accum: Int, in: List[Int]): Int =
+def foldRight[A, B](f:  => Int, accum: Int, in: List[Int]): Int =
   in match {
     case Nil => accum
-    case (x :: xs) => f(x,  accumulate(xs))
+    case (x :: xs) => f(x,  foldRight(xs))
   }
 </div>
 
-#### Calculus, the Easy Way
+Notice it's the same pattern again, though slightly generalised from before!
 
-You perhaps encountered differentiation in school. When we differentiate a function we calculate it's rate of change, called its derivative. In many cases we can do this symbolically, but we're going to do it the CS way -- numerically.
 
-Implement a function `derivative` that takes three arguments:
+## Calculus the Easy Way (Optional)
 
-* A function `Double => Double`
-* A point on the number line, a `Double`
-* A tolerance, also a `Double`.
+You perhaps encountered differentiation in school. When we differentiate a function we create another function that calculates it's rate of change, called its derivative. In many cases we can do this symbolically, but we're going to do it the CS way -- numerically.
 
-You should return the rate of change of the function at the given point up to the given tolerance.
+Implement a function `derivative` that takes two a function `Double => Double` and returns the derivative (also `Double => Double`).
 
-Hint 1: We can approximate the derivative by calculating the *centered difference* `(f(x + h) - f(x - h)) / 2h` for small `h`. When this formula doesn't change to within our tolerance for decreasing (but positive) `h` we can stop.
+Hint 1: We can approximate the derivative by calculating the *centered difference* `(f(x + h) - f(x - h)) / 2h` for small `h`.
 
-Hint 2: You might want to define several helper methods inside `derivative`.
-
-Hint 3: The `Math` object contains several useful methods such as `abs`. Note the derivative of `Math.exp(x)` is itself, and the derivative of `Math.cos` is `Math.sin`. You can use these properties to test your function.
+Hint 2: The `Math` object contains several useful methods such as `abs`. Note the derivative of `Math.exp(x)` is itself, and the derivative of `Math.sin` is `Math.cos`. You can use these properties to test your function.
 
 <div class="solution">
 ~~~ scala
-def derivative(f: Double => Double, x: Double, e: Double = 0.01) = {
-  def centeredDifference(bracket: Double) =
-    (f(x + bracket) - f(x - bracket)) / (2 * bracket)
+def derivative(f: Double => Double): Double => Double = {
+  val h = 0.01
+  (x: Double) =>
+    (f(x + h) - f(x - h)) / (2 * h)
+}
+~~~
+</div>
 
+Choosing a fixed value of `h` is not always a good idea. Make a function `makeDerivative` that allows you to set the value of `h` and returns `derivative`.
+
+<div class="solution">
+~~~ scala
+def makeDerivative(h: Double) = {
+  val derivative = (f: Double => Double) =>
+    (x: Double) =>
+      (f(x + h) - f(x - h)) / (2 * h)
+  derivative
+}
+~~~
+</div>
+
+Now we can adjust `h` till we have calculated `derivative` at a point to within a given tolerance. Write a function `solve` that solves the derivative of a function at a point to within a given tolerance.
+
+<div class="solution">
+~~~ scala
+def solve(f: Double => Double, x: Double, tolerance: Double) = {
   def iterate(bracket: Double, lastGuess: Double): Double = {
-    val guess = centeredDifference(bracket)
-    if(Math.abs(guess - lastGuess) < e)
+    val guess = makeDerivative(bracket)(f)(x)
+    if(Math.abs(guess - lastGuess) < tolerance)
       lastGuess
     else
       iterate(bracket / 2, guess)
   }
 
-  iterate(0.05, centeredDifference(0.1))
+  iterate(0.05, makeDerivative(0.1)(f)(x))
 }
 ~~~
 </div>
