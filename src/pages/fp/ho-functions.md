@@ -110,9 +110,9 @@ Now generalise your method to accept any function `(Int, Int) => Int` in place o
 
 <div class="solution>
 ~~~ scala
-def accumulate(f: (Int, Int) => Int, accum: Int, in: List[Int]): Int =
+def accumulate(f: (Int, Int) => Int, zero: Int, in: List[Int]): Int =
   in match {
-    case Nil => accum
+    case Nil => zero
     case (x :: xs) => f(x,  accumulate(xs))
   }
 ~~~
@@ -121,10 +121,10 @@ def accumulate(f: (Int, Int) => Int, accum: Int, in: List[Int]): Int =
 Now generalise your method to be generic over the type of `List`. What is this function conventionally called?
 
 <div class="solution">
-def foldRight[A, B](f:  => Int, accum: Int, in: List[Int]): Int =
+def foldRight[A, B](f: (A, B) => B, zero: B, in: List[A]): B =
   in match {
-    case Nil => accum
-    case (x :: xs) => f(x,  foldRight(xs))
+    case Nil => zero
+    case (x :: xs) => f(x,  foldRight(f, zero, xs))
   }
 </div>
 

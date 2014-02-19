@@ -55,8 +55,10 @@
 * Functional Programming Fundamentals
 ** Higher-order functions
 ** Structural Recursion
-** Functional Error Handling
 ** Higher-order Function vs Pattern Matching
+** Winning with Types
+*** There or Not?
+*** Functional Error Handling
 ** Combinators
    - Example: parsing
 * Open Extension of Objects

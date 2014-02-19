@@ -37,6 +37,7 @@ toc:
   - head: /fp/index.html
     body:
      - /fp/ho-functions.html
+     - /fp/structural-recursion.html
 
 
   # - head: /sbt/index.html
