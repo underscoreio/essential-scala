@@ -9,7 +9,7 @@ Our goal is to describe how to build programs using Scala, and we introduce Scal
 
 Except for a few exercises we don't rely on any external libraries. You should be able to complete all the problems inside with only a text editor and Scala's REPL. If you wish to use an IDE such as the [Scala IDE for Eclipse](http://scala-ide.org/) or [IntelliJ IDEA](http://www.jetbrains.com/idea/) they will work as well.
 
-
+{% comment %}
 ## Table of Contents
 
 - Introducing Scala
@@ -82,7 +82,6 @@ Except for a few exercises we don't rely on any external libraries. You should b
     - Trait composition
     - Self types
   - [Type Parameters](oo/type-parameters.html)
-{% comment %}
 - Object-Functional Programming
   - Case classes redux
     - Option
@@ -90,7 +89,6 @@ Except for a few exercises we don't rely on any external libraries. You should b
     - unapply
   - Higher-order functions
   - Structural recursion
-{% endcomment %}
 - [Collections](collections/index.html)
   - [Introducing Sequences](collections/seq.html)
     - Defining a sequence (Seq)
@@ -131,3 +129,4 @@ Except for a few exercises we don't rely on any external libraries. You should b
   - [Type Classes](dsl/type-classes.html)
   - [Pimp My Type Class](dsl/pimping.html)
   - [Syntax Extensions](dsl/macros.html)
+{% endcomment %}
