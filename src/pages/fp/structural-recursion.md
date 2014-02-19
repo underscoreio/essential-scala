@@ -78,3 +78,16 @@ scala> val product = fold((l: Int, r: Int) => l * r, (x: Int) => x, tree)
 product: Int = 24
 ~~~
 </div>
+
+Using your `fold`, write `map`.
+
+<div class="solution">
+~~~ scala
+def map[A, B](f: A => B, tree: Tree[A]): Tree[B] =
+  fold(Node.apply[B] _, (elt: A) => Leaf(f(elt)), tree)
+~~~
+</div>
+
+## Folding vs Pattern Matching
+
+We now have two ways to dealing with algebraic data types: pattern matching or higher-order functions such as `fold` and `map`. Which should we prefer? For most people just starting out pattern matching, being more concrete, is probably easier to deal with. Pattern matching will also normally be a bit faster. However experienced Scala programmers tend to prefer higher order functions. As they are more abstract they are a bit more resilient to change. Lots of data types have, for example, a `map` method and we can change our underlying representation will keeping our code the same if we use such methods. This is not the case with pattern matching as we're matching on the concrete types in the implementation.
