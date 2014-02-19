@@ -143,10 +143,12 @@ Why is this useful? We've already seen, with the `Counter` example, a style of p
 
 ## Case Classes
 
-The **case class* is another trick in Scala that automates much of we've just discussed. If you write
+The **case class** is another trick in Scala that automates much of we've just discussed. If you write
 
 ~~~ scala
-case class Person(val firstName: String, val lastName: String)
+case class Person(val firstName: String, val lastName: String) {
+  def name = firstName + " " + lastName
+}
 ~~~
 
 Scala will automatically generate a companion object with an `apply` constructor as well as a number of other useful methods on the class and companion object. Here's the companion object constructor in use:
@@ -194,9 +196,19 @@ defaultExample(a = 4, c = 4)
 res2: Int = 10
 ~~~
 
-Use keyword arguments with the `copy` method is a good idea as it ensures our code will still work if we add fields or rearrange fields in the case class, and it will cause a compilation error if we remove that field. The same is not true if we used  normal positional arguments.
+Using keyword arguments with the `copy` method is a good idea as it ensures our code will still work if we add fields or rearrange fields in the case class, and it will cause a compilation error if we remove that field. The same is not true if we used normal positional arguments.
 
 There are other benefits to using case classes which we will encounter shortly.
+
+A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a **case object**. A case object is defined just like a case class and has the same default methods as a case class.
+
+~~~ scala
+case object Citizen {
+  def firstName = "John"
+  def lastName  = "Doe"
+  def name = firstName + " " + lastName
+}
+~~~
 
 ## Exercises
 
