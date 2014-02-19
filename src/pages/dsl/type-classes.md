@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Type classes
 ---
-
-# Type classes
 
 *Type classes* are a programming idiom borrowed from the Haskell programming language. They provide a neat way to add functionality to existing classes without changing the classes themselves, and are a common use of implicit parameter lists. Type classes are useful for a couple of reasons:
 

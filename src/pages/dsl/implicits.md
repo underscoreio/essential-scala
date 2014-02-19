@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Open Extension of Classes
 ---
-
-# Open Extension of Classes
 
 In our DSLs we will often want to use existing classes, such as `Int` and `String`, in ways that were not envisioned when they were created. Scala has a powerful way of adding methods to a class in a controlled manner, called implicits. In this section have our first introduction to implicits. In later sections we'll see some common use cases.
 

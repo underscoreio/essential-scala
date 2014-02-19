@@ -56,7 +56,7 @@
 ** Higher-order functions
 ** Structural Recursion
 ** Higher-order Function vs Pattern Matching
-** Winning with Types
+** Modelling with Types
 *** There or Not?
 *** Functional Error Handling
 ** Combinators

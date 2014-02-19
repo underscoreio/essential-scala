@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Custom Control Structures
 ---
-
-# Custom Control Structures
 
 Consider implementing logging. Often we'll have a log statement like `logger.debug(anExpensiveOperation())` which we only want to execute if debug logging is enabled. In Java, we'd have to write something like
 

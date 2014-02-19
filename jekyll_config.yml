@@ -38,6 +38,16 @@ toc:
     body:
      - /fp/ho-functions.html
      - /fp/structural-recursion.html
+     - /fp/modelling-with-types.html
+
+  - head: /dsl/index.html
+    body:
+     - /dsl/operators.html
+     - /dsl/control.html
+     - /dsl/implicits.html
+     - /dsl/type-classes.html
+     - /dsl/pimping.html
+     - /dsl/macros.html
 
 
   # - head: /sbt/index.html

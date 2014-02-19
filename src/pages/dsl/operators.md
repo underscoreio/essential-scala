@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Operators
 ---
-
-# Operators
 
 Recall that is Scala we can use any method as an operator. In particular
 

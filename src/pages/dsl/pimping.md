@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Pimp My Type Class
 ---
-
-# Pimp My Type Class
 
 It is quite common to combine the "pimping" pattern and the type class pattern. Both pimp-my-library and type classes select adapters from a pool using implicits -- pimp-my-library uses implicit conversions rather than implicit parameters. We can combine the two to select an operation based on both the method receiver and the desired output type, which gives a great deal of flexibility.
 
