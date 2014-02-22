@@ -80,6 +80,30 @@
    - call by name
 * Unscheduled Topics
   - var
+    This arises in some exercises in collections
   - private vs public
+    Briefly mentioned in one exercise
   - import
+    Occurs in a few examples
   - unapply
+    Should be in DSL or functional programming
+* General Todo
+  The text could be more explicit at pulling out the main themes of the course, which are:
+
+  - Modelling data with Scala
+    - Sum types (traits and extension; sealed and final)
+    - Product types (extension of multiple traits)
+    - Has-a vs Is-a (instance variables; generics)
+
+  - Processing data
+    - Using pattern matching
+    - Using higher order functions
+    - The shape of the code mirrors the shape of the data (i.e. structural recursion)
+
+  - Sequencing computation using higher order functions
+    - map / flatMap / fold (starts with Box, goes through the course)
+    - Monads
+
+  - Using the type system to enforce useful constraints
+    - Complete pattern matching on sealed traits
+    - Option, Try, and other Monads
