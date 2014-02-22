@@ -104,7 +104,7 @@ The method that fits the bill is `fold`, with its ordered variants `foldLeft` an
 |--------+----------+------------+----------|
 | `fold`  | `Seq[A]` | `A` and `(A, A) => A` | `A` |
 | `foldLeft` | `Seq[A]` | `B` and `(B, A) => B` | `B` |
-| `foldRight` | `Seq[B]` | `B` and `(A, B) => B` | `B` |
+| `foldRight` | `Seq[A]` | `B` and `(A, B) => B` | `B` |
 |===========================================|
 {: .table }
 
@@ -164,7 +164,7 @@ This type of analysis may see foreign at first, but you will quickly get used to
 4. Given `Seq(1, 1, 2, 4, 3, 4)` create the sequence containing each number only once. Order is not important, so `Seq(1, 2, 4, 3)` or `Seq(4, 3, 2, 1)` are equally valid answers. Hint: Use `contains` to check if a sequence contains a value.
 5. Write a function that reverses the elements of a sequence. Your output does not have to use the same concrete implementation as the input. Hint: use `foldLeft`.
 6. Write `map` in terms of `foldRight`.
-7. Write your own implementation of `foldRight` that uses `foreach` and mutable state.
+7. Write your own implementation of `foldLeft` that uses `foreach` and mutable state.
 
 
 ## Other useful functions

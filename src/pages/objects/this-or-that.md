@@ -326,7 +326,7 @@ object XmlImportService {
   }
 }
 ~~~
-<\div>
+</div>
 
 ## Sealed Traits
 

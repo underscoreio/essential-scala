@@ -44,6 +44,7 @@ A manuscript is a document of a certain length written by an author. A book is a
 Tip: a sequence of type `A` has type `Seq[A]`.
 
 <div class="solution">
+~~~ scala
 trait Manuscript {
   def title: String
   def length: Int
@@ -65,6 +66,7 @@ case class Periodical(
   val editor: String,
   val issues: Seq[Issue]
 ) extends Publication
+~~~
 </div>
 
 ## Stacking Traits and Trait Linearization
