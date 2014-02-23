@@ -236,6 +236,14 @@ implicit val sound = Sound()
 
 Mealtime.breakfast(Cat())
 ~~~
+
+Notice that the implicit parameter is supplied by the compiler.
+</div>
+
+Define another implicit instance of `Sound` and call `Mealtime` with just a `Pet`. What happens?
+
+<div class="solution">
+Now there is ambiguity between implicits and the compiler refuses to supply one. And this brings us to the next section...
 </div>
 
 ## Rules for Implicit Resolution
