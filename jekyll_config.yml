@@ -80,6 +80,8 @@ toc:
 # Jekyll Configuration
 # --------------------
 
+url         : http://underscore.io
+
 source      : src/pages
 posts       : ../posts
 layouts     : ../layouts
