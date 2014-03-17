@@ -1,0 +1,189 @@
+---
+layout: page
+title: Working with Sequences
+---
+
+In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences: how to process every element of a sequence at once, and the performance characteristics of different sequence implementations.
+
+
+## Bulk Processing of Elements
+
+When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. In Java we have to do this using loops. Scala gives us a number of powerful options that allow us to solve many problems more elegantly.
+
+### map
+
+Let's take a common example to start -- suppose we want to double every element of a sequence. In Java we would do this using a `for` or a `while` loop. In Scala we can simply use the `map` method that exists on any type of sequence. `map` takes a function and applies it to every element, creating a sequence containing the results. To double every element we can write:
+
+~~~ scala
+scala> val sequence = Seq(1, 2, 3)
+sequence: Seq[Int] = List(1, 2, 3)
+
+scala> sequence.map(elt => elt * 2)
+res0: Seq[Int] = List(2, 4, 6)
+~~~
+
+If we use the underscore function definition shorthand, we can write this even more compactly:
+
+~~~ scala
+scala> sequence.map(_ * 2)
+res1: Seq[Int] = List(2, 4, 6)
+~~~
+
+Given a sequence with type `Seq[A]`, the function we pass to `map` must have type `A => B` and we get a `Seq[B]` as a result. This isn't right for every situation. For example, suppose we have a sequence of strings, and we want to generate a sequence of all the permutations of those strings. We can call the `permutations` method on a string to get all permutations of it.
+
+~~~ scala
+scala> "dog".permutations
+res12: Iterator[String] = non-empty iterator
+~~~
+
+This returns an `Iterable`. We're going to look at Iterables in more detail later. For now all we need to know is tha we can call the `toList` method to convert an `Iterable` to a `List`.
+
+~~~ scala
+scala> "dog".permutations.toList
+res13: List[String] = List(dog, dgo, odg, ogd, gdo, god)
+~~~
+
+Thus we could write
+
+~~~ scala
+scala> Seq("a", "wet", "dog").map(_.permutations.toList)
+res14: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), List(dog, dgo, odg, ogd, gdo, god))
+~~~
+
+but we end up with a sequence of sequences. Let's look at the types in more detail to see what's gone wrong:
+
+| Method | We have       | We provide               | We get              |
+|--------+---------------+--------------------------+---------------------|
+| `map`  | `Seq[A]`      | `A => B`                 | `Seq[B]`            |
+| `map`  | `Seq[String]` | `String => List[String]` | `Seq[List[String]]` |
+| `???`  | `Seq[A]`      | `A => Seq[B]`            | `Seq[B]`            |
+|=========================================================================|
+{: .table }
+
+### flatMap
+
+To answer to our mystery method `???` is `flatMap`. If we simply replace `map` with `flatMap` we get the answer we want.
+
+~~~ scala
+scala> Seq("a", "wet", "dog").flatMap(_.permutations.toList)
+res15: Seq[String] = List(a, wet, wte, ewt, etw, twe, tew, dog, dgo, odg, ogd, gdo, god)
+~~~
+
+`flatMap` is similar to `map` except that it expects your function to return a sequence. The sequences for each input element are appended together. For example:
+
+~~~ scala
+scala> Seq(1, 2, 3).flatMap(num => Seq(num, num * 10))
+res16: List[Int] = List(1, 10, 2, 20, 3, 30)
+~~~
+
+The end result is (nearly) always the same type as the original sequence: `aList.flatMap(...)` returns another `List`, `anArrayBuffer.flatMap(...)` returns another `ArrayBuffer`, and so on:
+
+~~~ scala
+scala> scala.collection.mutable.ArrayBuffer(1, 2, 3).flatMap(num => Seq(num, num * 10))
+res17: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1, 10, 2, 20, 3, 30)
+~~~
+
+### fold, foldLeft, and foldRight
+
+Now let's look at another kind of operation. Say we have a `Seq[Int]` and we want to add all the numbers together. `map` and `flatMap` don't apply here for two reasons:
+
+ - they expect a *unary* function, whereas `+` is a *binary* operation;
+ - they both return sequences of items, whereas we want to return a single `Int`.
+
+There is a further wrinkle: what result do we expect if the sequence is empty? Zero is a natural choice. Finally, although `+` is associative, in general we may need to specify an order in which to pass arguments to our binary function. Let's make another type table to see what we're looking for.
+
+| Method | We have  | We provide | We get   |
+|--------+----------+------------+----------|
+| `???`  | `Seq[Int]` | `0` and `(Int, Int) => Int` | `Int` |
+|===========================================|
+{: .table }
+
+The method that fits the bill is `fold`, with its ordered variants `foldLeft` and `foldRight`. The job of these methods is to traverse a sequence and accumulate a result. The types are as follows:
+
+| Method | We have  | We provide | We get   |
+|--------+----------+------------+----------|
+| `fold`  | `Seq[A]` | `A` and `(A, A) => A` | `A` |
+| `foldLeft` | `Seq[A]` | `B` and `(B, A) => B` | `B` |
+| `foldRight` | `Seq[A]` | `B` and `(A, B) => B` | `B` |
+|===========================================|
+{: .table }
+
+Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the following:
+
+| Method                         | Operations     | Notes
+|--------------|
+| `Seq(1, 2, 3).fold(0)(_ + _)`  | `1 + 2 + 3`    | Order of evaluation is not specified, nor is the inclusion of 0.
+| `Seq(1, 2, 3).foldLeft(0)(_ + _)`  | `(((0 + 1) + 2) + 3)`    | Evaluation is left ot right
+| `Seq(1, 2, 3).foldRight(0)(_ + _)`  | `(1 + (2 + (3 + 0)))`    | Evaluation is right to left
+|===========================================|
+{: .table }
+
+The fold methods are very flexible. In fact we can write *any* transformation on a sequence in terms of fold! This is very deep theoretical result, and it goes beyond sequences. For any *algebraic datatype* there is a systematic process to define a fold that is a universal transformation for that datatype. We're not going to go deeper into this here, but be aware of the power and fundamental nature of fold in your future study of functional programming.
+
+### foreach
+
+There is one more traversal method that is commonly used: `foreach`. Unlike `map`, `flatMap` and the `fold`s, `foreach` does not return a useful result -- we use it purely for its side-effects. The type table is:
+
+| Method | We have  | We provide | We get   |
+|--------+----------+------------+----------|
+| `foreach` | `Seq[A]` | `A => Unit` | `Unit` |
+|==========|
+{: .table }
+
+A great example using `foreach` is printing the elements of a sequence:
+
+~~~ scala
+scala> List(1, 2, 3).foreach(num => println("And a " + num + "..."))
+And a 1...
+And a 2...
+And a 3...
+~~~
+
+### Algebra of transformations
+
+We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `foreach`. It can be difficult to know which to use, but it turns out there is a simple way to decide: look at the types! The type table below gives the types for all the operations we've seen so far. To use it, start with the data you have (always a `Seq[A]` in the table below) and then look at the functions you have available and the result you want to obtain. The final column will tell you which method to use.
+
+| We have  | We provide    | We want   | Method
+|--------+----------+------------+------------|
+| `Seq[A]` | `A => Unit`   | `Unit`   | `foreach` |
+| `Seq[A]` | `A => B`      | `Seq[B]` | `map` |
+| `Seq[A]` | `A => Seq[B]` | `Seq[B]` | `flatMap` |
+| `Seq[A]` | `A1 >: A` and `(A1, A1) => A1` | `A1` | `fold` |
+| `Seq[A]` | `B` and `(B, A) => B` | `B` | `foldLeft` |
+| `Seq[A]` | `B` and `(A, B) => B` | `B` | `foldRight` |
+|============|
+{: .table }
+
+This type of analysis may see foreign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
+
+## Exercises
+
+1. Print every element of the sequence `Seq(1, 2, 3)`.
+2. Multiply together all the elements of `Seq(1, 2, 3)`.
+3. Write a function to find the smallest element of a `Seq[Int]`.
+4. Given `Seq(1, 1, 2, 4, 3, 4)` create the sequence containing each number only once. Order is not important, so `Seq(1, 2, 4, 3)` or `Seq(4, 3, 2, 1)` are equally valid answers. Hint: Use `contains` to check if a sequence contains a value.
+5. Write a function that reverses the elements of a sequence. Your output does not have to use the same concrete implementation as the input. Hint: use `foldLeft`.
+6. Write `map` in terms of `foldRight`.
+7. Write your own implementation of `foldLeft` that uses `foreach` and mutable state.
+
+
+## Other useful functions
+
+There are many other useful methods defined on `Seq`. We've seen `contains` in the exercises above (you did do the exercises, right?) Similar functions are `filter` and `find`. Filter returns a sequence containing all the element that pass a test. For example, to get just the positive elements of sequence:
+
+~~~ scala
+scala> Seq(-1, 1, 2, -2).filter(elt => elt > 0)
+res16: Seq[Int] = List(1, 2)
+~~~
+
+Find finds the first element that matches a predicate. Since no element may match, find returns an `Option`.
+
+~~~ scala
+scala> Seq(-1, 1, 2, -2).find(elt => elt > 0)
+res17: Option[Int] = Some(1)
+
+scala> Seq(-1, -2).find(elt => elt > 0)
+res18: Option[Int] = None
+~~~
+
+There are many more methods on sequences. Consult the documentation for more. You can find many of them on the [Scaladoc page](http://www.scala-lang.org/api/current/scala/collection/Seq.html) for `Seq`.

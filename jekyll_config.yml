@@ -1,0 +1,104 @@
+# Table of Contents
+# -----------------
+
+toc:
+  - head: /index.html
+    body:
+     - /about.html
+     - /getting-started/index.html
+
+  - head: /intro/index.html
+    body:
+     - /intro/literals.html
+     - /intro/compound.html
+     - /intro/object-literals.html
+     - /intro/conclusion.html
+
+  - head: /objects/index.html
+    body:
+     - /objects/classes.html
+     - /objects/objects-and-functions.html
+     - /objects/this-or-that.html
+     - /objects/this-and-that.html
+     - /objects/this-contains-that.html
+
+  - head: /collections/index.html
+    body:
+     - /collections/seq.html
+     - /collections/working-with-seq.html
+     - /collections/seq-implementations.html
+     - /collections/map-and-set.html
+     - /collections/for-comprehensions.html
+     - /collections/working-with-for-comprehensions.html
+     - /collections/arrays-and-strings.html
+     - /collections/iterators.html
+     - /collections/traversable.html
+     - /collections/java-interop.html
+
+  - head: /fp/index.html
+    body:
+     - /fp/ho-functions.html
+     - /fp/structural-recursion.html
+     - /fp/modelling-with-types.html
+
+  - head: /dsl/index.html
+    body:
+     - /dsl/operators.html
+     - /dsl/control.html
+     - /dsl/implicits.html
+     - /dsl/type-classes.html
+     - /dsl/pimping.html
+     - /dsl/macros.html
+
+
+  # - head: /sbt/index.html
+
+  # - head: /scala-basics/index.html
+  #   body:
+  #    - /scala-basics/expressions.html
+  #    - /scala-basics/types.html
+  #    - /scala-basics/definitions.html
+  #    - /scala-basics/more-expressions.html
+
+  # - head: /oo/index.html
+  #   body:
+  #    - /oo/defining.html
+  #    - /oo/inheritance.html
+  #    - /oo/traits.html
+  #    - /oo/type-parameters.html
+
+
+  # - head: /dsl/index.html
+  #   body:
+  #   - /dsl/operators.html
+  #   - /dsl/control.html
+  #   - /dsl/implicits.html
+  #   - /dsl/type-classes.html
+  #   - /dsl/pimping.html
+  #   - /dsl/macros.html
+
+
+# Jekyll Configuration
+# --------------------
+
+url         : http://underscore.io
+
+source      : src/pages
+posts       : ../posts
+layouts     : ../layouts
+includes    : ../includes
+
+destination : dist
+plugins     : jekyll_plugins
+
+keep_files  : [ 'css', 'js', 'images' ]
+
+permalink   : /:categories/:year/:month/:day/:title
+
+safe        : false
+pygments    : true
+markdown    : kramdown
+markdown_ext: foo
+
+kramdown:
+  parse_block_html: true
