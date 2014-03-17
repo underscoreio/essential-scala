@@ -22,6 +22,7 @@ module.exports = (grunt) ->
           yuicompress: true
         files:
           "dist/css/screen.css": "src/css/screen.less"
+          "dist/css/print.css" : "src/css/print.less"
 
     uglify:
       site:

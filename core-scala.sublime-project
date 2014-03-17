@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "folder_exclude_patterns": [
+        "dist",
+        "bower_components",
+        "node_modules",
+        "assets",
+        "jekyll_plugins",
+        ".git"
+      ],
+      "file_exclude_patterns": [
+        "Gemfile",
+        "Gemfile.lock",
+        ".ruby-version"
+      ]
+    }
+  ]
+}
