@@ -106,12 +106,15 @@ res26: String = foo
 ~~~
 
 <div class="solution">
+~~~ scala
 sealed trait Sum[A, B]
 final case class Left[A, B](val get: A) extends Sum[A, B]
 final case class Right[A, B](val get: B) extends Sum[A, B]
 </div>
+~~~
 
 Scala has the generic sum type `Either` for two cases, but it does not have types for more cases.
+</div>
 
 #### Generic Functions
 
@@ -123,10 +126,12 @@ res27: Box[String] = Box(2)
 ~~~
 
 <div class="solution">
+~~~ scala
 case class Box[A](val get: A) {
   def map[B](f: A => B): Box[B] =
       Box(f(get))
 }
+~~~
 </div>
 
 ## Type Bounds
@@ -171,7 +176,9 @@ This interaction might be surprising. `Ex1` is a subtype of `Foo` so we might ex
 Make `Box` covariant.
 
 <div class="solution">
+~~~ scala
 case class Box[+A](val get: A)
+~~~
 </div>
 
 **Contravariance** is the opposite of covariance. For a contravariant type `F` a supertype of `A` is a subtype of `F[A]`. Why would we ever want contravariance? Consider a function `f: A => B`. What functions can we safely use in place of this function? A function returning a subtype of `B` is ok, because it's result type will have all the properties of `B` that we might depend on. A function expecting a supertype of `A` is also ok. A function expecting a subtype of `A` is not ok, however, as it will expect properties of its input that we do not enforce. Thus functions are covariant in their return type but contravariant in their input type. We annotate contravariance as `-A` for a type `A`.

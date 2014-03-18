@@ -223,12 +223,12 @@ The publisher needs to ship out XML to book merchants. The XML looks like this:
 
 <periodical>
   <title>Modern Drunkard Magazine</title>
-  <editor></editor>Frank Kelly Rich</editor>
+  <editor>Frank Kelly Rich</editor>
   <isbn>0987654321</isbn>
 </periodical>
 ~~~
 
-Write code to render a `Book` as XML. Note that Scala support XML literals.
+Write code to render a `Book` as XML. Note that Scala supports XML literals.
 
 ~~~ scala
 scala> <foo></foo>
