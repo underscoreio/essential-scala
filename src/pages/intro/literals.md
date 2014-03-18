@@ -111,36 +111,50 @@ Unit is an important concept in Scala. Most of a Scala program consists of expre
 
 ### Exercises
 
-1. What are the values and types of the following Scala literals?
+#### Literally Just Literals
 
-   ~~~scala
-   42
+What are the values and types of the following Scala literals?
 
-   true
+~~~scala
+42
 
-   123L
+true
 
-   42.0
-   ~~~
+123L
 
-2. What is the difference between the following literals? What is the type and value of each?
+42.0
+~~~
 
-   ~~~scala
-   'a'
+<div class="solution">
+`42` is an `Int`. `true` is a `Boolean`. `123L` is a `Long`. `42.0` is a `Double`.
 
-   "a"
-   ~~~
+This exercise just gives you some experience using the Scala REPL or Worksheet.
+</div>
 
-3. What is the difference between the following expressions? What is the type and value of each?
+#### Quotes and Misquotes
 
-   ~~~scala
-   "Hello world!"
+What is the difference between the following literals? What is the type and value of each?
 
-   println("Hello world!")
-   ~~~
+~~~ scala
+'a'
 
-4. What is the type and value of the following literal? Try writing it in a Scala worksheet and see what happens!
+"a"
+~~~
 
-   ~~~scala
-   'Hello world!'
-   ~~~
+#### An Aside on Side-Effects
+
+What is the difference between the following expressions? What is the type and value of each?
+
+~~~scala
+"Hello world!"
+
+println("Hello world!")
+~~~
+
+#### Learning By Mistakes
+
+What is the type and value of the following literal? Try writing it in a Scala worksheet and see what happens!
+
+~~~scala
+'Hello world!'
+~~~
