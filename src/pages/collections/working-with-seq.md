@@ -158,14 +158,195 @@ This type of analysis may see foreign at first, but you will quickly get used to
 
 ## Exercises
 
-1. Print every element of the sequence `Seq(1, 2, 3)`.
-2. Multiply together all the elements of `Seq(1, 2, 3)`.
-3. Write a function to find the smallest element of a `Seq[Int]`.
-4. Given `Seq(1, 1, 2, 4, 3, 4)` create the sequence containing each number only once. Order is not important, so `Seq(1, 2, 4, 3)` or `Seq(4, 3, 2, 1)` are equally valid answers. Hint: Use `contains` to check if a sequence contains a value.
-5. Write a function that reverses the elements of a sequence. Your output does not have to use the same concrete implementation as the input. Hint: use `foldLeft`.
-6. Write `map` in terms of `foldRight`.
-7. Write your own implementation of `foldLeft` that uses `foreach` and mutable state.
+The goals of this exercise are for you to learn your way around the collections API, but more importantly to learn to use types to drive implementation. When approaching each exercise you should answer:
 
+1. What is the type of the data we have available?
+2. What is the type of the result we want?
+3. What is the type of the operations we will use?
+
+When you have answered these questions look at the type table above to find the correct method to use. Done in this way the actual programming should be straightforward.
+
+#### Iteration
+
+Halve every element of `Seq(2, 4, 6)`, returning a sequence of the results.
+
+<div class="solution">
+Let's follow the process. The types are:
+
+1. We have a `Seq[Int]`
+2. We want a `Seq[Int]` as the result.
+3. The function `(_ / 2)`, or it's equivalent `(x: Int) => x /2`, which has type `Int => Int`, is the obvious way to halve an `Int`.
+
+Looking at the type table we see that `map` is the only functions that fits the types we have available. Our solution is:
+
+~~~ scala
+scala> Seq(2, 4, 5).map(_ / 2)
+res14: Seq[Int] = List(1, 2, 2)
+~~~
+</div>
+
+#### Printing
+
+Print every element of the sequence `Seq(1, 2, 3)`.
+
+<div class="solution">
+We have available a `Seq[Int]` and `println`, which has type `Any => Unit`. We don't care about our result (we are running code for side-effect) so the result type is `Unit`.
+
+Looking at the type table we see that `foreach` meets our requirements, so the final solution is:
+
+~~~ scala
+Seq(1, 2, 3).foreach(println _)
+~~~
+</div>
+
+#### Multiplication
+
+Multiply together all the elements of `Seq(1, 2, 3)`.
+
+This exercise is a bit harder than the ones we have done so far, but if you follow the same process you should get the answer.
+
+<div class="solution">
+We have a `Seq[Int]`, we want to get an `Int`, and we know that multiplication is `(Int, Int) => Int`. Looking at the type table we clearly need to use a `fold`, but we need to provide another `Int` to be the "zero" element for the fold. What should this be?
+
+Let's play around with different values of the zero element to see what they do, and then we'll describe how to reason your way to the correct answer.
+
+~~~ scala
+scala> Seq(1, 2, 3).foldLeft(0)(_ * _)
+res16: Int = 0
+
+scala> Seq(1, 2, 3).foldLeft(1)(_ * _)
+res17: Int = 6
+
+scala> Seq(1, 2, 3).foldLeft(2)(_ * _)
+res18: Int = 12
+~~~
+
+Here we have tried three values for the zero: `0`, `1`, and `2`. It is clear that `1` is the correct answer, but how can we arrive at that answer in a systematic way?
+
+The answer is to consider what should happen in the case of a single element sequence like `Seq(2)`. What should we multiply `2` by to get `2`? Clearly it is `1`, so that is the correct value to use as the zero.
+
+From a slightly more mathematical perspective, `1` is the identity for multiplication. That is `x * 1 = x`. So another way to solve the problem is to find the identity for the operation you're using.
+</div>
+
+#### Minimum
+
+Write a method to find the smallest element of a `Seq[Int]`.
+
+<div class="solution">
+This is another fold. We have a `Seq[Int]`, the minimum operation is `(Int, Int) => Int`, and we want an `Int`. The challenge is to find the zero value.
+
+What is the identity for `min` so that `min(x, identity) = x`. It is positive infinity, which in Scala we can write as `Int.MaxValue` (see, fixed width numbers do have benefits).
+
+Thus the solution is
+
+~~~ scala
+def smallest(seq: Seq[Int]): Int =
+  seq.foldLeft(Int.MaxValue)(Math.min _)
+~~~
+</div>
+
+#### Unique
+
+Given `Seq(1, 1, 2, 4, 3, 4)` create the sequence containing each number only once. Order is not important, so `Seq(1, 2, 4, 3)` or `Seq(4, 3, 2, 1)` are equally valid answers. Hint: Use `contains` to check if a sequence contains a value.
+
+<div class="solution">
+Once again we follow the same pattern. The types are:
+
+1. We have a `Seq[Int]`
+2. We want a `Seq[Int]`
+3. Constructing the operation we want to use requires a bit more thought. The hint is to use `contains`. We can keep a sequence of the unique elements we've seen so far, and use `contains` to test if the sequence contains the current element. If we have seen the element we don't add it, otherwise we do. In code
+
+   ~~~ scala
+   def insert(seq: Seq[Int], elt: Int): Seq[Int] = {
+     if(seq.contains(elt))
+       seq
+     else
+       elt +: seq
+   }
+   ~~~
+
+We these three pieces we can solve the problem. Looking at the type table we see we want a `fold`. Once again we must find the identity element. In this case the empty sequence is what we want. Thus the solution is
+
+~~~ scala
+def insert(seq: Seq[Int], elt: Int): Seq[Int] = {
+  if(seq.contains(elt))
+    seq
+  else
+    elt +: seq
+}
+
+def unique(seq: Seq[Int]): Seq[Int] = {
+  seq.foldLeft(Seq.empty[Int]){ insert _ }
+}
+
+unique(Seq(1, 1, 2, 4, 3, 4))
+~~~
+
+Note how I created the empty sequence. I could have written `Seq[Int]()` but in both cases I need to supply a type (`Int`) to help the type inference along.
+</div>
+
+#### Reverse
+
+Write a function that efficiently reverses the elements of a sequence. Your output does not have to use the same concrete implementation as the input. Hint: use `foldLeft`.
+
+<div class="solution">
+In this exercise, and the ones that follow, using the types are particularly important. Start by writing down the type of `reverse`.
+
+~~~ scala
+def reverse[A, B](seq: Seq[A], f: A => B): Seq[B] = {
+  ???
+}
+~~~
+
+The hint says to use `foldLeft`, so let's go ahead and fill in the body as far as we can.
+
+~~~ scala
+def reverse[A](seq: Seq[A]): Seq[A] = {
+  seq.foldLeft(???){ ??? }
+}
+~~~
+
+We need to work out the function to provide to `foldLeft` and the zero or identity element. For the function, the type of `foldLeft` requires it is `(Seq[A], A) => Seq[A]`. There are two methods on `Seq` that have the right type: `+:` and `:+`. We want an efficient implementation so we must use `+:`.
+
+For the zero element we know that it must have the same type as the return type of `reverse` (because the result of the fold is the result of `reverse`). Thus it's a `Seq[A]`. Which sequence? There are a few ways to answer this:
+
+- The only `Seq[A]` we can create in this method, before we know what `A` is, is the empty sequence `Seq.empty[A]`.
+- The identity element is one such that `x +: zero = Seq(x)`. Again this must be the empty sequence.
+
+So we now we can fill in the answer.
+
+~~~ scala
+def reverse[A](seq: Seq[A]): Seq[A] = {
+  seq.foldLeft(Seq.empty[A]){ (seq, elt) => elt +: seq }
+}
+~~~
+</div>
+
+#### Map
+
+Write `map` in terms of `foldRight`.
+
+<div class="solution">
+~~~ scala
+def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
+  seq.foldRight(Seq.empty[B]){ (elt, seq) => f(elt) +: seq }
+}
+~~~
+</div>
+
+#### Fold Left
+
+Write your own implementation of `foldLeft` that uses `foreach` and mutable state.
+
+<div class="solution">
+~~~ scala
+def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
+  var result = zero
+  seq.foreach { elt => result = f(result, elt) }
+  result
+}
+~~~
+</div>
 
 ## Other useful functions
 
