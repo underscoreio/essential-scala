@@ -128,7 +128,7 @@ true
 <div class="solution">
 `42` is an `Int`. `true` is a `Boolean`. `123L` is a `Long`. `42.0` is a `Double`.
 
-This exercise just gives you some experience using the Scala REPL or Worksheet.
+This exercise just gives you some experience using the Scala console or Worksheet.
 </div>
 
 #### Quotes and Misquotes
@@ -141,6 +141,10 @@ What is the difference between the following literals? What is the type and valu
 "a"
 ~~~
 
+<div class="solution">
+The first is a literal `Char` and the second is a literal `String`.
+</div>
+
 #### An Aside on Side-Effects
 
 What is the difference between the following expressions? What is the type and value of each?
@@ -151,6 +155,12 @@ What is the difference between the following expressions? What is the type and v
 println("Hello world!")
 ~~~
 
+<div class="solution">
+The literal expression `"Hello world!"` evaluates to a `String` value. The expression `println("Hello world!")` evalutes to `Unit` and, as a side-effect, prints `"Hello world!"` on the console.
+
+This an important distinction between a program that evalutes to a value and aprogram that prints a value as a side-effect. The former can be reasoned about using substitution but the latter cannot.
+</div>
+
 #### Learning By Mistakes
 
 What is the type and value of the following literal? Try writing it in a Scala worksheet and see what happens!
@@ -158,3 +168,7 @@ What is the type and value of the following literal? Try writing it in a Scala w
 ~~~scala
 'Hello world!'
 ~~~
+
+<div class="solution">
+You should see an error message. Make sure you read and understand the error message as you'll see plenty more of them soon!
+</div>
