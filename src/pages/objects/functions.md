@@ -64,7 +64,7 @@ res6: Int = 30
 
 You may be wondering why the type and values of our revised `Adder` don't print the same as these functions. The answer is subtle: by naming our method `apply`, we gain acces to the short-hand syntax for function application. However, our `Adder` is still of type `Adder`, and it still has the same `toString` method as before..
 
-Scala also defines standard abstract classes[^actually-traits] for functions of various arities, from `Function0` for functions of no parameters upwards to `Function22` for functions of 22 parameters[^why-22]. The notations `Int => Int` and `(Int, Int) => Int` are syntactic sugar for `Function1[Int, Int]` and `Function2[Int, Int, Int]` respectively.
+Scala also defines standard abstract classes[^actuallytraits] for functions of various arities, from `Function0` for functions of no parameters upwards to `Function22` for functions of 22 parameters[^whytwentytwo]. The notations `Int => Int` and `(Int, Int) => Int` are syntactic sugar for `Function1[Int, Int]` and `Function2[Int, Int, Int]` respectively.
 
 These built-in function types allow us to write code that relies on a general function rather than something library-specific like `Adder`. For example:
 
@@ -80,9 +80,9 @@ res9: Int = 5
 
 We no longer need our `Adder` class -- we can pass any function to `Counter` to change its value in any arbitrary manner.
 
-[^actually-traits] Actually, technically `Function1` through `Function22` are *traits* - we'll be introduced to these in the next couple of sections.
+[^actuallytraits]: Actually, technically `Function1` through `Function22` are *traits* - we'll be introduced to these in the next couple of sections.
 
-[^why-22] Why 22? Honestly, there's no specific reason. The language creators simply had to stop somewhere. They chose to stop at 22.
+[^whytwentytwo]: Why 22? Honestly, there's no specific reason. The creators of Scala had to stop somewhere, and they chose to stop at 22.
 
 ### Converting methods to functions
 

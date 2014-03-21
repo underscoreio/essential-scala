@@ -177,7 +177,7 @@ Conditionals without `else` expressions only evaluate to a value half of the tim
 Conditionals without `else` expressions are still useful for side-effects such as printing output.
 </div>
 
-#### Exercise name ???
+#### Substitution
 
 What is the difference between the following expressions? What are the similarities?
 

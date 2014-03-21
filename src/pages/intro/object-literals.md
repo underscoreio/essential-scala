@@ -214,7 +214,7 @@ Copy and paste `calc` from the previous exercise to create a `calc2` that is gen
 Like Java, Scala can't generalize particularly well across `Ints` and `Doubles`. However, it will allow us to *"overload"* the `square` and `cube` methods by defining them for each type of parameter.
 
 ~~~ scala
-object calc {
+object calc2 {
   def square(value: Double) = value * value
   def cube(value: Double) = value * square(value)
 
@@ -245,13 +245,13 @@ val x: Int = calc.square(2).toInt // toInt rounds down
 ~~~
 
 <div class="alert alert-info">
-**Java tip:** To main similar behaviour to Java, Scala also automatically converts any object to a `String` where required. This is to make it easy to write things like `println("a" + 1)`, which Scala automatically rewrites as `println("a" + 1.toString)`.
+**Java tip:** To maintain similar behaviour to Java, Scala also automatically converts any object to a `String` where required. This is to make it easy to write things like `println("a" + 1)`, which Scala automatically rewrites as `println("a" + 1.toString)`.
 
 The fact that string concatenation and numeric addition share the same `+` method can sometimes cause unexpected bugs, so watch out!
 </div>
 </div>
 
-#### Ordered evaluation (optional)
+#### Order of evaluation
 
 When entered on the REPL, what does the following program output, and what is the type and value of the final expression? Think carefully about the types, dependencies, and evaluation behaviour of each field and method.
 
@@ -321,7 +321,7 @@ The full sequence of evaluation is as follows:
        concatentation, and yielding `"3c31"`
 </div>
 
-#### Greetings, Humans
+#### Greetings, humans
 
 Define an object called `person` that contains fields called `firstName` and `lastName`. Define a second object called `alien` containing a method called `greet` that takes your person as a parameter and returns a greeting using their `firstName`.
 
