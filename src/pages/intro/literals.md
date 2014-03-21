@@ -12,7 +12,7 @@ res0: Int = 42
 
 This interaction at the REPL shows us that the literal `42` evaluates to the `Int` `42`. Don't confuse a literal with the value it evaluates to! The literal expression is the representation in the program text before the program is run. The value is the representation in the computer's memory after the program has run.
 
-If you have prior programming experience you won't be surprised at the available literals in Java. Here's a quick run down of the major ones.
+If you have prior programming experience, particularly Java experience, you won't be surprised at the available literals in Scala. Here's a quick run down of the major ones.
 
 ### Numbers
 
@@ -28,11 +28,11 @@ res1: Double = 42.0
 scala> 42.0f
 res2: Float = 42.0
 
-scala> 42.0l
+scala> 42l
 res3: Long = 42
 ~~~
 
-Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. We'll see how to create them in a bit.
+Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. Instead, we create them using *methods* called `toShort` and `toByte`. We'll learn more about this in the next section.
 
 ### Booleans
 
@@ -63,7 +63,7 @@ res34: Char = a
 
 ### Strings
 
-Strings are exactly Java's strings, and written the same way.
+Strings are exactly Java's strings, and are written the same way.
 
 ~~~scala
 scala> "this is a string"
@@ -72,7 +72,7 @@ res8: java.lang.String = this is a string
 scala> "the\nusual\tescape characters apply"
 res9: java.lang.String =
 the
-usual escape characters apply
+    usual escape characters apply
 ~~~
 
 ### Null
@@ -85,9 +85,11 @@ res13: Null = null
 ~~~
 
 <div class="alert alert-info">
-  **Java tip:** Although `nulls` are common in Java code, they are considered very bad practice in Scala. The main use of `null` is to implement *optional* values that have some value or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, which can lead to runtime errors in the form of `NullPointerExceptions`.
+  **Java tip:** Although `nulls` are common in Java code, they are considered very bad practice in Scala.
 
-  In Scala we have ways of defining optional values that can be checked by the compiler, removing the necessity of using `null` in our code. We will learn about these later.
+  The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, which can lead to runtime errors in the form of `NullPointerExceptions`.
+
+  In Scala we have ways of defining optional values that are checked by the compiler. This removes the necessity of using `null`, making our programs much safer. We will learn about these later.
 </div>
 
 ### Unit
@@ -107,7 +109,17 @@ scala> :type println("something")
 Unit
 ~~~
 
-Unit is an important concept in Scala. Most of a Scala program consists of expressions, and expressions must evaluate to values. We need a value for expressions that have no useful value, and unit is that value.
+Unit is an important concept in Scala. Many of Scala's syntactic constructs are *expressions* that have types and values. We need a placeholder for expressions that don't yield a useful value, and unit provides just that.
+
+### Take home points
+
+We have been introduced to the basic data types in Scala, which are identical to the basic types available in Java.
+
+We have seen how to write *literal* values of each type. The syntax is, again, very similar to Java.
+
+Finally, we have noted that every literal has a **value** and a **type** - something which is also true for more complex Scala expressions.
+
+In the next section we will start combining values into expressions and producing code that has useful effects.
 
 ### Exercises
 

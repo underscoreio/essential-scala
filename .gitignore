@@ -11,3 +11,6 @@ Thumbs.db
 /bower_components/
 /dist/
 /node_modules/
+
+core-scala.sublime-workspace
+
