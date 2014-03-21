@@ -152,13 +152,13 @@ if(a > b) "alien" else 2001
 ~~~
 
 <div class="solution">
-  It's a value of type `Any` with value `2001`.
+It's a value of type `Any` with value `2001`.
 
-  The difference here is the type of the result. We saw earlier that the type is the *upper bound* of the positive and negative arms of the expression. `"alien"` and `2001` are completely different types - their closest common ancestor is `Any`, which is the grand supertype of all Scala types.
+The difference here is the type of the result. We saw earlier that the type is the *upper bound* of the positive and negative arms of the expression. `"alien"` and `2001` are completely different types - their closest common ancestor is `Any`, which is the grand supertype of all Scala types.
 
-  This is an important observation: types are determined at compile time, before the program is run. The compiler can't know which of `a` and `b` is greater before running the program, so it can only make a best guess at the type of the result of the conditional. `Any` is as close as it can get in this program, whereas in the previous exercise it can get all the way down to `String`.
+This is an important observation: types are determined at compile time, before the program is run. The compiler can't know which of `a` and `b` is greater before running the program, so it can only make a best guess at the type of the result of the conditional. `Any` is as close as it can get in this program, whereas in the previous exercise it can get all the way down to `String`.
 
-  We'll learn more about `Any` in the following sections. Java programmers shouldn't confuse it with `Object` because it subsumes value types like `Int` and `Boolean` as well.
+We'll learn more about `Any` in the following sections. Java programmers shouldn't confuse it with `Object` because it subsumes value types like `Int` and `Boolean` as well.
 </div>
 
 #### An if without an else
@@ -190,7 +190,7 @@ What is the difference between the following expressions? What are the similarit
 <div class="solution">
 The expressions have the same result type and return value. However, they arrive at their results in very different ways.
 
-It is important to note that, because neither expression has any side-effects, they are interchangeable from a user's point of view. Anywhere you can write `1 + 2 + 3` you can also write `6`.
+As neither expression has any side-effects, they are interchangeable from a user's point of view. Anywhere you can write `1 + 2 + 3` you can also write `6`. This is known as the **substitution model of evaluation**, although you may remember the principle from simplifying algebraic formulae at school.
 
-**TODO: Talk about substitution.**
+As programmers, we must develop a mental model of how our code operates. In the absence of side-effects, the substitution model always works. If we know the types and values of each component of an expression, we know the type and value of the expression as a whole. In functional programming, we aim to avoid side-effects for this reason: it makes our programs very easy to reason about.
 </div>
