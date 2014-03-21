@@ -11,14 +11,14 @@ Important point: **every value in Scala is an object**. This means we can intera
 
 For example, we can get the uppercase version of a `String` by calling its `toUpperCase` method:
 
-~~~scala
+~~~ scala
 scala> "hello".toUpperCase
 res21: String = HELLO
 ~~~
 
 We can chain method calls together to make more complex programs:
 
-~~~scala
+~~~ scala
 scala> "hello".toUpperCase.toLowerCase
 res22: String = hello
 ~~~
@@ -27,7 +27,7 @@ res22: String = hello
 
 Because every value in Scala is an object, we can also call methods on primitive types such as `Int` and `Boolean`. This is in contrast to Java where `int` and `boolean` are not objects:
 
-~~~scala
+~~~ scala
 scala> 123.toShort
 res1: Short = 123
 
@@ -37,7 +37,7 @@ res2: Byte = 123
 
 But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes!
 
-~~~scala
+~~~ scala
 scala> 43 - 3 + 2
 res18: Int = 42
 
@@ -51,7 +51,7 @@ As a general rule, any Scala expression you can write as `a.b(c)` you can also w
 
 Infix notation is one of several conventions that allow us to write simple operator expressions that are implemented in terms of objects and method calls.There are also notations for **prefix, postfix, and right-associative operators**, and a set of **precedence rules** that follow our intuitive understanding from mathematics and logic.
 
-~~~scala
+~~~ scala
 scala> 2 * 3 + 4 * 5
 res0: Int = 26
 
@@ -63,7 +63,7 @@ res1: Int = 26
 
 Conditionals are an essential part of any programming language. Scala's `if` statement has the same syntax as Java's. One important difference is that **Scala's conditional is an expression**: it has a type and returns a value.
 
-~~~scala
+~~~ scala
 scala> if(true) {
          42
        } else {
@@ -74,7 +74,7 @@ res45: Int = 42
 
 You can drop the braces around the true or false arm if it contains a single expression, and even write a conditional on one line.
 
-~~~scala
+~~~ scala
 scala> if(true) 42 else 40
 res47: Int = 42
 ~~~
@@ -83,7 +83,7 @@ res47: Int = 42
 
 *Blocks* are another type of expression that allow us to sequence computations together. They are written as a pair of braces containing sub-expressions separated by semicolons or newlines.
 
-~~~scala
+~~~ scala
 scala> { 1; 2; 3 }
 <console>:8: warning: a pure expression does nothing in statement position; you may be omitting necessary parentheses
               { 1; 2; 3 }
@@ -100,7 +100,7 @@ Like in Java, a block is a sequence of expressions surrounded by braces. Unlike 
 
 What's the point of this? Why execute `1` and `2` if we're going to throw their values away? This is a good question, and is the reason the Scala compiler raised those warnings. The main reason to use a block is to use code that produces side-effects before calculating a final value:
 
-~~~scala
+~~~ scala
 scala> {
      |   println("This is a side-effect")
      |   println("This is a side-effect as well")
@@ -127,7 +127,7 @@ As we will see in the next section, Scala's focus on programming with expression
 
 What is the type and value of the following conditional?
 
-~~~scala
+~~~ scala
 val a = 1
 val b = 2
 if(a > b) "alien" else "predator"
@@ -145,7 +145,7 @@ if(a > b) "alien" else "predator"
 
 What about this conditional?
 
-~~~scala
+~~~ scala
 val a = 1
 val b = 2
 if(a > b) "alien" else 2001
@@ -165,7 +165,7 @@ We'll learn more about `Any` in the following sections. Java programmers shouldn
 
 What about this conditional?
 
-~~~scala
+~~~ scala
 if(true) "hello"
 ~~~
 
@@ -181,7 +181,7 @@ Conditionals without `else` expressions are still useful for side-effects such a
 
 What is the difference between the following expressions? What are the similarities?
 
-~~~scala
+~~~ scala
 1 + 2 + 3
 
 6

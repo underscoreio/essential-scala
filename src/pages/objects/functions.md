@@ -3,103 +3,110 @@ layout: page
 title: Objects and Functions
 ---
 
-Hopefully you did the last set of exercises as they motivate what we're covering here. We're going to look at two special types of objects things: companion objects and functions.
-
-
-## Companion Objects
-
-Sometimes we want a method that is independent of any instance, but logically belongs to some class. For example, we might want to validate an email address before we accept it as a login. In Java we'd use a static method. In Scala we can just put that method on an object. We don't need the concept of static methods as objects replace their use. However, which object should hold that method?
-
-Sometimes we want to have more than one constructor for a class. The convention in Scala is to have only one constructor per class[^constructor]. In the last exercises we implemented a rather awkward `PersonFactory` class to construct `Person`s. Really this functionality should just be a method on an object, but again what object should hold it? Ideally it would be a `Person` object, but we already have a class with that name.
-
-[^constructor]: You can have more than one constructor per class, but it is unusual, and we won't cover it here.
-
-Scala answers this issue with the concept of **companion objects**. A companion object is just an object with the same name as a class. Due to the way companion objects and classes are compiled, they must be defined in the same file. Here's the `PersonFactory` example rewritten with a companion object. In this example we use the console's *paste mode* to define the companions at the same time:
+In the final exercise in the [Classes](classes.html) section we defined a class called `Adder`. Here's a recap.
 
 ~~~ scala
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
-class Person(val firstName: String, val lastName: String) {
-  def name = firstName + " " + lastName
+class Adder(amount: Int) {
+  def add(in: Int) = in + amount
 }
-
-object Person {
-  def fromName(name: String): Person = {
-    val parts = name.split(" ")
-    new Person(parts(0), parts(1))
-  }
-}
-^D
-
-// Exiting paste mode, now interpreting.
-
-defined class Person
-defined module Person
 ~~~
 
-Using a companion object is no different to using a normal object.
+In the discussion we described `Adders` as representing the computation of adding an `amount` to a number. It was like a method that is also a value.
+
+This is such a powerful concept, that Scala has a fully blown set of language features that allow us to create objects that also behave like computations. These comutational objects are called *functions*, and are the basis of **functional programming**.
+
+Finally, folks, we made it. Take a deep breath and let's start functional programming!
+
+### The apply method
+
+In Scala, a function is simply an object with a special method called `apply`. Using the method name `apply` in an object `foo` affords us a special syntax for `foo.apply(args)`: `foo(args)`.
+
+For example, if we rename the `add` method to `apply` we can use it as follows:
 
 ~~~ scala
-scala> Person.fromName("John Doe")
-res0: Person = Person@4ca8cd58
+scala> class Adder(amount: Int) {
+     |   def apply(in: Int) = in + amount
+     | }
+defined class Adder
 
-scala> Person.fromName("John Doe").name
-res1: String = John Doe
+scala> val add3 = new Adder(3)
+add3: Adder = Adder@1d4f0fb4
+
+scala> add3(2)
+res7: Int = 5
 ~~~
 
+With this one neat trick objects can become functions. There are lots of things that we can now do with functions that we couldn't do with methods: assign them to variables, pass them as arguments, and return them. Functions are **first class values**, which means we can do anything with them that we can with other values.
 
-## Functions
+### Function literals
 
-If an object `foo` has a method called `apply` we can call that method using `foo(args)`. For example, `String` has an apply method (through a mysterious mechansim we [explain later](/collections/arrays-and-strings.html)) that allows to us to index characters within the string.
-
-~~~scala
-scala> "hi there!"(0)
-res35: Char = h
-~~~
-Be aware there is no dot before the parenthesis. Adding one is an error!
-
-~~~scala
-scala> "hi there!".(0)
-<console>:1: error: identifier expected but '(' found.
-       "hi there!".(0)
-~~~
-
-With this one neat trick objects can become functions. There are lots of things that methods can't do: be passed to other methods or returned from methods, for instance, which objects can. Since we can treat objects as functions this means we can do the same things with functions. They are what is called **first class values**.
-
-Scala takes this trick further, giving us some short-hand syntax for functions. For example, here's the function that adds one to an `Int`.
+Scala takes this trick further by giving us a short-hand *function literal syntax* specifically for creating new functions. Here is a function that adds one to an `Int`:
 
 ~~~ scala
 scala> (x: Int) => x + 1
 res3: Int => Int = <function1>
+
+scala> res3(10)
+res4: Int = 11
 ~~~
 
-What's the type of this?
+Notice the type: `Int => Int`. This means a function that takes an `Int` as a parameter and returns an `Int`. This extends naturally to functions of more than one argument:
 
 ~~~ scala
-scala> :type (x: Int) => x + 1
-Int => Int
+scala> (x: Int, y:Int) => x + y
+res5: (Int, Int) => Int = <function2>
+
+scala> res5(10, 20)
+res6: Int = 30
 ~~~
 
-This means a function that takes an `Int` and returns an `Int`. This extends naturally to functions of more than one argument.
+### Built-in function types
+
+You may be wondering why the type and values of our revised `Adder` don't print the same as these functions. The answer is subtle: by naming our method `apply`, we gain acces to the short-hand syntax for function application. However, our `Adder` is still of type `Adder`, and it still has the same `toString` method as before..
+
+Scala also defines standard abstract classes[^actually-traits] for functions of various arities, from `Function0` for functions of no parameters upwards to `Function22` for functions of 22 parameters[^why-22]. The notations `Int => Int` and `(Int, Int) => Int` are syntactic sugar for `Function1[Int, Int]` and `Function2[Int, Int, Int]` respectively.
+
+These built-in function types allow us to write code that relies on a general function rather than something library-specific like `Adder`. For example:
 
 ~~~ scala
-scala> :type (x: Int, y:Int) => x + y
-(Int, Int) => Int
+scala> class Counter(val count: Int = 0) {
+     |   def adjust(func: Int => Int) = new Counter(func(count))
+     | }
+defined class Counter
+
+scala> new Counter(2).adjust((x: Int) => x + 3).count
+res9: Int = 5
 ~~~
 
-Scala defines classes for functions, beginning with `Function0` for functions that take no arguments, and going upwards as the number of arguments increase. The syntax `Int => Int` is a shorthand for `Function1[Int, Int]`.
+We no longer need our `Adder` class -- we can pass any function to `Counter` to change its value in any arbitrary manner.
 
-Finally, Scala gives us syntax to convert a method to a function. If we follow a method name with an underscore, Scala will convert the method to a function.
+[^actually-traits] Actually, technically `Function1` through `Function22` are *traits* - we'll be introduced to these in the next couple of sections.
+
+[^why-22] Why 22? Honestly, there's no specific reason. The language creators simply had to stop somewhere. They chose to stop at 22.
+
+### Converting methods to functions
+
+Finally, Scala gives us syntax to convert a methods into functions, by following a method name with an underscore.
 
 ~~~ scala
-scala> val john = Person.fromName("John Doe")
-john: Person = Person@30d8f246
+scala> object Sum {
+     |   def sum(x: Int, y: Int) = x + y
+     | }
+defined module Sum
 
-scala> john.name _
-res9: () => String = <function0>
+scala> Sum.sum
+<console>:9: error: missing arguments for method sum in object Sum;
+follow this method with `_' if you want to treat it as a partially applied function
+              Sum.sum
+                  ^
+
+scala> (Sum.sum _)
+res11: (Int, Int) => Int = <function2>
 ~~~
 
-## Exercises
+Finally, we understand that cryptic error message about underscores and partially applied functions.
+
+### Exercises
 
 #### Functional Counters
 

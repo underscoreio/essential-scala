@@ -45,7 +45,7 @@ A project is no good without code to run! Let's create our first simple Scala ap
 
 The content of the file should read as follows:
 
-~~~scala
+~~~ scala
 object HelloWorld {
 
 }
@@ -53,7 +53,7 @@ object HelloWorld {
 
 Replace this text with the following minimalist application:
 
-~~~scala
+~~~ scala
 object HelloWorld {
   def main(args: Array[String]): Unit = {
     println("Hello world!")
@@ -95,7 +95,7 @@ Enter a **Worksheet name** of `FirstSteps` and click **Finish**. A new file call
 
 Note that the object on the left contains a single line of Scala code:
 
-~~~scala
+~~~ scala
 println("Welcome to the Scala worksheet")
 ~~~
 
@@ -107,7 +107,7 @@ Welcome to the Scala worksheet
 
 Any expression you add to the left of the editor is evaluated and printed on the right. To demonstrate this, change the text in the editor to the following:
 
-~~~scala
+~~~ scala
 object FirstSteps {
   println("Welcome to the Scala worksheet")
 
@@ -121,7 +121,7 @@ object FirstSteps {
 
 Save your work by selecting the **File Menu** and choosing **Save** (or better still by pressing **Ctrl+S**). Eclipse should automatically evaluate each line of code and print the results on the right of the editor:
 
-~~~scala
+~~~ scala
 object FirstSteps {
   println("Welcome to the Scala worksheet")   //> Welcome to the Scala worksheet
 

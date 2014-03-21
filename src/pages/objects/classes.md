@@ -3,9 +3,9 @@ layout: page
 title: Classes
 ---
 
-A class is a template for creating objects. When we define a class we can create objects that all have similar methods and instance variables and, importantly, all have the same type. This means we can pass different objects with the same class to a method expecting that class. If you did the exercises in the previous section you will have seen this issue.
+A class is a template for creating objects. When we define a class we can create objects that all have similar methods and fields and, importantly, all have the same type. This means we can pass different objects with the same class to a method expecting that class. This will help us overcome the problem we had in the "*Greetings, Humans*" exercise in the last section.
 
-## Defining a Class
+### Defining a Class
 
 Here is a simple class definition:
 
@@ -18,48 +18,61 @@ scala> class Person {
 defined class Person
 ~~~
 
-Let's look at what we have. The class is called `Person`. We can create a new `Person` object using the `new` operator as follows:
+The class is called `Person`. We can create a new `Person` object using the `new` operator as follows, and access its methods and fields of our new object in the usual way.
 
 ~~~ scala
 scala> val noel = new Person
 noel: Person = Person@3235186a
-~~~
 
-We can access the instance variables and members of this class in the usual way:
-
-~~~ scala
 scala> noel.firstName
-res26: String = Noel
+res24: String = Noel
 ~~~
 
-Notice the type of the object `noel` is `Person`
+Notice the type of the object is `Person`. We can use this to show that each call to `new` creates a distinct object of the same type.
 
 ~~~ scala
-scala> :type noel
-Person
+scala> noel // noel is still the object that prints '@3235186a'
+res25: Person = Person@3235186a
+
+scala> val newNoel = new Person // each new object has a new number
+newNoel: Person = Person@2792b987
+
+scala> val anotherNewNoel = new Person
+anotherNewNoel: Person = Person@63ee4826
 ~~~
 
-This means we can write methods that take type `Person` and pass in objects to it.
+This means we can write a method that takes a `Person` as a parameter and use it with any of our objects.
 
 ~~~ scala
-scala> def sayHello(person: Person) =
-     |   "Hello " + person.firstName
-sayHello: (person: Person)String
+scala> object alien {
+     |   def greet(p: Person) =
+     |     "Greetings, " + p.firstName + " " + p.lastName
+     | }
+defined module alien
 
-scala> sayHello(noel)
-res27: String = Hello Noel
+scala> alien.greet(noel)
+res5: String = Greetings, Noel Welsh
+
+scala> alien.greet(newNoel)
+res6: String = Greetings, Noel Welsh
 ~~~
 
-## Constructors
+<div class="alert alert-info">
+**Java tip:** The printed value of each person should be recognisable to Java developers - it is the default implementation of `toString` from `java.lang.Object`. Scala classes are all subclasses of `java.lang.Object` and are, for the most part usable from Java as well as Scala. We can override `toString` to provide our own implementation but we often don't have to as we will see in a moment.
+</div>
 
-As it stands our `Person` class is rather useless. The `firstName` and `lastName` can't be changed when we create the object. What if we want to model a person with a different name?
+[Scala in Depth]: http://www.manning.com/suereth
 
-The solution is to introduce a constructor, which allows us to pass in to the class objects that will be used to customise the object that is created. That's a long sentence for saying we can set the names when we create the class.
+### Constructors
 
-Here's how we write it:
+As it stands our `Person` class is rather useless. We can create as many new objects as we want, but all will have the same `firstName` and `lastName`. What if we want to model a person with a different name?
+
+The solution is to introduce a **constructor**, which allows us to pass parameters to the new objects as we create them.
 
 ~~~ scala
-scala> class Person(val firstName: String, val lastName: String) {
+scala> class Person(first: String, last: String) {
+     |   val firstName = first
+     |   val lastName = last
      |   def name = firstName + " " + lastName
      | }
 defined class Person
@@ -71,15 +84,27 @@ scala> dave.name
 res29: String = Dave Gurnell
 ~~~
 
-## Exercises
+Scala provides us a useful short-hand way of declaring constructor parameters and fields in one go: simply prefix the constructor parameters with the `val` keyword:
+
+~~~ scala
+scala> class Person(val firstName: String, val lastName: String) {
+     |   def name = firstName + " " + lastName
+     | }
+defined class Person
+
+scala> new Person("Dave", "Gurnell").name
+res29: String = Dave Gurnell
+~~~
+
+Constructor arguments are local variables that are only visible from the body of the class. You must declare a field or a method to access data from outside the object.
+
+### Exercises
 
 We now have enough machinery to have some fun playing with classes.
 
 #### A Simple Counter
 
-Implement a `Counter` class. The constructor should take an `Int`. The methods `inc` and `dec` should increment and decrement the counter respectively, returning a new `Counter`.
-
-Here's an example of usage:
+Implement a `Counter` class. The constructor should take an `Int`. The methods `inc` and `dec` should increment and decrement the counter respectively returning a new `Counter`. Here's an example of the usage:
 
 ~~~ scala
 scala> new Counter(10).inc.dec.inc.inc.count
@@ -94,20 +119,18 @@ class Counter(val count: Int) {
 }
 ~~~
 
-There are two points to this exercise. The first goal is to get some practice creating a simple class definition. The second point is think about why this class returns a new class, rather than updating the counter directly. We haven't seen any syntax for setting a variable yet.
+There are two goals to this exercise. The first is practice creating simple classes and objects. The second is think about why `inc` and `dec` return a new `Counter`, rather than updating the same counter directly.
+
+Note that we haven't seen any syntax for assigning a new value to a field yet. In fact, the `val` fields we have created are immutable and can't be changed. This is useful because assignment is a *side-effect* that means we can no longer reason about our programs using the substitution model.
+
+The use-case `new Counter(10).inc.dec.inc.inc.count` actually creates 5 instances of `Counter` before returning its final `Int` value. You may be concerned about the extra memory and CPU overhead for such a simple calculation, but don't be.
+
+It is true that writing side-effect-free functional code comes with a small performance penalty at run time. However, with a modern execution environment such as the JVM the cost is negligable in all but the most performance critical modules of code.
 </div>
 
+#### Constructors versus Factories
 
-#### Fun with Constructors
-
-What happens if we remove the `val`s from the constructor? Something no longer works, but what exactly? Hint: try accessing constructor arguments from inside and outside the object.
-
-<div class="solution">
-The constructor arguments are not visible outside the class.
-</div>
-
-
-#### More Constructors
+In this exercise, we will implement a more convenient way of creating a `Person` using their whole name instead of their first name and last names individually.
 
 We can split a `String` into an `Array` of components as follows:
 
@@ -128,6 +151,9 @@ factory: PersonFactory = PersonFactory@4bce79b8
 scala> val john = factory.create("John Doe")
 john: Person = Person@2fe6a820
 
+scala> john.firstName
+res37: String = John
+
 scala> john.name
 res38: String = John Doe
 ~~~
@@ -142,32 +168,60 @@ class PersonFactory {
 }
 ~~~
 
-This construction is a bit awkward. We have to create a new class just so we can create another class. It would be nice to make this simpler.
-</div>
-
-#### Extending our Counter
-
-Here's a simple class
+The requirement to create a `PersonFactory` in order to conveniently create a `Person` is a bit awkward. We can simplify things a bit by making `PersonFactory` a singleton object.
 
 ~~~ scala
-class Adder(amount: Int) {
-  def apply(in: Int) = in + amount
+object PersonFactory {
+  def create(name: String): Person = {
+    val parts = name.split(" ")
+    new Person(parts(0), parts(1))
+  }
 }
 ~~~
 
-Extend your `Counter` class to have a method called `map`. This method should accept an `Adder` and return a new `Counter` with the result of applying the `Adder` to the `count`.
+We can use this as follows.
+
+~~~ scala
+scala> PersonFactory.create("John Doe").firstName
+res6: String = John
+~~~
+
+It is quite common in Scala to house auxiliary constructors for our classes in singleton objects. As we will see in the next section, Scala even has special rules for **companion objects** that explicitly support a class.
+</div>
+
+#### Counting Faster
+
+Here is a simple class called `Adder`.
+
+~~~ scala
+class Adder(amount: Int) {
+  def add(in: Int) = in + amount
+}
+~~~
+
+Extend your `Counter` class to have a method called `incWithAdder`. This method should accept an `Adder` and return a new `Counter` with the result of applying the `Adder` to the `count`.
 
 <div class="solution">
 ~~~ scala
 class Counter(val count: Int) {
   def dec = new Counter(count - 1)
   def inc = new Counter(count + 1)
-  def map(adder: Adder) =
-    new Counter(adder(count))
+  def incWithAdder(adder: Adder) =
+    new Counter(adder.add(count))
 }
 ~~~
 
-Notice I called the `apply` method without naming it. In Scala, a method `apply` on an object `foo` can be called just by writing `foo()`. This allows some objects to look just like functions! Remember from the last chapter that methods are not values. But objects are. So we can pass around objects that act like functions! Interesting.
+This is an interesting pattern: we are effectively using `Adder` objects to capture computations and pass them to an argument. Remember our discussion earler about methods: *methods are not expressions* - they cannot be stored in fields or passed around as data. Our `Adders` bypass this restriction by being both a computation and an object.
 
-It would be nice to generalise `map` to take any function that takes an `Int` and produces an `Int`. We'll see how to do that later.
+Using objects to represent computation is a common paradigm in object oriented programming languages. Consider, for example, event listeners such as Java Swing's `ActionListener`.
+
+~~~ java
+public class MyActionListener implements ActionListener {
+  public void actionPerformed(ActionEvent evt) {
+    // Do some computation in response to a button click
+  }
+}
+~~~
+
+`ActionListeners` a limited concept though: they can only be used in a particular circumstance. Scala includes a much more general concept called `Functions` that allow us to represent any kind of computation as an object, from an `Adder` to an `ActionListener` to almost any other piece of code we can imagine. We will see these in the next section.
 </div>

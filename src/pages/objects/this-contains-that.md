@@ -3,7 +3,7 @@ layout: page
 title: This contains That
 ---
 
-In this section we'll look at data that contains other data. We already know how to this in simple cases: use an instance variable. Here we are going to look when we want to give the user freedom about the type we contain. In other words, we're going to look at generic types.
+In this section we'll look at data that contains other data. We already know how to this in simple cases using fields. Here we are going to look when we want to give the user freedom about the type we contain. In other words, we're going to look at generic types.
 
 ## Generic Types
 

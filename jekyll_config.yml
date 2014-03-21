@@ -17,7 +17,8 @@ toc:
   - head: /objects/index.html
     body:
      - /objects/classes.html
-     - /objects/objects-and-functions.html
+     - /objects/companion-objects.html
+     - /objects/functions.html
      - /objects/this-or-that.html
      - /objects/this-and-that.html
      - /objects/this-contains-that.html

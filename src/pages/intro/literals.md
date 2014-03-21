@@ -5,7 +5,7 @@ title: Literal Objects
 
 The simplest expressions are literals. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
-~~~scala
+~~~ scala
 scala> 42
 res0: Int = 42
 ~~~
@@ -18,7 +18,7 @@ If you have prior programming experience, particularly Java experience, you won'
 
 Numbers share the same types available in Java: `Int` for 32-bit integers, `Double` for 64-bit floating point, `Float` for 32-bit floating point, and `Long` for 64-bit integers.
 
-~~~scala
+~~~ scala
 scala> 42
 res0: Int = 42
 
@@ -38,7 +38,7 @@ Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no litera
 
 Booleans are exactly the same as Java: `true` or `false`.
 
-~~~scala
+~~~ scala
 scala> true
 res11: Boolean = true
 
@@ -50,7 +50,7 @@ res12: Boolean = false
 
 `Chars` are 16-bit Unicode values written as a single character enclosed in single quotes.
 
-~~~scala
+~~~ scala
 scala> 'a'
 res34: Char = a
 ~~~
@@ -65,7 +65,7 @@ res34: Char = a
 
 Strings are exactly Java's strings, and are written the same way.
 
-~~~scala
+~~~ scala
 scala> "this is a string"
 res8: java.lang.String = this is a string
 
@@ -79,7 +79,7 @@ the
 
 Null is the same as Java, though not used nearly as often.
 
-~~~scala
+~~~ scala
 scala> null
 res13: Null = null
 ~~~
@@ -96,7 +96,7 @@ res13: Null = null
 
 Unit, written `()`, is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The REPL doesn't print unit but we can ask for the type of an expression to see that unit is in fact the result of some expressions.
 
-~~~scala
+~~~ scala
 scala> ()
 
 scala> :type ()
@@ -127,7 +127,7 @@ In the next section we will start combining values into expressions and producin
 
 What are the values and types of the following Scala literals?
 
-~~~scala
+~~~ scala
 42
 
 true
@@ -157,7 +157,7 @@ What is the difference between the following literals? What is the type and valu
 
 What is the difference between the following expressions? What is the type and value of each?
 
-~~~scala
+~~~ scala
 "Hello world!"
 
 println("Hello world!")
@@ -167,6 +167,6 @@ println("Hello world!")
 
 What is the type and value of the following literal? Try writing it in a Scala worksheet and see what happens!
 
-~~~scala
+~~~ scala
 'Hello world!'
 ~~~
