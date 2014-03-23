@@ -51,12 +51,12 @@ scala> sequence.contains("a")
 res2: Boolean = true
 ~~~
 
-### Determining length
+### Determining size
 
-Finding the length of a sequence is straightforward.
+Finding the size (length) of a sequence is straightforward.
 
 ~~~ scala
-scala> sequence.length
+scala> sequence.size
 res3: Int = 3
 ~~~
 
@@ -164,7 +164,7 @@ Here is a type table of all the methods we have seen so far:
 | `:+`, `+:` | `Seq[A]`   | `A`                | `Seq[A]`    |
 | `++`       | `Seq[A]`   | `Seq[A]`           | `Seq[A]`    |
 | `contains` | `Seq[A]`   | `A`                | `Boolean`   |
-| `length`   | `Seq[A]`   |                    | `Int`       |
+| `size`     | `Seq[A]`   |                    | `Int`       |
 |============================================================|
 {: .table }
 
@@ -178,3 +178,50 @@ and the extras for mutable sequences:
 | `update`   | `Seq[A]`   | `Int`, `A`        | `Unit`      |
 |===========================================================|
 {: .table }
+
+## Exercises
+
+Here are a few simple exercises to familiarise yourself with the sequence API.
+
+Create a `Seq` containing the `String`s `"cat"`, `"dog"`, and `"penguin"`. Bind it to the name `animals`.
+
+<div class="solution">
+~~~ scala
+scala> val animals = Seq("cat", "dog", "penguin")
+animals: Seq[String] = List(cat, dog, penguin)
+~~~
+</div>
+
+Append the element `"tyrannosaurus"` to `animals` and prepend the element `"mouse"`.
+
+<div class="solution">
+~~~ scala
+scala> "mouse" +: animals :+ "tyrannosaurus"
+res6: Seq[String] = List(mouse, cat, dog, penguin, tyrannosaurus)
+~~~
+</div>
+
+What will happen if you prepend the `Int` `2` to `animals`? Why? Try it out. Where you correct?
+
+<div class="solution">
+The returned sequence has type `Seq[Any]`.  It is perfectly valid to return a supertype (`Seq[Any]`) from a non-destructive operation.
+
+~~~ scala
+scala> 2 +: animals
+res7: Seq[Any] = List(2, cat, dog, penguin)
+~~~
+
+You might expect a type error here, and in more real code this would be an error, so be aware of this one case where the type system doesn't protect you. Notice that if we try to mutate a sequence (obviously we have to use a mutable sequence) it is a type error:
+
+~~~ scala
+scala> val mutable = scala.collection.mutable.Seq("cat", "dog", "elephant")
+mutable: scala.collection.mutable.Seq[String] = ArrayBuffer(cat, dog, elephant)
+
+scala> mutable(0) = 2
+<console>:9: error: type mismatch;
+ found   : Int(2)
+ required: String
+              mutable(0) = 2
+                           ^
+~~~
+</div>
