@@ -177,7 +177,7 @@ Let's follow the process. The types are:
 2. We want a `Seq[Int]` as the result.
 3. The function `(_ / 2)`, or it's equivalent `(x: Int) => x /2`, which has type `Int => Int`, is the obvious way to halve an `Int`.
 
-Looking at the type table we see that `map` is the only functions that fits the types we have available. Our solution is:
+Looking at the type table we see that `map` is the only function that fits the types we have available. Our solution is:
 
 ~~~ scala
 scala> Seq(2, 4, 5).map(_ / 2)
@@ -190,7 +190,11 @@ res14: Seq[Int] = List(1, 2, 2)
 Print every element of the sequence `Seq(1, 2, 3)`.
 
 <div class="solution">
-We have available a `Seq[Int]` and `println`, which has type `Any => Unit`. We don't care about our result (we are running code for side-effect) so the result type is `Unit`.
+Follow the process again. The types are:
+
+1. We have a `Seq[Int]`.
+2. We don't care about our result (we are running code for side-effect) so the result type is `Unit`.
+3. `println`, which has type `Any => Unit`.
 
 Looking at the type table we see that `foreach` meets our requirements, so the final solution is:
 
@@ -226,6 +230,8 @@ Here we have tried three values for the zero: `0`, `1`, and `2`. It is clear tha
 The answer is to consider what should happen in the case of a single element sequence like `Seq(2)`. What should we multiply `2` by to get `2`? Clearly it is `1`, so that is the correct value to use as the zero.
 
 From a slightly more mathematical perspective, `1` is the identity for multiplication. That is `x * 1 = x`. So another way to solve the problem is to find the identity for the operation you're using.
+
+Finally note that the zero element is the result when we have an empty sequence. Sometimes it is easier to come up with a good answer for the empty sequence than to use the other methods above.
 </div>
 
 #### Minimum
@@ -265,7 +271,9 @@ Once again we follow the same pattern. The types are:
    }
    ~~~
 
-We these three pieces we can solve the problem. Looking at the type table we see we want a `fold`. Once again we must find the identity element. In this case the empty sequence is what we want. Thus the solution is
+We these three pieces we can solve the problem. Looking at the type table we see we want a `fold`. Once again we must find the identity element. In this case the empty sequence is what we want. Why so? Think about what the answer should be if we try to find the unique elements of the empty sequence.
+
+Thus the solution is
 
 ~~~ scala
 def insert(seq: Seq[Int], elt: Int): Seq[Int] = {
@@ -327,6 +335,16 @@ def reverse[A](seq: Seq[A]): Seq[A] = {
 Write `map` in terms of `foldRight`.
 
 <div class="solution">
+Follow the same process as before: write out the type of the method we need to create, and fill in what we know. We start with `map` and `foldRight`.
+
+~~~ scala
+def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
+  seq.foldRight(???){ ??? }
+}
+~~~
+
+As usual we need to fill in the zero element and the function. The zero element must have type `Seq[B]`, and the function has type `(A, Seq[B]) => Seq[B])`. The zero element is straightforward: `Seq.empty[B]` is the only sequence we can construct of type `Seq[B]`. For the function, we clearly have to convert that `A` to a `B` somehow. There is only one way to do that, which is with the function supplied to `map`. We then need to add that `B` to our `Seq[B]`, for which we can use the `+:` method. This gives us our final result.
+
 ~~~ scala
 def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
   seq.foldRight(Seq.empty[B]){ (elt, seq) => f(elt) +: seq }
@@ -336,9 +354,39 @@ def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
 
 #### Fold Left
 
-Write your own implementation of `foldLeft` that uses `foreach` and mutable state.
+Write your own implementation of `foldLeft` that uses `foreach` and mutable state. Remember you can create a mutable variable using the `var` keyword, and assign a new value using `=`. For example
+
+~~~ scala
+scala> var mutable = 1
+var mutable = 1
+mutable: Int = 1
+
+scala> mutable = 2
+mutable = 2
+mutable: Int = 2
+~~~
 
 <div class="solution">
+Once again, write out the skeleton and then fill in the details using the types. We start with
+
+~~~ scala
+def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
+  seq.foreach { ??? }
+}
+~~~
+
+Let's look at what we have need to fill in. `foreach` returns `Unit` but we need to return a `B`. `foreach` takes a function of type `A => Unit` but we only have a `(B, A) => B` available. The `A` can come from `foreach` and by now we know that the `B` is the intermediate result. We have the hint to use mutable state and we know that we need to keep a `B` around and return it, so let's fill that in.
+
+~~~ scala
+def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
+  var result: B = ???
+  seq.foreach { (elt: A) => ??? }
+  result
+}
+~~~
+
+At this point we can just follow the types. `result` must be initially assigned to the value of `zero` as that is the only `B` we have. The body of the function we pass to `foreach` must call `f` with `result` and `elt`. This returns a `B` which we must store somewhere -- the only place we have to store it is in `result`. So the final answer becomes
+
 ~~~ scala
 def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
   var result = zero
