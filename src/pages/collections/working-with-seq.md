@@ -83,7 +83,7 @@ scala> scala.collection.mutable.ArrayBuffer(1, 2, 3).flatMap(num => Seq(num, num
 res17: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1, 10, 2, 20, 3, 30)
 ~~~
 
-### fold, foldLeft, and foldRight
+### foldLeft and foldRight
 
 Now let's look at another kind of operation. Say we have a `Seq[Int]` and we want to add all the numbers together. `map` and `flatMap` don't apply here for two reasons:
 
@@ -98,11 +98,10 @@ There is a further wrinkle: what result do we expect if the sequence is empty? Z
 |===========================================|
 {: .table }
 
-The method that fits the bill is `fold`, with its ordered variants `foldLeft` and `foldRight`. The job of these methods is to traverse a sequence and accumulate a result. The types are as follows:
+The methods that fit the bill are called folds, with two common cases `foldLeft` and `foldRight` correspond to the order the fold is applied. The job of these methods is to traverse a sequence and accumulate a result. The types are as follows:
 
 | Method | We have  | We provide | We get   |
 |--------+----------+------------+----------|
-| `fold`  | `Seq[A]` | `A` and `(A, A) => A` | `A` |
 | `foldLeft` | `Seq[A]` | `B` and `(B, A) => B` | `B` |
 | `foldRight` | `Seq[A]` | `B` and `(A, B) => B` | `B` |
 |===========================================|
@@ -112,7 +111,6 @@ Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the follow
 
 | Method                         | Operations     | Notes
 |--------------|
-| `Seq(1, 2, 3).fold(0)(_ + _)`  | `1 + 2 + 3`    | Order of evaluation is not specified, nor is the inclusion of 0.
 | `Seq(1, 2, 3).foldLeft(0)(_ + _)`  | `(((0 + 1) + 2) + 3)`    | Evaluation is left ot right
 | `Seq(1, 2, 3).foldRight(0)(_ + _)`  | `(1 + (2 + (3 + 0)))`    | Evaluation is right to left
 |===========================================|
@@ -148,7 +146,6 @@ We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `fo
 | `Seq[A]` | `A => Unit`   | `Unit`   | `foreach` |
 | `Seq[A]` | `A => B`      | `Seq[B]` | `map` |
 | `Seq[A]` | `A => Seq[B]` | `Seq[B]` | `flatMap` |
-| `Seq[A]` | `A1 >: A` and `(A1, A1) => A1` | `A1` | `fold` |
 | `Seq[A]` | `B` and `(B, A) => B` | `B` | `foldLeft` |
 | `Seq[A]` | `B` and `(A, B) => B` | `B` | `foldRight` |
 |============|
