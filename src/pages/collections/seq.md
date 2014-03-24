@@ -201,17 +201,17 @@ res6: Seq[String] = List(mouse, cat, dog, penguin, tyrannosaurus)
 ~~~
 </div>
 
-What will happen if you prepend the `Int` `2` to `animals`? Why? Try it out. Where you correct?
+What will happen if you prepend the `Int` `2` to `animals`? Why? Try it out. Were you correct?
 
 <div class="solution">
-The returned sequence has type `Seq[Any]`.  It is perfectly valid to return a supertype (`Seq[Any]`) from a non-destructive operation.
+The returned sequence has type `Seq[Any]`.  It is perfectly valid to return a supertype (in this case `Seq[Any]`) from a non-destructive operation.
 
 ~~~ scala
 scala> 2 +: animals
 res7: Seq[Any] = List(2, cat, dog, penguin)
 ~~~
 
-You might expect a type error here, and in more real code this would be an error, so be aware of this one case where the type system doesn't protect you. Notice that if we try to mutate a sequence (obviously we have to use a mutable sequence) it is a type error:
+You might expect a type error here, and in most real code this would be an error, so be aware of this one case where the type system doesn't protect you. Notice that if we try to mutate a sequence (obviously we have to use a mutable sequence) it is a type error:
 
 ~~~ scala
 scala> val mutable = scala.collection.mutable.Seq("cat", "dog", "elephant")
