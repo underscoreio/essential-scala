@@ -3,9 +3,11 @@ layout: page
 title: Introducing For Comprehensions
 ---
 
-We've discucssed the main collection transformation functions, `map`, `flatMap`, `fold`, and `foreach`, and seen that they provide a powerful way of working with collections. Then can become unwiedly to work with when dealing with many collections of many nested transformations. Scala has special syntax for working with collections (in fact any class that implements `map`, and `flatMap`) that makes complicated operations simpler to write. This syntax is known as a *for comprehension*.
+We've discussed the main collection transformation functions -- `map`, `flatMap`, `foldLeft`, `foldRight`, and `foreach` -- and seen that they provide a powerful way of working with collections. Then can become unwiedly to work with when dealing with many collections of many nested transformations. Fortunately Scala has special syntax for working with collections (in fact any class that implements `map`, and `flatMap`) that makes complicated operations simpler to write. This syntax is known as a *for comprehension*.
 
-**Important note: *for comprehensions* in Scala are very different to *for loops* in Java. There is no direct equivalent of Java *for loops* in Scala.**
+<div class="alert alert-warning">
+**Important note:** *for comprehensions* in Scala are very different to the C-style *for loops* in Java. There is no direct equivalent of either language's syntax in the other.
+</div>
 
 Let's start with a simple example. Say we have the sequence `Seq(1, 2, 3)` and we wish to create a sequence with every element doubled. We know we can write
 
@@ -14,7 +16,7 @@ scala> Seq(1, 2, 3).map(_ * 2)
 res0: Seq[Int] = List(2, 4, 6)
 ~~~
 
-The equivalent program written with a for comprehension is
+The equivalent program written with a for comprehension is:
 
 ~~~ scala
 scala> for(x <- Seq(1, 2, 3)) yield x * 2
@@ -30,17 +32,17 @@ scala> Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6)).flatMap(_.map(_ * 2))
 res2: Seq[Int] = List(2, 4, 6, 8, 10, 12)
 ~~~
 
-This is getting complicated. The equivalent for comprehension is much more... comprehensible.
+This is getting complicated. The equivalent for comprehension is much more... comprehensible:
 
 ~~~ scala
 scala> for {
-  seq <- Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))
-  elt <- seq
-} yield elt * 2
+  subseq   <- Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))
+  element  <- subseq
+} yield element * 2
 res3: Seq[Int] = List(2, 4, 6, 8, 10, 12)
 ~~~
 
-This gives us an idea of what the for comprehensions does. A for comprehension
+This gives us an idea of what the for comprehensions does. A general for comprehension
 
 ~~~ scala
 for {
@@ -56,7 +58,9 @@ translates to
 a.flatMap(x => b.flatMap(y => c.map(z => e)))
 ~~~
 
-We can use parentheses to delimit our for loop instead of braces, except we must use semicolons to delimit expressions in the former. Thus:
+The intuitive understanding of the code is to iterate through all of the sequences in the generators, mapping the `yield` expression over every element therein, and accumulating a result of the same type as sequence fed into the first generator.
+
+Some notes on syntax. We can use parentheses to delimit our for loop instead of braces, except we must use semicolons to delimit expressions in the former. Thus:
 
 ~~~ scala
 for (

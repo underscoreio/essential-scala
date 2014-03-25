@@ -75,13 +75,13 @@ res6: Seq[Int] = List(5, 7, 9)
 
 ## Intermediate Results
 
-It is often useful to create an intermediate result within a sequence of generators. We can do this by inserting a `val` expression like so
+It is often useful to create an intermediate result within a sequence of generators. We can do this by inserting an assignment expression like so
 
 ~~~ scala
 scala> for {
-  x <- Seq(1, 2, 3)
-  val square = x * x
-  y <- Seq(4, 5, 6)
+  x     <- Seq(1, 2, 3)
+  square = x * x
+  y     <- Seq(4, 5, 6)
 } yield square * y
 res8: Seq[Int] = List(4, 5, 6, 16, 20, 24, 36, 45, 54)
 ~~~
