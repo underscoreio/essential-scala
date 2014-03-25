@@ -43,6 +43,8 @@ toc:
     body:
      - /fp/ho-functions.html
      - /fp/structural-recursion.html
+     - /fp/pattern-matching.html
+     - /fp/extractors.html
      - /fp/modelling-with-types.html
 
   - head: /dsl/index.html

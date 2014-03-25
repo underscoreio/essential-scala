@@ -3,26 +3,26 @@ layout: page
 title: "This contains That: Generics"
 ---
 
-In this section we'll look at data that contains other data. We already know how to this in simple cases using fields. Here we are going to look when we want to give the user freedom about the type we contain. In other words, we're going to look at generic types.
+In this section we'll look at data that contains other data. We already know how to this in simple cases using fields. Here we are going to give the user freedom about the types we contain in our fields. In other words, we are going to look at **generic types**.
 
 ## Generic Types
 
-Generic types naturally arise in collections, so let's consider a really simple collection: a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
+Generic types naturally arise in collections, so let's consider a really simple collection -- a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
 ~~~ scala
-scala> case class Box[A](val get: A)
+scala> case class Box[A](val value: A)
 defined class Box
 
-scala> Box(2).get
+scala> Box(2).value
 res5: Int = 2
 
-scala> Box("hi").get
+scala> Box("hi").value
 res6: String = hi
 ~~~
 
-The syntax `[A]` introduces the generic type, binding a name to a type. Wherever `A` occurs in our class definition we will substitute in the same type. This works in the same way that binding a name to a value (using `val`) allows us to substitute in the value wherever the name occurs. The only difference is that we're operating on types rather than values.
+The syntax `[A]` is called a **type parameter** -- it binds a name to a type. Wherever `A` occurs in our class definition we will substitute in the same type. This works in the same way that binding a name to a value (using `val`) allows us to substitute in the value wherever the name occurs. The only difference is that we're operating on types rather than values.
 
-We can also declare generic types on methods like so:
+We can also add type parameters to methods like so:
 
 ~~~ scala
 scala> def generic[A](in: A): A = in
@@ -35,30 +35,32 @@ scala> generic(1)
 res11: Int = 1
 ~~~
 
+This limits the scope of the type parameter to the method declaration and body.
+
 ## Exercise
 
-Implement a class called `Tuple` that stores two value `one` and `two`. `Tuple` should be generic in both arguments. Example usage:
+Implement a class called `Pair` that stores two value `one` and `two`. `Pair` should be generic in both arguments. Example usage:
 
 ~~~ scala
-scala> val tuple = Tuple("hi", 2)
-tuple: Tuple[String,Int] = Tuple(hi,2)
+scala> val pair = Pair("hi", 2)
+pair: Pair[String,Int] = Pair(hi,2)
 
-scala> tuple.one
+scala> pair.one
 res13: String = hi
 
-scala> tuple.two
+scala> pair.two
 res14: Int = 2
 ~~~
 
 <div class="solution">
 ~~~ scala
-case class Tuple[A, B](val one: A, val two: B)
+case class Pair[A, B](val one: A, val two: B)
 ~~~
 </div>
 
 ## Tuples
 
-Scala includes generic tuple types with up to 22 elements, along with special syntax for creating them. The classes are `Tuple1` through to `Tuple22` but they are usually written as `(A, B, ...)` for generic types `A`, `B`, and so on. For example:
+A *tuple* is the generalisation of a pair to any number of terms. Scala includes built-in generic tuple types with up to 22 elements, along with special syntax for creating them. The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they can also be written in the sugared form `(A, B, C, ...)`. For example:
 
 ~~~ scala
 scala> ("hi", 1)
@@ -68,7 +70,7 @@ scala> ("hi", 1, true)
 res20: (String, Int, Boolean) = (hi,1,true)
 ~~~
 
-We can define methods that accept tuples using this same syntax.
+We can define methods that accept tuples using this same syntax:
 
 ~~~ scala
 scala> def tuplized[A, B](in: (A, B)) = in._1
@@ -89,10 +91,10 @@ Tuples are the most generic **product type**, which you will recall we discussed
 Implement a generic **sum type** for two cases. Call the two cases `Left` and `Right` respectively, and the overall type `Sum`. Example usage:
 
 ~~~ scala
-scala> Left[Int, String](1).get
+scala> Left[Int, String](1).value
 res24: Int = 1
 
-scala> Right[Int, String]("foo").get
+scala> Right[Int, String]("foo").value
 res25: String = foo
 
 scala> val sum: Sum[Int, String] = Right("foo")
@@ -108,8 +110,8 @@ res26: String = foo
 <div class="solution">
 ~~~ scala
 sealed trait Sum[A, B]
-final case class Left[A, B](val get: A) extends Sum[A, B]
-final case class Right[A, B](val get: B) extends Sum[A, B]
+final case class Left[A, B](val value: A) extends Sum[A, B]
+final case class Right[A, B](val value: B) extends Sum[A, B]
 </div>
 ~~~
 
@@ -127,7 +129,7 @@ res27: Box[String] = Box(2)
 
 <div class="solution">
 ~~~ scala
-case class Box[A](val get: A) {
+case class Box[A](val value: A) {
   def map[B](f: A => B): Box[B] =
       Box(f(get))
 }
@@ -151,7 +153,7 @@ final case class Ex2() extends Foo
 Is a `Box[Ex1]` a subtype of `Box[Foo]`? Let's ask the REPL.
 
 ~~~ scala
-scala> def fooIt(in: Box[Foo]): Foo = in.get
+scala> def fooIt(in: Box[Foo]): Foo = in.value
 fooIt: (in: Box[Foo])Foo
 
 scala> val box = Box(Ex1())
@@ -177,7 +179,7 @@ Make `Box` covariant.
 
 <div class="solution">
 ~~~ scala
-case class Box[+A](val get: A)
+case class Box[+A](val value: A)
 ~~~
 </div>
 

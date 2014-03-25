@@ -129,26 +129,34 @@ res1: String = C
 
 Ambiguity between traits is resolved using **linearization**. They are effectively stacked on top of one another and any method call is resolved by searchin up the stack until a matching definition is found. In the example the search order imposed by linearization is `Example -> C -> B -> A -> AnyRef -> Any` (extending `AnyRef` is implicit when you don't explicitly `extend` anything else).
 
-Linearization enables us to come up with all sorts of byzantine designs where traits add pieces of behaviour to a few common methods. The simple rule of designing with linearization is: don't. **If you depend on the order in which traits are stacked, you are doing something wrong** -- it is a surefire way to introduce bugs into your code.
+Linearization enables us to come up with all sorts of byzantine designs where traits add pieces of behaviour to a few common methods. The simple rule of designing with linearization is: don't. **If you depend on the order in which traits are stacked, you are doing something wrong** -- it is a sure way to introduce bugs into your code.
 
-## Self Types
+[comment]: ## Self Types
 
-Sometime we want to provide a trait that adds additional functionality to another base trait. We've seen how we can implement this by extending both traits. This makes the extension trait a subtype of the base trait, which may not be sensible. We can instead express this dependency using a self type. The self type says that the extension trait *requires* the base trait but not that the extension trait *is a* base trait.
+[comment]: Sometime we want to provide a trait that adds additional functionality to another base trait. We've seen how we can implement this by extending both traits. This makes the extension trait a subtype of the base trait, which may not be sensible. We can instead express this dependency using a self type. The self type says that the extension trait *requires* the base trait but not that the extension trait *is a* base trait.
 
-Take the `DataCollector` example we looked at above. When writing `DataCollector` we will probably have a dependency on `Authorizer`, for the obvious reason that we'll need to put some authorization checks in our code. A `DataCollector` is not an `Authorizer` but it does depend on one. We can express this using a self type.
+[comment]: Take the `DataCollector` example we looked at above. When writing `DataCollector` we will probably have a dependency on `Authorizer`, for the obvious reason that we'll need to put some authorization checks in our code. A `DataCollector` is not an `Authorizer` but it does depend on one. We can express this using a self type.
 
-~~~ scala
-trait Authorizer {
-  def authorized(key: ApiKey): Boolean
-}
+[comment]: trait Authorizer {
 
-trait DataCollector { self: Authorizer =>
-  def record(key: ApiKey, event: Event): Unit = {
-    if(self.authorized(key)) {
-      // Collect data
-    } else {
-      // Not authorized to collect data
-    }
-  }
-}
-~~~
+[comment]:   def authorized(key: ApiKey): Boolean
+
+[comment]: }
+
+[comment]: trait DataCollector { self: Authorizer =>
+
+[comment]:   def record(key: ApiKey, event: Event): Unit = {
+
+[comment]:     if(self.authorized(key)) {
+
+[comment]:       // Collect data
+
+[comment]:     } else {
+
+[comment]:       // Not authorized to collect data
+
+[comment]:     }
+
+[comment]:   }
+
+[comment]: }

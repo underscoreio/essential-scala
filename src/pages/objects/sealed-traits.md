@@ -214,7 +214,9 @@ object Draw {
 
 ### Really Printing Shapes
 
-For the enthusiastic... modify your code from the previous exercise to actually print the shapes using asterisks. This exercise is probably best done as homework.
+We lied...
+
+For the enthusiastic, modify your code from the previous exercise to actually print the shapes using asterisks. This exercise is probably best done as homework.
 
 Here are some useful tips:
 
