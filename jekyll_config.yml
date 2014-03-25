@@ -30,14 +30,11 @@ toc:
     body:
      - /collections/seq.html
      - /collections/working-with-seq.html
-     - /collections/seq-implementations.html
-     - /collections/map-and-set.html
      - /collections/for-comprehensions.html
      - /collections/working-with-for-comprehensions.html
-     - /collections/arrays-and-strings.html
-     - /collections/iterators.html
-     - /collections/traversable.html
-     - /collections/java-interop.html
+     - /collections/meeting-monads.html
+     - /collections/map-and-set.html
+     - /collections/ranges.html
 
   - head: /fp/index.html
     body:
@@ -56,6 +53,13 @@ toc:
      - /dsl/pimping.html
      - /dsl/macros.html
 
+  - head: /collections-redux/index.html
+    body:
+     - /collections-redux/seq-implementations.html
+     - /collections-redux/arrays-and-strings.html
+     - /collections-redux/iterators.html
+     - /collections-redux/traversable.html
+     - /collections-redux/java-interop.html
 
   # - head: /sbt/index.html
 
