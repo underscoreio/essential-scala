@@ -100,8 +100,105 @@ a.flatMap(x => b.flatMap(y => c.foreach(z => e)))
 
 Complete the following using for comprehensions
 
-1. Create a sequence with containing every element of `Seq(2, 4, 6)` halved.
-1. Create a sequence containing every permutation of the elements of `Seq("a", "wet", "dog")`. The result should be a `Seq[String]`, not `Seq[Seq[String]]`. Hint: `"foo".permutations.toList` will give you all the permutations of `"foo"` as a list.
-1. As above, but return a `Seq[Seq[String]]`.
-1. Sum the elements of `Seq(1, 2, 3)`.
-1. Write your own implementation of `foldLeft`.
+#### Iteration
+
+Create a sequence with containing every element of `Seq(2, 4, 6)` halved.
+
+<div class="solution">
+We did this exact exercise in a previous section. The solution method is to first recognise it is a `map`, which you can do by following the types. Then we must encode that as a for comprehension. The solution is
+
+~~~ scala
+for(x <- Seq(2, 4, 6)) yield x / 2
+~~~
+</div>
+
+#### Permutations
+
+Create a sequence containing every permutation of the elements of `Seq("a", "wet", "dog")`. The result should be a `Seq[String]`, not `Seq[Seq[String]]`. Hint: `"foo".permutations.toSeq` will give you all the permutations of `"foo"` as a `Seq`.
+
+<div class="solution">
+You can follow the types to work out this is a `flatMap`, or you can recall this was an example used earlier.
+
+~~~ scala
+Seq("a", "wet", "dog") flatMap { x => x.permutations.toSeq }
+~~~
+
+Now we need to encode it as a for comprehension. The obvious solution is
+
+~~~ scala
+for(x <- Seq("a", "wet", "dog")) yield x.permutations.toSeq
+~~~
+
+but this doesn't work because it expands to a `map` not a `flatMap`. We need to add an extra level to the for-comprehension to get a `flatMap`.
+
+~~~ scala
+for {
+  x <- Seq("a", "wet", "dog")
+  p <- x.permutations.toSeq
+} yield p
+~~~
+</div>
+
+#### Permutations, Again
+
+As above, but return a `Seq[Seq[String]]`.
+
+<div class="solution">
+If you did the previous exercise you probably stumbled over the solution to this exercise. The difference is to use `map` instead of `flatMap`, which you can determine by looking at the result type of each. Thus the solution is
+
+~~~ scala
+for {
+  x <- Seq("a", "wet", "dog")
+} yield x.permutations.toSeq
+~~~
+</div>
+
+#### Summing
+
+Sum the elements of `Seq(1, 2, 3)`.
+
+<div class="solution">
+You should recognise this as a fold. If not, the solution is, as always, to examine the types. `+` is a binary operation, and the only collection methods that accept binary operations are the folds.
+
+The question is how to encode this using a for comprehension. For comprehensions only give us `map`, `flatMap`, and `foreach`. You might remember an earlier exercise where we wrote `foldLeft` using `foreach` and mutable state. The solution follows the same pattern.
+
+~~~
+var sum = 0
+for(x <- Seq(1, 2, 3)) sum = sum + x
+sum
+~~~
+</div>
+
+#### Folding
+
+Write your own implementation of `foldLeft`.
+
+<div class="solution">
+The exercise follows on from the last one, where we implemented a fold. Now we just need generalise the pattern. Start, as usual by writing the skeleton with the types.
+
+~~~
+def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
+  ???
+}
+~~~
+
+Now need to fill in the body. As usual we follow the types. Let's look at what we have need to fill in. We know we need to use the for comprehension equivalent of `foreach`. `foreach` returns `Unit` but we need to return a `B`. `foreach` takes a function of type `A => Unit` but we only have a `(B, A) => B` available. The `A` can come from the for comprehension and by now we know that the `B` is the intermediate result. We have seen we need to use mutable state and we know that we need to keep a `B` around and return it, so let's fill that in.
+
+~~~ scala
+def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
+  var result: B = ???
+  for(x <- seq) { ??? }
+  result
+}
+~~~
+
+At this point we can just follow the types. `result` must be initially assigned to the value of `zero` as that is the only `B` we have. The body of the function we pass to `foreach` must call `f` with `result` and `elt`. This returns a `B` which we must store somewhere -- the only place we have to store it is in `result`. So the final answer becomes
+
+~~~ scala
+def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
+  var result = zero
+  for(x <- seq) { result = f(result, x) }
+  result
+}
+~~~
+</div>

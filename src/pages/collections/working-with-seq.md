@@ -292,7 +292,7 @@ Note how I created the empty sequence. I could have written `Seq[Int]()` but in 
 
 #### Reverse
 
-Write a function that efficiently reverses the elements of a sequence. Your output does not have to use the same concrete implementation as the input. Hint: use `foldLeft`.
+Write a function that reverses the elements of a sequence. Your output does not have to use the same concrete implementation as the input. Hint: use `foldLeft`.
 
 <div class="solution">
 In this exercise, and the ones that follow, using the types are particularly important. Start by writing down the type of `reverse`.
@@ -311,7 +311,7 @@ def reverse[A](seq: Seq[A]): Seq[A] = {
 }
 ~~~
 
-We need to work out the function to provide to `foldLeft` and the zero or identity element. For the function, the type of `foldLeft` requires it is `(Seq[A], A) => Seq[A]`. There are two methods on `Seq` that have the right type: `+:` and `:+`. We want an efficient implementation so we must use `+:`.
+We need to work out the function to provide to `foldLeft` and the zero or identity element. For the function, the type of `foldLeft` requires it is `(Seq[A], A) => Seq[A]`. If we flip the types around the `+:` method on `Seq` has the right types.
 
 For the zero element we know that it must have the same type as the return type of `reverse` (because the result of the fold is the result of `reverse`). Thus it's a `Seq[A]`. Which sequence? There are a few ways to answer this:
 
