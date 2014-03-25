@@ -154,19 +154,19 @@ trait Shape {
   def area: Double
 }
 
-case class Circle(val radius: Double) extends Shape {
+case class Circle(radius: Double) extends Shape {
   val sides = 1
   val perimeter = 2 * math.Pi * radius
   val area = math.Pi * radius * radius
 }
 
-case class Rectangle(val width: Double, val height: Double) extends Shape {
+case class Rectangle(width: Double, height: Double) extends Shape {
   val sides = 4
   val perimeter = 2 * width + 2 * height
   val area = width * height
 }
 
-case class Square(val size: Double) extends Shape {
+case class Square(size: Double) extends Shape {
   val sides = 4
   val perimeter = 4 * size
   val area = size * size
@@ -196,11 +196,11 @@ trait Rectangular extends Shape {
   val area = width*height
 }
 
-case class Square(val size: Double) extends Rectangular {
+case class Square(val size: Int) extends Rectangular {
   val width = size
   val height = size
 }
 
-case class Rectangle(val width: Double, val height: Double) extends Rectangular
+case class Rectangle(val width: Int, val height: Int) extends Rectangular
 ~~~
 </div>
