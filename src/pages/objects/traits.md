@@ -144,7 +144,7 @@ Define a trait called `Shape` and give it three abstract methods:
 
 Implement `Shape` with three classes: `Circle`, `Rectangle`, and `Square`. In each case provide implementations of each of the three methods. Ensure that the main parameters of each shape (e.g. the radius of the circle) are accessible as fields.
 
-**Tip:** The value of &pi; is accessible as `math.pi`.
+**Tip:** The value of &pi; is accessible as `math.Pi`.
 
 <div class="solution">
 ~~~ scala
@@ -156,8 +156,8 @@ trait Shape {
 
 case class Circle(val radius: Double) extends Shape {
   val sides = 1
-  val perimeter = 2 * math.pi * radius
-  val area = math.pi * radius * radius
+  val perimeter = 2 * math.Pi * radius
+  val area = math.Pi * radius * radius
 }
 
 case class Rectangle(val width: Double, val height: Double) extends Shape {
