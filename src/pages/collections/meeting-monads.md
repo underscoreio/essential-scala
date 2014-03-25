@@ -5,7 +5,7 @@ title: Meeting Monads
 
 We've seen that by implementing a few methods (`map`, `flatMap`, and optionally `filter` and `foreach`) we can use any class with a for comprehension, and that this is an incredibly useful abstraction. This abstraction is called a monad and has extremely wide application. For example, suppose we have a number of computations that could fail. Let's model this by having them return an `Option`[^try].
 
-[^try:] If you were doing this for real you'd want some information on why it failed. Look at `Either` or `Try`, the later being Scala 2.10 and above.
+[^try]: If you were doing this for real you'd want some information on why it failed. Look at `Either` or `Try`, the later being Scala 2.10 and above.
 
 ## An Overview of Option
 

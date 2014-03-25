@@ -3,18 +3,18 @@ layout: page
 title: Object Literals
 ---
 
-So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. More useful programs will require us to create objects tailored to the problem we're solving. In fact, creating the right objects could be seen as the goal of programming in Scala. We will start by seeing how to write object literals.
+So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. More useful programs will require us to create objects tailored to the problem we're solving. In fact, creating the right objects could be seen as the goal of programming in Scala. We will start by seeing how to **define objects**.
 
-We can define an empty object as follows.
+We can define an empty object as follows:
 
 ~~~ scala
 scala> object test {}
 defined module test
 ~~~
 
-This program is not an *expression* because it doesn't evaluate to a value. Rather it is a "statement" or "definition" that binds a name (`test`) to a value (an empty object). Notice that the Scala REPL tells us it has defined a **module**. We'll see what this means later.
+Like variable declarations, object declarations are not *expressions* because they don't return a value -- they simply bind a name (`test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
 
-Once we have defined `test`, we can use it in simple expressions.
+Once we have defined `test` we can use it in simple expressions, the simplest of which is just the value itself:
 
 ~~~ scala
 scala> test
@@ -22,11 +22,11 @@ res0: test.type = test$@1668bd43
 ~~~
 
 This expression is equivalent to writing a literal like `123` or `"abc"`.
-Note that the type of the object is reported as `test.type`. This is not like any type we've seen before -- it's a new type, created just for our object, called a **singleton type**.
+Note that the type of the object is reported as `test.type`. This is not like any type we've seen before -- it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
 
-### Methods
+## Methods
 
-We interact with objects via methods, so let's create an object with a method.
+We interact with objects via methods so let's create an object with a method.
 
 ~~~ scala
 scala> object test2 {
@@ -42,7 +42,7 @@ scala> test2.name
 res3: String = Probably the best object ever
 ~~~
 
-Here's an object with a more complex method definition.
+Here's an object with a more complex method:
 
 ~~~ scala
 scala> object test3 {
@@ -57,17 +57,17 @@ res7: String = Hello Noel
 
 From these examples we can see most of the important bits of method definitions:
 
-  * Methoddefintions start with the `def` keyword, followed by a name and an optional list of parameters.
+  * they start with the `def` keyword, followed by a name and an optional list of parameters;
 
-  * We must declare the types of any parameters using the syntax `name: type`;
+  * we must declare the types of all parameters using the syntax `name: type`;
 
-  * We can optionally declare the return type of a method. If we don't declare a return type Scala will infer one for us.
+  * we can optionally declare the return type of a method -- if we don't declare a return type Scala will infer one from the method body;
 
-  * The declaration is followed by an `=` sign and a body expression.
+  * the declaration is followed by an `=` sign and a body expression;
 
-  * The return value of the method is determined by evaluating the body.
+  * the return value of the method is determined by evaluating the body.
 
-If you remember from the previous section, one type of expression is a *block*. We can use blocks to write multi-line methods with side-effects. Because the block evluates to the value of its last expression, there is no need to write `return`.
+If you remember from the previous section, one type of expression is a *block*. We can use blocks to write multi-line methods with side-effects. Because the block evaluates to the value of its last expression, there is no need to write `return`.
 
 ~~~ scala
 scala> object test4 {
@@ -83,9 +83,9 @@ Running the 'hello' method!
 res6: String = Hello Dave
 ~~~
 
-### Fields
+## Fields
 
-An object can also contain other objects, called **fields**. We introduce these using the `val` keyword, which looks similar to `def`.
+An object can also contain other objects, called **fields**. We introduce these using the keywords `val` or `var`, which look similar to `def`:
 
 ~~~ scala
 scala> :paste
@@ -102,20 +102,21 @@ object test5 {
 
 defined module test5
 
-scala>
 scala> test5.hello("Dave")
 res8: String = Noel says hi to Dave
 ~~~
 
 Here are the important parts:
 
-  * Field definitions start with the `val` keyword, followed by a name and an optional type.
+  * field definitions start with the `val` or `var` keyword, followed by a name and an optional type.
 
-  * We can't have parameters!
+  * `val` defines an immutable field, `var` defines a mutable one;
 
-  * The declaration is followed by an `=` sign and a body expression.
+  * field definitions don't take parameters;
 
-  * The value of the field is determined by evaluating the body.
+  * the declaration is followed by an `=` sign and a body expression;
+
+  * the value of the field is determined by evaluating the body.
 
 As with a method, we can use a block to calculate the value of a field over several lines of code.
 
@@ -133,11 +134,13 @@ scala> test6.name
 res9: String = "Dr Who"
 ~~~
 
-### Methods versus Fields
+Scala programmers prefer to use immutable fields wherever possible. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` in this course.
 
-You might wonder why we need fields when we can have methods of no arguments that seem to work the same. The difference is that a field gives a name to a value, whereas a method gives a name to a computation that produces a value.
+## Methods versus fields
 
-Here's an object that shows the difference.
+You might wonder why we need fields when we can have methods of no arguments that seem to work the same. The difference is subtle -- a field gives a name to a value, whereas a method gives a name to a computation that produces a value.
+
+Here's an object that shows the difference:
 
 ~~~ scala
 scala> object test7 {
@@ -157,7 +160,7 @@ Notice how the REPL says we've defined a module, but it hasn't run either of our
 
 `objects` and `classes` (which we'll see later) aren't loaded until they are referenced by other code. This is what prevents Scala loading the entire standard library into memory to run a simple `"Hello world!"` app.
 
-Let's force Scala to evaluate our object body by referencing `test7` in an expression.
+Let's force Scala to evaluate our object body by referencing `test7` in an expression:
 
 ~~~ scala
 scala> test7
@@ -165,7 +168,7 @@ Evaluating simpleField
 res7: test7.type = test7$@b22e8c9
 ~~~
 
-When the object is evaluated, Scala runs through and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
+When the object is first loaded, Scala runs through its definition and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
 
 **The body expression of a field is run only once** after which the final value is stored in the object. The expression is never evaluated again -- notice the lack of println output below.
 
@@ -177,7 +180,7 @@ scala> test7.simpleField
 res9: Int = 42
 ~~~
 
-The body of a method, on the other hand, is evaluated again and again every time we invoke the method -- notice the repreated println output below.
+The body of a method, on the other hand, is evaluated again and again every time we call the method -- notice the repreated println output below.
 
 ~~~ scala
 scala> test7.noArgMethod
@@ -189,14 +192,20 @@ Evaluating noArgMethod
 res12: Int = 42
 ~~~
 
-### Exercises
+## Take home points
 
-#### Square dance!
+In this section we have created our own objects, given them methods and fields, and referenced them in expressions.
 
-Define an object called `calc` with a method called `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *and calls `square` as part of its body*.
+We have also seen the difference between methods and fields -- fields refer to values stored within an object, whereas methods refer to computations that produce values.
+
+## Exercises
+
+### Square dance!
+
+Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *and calls `square` as part of its body*.
 
 <div class="solution">
-Here is the solution. `cube(x)` calls `square(x)` and multiplies its value by `x` one more time to produce its output. The return type of each method is inferred by the compiler as `Double`.
+Here is the solution. `cube(x)` calls `square(x)` and multiplies its value by `x` one more time. The return type of each method is inferred by the compiler as `Double`.
 
 ~~~ scala
 object calc {
@@ -206,7 +215,7 @@ object calc {
 ~~~
 </div>
 
-#### Precise square dance!
+### Precise square dance!
 
 Copy and paste `calc` from the previous exercise to create a `calc2` that is generalized to work with `Ints` as well as `Doubles`. If you have Java experience, this should be fairly straightforward. If not, read the solution below.
 
@@ -251,7 +260,7 @@ The fact that string concatenation and numeric addition share the same `+` metho
 </div>
 </div>
 
-#### Order of evaluation
+### Order of evaluation
 
 When entered on the REPL, what does the following program output, and what is the type and value of the final expression? Think carefully about the types, dependencies, and evaluation behaviour of each field and method.
 
@@ -321,7 +330,7 @@ The full sequence of evaluation is as follows:
        concatentation, and yielding `"3c31"`
 </div>
 
-#### Greetings, humans
+### Greetings, humans
 
 Define an object called `person` that contains fields called `firstName` and `lastName`. Define a second object called `alien` containing a method called `greet` that takes your person as a parameter and returns a greeting using their `firstName`.
 
@@ -347,7 +356,7 @@ Notice the type on tpe `h` parameter of `greet`: `person.type`. This is one of t
 This imposes a significant limitation on our ability to write programs in Scala. We can only write methods that work with built-in types or single objects of our own creation. In order to build useful programs we need the ability to *define our own types* and create multiple values of each. We can do this using `classes`, which we will cover in the next section.
 </div>
 
-#### The value of methods
+### The value of methods
 
 Are methods values? Are they expressions? Why might this be the case?
 

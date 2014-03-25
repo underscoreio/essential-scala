@@ -5,7 +5,7 @@ title: Companion Objects
 
 Sometimes we want to create a method that logically belongs to a class but is independent of any particular object. In Java we would use a *static method* for this, but Scala has a much simpler solution: singleton objects.
 
-One common use case is auxiliary constructors. Although Scala does support having multiple constructors for a single class, most Scala programmers prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the *companion* of the class. For example:
+One common use case is auxiliary constructors. Although Scala does technically let us define multiple constructors for a single class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the **companion object** of the class. For example:
 
 ~~~ scala
 scala> import java.util.Date
@@ -31,7 +31,13 @@ scala> Timestamp(1, 1, 1).seconds
 res2: Long = 3661
 ~~~
 
-Scala has two namespaces: a space of *type names* and a space of *value names*. This is what allows us to name the class and companion object the same thing. It is important to note that **the companion object is not an instance of the class**.
+<div class="alert alert-info">
+**REPL tip:** Note our use of the `:paste` command in the transcript above. Companion objects must be defined in the same compilation unit as the classes they support. In normal application code this simply means defining them both in the same file, but on the REPL we have to enter then in one command using `:paste`. You can enter `:help` on the REPL to find out more.
+</div>
+
+Scala has two namespaces: a space of *type names* and a space of *value names*. This separation allows us to name our class and companion object the same thing without conflict.
+
+It is important to note that **the companion object is not an instance of the class** -- it is a singleton object with its own type:
 
 ~~~ scala
 scala> Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
@@ -40,11 +46,11 @@ res3: Timestamp.type = Timestamp$@602b24e6
 
 ### Exercises
 
-#### Construct-a-Person
+#### Friendly Person Factory
 
-Implement a companion object for `Person` containing an `apply` method that accepts a whole name as a single string rather than as a first and last name individually.
+Implement a companion object for `Person` containing an `apply` method that accepts a whole name as a single string rather than individual first and last names.
 
-Here's a tip: you can split a `String` into an `Array` of components as follows:
+Tip: you can split a `String` into an `Array` of components as follows:
 
 ~~~ scala
 scala> val parts = "John Doe".split(" ")

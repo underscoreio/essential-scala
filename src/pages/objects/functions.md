@@ -13,13 +13,13 @@ class Adder(amount: Int) {
 
 In the discussion we described `Adders` as representing the computation of adding an `amount` to a number. This is effectively like having a method that we can pass around as a value.
 
-This is such a powerful concept, that Scala has a fully blown set of language features that allow us to create objects that also behave like computations. These computational objects are called *functions*, and are the basis of **functional programming**.
+This is such a powerful concept that Scala has a fully blown set of language features for creating objects that behave like computations. These computational objects are called *functions*, and are the basis of **functional programming**.
 
 ### The apply method
 
-Scala has numerous language features for supporting functional programming. For now we are going to look at just one, called **apply syntax**. The other features will come later this chapter.
+For now we are going to look at just one of Scala's features supporting functional programming -- **function application syntax**. We'll see the rest of Scala's functional programming features at the end of the chapter.
 
-In Scala, by convention, an object can by "called" like a function if it has a method called `apply`. Naming a method `apply` affords us a special shortened call syntax: `foo.apply(args)` becomes `foo(args)`.
+In Scala, by convention, an object can be "called" like a function if it has a method called `apply`. Naming a method `apply` affords us a special shortened call syntax: `foo.apply(args)` becomes `foo(args)`.
 
 For example, if we rename the `add` method in our `Adder` to `apply` we can use it as follows:
 
@@ -36,4 +36,4 @@ scala> add3(2)
 res7: Int = 5
 ~~~
 
-With this one neat trick objects can look like functions. There are lots of things that we can now do now that we couldn't do with methods, including assign them to variables and pass them as arguments. Functions are **first class values**, which means we can do anything with them that we can with other objects.
+With this one neat trick objects can look like functions. There are lots of things that we can now do now that we couldn't do with methods, including assign them to variables and pass them as arguments. **Functions are first class values**, which means we can do anything with them that we can with other objects.

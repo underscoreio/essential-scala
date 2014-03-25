@@ -4,7 +4,6 @@
 toc:
   - head: /index.html
     body:
-     - /about.html
      - /getting-started/index.html
 
   - head: /intro/index.html

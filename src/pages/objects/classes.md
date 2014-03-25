@@ -106,7 +106,7 @@ Scala programmers tend to prefer to write immutability and side-effect-free code
 
 All Scala methods and constructors support *keyword parameters* and *default parameter values*.
 
-Whenever we call a method or constructor, we can **use its parameter names as keywords** to specify them in whatever order we want:
+Whenever we call a method or constructor, we can **use parameter names as keywords** to specify the parameters in an arbitrary order:
 
 ~~~ scala
 scala> new Person(lastName = "Last", firstName="First")
@@ -135,7 +135,8 @@ scala> greet(lastName = "Dave")
 res11: String = Greetings, Some Dave!
 ~~~
 
-Important design tip: **keyword parameters are robust to changes** in the number and order of parameters. For example, if we add a `title` parameter to the `greet` method, the meaning of keywordless method calls changes but keyworded calls remain the same:
+<div class="alert alert-info">
+**Design tip:** *Keyword parameters are robust to changes in the number and order of parameters.* For example, if we add a `title` parameter to the `greet` method, the meaning of keywordless method calls changes but keyworded calls remain the same:
 
 ~~~ scala
 scala> def greet(title: String = "Mr", firstName: String = "Some", lastName: String = "Guy") =
@@ -150,6 +151,7 @@ res12: String = Greetings, Mr Awesome Guy
 ~~~
 
 This is particularly useful when creating methods and constructors with large number of parameters.
+</div>
 
 ### Exercises
 
@@ -172,11 +174,13 @@ class Counter(val count: Int) {
 }
 ~~~
 
-There are two goals to this exercise. The first is practice creating simple classes and objects. The second is think about why `inc` and `dec` return a new `Counter`, rather than updating the same counter directly.
+Aside from practicing with classes and objects, this exercise has a second goal -- to think about why `inc` and `dec` return a new `Counter`, rather than updating the same counter directly.
 
 Because `val` fields are immutable, we need to come up with some other way of propagating the new value of `count`. Methods that return new `Counter` objects give us a way of returning new state without the side-effects of assignment. They also permit *method chaining*, allowing us to write whole sequences of updates in a single expression
 
-The use-case `new Counter(10).inc.dec.inc.inc.count` actually creates 5 instances of `Counter` before returning its final `Int` value. You may be concerned about the extra memory and CPU overhead for such a simple calculation, but don't be. Modern execution environments like the JVM render the extra overhead of this style of programming negligable in all but the most performance critical code.
+<div class="alert alert-info">
+**Performance tip:** The use-case `new Counter(10).inc.dec.inc.inc.count` actually creates 5 instances of `Counter` before returning its final `Int` value. You may be concerned about the extra memory and CPU overhead for such a simple calculation, but don't be. Modern execution environments like the JVM render the extra overhead of this style of programming negligable in all but the most performance critical code.
+</div>
 </div>
 
 #### Counting Faster

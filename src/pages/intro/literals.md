@@ -10,11 +10,13 @@ scala> 42
 res0: Int = 42
 ~~~
 
-This interaction at the REPL shows us that the literal `42` evaluates to the `Int` `42`. Don't confuse a literal with the value it evaluates to! The literal expression is the representation in the program text before the program is run. The value is the representation in the computer's memory after the program has run.
+This interaction at the REPL shows us that the literal `42` evaluates to the `Int` `42`.
 
-If you have prior programming experience, particularly Java experience, you won't be surprised at the available literals in Scala. Here's a quick run down of the major ones.
+Don't confuse a literal with the value it evaluates to! The literal expression is the representation in the program text before the program is run, and the value is the representation in the computer's memory after the program has run.
 
-### Numbers
+If you have prior programming experience, particularly Java experience, the literals in Scala should be familiar to you:
+
+## Numbers
 
 Numbers share the same types available in Java: `Int` for 32-bit integers, `Double` for 64-bit floating point, `Float` for 32-bit floating point, and `Long` for 64-bit integers.
 
@@ -28,13 +30,13 @@ res1: Double = 42.0
 scala> 42.0f
 res2: Float = 42.0
 
-scala> 42l
+scala> 42L
 res3: Long = 42
 ~~~
 
 Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. Instead, we create them using *methods* called `toShort` and `toByte`. We'll learn more about this in the next section.
 
-### Booleans
+## Booleans
 
 Booleans are exactly the same as Java: `true` or `false`.
 
@@ -46,7 +48,7 @@ scala> false
 res12: Boolean = false
 ~~~
 
-### Characters
+## Characters
 
 `Chars` are 16-bit Unicode values written as a single character enclosed in single quotes.
 
@@ -61,7 +63,7 @@ res34: Char = a
   In Scala all of these types act like objects with methods and fields. However, once your code is compiled, a Scala `Int` is exactly the same as a Java `int`. This makes interoperability between the two languages a breeze.
 </div>
 
-### Strings
+## Strings
 
 Strings are exactly Java's strings, and are written the same way.
 
@@ -75,9 +77,9 @@ the
     usual escape characters apply
 ~~~
 
-### Null
+## Null
 
-Null is the same as Java, though not used nearly as often.
+Null is the same as Java, though not used nearly as often. It also has its own type, `Null`.
 
 ~~~ scala
 scala> null
@@ -87,12 +89,12 @@ res13: Null = null
 <div class="alert alert-info">
   **Java tip:** Although `nulls` are common in Java code, they are considered very bad practice in Scala.
 
-  The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, which can lead to runtime errors in the form of `NullPointerExceptions`.
+  The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
 
-  In Scala we have ways of defining optional values that are checked by the compiler. This removes the necessity of using `null`, making our programs much safer. We will learn about these later.
+  In Scala we have the means to define optional values that *are* checked by the compiler. This removes the necessity of using `null`, making our programs much safer. We will learn about these later.
 </div>
 
-### Unit
+## Unit
 
 Unit, written `()`, is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The REPL doesn't print unit but we can ask for the type of an expression to see that unit is in fact the result of some expressions.
 
@@ -111,19 +113,19 @@ Unit
 
 Unit is an important concept in Scala. Many of Scala's syntactic constructs are *expressions* that have types and values. We need a placeholder for expressions that don't yield a useful value, and unit provides just that.
 
-### Take home points
+## Take home points
 
 We have been introduced to the basic data types in Scala, which are identical to the basic types available in Java.
 
-We have seen how to write *literal* values of each type. The syntax is, again, very similar to Java.
+We have seen how to write **literal** values of each type. The syntax is, again, very similar to Java.
 
 Finally, we have noted that every literal has a **value** and a **type** - something which is also true for more complex Scala expressions.
 
-In the next section we will start combining values into expressions and producing code that has useful effects.
+In the next section we will start combining values into **expressions** and producing code that has useful effects.
 
-### Exercises
+## Exercises
 
-#### Literally Just Literals
+### Literally Just Literals
 
 What are the values and types of the following Scala literals?
 
@@ -143,7 +145,7 @@ true
 This exercise just gives you some experience using the Scala console or Worksheet.
 </div>
 
-#### Quotes and Misquotes
+### Quotes and Misquotes
 
 What is the difference between the following literals? What is the type and value of each?
 
@@ -157,7 +159,7 @@ What is the difference between the following literals? What is the type and valu
 The first is a literal `Char` and the second is a literal `String`.
 </div>
 
-#### An Aside on Side-Effects
+### An Aside on Side-Effects
 
 What is the difference between the following expressions? What is the type and value of each?
 
@@ -170,17 +172,17 @@ println("Hello world!")
 <div class="solution">
 The literal expression `"Hello world!"` evaluates to a `String` value. The expression `println("Hello world!")` evalutes to `Unit` and, as a side-effect, prints `"Hello world!"` on the console.
 
-This an important distinction between a program that evalutes to a value and aprogram that prints a value as a side-effect. The former can be reasoned about using substitution but the latter cannot.
+This an important distinction between a program that evalutes to a value and a program that prints a value as a side-effect. The former can be used in a larger expression but the latter cannot.
 </div>
 
-#### Learning By Mistakes
+### Learning By Mistakes
 
-What is the type and value of the following literal? Try writing it in a Scala worksheet and see what happens!
+What is the type and value of the following literal? Try writing it on the REPL or in a Scala worksheet and see what happens!
 
 ~~~ scala
 'Hello world!'
 ~~~
 
 <div class="solution">
-You should see an error message. Make sure you read and understand the error message as you'll see plenty more of them soon!
+You should see an error message. Take the time to read and get used to the error messages in your development environment -- you'll see plenty more of them soon!
 </div>
