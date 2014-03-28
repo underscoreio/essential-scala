@@ -13,31 +13,37 @@ Generic types naturally arise in collections, so let's consider a really simple 
 scala> case class Box[A](val value: A)
 defined class Box
 
-scala> Box(2).value
-res5: Int = 2
+scala> Box(2)
+res0: Box[Int] = Box(2)
 
-scala> Box("hi").value
-res6: String = hi
+scala> res0.value
+res1: Int = 2
+
+scala> Box("hi") // if we omit the type parameter, scala will infer its value
+res2: Box[String] = Box(hi)
+
+scala> res2.value
+res3: String = hi
 ~~~
 
 The syntax `[A]` is called a **type parameter** -- it binds a name to a type. Wherever `A` occurs in our class definition we will substitute in the same type. This works in the same way that binding a name to a value (using `val`) allows us to substitute in the value wherever the name occurs. The only difference is that we're operating on types rather than values.
 
-We can also add type parameters to methods like so:
+We can also add type parameters to methods, which limits the scope of the parameter to the method declaration and body:
 
 ~~~ scala
 scala> def generic[A](in: A): A = in
 generic: [A](in: A)A
 
-scala> generic("foo")
+scala> generic[String]("foo")
 res10: String = foo
 
-scala> generic(1)
+scala> generic(1) // again, if we omit the type parameter, scala will infer it
 res11: Int = 1
 ~~~
 
-This limits the scope of the type parameter to the method declaration and body.
+## Exercises
 
-## Exercise
+### Pairs
 
 Implement a class called `Pair` that stores two value `one` and `two`. `Pair` should be generic in both arguments. Example usage:
 
@@ -53,6 +59,8 @@ res14: Int = 2
 ~~~
 
 <div class="solution">
+If one type parameter is good, two type parameters are better:
+
 ~~~ scala
 case class Pair[A, B](val one: A, val two: B)
 ~~~
@@ -63,14 +71,17 @@ case class Pair[A, B](val one: A, val two: B)
 A *tuple* is the generalisation of a pair to any number of terms. Scala includes built-in generic tuple types with up to 22 elements, along with special syntax for creating them. The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they can also be written in the sugared form `(A, B, C, ...)`. For example:
 
 ~~~ scala
-scala> ("hi", 1)
+scala> Tuple2("hi", 1) // unsugared syntax
+res19: (String, Int) = (hi,1)
+
+scala> ("hi", 1) // sugared syntax
 res19: (String, Int) = (hi,1)
 
 scala> ("hi", 1, true)
 res20: (String, Int, Boolean) = (hi,1,true)
 ~~~
 
-We can define methods that accept tuples using this same syntax:
+We can define methods that accept tuples as parameters using the same syntax:
 
 ~~~ scala
 scala> def tuplized[A, B](in: (A, B)) = in._1
@@ -80,15 +91,39 @@ scala> tuplized(("a", 1))
 res21: String = a
 ~~~
 
-Pattern matching is the usual way of destructing a tuple, but we can use accessors `_1`, `_2`, and so on as in the example above.
+We can also pattern match on tuples as follows:
 
-Tuples are the most generic **product type**, which you will recall we discussed in the previous section.
+~~~ scala
+scala> (1, "a") match {
+     |   case (a, b) => a + b
+     | }
+res3: String = 1a
+~~~
 
-## Exercise
+Although pattern matching is the natural way to deconstruct a tuple, each class also has a compliment of fields named `_1`, `_2` and so on:
 
-#### Generic Sum Type
+~~~ scala
+scala> val x = (1, "b", true)
+x: (Int, String, Boolean) = (1,b,true)
 
-Implement a generic **sum type** for two cases. Call the two cases `Left` and `Right` respectively, and the overall type `Sum`. Example usage:
+scala> x._1
+res5: Int = 1
+
+scala> x._3
+res6: Boolean = true
+~~~
+
+## Exercises
+
+### Generic Sum Type
+
+A **sum type** is a useful tool that allows us to represent values that could be of one type or another. Let's implement this now.
+
+Implement a trait called `Sum` with two subtypes `Left` and `Right`. Create type parameters so that `Left` and `Right` can wrap up values of two different types.
+
+Hint: you will need to put both type parameters on all three types.
+
+Example usage:
 
 ~~~ scala
 scala> Left[Int, String](1).value
@@ -108,17 +143,82 @@ res26: String = foo
 ~~~
 
 <div class="solution">
+The code is very similar to `Box`, except that we need both type parameters:
+
 ~~~ scala
 sealed trait Sum[A, B]
 final case class Left[A, B](val value: A) extends Sum[A, B]
 final case class Right[A, B](val value: B) extends Sum[A, B]
-</div>
 ~~~
 
 Scala has the generic sum type `Either` for two cases, but it does not have types for more cases.
 </div>
 
-#### Generic Functions
+### Generic Error Handling
+
+In a previous exercise we "solved" the problem of dividing by zero by defining a type called `DivisionResult`. This forced us to handle the possibility of a division by zero in order to access the value.
+
+With our knowledge of generics we can now generalise `DivisionResult` to encapsulate potential errors of any type. Modify `DivisionResult` to create a generic trait called `PossibleResult` with two subtypes, `ActualResult` and `NoResult`. Rewrite `divide` to return a `PossibleResult[Int]`. Example usage:
+
+~~~ scala
+divide(1, 0) match {
+  case ActualResult[Int](value) => println(s"It's finite: ${value}")
+  case NoResult[Int]()          => println(s"It's infinite")
+}
+~~~
+
+<div class="solution">
+Ideally we would like to write something like this:
+
+~~~ scala
+sealed trait PossibleResult[A]
+final case class ActualResult[A](val value: A) extends PossibleResult[A]
+final case object NoResult extends PossibleResult[???]
+~~~
+
+However, objects can't have type parameters. In order to make `NoResult` an object we need to provide a concrete type in the `extends PossibleResult` part of the definition. But what type should we use? In the absence of a preference for a particular data type, we could use something like `Unit` or `Nothing`. However this leads to type errors:
+
+~~~ scala
+scala> :paste
+sealed trait PossibleResult[A]
+final case class ActualResult[A](val value: A) extends PossibleResult[A]
+final case object NoResult extends PossibleResult[Nothing]
+^D
+
+defined trait PossibleResult
+defined class ActualResult
+defined module NoResult
+
+scala> val possible: PossibleResult[Int] = NoResult
+<console>:9: error: type mismatch;
+ found   : NoResult.type
+ required: PossibleResult[Int]
+       val possible: PossibleResult[Int] = NoResult
+~~~
+
+The problem here is that `NoResult` is a `PossibleResult[Nothing]` and a `PossibleResult[Nothing]` is not a `PossibleResult[Int]`.
+
+We'll see how to overcome this limitation in a moment. In the meantime we can define `NoResult` as a class with a type parameter as a stop-gap solution:
+
+~~~ scala
+sealed trait PossibleResult[A]
+final case class ActualResult[A](val value: A) extends PossibleResult[A]
+final case class NoResult[A]() extends PossibleResult[A]
+
+object division {
+  def apply(num: Int, den: Int) =
+    if(den == 0) NoResult[Int] else ActualResult(num / den)
+}
+~~~
+
+Regardless, `PossibleResult` is a powerful concept -- it allows us to represent objects that may or may not contain a value. We can see this as an alternative to using `null`, except that the compiler can verify that we never get a `NullPointerException`.
+
+In fact, `PossibleResult` is such a useful concept that Scala defines a core class called `Option` for this very purpose. `Option` is a trait with two subtypes, `Some` for storing a value and `None` representing an empty value.
+</div>
+
+{% comment %}
+
+### Generic Functions
 
 Add a method `map` to `Box` that takes a function of type `A => B` and returns a `Box[B]`. Example usage:
 
@@ -136,11 +236,24 @@ case class Box[A](val value: A) {
 ~~~
 </div>
 
+{% endcomment %}
+
 ## Type Bounds
 
 It is sometimes useful to constrain a generic type. We can do this with type bounds indicating that a generic type should be a sub- or super-type of some given types. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
 
-## Variance Annotations
+For example, the following type allows us to store a `Visitor` or any subtype:
+
+~~~ scala
+case class WebAnalytics[A <: Visitor](
+  visitor: A,
+  pageViews: Int,
+  searchTerms: List[String],
+  isOrganic: Boolean
+)
+~~~
+
+## Invariance and Covariance
 
 Consider our `Box` type and the type `Foo` declared below.
 
@@ -173,19 +286,9 @@ This interaction might be surprising. `Ex1` is a subtype of `Foo` so we might ex
 
 **Covariance** is the behaviour most people expect. For a covariant type `F` a subtype of `A` is a subtype of `F[A]`. We can make a generic type covariant by introducing a generic type as `+A` instead of `A`.
 
-## Exercise
+**Contravariance** is the opposite of covariance. For a contravariant type `F` a supertype of `A` is a subtype of `F[A]`. Why would we ever want contravariance? The main example is in function types, which we'll see in the next section.
 
-Make `Box` covariant.
-
-<div class="solution">
-~~~ scala
-case class Box[+A](val value: A)
-~~~
-</div>
-
-**Contravariance** is the opposite of covariance. For a contravariant type `F` a supertype of `A` is a subtype of `F[A]`. Why would we ever want contravariance? Consider a function `f: A => B`. What functions can we safely use in place of this function? A function returning a subtype of `B` is ok, because it's result type will have all the properties of `B` that we might depend on. A function expecting a supertype of `A` is also ok. A function expecting a subtype of `A` is not ok, however, as it will expect properties of its input that we do not enforce. Thus functions are covariant in their return type but contravariant in their input type. We annotate contravariance as `-A` for a type `A`.
-
-There is no doubt that variance is confusing to many. The good news is you don't have to use it in your code. You might have to add a few type declarations to get code to work without variance annotations, but that's it. For example, here's the code above with type declarations to make it compile.
+There is no doubt that variance is confusing to many. The good news is it hardly ever comes up in application code. We can typically settle for invariant types at the cost of a few type declarations to keep the compiler happy. For example:
 
 ~~~ scala
 scala> val box : Box[Foo] = Box(Ex1())
@@ -194,3 +297,39 @@ box: Box[Foo] = Box(Ex1())
 scala> fooIt(box)
 res32: Foo = Ex1()
 ~~~
+
+## Exercise
+
+### Covariant Error Handling
+
+Covariance is the solution to our problem with `PossibleResult`. Recall that we couldn't define `NoResult` as an object because we ended up with a type error:
+
+~~~ scala
+final case object NoResult extends PossibleResult[Nothing]
+
+val possible: PossibleResult[Int] = NoResult // type error
+~~~
+
+The type error is this: *`NoResult` is a `PossibleResult[Nothing]`, which is not a `PossibleResult[Int]`*. How can we make fix this type error? What would the code look like?
+
+Hint: `Nothing` is a subtype of `Int`!
+
+<div class="solution">
+The solution involves making `PossibleResult[Nothing]` a subtype of `PossibleResult[Int]`. `Unit` is a subtype of `Int`, so if we make `PossibleResult` covariant we should be fine:
+
+~~~ scala
+sealed trait PossibleResult[+A]
+final case class ActualResult[A](val value: A) extends PossibleResult[A]
+final case object NoResult extends PossibleResult[Nothing]
+
+val possible: PossibleResult[Int] = NoResult // no type errors!
+~~~
+
+This is more-or-less exactly how Scala's `Option` is defined. Here's a synopsis:
+
+~~~ scala
+sealed trait Option[+A]
+final case class Some[A](get: A) extends Option[A] { /* ... */ }
+final case object None extends Option[Nothing] { /* ... */ }
+~~~
+</div>

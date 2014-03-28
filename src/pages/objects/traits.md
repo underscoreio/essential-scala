@@ -69,9 +69,9 @@ class Administrator(
 ~~~
 
 <div class="alert alert-warning">
-**Warning:** It is inadvisable to extend a case class to create another case class. The implementation of case classes relies on there being a fixed number of fields, and adding fields in a subclass invalidates this assumption.
+**Warning:** It is inadvisable to extend a case class to create another case class. The implementation of case classes relies on details like the number of fields -- modifying the structure in a subclass can lead to bugs in things like pattern matching.
 
-Scala developers typically only create case classes as leaves of a type hierarchy. If we do have to extend a `case class`, we always make the subtype a regular `class`.
+It is best practice to only create case classes as leaves of a type hierarchy. If we do have to extend a `case class`, we should always make the subtype a regular `class` and define the extra methods ourselves.
 </div>
 
 [^uap]: This is all part of the [uniform access principle] we saw in the exercises for [Object Literals](object-literals.html).
@@ -80,18 +80,14 @@ Scala developers typically only create case classes as leaves of a type hierarch
 
 ### Subtyping and Polymorphism
 
-A trait is a type just like a class. A class that extends a trait is a *subtype* of that trait, and any object of that class is both a value of the subtype and a value of the supertype. This is one type of [polymorphism](http://en.wikipedia.org/wiki/Polymorphism_(computer_science)).
+A trait is a type just like a class. A class that extends a trait is a *subtype* of that trait, and any object of that class is both a value of the subtype and a value of the supertype. This is a kind of [polymorphism](http://en.wikipedia.org/wiki/Polymorphism_(computer_science)), and is essentially the polymorphism we get from Java.
 
-We can use an instance of a subtype in our code anywhere we expect an instance of the supertype. For example, we can assign `User` to a variable of type `Visitor`:
+Anywhere in our code that we expect an instance of the supertype, we can use an instance of the subtype instead. For example, we can assign `User` to a variable of type `Visitor` or pass it to a method that expects a `Visitor` as a parameter:
 
 ~~~ scala
 scala> val visitor: Visitor = User("a", "me@example.com")
 visitor: Visitor = User(a,me@example.com,Fri Feb 14 12:05:25 GMT 2014)
-~~~
 
-We can also pass a `User` to a method that expects a `Visitor`:
-
-~~~ scala
 scala> def ageString(v: Visitor) =
      |   v.id + " is " + v.age + "ms old"
 ageString: (v: Visitor)String
@@ -100,9 +96,9 @@ scala> ageString(User("a", "me@example.com"))
 res14: String = a is 0ms old
 ~~~
 
-### The Type Hierarchy
+### Scala's Type Hierarchy
 
-Unlike Java, which separates primitive and object types, in Scala everything is an object. As a result, "primitive" value types like `Int` and `Boolean` form part of the same type hierarchy as classes and traits.
+Unlike Java, which separates primitive and object types, everything in Scala is an object. As a result, "primitive" value types like `Int` and `Boolean` form part of the same type hierarchy as classes and traits.
 
 <img src="scala-type-hierarchy.svg" alt="Scala type hierarchy">
 
@@ -110,7 +106,7 @@ Scala has a grand supertype called `Any`, under which there are two types, `AnyV
 
 Some of these types are simply Scala aliases for types that exist in Java: `Int` is `int`, `Boolean` is `boolean`, and `AnyRef` is `java.lang.Object`.
 
-There are also two special types at the *bottom* of the hierarchy. `Nothing` is the type of `throw` expressions, and `Unit` is Scala's equivalent of `void`. It might seem odd that these are subtypes of everything else -- this unique property is what allows us to write expressions like the following:
+There are also two special types at the *bottom* of the hierarchy. `Nothing` is the type of `throw` expressions, and `Unit` is Scala's equivalent of `void`. It might seem odd that these are subtypes of everything else -- this unique property (that we cannot recreate in our own classes) is what allows us to write expressions like the following:
 
 ~~~ scala
 scala> if(true) {
@@ -122,11 +118,9 @@ scala> if(true) {
 res2: Int = 123
 ~~~
 
-We'll learn more about the intricacies of Scala's type hierarchy later on.
-
 ### Exploiting Types
 
-In one sense a type is just a collection of values that share common properties. More than that, though, **a type can represent any property of a program that we can establish without evaluating the program.**
+In one sense a type is just a collection of values that share common properties. More than that, though, a type can represent **any property of a program that we can establish without evaluating it.**
 
 In old languages like C, types were used to specify the machine representation of data, essentially providing optimisation hints to the compiler. In modern languages like Scala, **types are used to ensure that important program properties are maintained**.
 
@@ -142,7 +136,7 @@ Define a trait called `Shape` and give it three abstract methods:
  - `perimeter` returns the total length of the sides;
  - `area` returns the area.
 
-Implement `Shape` with three classes: `Circle`, `Rectangle`, and `Square`. In each case provide implementations of each of the three methods. Ensure that the main parameters of each shape (e.g. the radius of the circle) are accessible as fields.
+Implement `Shape` with three classes: `Circle`, `Rectangle`, and `Square`. In each case provide implementations of each of the three methods. Ensure that the main constructor parameters of each shape (e.g. the radius of the circle) are accessible as fields.
 
 **Tip:** The value of &pi; is accessible as `math.Pi`.
 
@@ -176,7 +170,7 @@ case class Square(size: Double) extends Shape {
 
 ### Shaping up 2
 
-The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly: a `Square` isn't just a `Shape`, it's also a type of `Rectangle` (where the width and height are the same).
+The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape` -- it's also a type of `Rectangle` where the width and height are the same.
 
 We want to avoid case-class-to-case-class inheritance, so refactor the solution to the last exercise so that `Square` and `Rectangle` are subtypes of a common type `Rectangular`.
 

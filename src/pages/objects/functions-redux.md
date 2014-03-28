@@ -3,90 +3,153 @@ layout: page
 title: Functions Redux
 ---
 
-Way back, in the final exercise in the [Classes](classes.html) section, we defined a class called `Adder`. Here's a recap.
+Much earlier in this Chapter we were introduced to the `apply` methods, which lets us treat objects as functions in a syntactic sense:
 
 ~~~ scala
-class Adder(amount: Int) {
-  def add(in: Int) = in + amount
+scala> object add1 {
+     |   def apply(in: Int) = in + 1
+     | }
+defined module add1
+
+scala> add1(2)
+res2: Int = 3
+~~~
+
+This is a big step towards doing real functional programming in Scala but we're missing one important component: *types*.
+
+As we have seen, types allow us to abstract across values. We've seen all sorts of special case functions like `Adders` and `ActionListeners`, but what we really want is a generalised set of types that allow us to represent computations of any kind.
+
+Enter Scala's `Function` types.
+
+## Function types
+
+Scala has 23 built-in generic classes for functions of 0 to 22 arguments. Here's what they look like:
+
+~~~ scala
+trait Function0[+R] {
+  def apply: R
+}
+
+trait Function1[-A, +B] {
+  def apply(a: A): B
+}
+
+trait Function2[-A, -B, +C] {
+  def apply(a: A, b: B): C
+}
+
+// and so on...
+~~~
+
+For the most part this is all stuff we know. The only syntax we haven't seen is `[-A]`, which indicates a *contravariant type parameter*. Let's look at this for a moment.
+
+### Contravariance
+
+Contravariance is the opposite of covariance: if we have a supertype `A`, a subtype `B`, and a contravariant type `Foo[-X]`, then `Foo[A]` is a subtype of `Foo[B]`. This seems counterintuitive but it makes sense if we look at it from the point of view of function arguments. Consider some code that expects a `Function1[A, B]`:
+
+~~~ scala
+class Box[A](value: A) {
+  /** Apply `func` to `value`, returning a `Box` of the result. */
+  def map[B](func: Function1[A, B]): Box[B] =
+    Box(func(a))
 }
 ~~~
 
-In the discussion we described `Adders` as representing the computation of adding an `amount` to a number. It was like a method that is also a value.
+What functions can we safely pass to this `map` method?
 
-This is such a powerful concept, that Scala has a fully blown set of language features that allow us to create objects that also behave like computations. These comutational objects are called *functions*, and are the basis of **functional programming**.
+ - A function from `A` to `B` is clearly ok,
 
-Finally, folks, we made it. Take a deep breath and let's start functional programming!
+ - A function from `A` to a subtype of `B` is ok, because it's result type will have all the properties of `B` that we might depend on. This indicates that functions are covariant in their result type.
 
-### The apply method
+ - A function expecting a supertype of `A` is also ok, because the `A` we have in the box will have all the properties that the function expects.
 
-In Scala, a function is simply an object with a special method called `apply`. Using the method name `apply` in an object `foo` affords us a special syntax for `foo.apply(args)`: `foo(args)`.
+ - A function expecting a subtype of `A` is not ok, because our value may in reality be a different subtype of `A`.
 
-For example, if we rename the `add` method to `apply` we can use it as follows:
+If we think about this carefully, we can see that functions are indeed contravariant in terms of their argument types and covariant in terms of their result type.
 
-~~~ scala
-scala> class Adder(amount: Int) {
-     |   def apply(in: Int) = in + amount
-     | }
-defined class Adder
+The good news is we almost never need to think about contravariance in application code. In fact, the only example of contravariance I can think of is function types.
 
-scala> val add3 = new Adder(3)
-add3: Adder = Adder@1d4f0fb4
+### Function type shorthand
 
-scala> add3(2)
-res7: Int = 5
-~~~
-
-With this one neat trick objects can become functions. There are lots of things that we can now do with functions that we couldn't do with methods: assign them to variables, pass them as arguments, and return them. Functions are **first class values**, which means we can do anything with them that we can with other values.
-
-### Function literals
-
-Scala takes this trick further by giving us a short-hand *function literal syntax* specifically for creating new functions. Here is a function that adds one to an `Int`:
+Scala programmers use functions *a lot*, so Scala has some neat shorthand for writing function types. Here is a synopsis:
 
 ~~~ scala
-scala> (x: Int) => x + 1
-res3: Int => Int = <function1>
-
-scala> res3(10)
-res4: Int = 11
+() => A     // short for Function0[A]
+A => B      // short for Function1[A, B]
+(A) => B    // short for Function1[A, B]
+(A, B) => C // short for Function2[A, B, C]
+// and so on...
 ~~~
 
-Notice the type: `Int => Int`. This means a function that takes an `Int` as a parameter and returns an `Int`. This extends naturally to functions of more than one argument:
+We can write these shorthands wherever we would write function type. For example:
 
 ~~~ scala
-scala> (x: Int, y:Int) => x + y
-res5: (Int, Int) => Int = <function2>
+case class Box[A](value: A) {
+  def map[B](func: A => B): Box[B] = Box(func(a))
+}
 
-scala> res5(10, 20)
-res6: Int = 30
+case class Adder(amount: Int) extends (Int => Int) {
+  def apply(value: Int) = value + amount
+}
 ~~~
 
-### Built-in function types
+## Function literals
 
-You may be wondering why the type and values of our revised `Adder` don't print the same as these functions. The answer is subtle: by naming our method `apply`, we gain acces to the short-hand syntax for function application. However, our `Adder` is still of type `Adder`, and it still has the same `toString` method as before..
-
-Scala also defines standard abstract classes[^actuallytraits] for functions of various arities, from `Function0` for functions of no parameters upwards to `Function22` for functions of 22 parameters[^whytwentytwo]. The notations `Int => Int` and `(Int, Int) => Int` are syntactic sugar for `Function1[Int, Int]` and `Function2[Int, Int, Int]` respectively.
-
-These built-in function types allow us to write code that relies on a general function rather than something library-specific like `Adder`. For example:
+Scala takes this shorthand syntax further by giving us a **function literal syntax** specifically for creating new functions. Here is a function that adds one to an `Int`:
 
 ~~~ scala
-scala> class Counter(val count: Int = 0) {
-     |   def adjust(func: Int => Int) = new Counter(func(count))
-     | }
-defined class Counter
+scala> val sayHi = () => "Hi!"
+sayHi: () => String = <function0>
 
-scala> new Counter(2).adjust((x: Int) => x + 3).count
-res9: Int = 5
+scala> sayHi()
+res1: String = Hi!
+
+scala> val add1 = (x: Int) => x + 1
+add1: Int => Int = <function1>
+
+scala> add1(10)
+res2: Int = 11
+
+scala> val sum = (x: Int, y:Int) => x + y
+sum: (Int, Int) => Int = <function2>
+
+scala> sum(10, 20)
+res3: Int = 30
 ~~~
 
-We no longer need our `Adder` class -- we can pass any function to `Counter` to change its value in any arbitrary manner.
+In code where we know the argument types, we can sometimes **drop the type annotations** and allow Scala to infer them[^parens]:
 
-[^actuallytraits]: Actually, technically `Function1` through `Function22` are *traits* - we'll be introduced to these in the next couple of sections.
+[^parens]: Note that we only can drop the parentheses around the argument list on single-argument functions -- we still have to write `() => foo` and `(a, b) => foo` on functions of other arities.
 
-[^whytwentytwo]: Why 22? Honestly, there's no specific reason. The creators of Scala had to stop somewhere, and... oddly... they chose to stop at 22.
+~~~ scala
+scala> Box(1).map(a => a * 2)
+res4: Box[Int] = 2
+~~~
 
-### Converting methods to functions
+### Placeholder syntax
 
-Finally, Scala gives us syntax to convert a methods into functions, by following a method name with an underscore.
+One final level of syntactic sugar -- in very simple situations we can write inline functions using an extreme shorthand called **placeholder syntax**. It looks like this:
+
+~~~ scala
+scala> Box(1).map(_ * 2)
+res4: Box[Int] = 2
+~~~
+
+`_ * 2` expands to `a => a * 2`, which in this example the compiler expands to `(a: Int) => a * 2`. The types obviously depend on the use case. Other examples:
+
+~~~ scala
+_ + _     // expands to `(a, b) => a + b`
+foo(_)    // expands to `(a) => foo(a)`
+foo(_, b) // expands to `(a) => foo(a, b)`
+_(foo)    // expands to `(a) => a(foo)`
+// and so on...
+~~~
+
+Placeholder syntax, while wonderfully terse, only works in certain situations. It's best to play with it to get a feel for the situations where it can be applied. We can always fall back to longer forms if required.
+
+## Converting methods to functions
+
+Scala contains one final feature that is directly relevant to this section -- the ability to convert method calls to functions. This is closely related to placeholder syntax -- simply follow a method with an underscore:
 
 ~~~ scala
 scala> object Sum {
@@ -104,44 +167,47 @@ scala> (Sum.sum _)
 res11: (Int, Int) => Int = <function2>
 ~~~
 
-Finally, we understand that cryptic error message about underscores and partially applied functions.
+In situations where Scala can infer that we need a function, we can even drop the underscore and simply write the method name -- the compiler will promote the method to a function automatically:
 
-### Exercises
+~~~ scala
+scala> object MathStuff {
+     |   def add1(num: Int) = num + 1
+     | }
+defined module MathStuff
 
-#### Functional Counters
+scala> Counter(2).adjust(MathStuff.add1)
+res12: Counter = Counter(3)
+~~~
 
-Take the definition of `Counter` from above and rewrite `inc` and `dec` in terms of `adjust`.
+## Exercises
+
+### Truly Functional Counters
+
+Let's revisit our `Counter` exercise from the [Objects as Functions](functions.html) section one last time. At this point we have no need for our `Adder` class - we can simply use functions instead. Rewrite `Counter.adjust` to accept an argument of type `Int => Int`.
+
+Once you have rewritten `Counter`, demonstrate the increased flexibility of the function argument over the `Adder`.
 
 <div class="solution">
+Here's a version fo `Counter` that no longer depends on `Adder`. I've rewritten `inc` and `dec` in terms `adjust` for illustrative purposes:
+
 ~~~ scala
-class Counter(val count: Int) {
-  def dec = adjust((count: Int) => count + 1)
-  def inc = adjust((count: Int) => count + 1)
+case class Counter(count: Int = 0) {
+  def inc = adjust(_ + 1)
+  def dec = adjust(_ - 1)
   def adjust(func: Int => Int) = new Counter(func(count))
 }
 ~~~
 </div>
 
-#### Companion Object Apply
+To demonstrate that functions are more flexible than adders, let's do some new things other than adding to our counters:
 
-What happens if we add an `apply` method to a companion object? By convention in Scala this is used to call the class constructor without the user having to write `new`. Implement this for `Person`.
-
-<div class="solution">
 ~~~ scala
-class Person(val firstName: String, val lastName: String) {
-  def name = firstName + " " + lastName
-}
+scala> Counter(10).adjust(_ * 2)
+res5: Counter = Counter(20)
 
-object Person {
-  def apply(firstName: String, lastName: String) =
-    new Person(firstName, lastName)
-
-  def fromName(name: String): Person = {
-    val parts = name.split(" ")
-    new Person(parts(0), parts(1))
-  }
-}
+scala> Counter(3).adjust(_ + res5.count)
+res6: Counter = Counter(23)
 ~~~
-</div>
 
-Why is this useful? We've already seen, with the `Counter` example, a style of programming where we create objects instead of changing existing objects. This style of programming is one of the hallmarks of functional programming, and we're going to see a lot more of it. Writing (and reading) `new` everywhere gets very annoying in this style, so Scala programmers minimise its use.
+The advantage of using functions over `Adders` is that we can now perform arbitrary operations on counters -- even operations that capture values from surrounding variables. This is much more flexible than `Adders`, and all we had to do was delete a few lines of code!
+</div>
