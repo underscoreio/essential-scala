@@ -44,9 +44,19 @@ scala> Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
 res3: Timestamp.type = Timestamp$@602b24e6
 ~~~
 
-### Exercises
+## Take home points
 
-#### Friendly Person Factory
+**Companion objects** provide us with a means to associate functionality with a class without associating it with any instance of that class.
+
+Companion objects **replace Java's static methods**. They provide equivalent functionality and are more flexible.
+
+A companion object has the same name as its associated class. This doesn't cause a naming conflict because Scala has two namespaces: the namespace of values and the namespace of types.
+
+A companion object must be defined in the same file as the associated class. When typing on the REPL, the class and companion object must be entered in the same block of code using `:paste` mode.
+
+## Exercises
+
+### Friendly Person Factory
 
 Implement a companion object for `Person` containing an `apply` method that accepts a whole name as a single string rather than individual first and last names.
 
@@ -65,7 +75,7 @@ Here is the code:
 
 ~~~ scala
 object Person {
-  def apply(name: String): Person = {
+  def apply(name: String) = {
     val parts = name.split(" ")
     new Person(parts(0), parts(1))
   }

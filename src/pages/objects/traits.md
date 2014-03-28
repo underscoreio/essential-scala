@@ -7,7 +7,7 @@ So far we have seen a lot to do with Scala's *classes*. Classes provide us with 
 
 Now let's explore how we can **abstract over classes**, allowing us to write code that works with objects of different classes. We'll start by looking at **traits**, Scala's building blocks for creating classes.
 
-### Traits
+## Traits
 
 Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
 
@@ -78,7 +78,7 @@ It is best practice to only create case classes as leaves of a type hierarchy. I
 
 [uniform access principle]: http://en.wikipedia.org/wiki/Uniform_access_principle
 
-### Subtyping and Polymorphism
+## Subtyping and Polymorphism
 
 A trait is a type just like a class. A class that extends a trait is a *subtype* of that trait, and any object of that class is both a value of the subtype and a value of the supertype. This is a kind of [polymorphism](http://en.wikipedia.org/wiki/Polymorphism_(computer_science)), and is essentially the polymorphism we get from Java.
 
@@ -96,7 +96,7 @@ scala> ageString(User("a", "me@example.com"))
 res14: String = a is 0ms old
 ~~~
 
-### Scala's Type Hierarchy
+## Scala's Type Hierarchy
 
 Unlike Java, which separates primitive and object types, everything in Scala is an object. As a result, "primitive" value types like `Int` and `Boolean` form part of the same type hierarchy as classes and traits.
 
@@ -118,7 +118,7 @@ scala> if(true) {
 res2: Int = 123
 ~~~
 
-### Exploiting Types
+## Exploiting Types
 
 In one sense a type is just a collection of values that share common properties. More than that, though, a type can represent **any property of a program that we can establish without evaluating it.**
 
@@ -126,9 +126,9 @@ In old languages like C, types were used to specify the machine representation o
 
 A good Scala developer uses types to his or her advantage to avoid bugs and write self-documenting code.
 
-### Exercises
+## Exercises
 
-#### Shaping up with traits
+### Shaping up with traits
 
 Define a trait called `Shape` and give it three abstract methods:
 

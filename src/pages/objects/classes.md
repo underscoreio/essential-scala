@@ -5,7 +5,7 @@ title: Classes
 
 A class is a template for creating objects that have similar methods and fields. Importantly, in Scala a class is also a type. This helps us overcome the problem we had in the *Greetings, Humans* exercise in the last section.
 
-### Defining a Class
+## Defining a Class
 
 Here is a definition for a simple `Person` class:
 
@@ -61,7 +61,7 @@ res6: String = Greetings, Noel Welsh
 **Java tip:** Scala classes are all subclasses of `java.lang.Object` and are, for the most part, usable from Java as well as Scala. The default printing behaviour of `Person` comes from the `toString` method defined in `java.lang.Object`.
 </div>
 
-### Constructors
+## Constructors
 
 As it stands our `Person` class is rather useless: we can create as many new objects as we want but they all have the same `firstName` and `lastName`. What if we want to give each person a different name?
 
@@ -102,7 +102,7 @@ res29: String = Dave Gurnell
 Scala programmers tend to prefer to write immutability and side-effect-free code so we can reason about it using the substitution model. In this course we will concentrate almost exclusively on immutable `val` fields.
 </div>
 
-### Default and Keyword Parameters
+## Default and Keyword Parameters
 
 All Scala methods and constructors support *keyword parameters* and *default parameter values*.
 
@@ -153,11 +153,25 @@ res12: String = Greetings, Mr Awesome Guy
 This is particularly useful when creating methods and constructors with large number of parameters.
 </div>
 
-### Exercises
+## Take Home Points
+
+In this section we learned how to define **classes**, which are a kind of **type**.
+
+Classes let us *abstract across objects* that have similar properties.
+
+The properties of the objects of a class take the form of **fields** and **methods**. Fields are pre-computed values stored within the object and methods are computations we can call.
+
+Finally, we learned the main syntactic rules about defining methods:
+
+ - **parameters require types** and can optionally have **default values**;
+ - **return types may be omitted** in many cases;
+ - all methods can be called using **keyword parameters**.
+
+## Exercises
 
 We now have enough machinery to have some fun playing with classes.
 
-#### A Simple Counter
+### A Simple Counter
 
 Implement a `Counter` class. The constructor should take an `Int`. The methods `inc` and `dec` should increment and decrement the counter respectively returning a new `Counter`. Here's an example of the usage:
 
@@ -183,7 +197,7 @@ Because `val` fields are immutable, we need to come up with some other way of pr
 </div>
 </div>
 
-#### Counting Faster
+### Counting Faster
 
 Augment the `Counter` from the previous exercise to allow the user can optionally pass an `Int` parameter to `inc` and `dec`. If the parameter is omitted it should default to `1`.
 
@@ -223,7 +237,7 @@ res15: Int = 21
 ~~~
 </div>
 
-#### Additional Counting
+### Additional Counting
 
 Here is a simple class called `Adder`.
 

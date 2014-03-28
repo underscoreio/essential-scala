@@ -9,7 +9,7 @@ Let's return to our web site visitors example. Imagine we want to add the abilit
 
 We're going to look at two solutions: an object-oriented solution based on *inheritance* and a functional solution based on *pattern matching*.
 
-### Approach #1: Inheritance
+## Approach #1: Inheritance
 
 The object-oriented solution is to add an abstract method to `Visitor` and implement it in each of the  subtypes. The code looks something like this (trimmed for simplicity):
 
@@ -35,7 +35,7 @@ Given this code we can call the `email` method on any `Visitor`. If the visitor 
 
 **This is bad design.** As we add more features our code we will soon find `Visitor` filling up with abstract methods. It is also likely that `Anonymous` will fill up with empty implementations. For every feature we add it will become harder to maintain and test our class hierarchy, and any system that uses `Visitor` will have to carry around all its dependencies.
 
-### Approach #2: Pattern Matching
+## Approach #2: Pattern Matching
 
 A better design is to keep our case classes as lightweight [value objects](http://en.wikipedia.org/wiki/Value_object) and implement new features as separate libraries of code.
 
@@ -184,7 +184,7 @@ We have already expressed our preference for the modularity of approach #2. Scal
 
 ## Exercises
 
-### Printing Shapes
+## Printing Shapes
 
 Let's revisit the `Shapes` example from the previous section.
 
@@ -211,7 +211,7 @@ object Draw {
 ~~~
 </div>
 
-### A Short Division Exercise
+## A Short Division Exercise
 
 Dividing by zero is a tricky problem -- it can lead to exceptions. The JVM has as covered as far as floating point division is concerned, but integer division is still a problem:
 
@@ -265,7 +265,7 @@ The implementation of `divide.apply` is simple - we perform a test and return a 
 Finally, the match illustrates a case class pattern with the parentheses, and a case object pattern without.
 </div>
 
-### Really Printing Shapes
+## Really Printing Shapes
 
 We lied earlier...
 
