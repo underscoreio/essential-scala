@@ -97,7 +97,7 @@ posts       : ../posts
 layouts     : ../layouts
 includes    : ../includes
 
-destination : dist
+destination : core-scala
 plugins     : jekyll_plugins
 
 keep_files  : [ 'css', 'js', 'images' ]

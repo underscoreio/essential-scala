@@ -197,7 +197,6 @@ case class Counter(count: Int = 0) {
   def adjust(func: Int => Int) = new Counter(func(count))
 }
 ~~~
-</div>
 
 To demonstrate that functions are more flexible than adders, let's do some new things other than adding to our counters:
 
