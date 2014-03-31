@@ -111,11 +111,54 @@
   }
 
   img {
-    max-width: 100%;
-  }
-
-  img.center {
     display: block;
+    max-width: 100%;
     margin: (@line-height-computed / 2) auto;
   }
+}
+
+// Ah hahahahahaaa! Have all the nested lists in the WORLD!
+ol {
+  list-style-type: decimal;
+  ol {
+    list-style-type: lower-alpha;
+    ol {
+      list-style-type: lower-roman;
+      ol {
+        list-style-type: decimal;
+        ol {
+          list-style-type: lower-alpha;
+          ol {
+            list-style-type: lower-roman;
+            ol {
+              list-style-type: decimal;
+              ol {
+                list-style-type: lower-alpha;
+                ol {
+                  list-style-type: lower-roman;
+                  ol {
+                    list-style-type: decimal;
+                    ol {
+                      list-style-type: lower-alpha;
+                      ol {
+                        list-style-type: lower-roman;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.footnotes {
+  border-top: 1px solid @hr-border;
+  border-bottom: 1px solid @hr-border;
+  margin: @line-height-computed 0;
+  padding: @line-height-computed 0 @line-height-computed/2;
+  font-size: @font-size-base * 0.8;
 }

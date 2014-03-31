@@ -67,7 +67,7 @@ res7: Boolean = true
 
 ### Determining size
 
-Finding the size of a map is just as easy as finding the length of a sequence:
+Finding the size of a map is just as easy as finding the size of a sequence:
 
 ~~~ scala
 scala> example.size
@@ -284,3 +284,65 @@ and the extras for mutable Sets:
 | `-=`       | `Set[A]` | `A`        | `Set[A]`  |
 |================================================|
 {: .table }
+
+## Exercises
+
+#### Union of Sets
+
+Write a method that takes two sets and returns a set containing the union of the elements. Use iteration, like `map` or `foldLeft`, not the built-in `union` method to do so!
+
+<div class="solution">
+As always, start by writing out the types and then follow the types to fill-in the details.
+
+~~~ scala
+def union[A](set1: Set[A], set2: Set[A]): Set[A] = {
+  ???
+}
+~~~
+
+We need to think of an algorithm for computing the union. We can start with one of the sets and add the elements from the other set to it. The result will be the union. What types does this result in? Our result has type `Set[A]` and we need to add every `A` from the two sets to our result, which is an operation with type `(Set[A], A) => Set[A]`. This means we need a fold. Since order is not important any fold will do.
+
+~~~ scala
+def union[A](set1: Set[A], set2: Set[A]): Set[A] = {
+  set1.foldLeft(set2){ (set, elt) => (set + elt) }
+}
+~~~
+</div>
+
+#### Union of Maps
+
+Now let's write union for maps. Assume we have two `Map[A, Int]` and add corresponding elements in the two maps. So the union of `Map('a' -> 1, 'b' -> 2)` and `Map('a' -> 2, 'b' -> 4)` should be `Map('a' -> 3, 'b' -> 6)`.
+
+<div class="solution">
+The solution follows the same pattern as the union for sets, but here we have to handle adding the values as well.
+
+~~~ scala
+def union[A](map1: Map[A, Int], map2: Map[A, Int]): Map[A, Int] = {
+  map1.foldLeft(map2){ (map, elt) =>
+    val (k, v) = elt
+    val newV = map.getOrElse(k, v)
+    map + (k -> newV)
+  }
+}
+~~~
+</div>
+
+#### Generic Union
+
+There are many things that can be added, such as strings (string concatenation), sets (union), and of course numbers. It would be nice if we could generalise our `union` method on maps to handle anything for which a sensible `add` operation can be defined. How can we go about doing this?
+
+<div class="solution">
+With the tools we've seen far, we could add another function parameter like so:
+
+~~~ scala
+def union[A, B](map1: Map[A, B], map2: Map[A, B], add: (B, B) => B): Map[A, B] = {
+  map1.foldLeft(map2){ (map, elt) =>
+    val (k, v) = elt
+    val newV = map.get(k).map(v2 => add(v, v2)).getOrElse(v)
+    map + (k -> newV)
+  }
+}
+~~~
+
+Later we'll see a nicer way to do this using type classes.
+</div>

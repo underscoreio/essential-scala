@@ -108,7 +108,7 @@ def sum(in: List[Int]): Int =
 
 Now generalise your method to accept any function `(Int, Int) => Int` in place of addition. You'll need to make another change, but I'll leave you work out what that is.
 
-<div class="solution>
+<div class="solution">
 ~~~ scala
 def accumulate(f: (Int, Int) => Int, zero: Int, in: List[Int]): Int =
   in match {
@@ -121,11 +121,13 @@ def accumulate(f: (Int, Int) => Int, zero: Int, in: List[Int]): Int =
 Now generalise your method to be generic over the type of `List`. What is this function conventionally called?
 
 <div class="solution">
+~~~ scala
 def foldRight[A, B](f: (A, B) => B, zero: B, in: List[A]): B =
   in match {
     case Nil => zero
     case (x :: xs) => f(x,  foldRight(f, zero, xs))
   }
+~~~
 </div>
 
 Notice it's the same pattern again, though slightly generalised from before!
@@ -135,11 +137,11 @@ Notice it's the same pattern again, though slightly generalised from before!
 
 You perhaps encountered differentiation in school. When we differentiate a function we create another function that calculates it's rate of change, called its derivative. In many cases we can do this symbolically, but we're going to do it the CS way -- numerically.
 
-Implement a function `derivative` that takes two a function `Double => Double` and returns the derivative (also `Double => Double`).
+Implement a function `derivative` that takes a function `Double => Double` and returns the derivative (also `Double => Double`).
 
 Hint 1: We can approximate the derivative by calculating the *centered difference* `(f(x + h) - f(x - h)) / 2h` for small `h`.
 
-Hint 2: The `Math` object contains several useful methods such as `abs`. Note the derivative of `Math.exp(x)` is itself, and the derivative of `Math.sin` is `Math.cos`. You can use these properties to test your function.
+Hint 2: The `math` package contains several useful methods such as `abs`. Note the derivative of `math.exp(x)` is itself, and the derivative of `math.sin` is `math.cos`. You can use these properties to test your function.
 
 <div class="solution">
 ~~~ scala
@@ -171,7 +173,7 @@ Now we can adjust `h` till we have calculated `derivative` at a point to within 
 def solve(f: Double => Double, x: Double, tolerance: Double) = {
   def iterate(bracket: Double, lastGuess: Double): Double = {
     val guess = makeDerivative(bracket)(f)(x)
-    if(Math.abs(guess - lastGuess) < tolerance)
+    if(math.abs(guess - lastGuess) < tolerance)
       lastGuess
     else
       iterate(bracket / 2, guess)

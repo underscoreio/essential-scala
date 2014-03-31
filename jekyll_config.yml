@@ -4,7 +4,6 @@
 toc:
   - head: /index.html
     body:
-     - /about.html
      - /getting-started/index.html
 
   - head: /intro/index.html
@@ -17,28 +16,31 @@ toc:
   - head: /objects/index.html
     body:
      - /objects/classes.html
-     - /objects/objects-and-functions.html
-     - /objects/this-or-that.html
-     - /objects/this-and-that.html
-     - /objects/this-contains-that.html
+     - /objects/functions.html
+     - /objects/companion-objects.html
+     - /objects/case-classes.html
+     - /objects/traits.html
+     - /objects/sealed-traits.html
+     - /objects/traits-as-mixins.html
+     - /objects/generics.html
+     - /objects/functions-redux.html
 
   - head: /collections/index.html
     body:
      - /collections/seq.html
      - /collections/working-with-seq.html
-     - /collections/seq-implementations.html
-     - /collections/map-and-set.html
      - /collections/for-comprehensions.html
      - /collections/working-with-for-comprehensions.html
-     - /collections/arrays-and-strings.html
-     - /collections/iterators.html
-     - /collections/traversable.html
-     - /collections/java-interop.html
+     - /collections/meeting-monads.html
+     - /collections/map-and-set.html
+     - /collections/ranges.html
 
   - head: /fp/index.html
     body:
      - /fp/ho-functions.html
      - /fp/structural-recursion.html
+     - /fp/pattern-matching.html
+     - /fp/extractors.html
      - /fp/modelling-with-types.html
 
   - head: /dsl/index.html
@@ -50,6 +52,13 @@ toc:
      - /dsl/pimping.html
      - /dsl/macros.html
 
+  - head: /collections-redux/index.html
+    body:
+     - /collections-redux/seq-implementations.html
+     - /collections-redux/arrays-and-strings.html
+     - /collections-redux/iterators.html
+     - /collections-redux/traversable.html
+     - /collections-redux/java-interop.html
 
   # - head: /sbt/index.html
 
@@ -88,7 +97,7 @@ posts       : ../posts
 layouts     : ../layouts
 includes    : ../includes
 
-destination : dist
+destination : core-scala
 plugins     : jekyll_plugins
 
 keep_files  : [ 'css', 'js', 'images' ]

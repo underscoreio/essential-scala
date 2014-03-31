@@ -3,55 +3,57 @@ layout: page
 title: Getting Started
 ---
 
-Throughout this course we will be working with short examples of Scala code. We will be working with the *Scala Worksheets* feature of the [Scala IDE] for Eclipse, which you should install before we begin.
+Throughout this course we will be working with short examples of Scala code using the *Scala Worksheets* feature of the *[Scala IDE for Eclipse]*, or *Scala IDE* for short. You should install this before starting the course.
 
-[Scala IDE]: http://scala-ide.org
+[Scala IDE for Eclipse]: http://scala-ide.org
 
 ## Setting up Scala IDE
 
-Scala IDE is a plugin that adds Scala programming support to the popular Eclipse IDE. It is also available as a standalone download from [http://scala-ide.org](), which is the way we recommend you obtain it for this course.
+Scala IDE is a plugin that adds Scala language support to [Eclipse](http://eclipse.org). A complete version of Scala IDE with Eclipse is also available as a standalone bundle from [http://scala-ide.org](). This is the easiest way to install the software so we recommend you install the standalone bundle for this course.
 
-Go to [http://scala-ide.org]() now, click *Get the Bundle*, and follow the on-screen instructions to download install the correct version for your operating system:
+Go to [http://scala-ide.org]() now, click the **Get the Bundle** button, and follow the on-screen instructions to download Scala IDE for your operating system:
 
 ![Scala IDE: Main website](scala-ide-website.png)
 
-Once you have downloaded and uncompressed the IDE you should find an application called *Eclipse*. Launch this and choose a folder for your *workspace* (the default suggestion is fine):
+Once you have downloaded and uncompressed the bundle you should find an application called **Eclipse**. Launch this. You will be asked to choose a folder for your *workspace*:
 
 ![Scala IDE: Choose a workspace location](scala-ide-workspace-chooser.png)
 
-You should see an empty workspace window ready for you to start adding beautiful Scala code:
+Accept the default location and you will see an empty main Eclipse window:
 
 ![Scala IDE: Empty workspace](scala-ide-empty-workspace.png)
 
 ## Creating your first Scala application
 
-Your *workspace* is a folder containing all of the files and settings needed by Eclipse. It is also the focus of the main Eclipse window, where you will be doing most of your Scala programming. Within your workspace you can set up *projects* for each Scala application you work on. We will start by creating a project for your code for the course. Select the **File menu** and choose **New > Scala Project**:
+Your *Eclipse workspace* is two things: a folder containing files and settings, and a main window where you will be doing most of your Scala programming. In your workspace you can will *projects* for each Scala application you work on.
+
+Let's create a project for this course now. Select the **File menu** and choose **New > Scala Project**:
 
 ![Scala IDE: Create a new Scala Project](scala-ide-new-project.png)
 
-Enter a **Project name** of *core-scala* and click **Finish**. Your workspace should now contain an empty project:
+Enter a **Project name** of `core-scala` and click **Finish**. The tree view on the left of your workspace should now contain an empty project:
 
 ![Scala IDE: Empty project](scala-ide-empty-project.png)
 
-A project is no good without code to run! Let's create our first simple Scala application - the obligatory *Hello World* app. Select the **File Menu** and choose **New > Scala Object...**:
+A project is no good without code to run! Let's create our first simple Scala application - the obligatory *Hello World* app. Select the **File Menu** and choose **New > Scala Object**:
 
 ![Scala IDE: New Scala Object](scala-ide-new-object.png)
 
-**Name** your object `HelloWorld` and click **Finish**. A new file called `HelloWorld.scala` should appear in the tree view on the left of the main window, and Eclipse should open it in the main editor in the middle:
+**Name** your object `HelloWorld` and click **Finish**. A new file called `HelloWorld.scala` should appear in the tree view on the left of the main window. Eclipse should open the new file in the main editor ready for you to start coding:
 
 ![Scala IDE: Single Scala File](scala-ide-single-file.png)
 
-The main editor should read as follows:
+The content of the file should read as follows:
 
-~~~scala
+~~~ scala
 object HelloWorld {
 
 }
 ~~~
 
-change this text to the following minimalist application:
+Replace this text with the following minimalist application:
 
-~~~scala
+~~~ scala
 object HelloWorld {
   def main(args: Array[String]): Unit = {
     println("Hello world!")
@@ -59,27 +61,41 @@ object HelloWorld {
 }
 ~~~
 
-Select the **Run Menu** and choose **Run**. This should run your application, resulting in the words `Hello world!` appearing in the *Console* pane at the bottom of the window. Congratulations - you just ran your first Scala application!
+Select the **Run Menu** and choose **Run**. This should execute the code in your application, resulting in the words `Hello world!` appearing in the *Console* pane at the bottom of the window. Congratulations - you just ran your first Scala application!
 
 ![Scala IDE: Hello World](scala-ide-hello-world.png)
 
+<div class="alert alert-info">
+**Java tip:** Developers with Java experience will notice the resemblance of the code above to the Java hello world app:
+
+~~~java
+public class HelloWorld {
+  public static void main(String[] args) {
+    System.out.println("Hello world!");
+  }
+}
+~~~
+
+The resemblance is, of course, no coincidence. These two applications compile to more or less the same bytecode and have exactly the same semantics. We will learn much more about the similarities and differences between Scala and Java as the course continues.
+</div>
+
 ## Creating your first Scala Worksheet
 
-While most of our day jobs as developer are spent writing applications, the process of writing an application isn't particularly suitable for a training course scenario. Every time you write a piece of code you need to compile and run the application, which is a significant time sink when added up throughout the day.
+Compiling and running code whenever you make a change is a time consuming process that isn't particularly suitable to a learning environment.
 
-Fortunately, Scala IDE allows us to create files called *Scala Worksheets* that are specifically for training and experimentation purposes. Every time you save a Scala Worksheet, Eclipse automatically compiles and runs the code and inserts the output on the right-hand side of your editor. This provides instant feedback, which is exactly what we need!
+Fortunately, Scala IDE allows us to create special files called *Scala Worksheets* that are specifically designed for training and experimentation. Every time you save a Worksheet, Eclipse automatically compiles and runs your code and displays the output on the right-hand side of your editor. This provides instant feedback, which is exactly what we need when investigating new concepts!
 
 Create your first Scala Worksheet by selecting the **File Menu** and choosing **New > Scala Worksheet**:
 
 ![Scala IDE: New Scala Worksheet](scala-ide-new-worksheet.png)
 
-Enter a **Worksheet name** of `FirstSteps` and click **Finish**. A new file called `FirstSteps.sw` should appear in the tree view on the left of the main window, and should open it in the main editor in the middle:
+Enter a **Worksheet name** of `FirstSteps` and click **Finish**. A new file called `FirstSteps.sc` should appear in the tree view on the left of the main window, and should open it in the main editor in the middle:
 
 ![Scala IDE: Empty Scala Worksheet](scala-ide-empty-worksheet.png)
 
 Note that the object on the left contains a single line of Scala code:
 
-~~~scala
+~~~ scala
 println("Welcome to the Scala worksheet")
 ~~~
 
@@ -91,7 +107,7 @@ Welcome to the Scala worksheet
 
 Any expression you add to the left of the editor is evaluated and printed on the right. To demonstrate this, change the text in the editor to the following:
 
-~~~scala
+~~~ scala
 object FirstSteps {
   println("Welcome to the Scala worksheet")
 
@@ -103,9 +119,9 @@ object FirstSteps {
 }
 ~~~
 
-Save your work by selecting the **File Menu** and choosing **Save**. Eclipse should automatically evaluate each line of code and print the results on the right of the editor:
+Save your work by selecting the **File Menu** and choosing **Save** (or better still by pressing **Ctrl+S**). Eclipse should automatically evaluate each line of code and print the results on the right of the editor:
 
-~~~scala
+~~~ scala
 object FirstSteps {
   println("Welcome to the Scala worksheet")   //> Welcome to the Scala worksheet
 
