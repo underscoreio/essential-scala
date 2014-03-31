@@ -3,7 +3,7 @@ layout: page
 title: Meeting Monads
 ---
 
-We've seen that by implementing a few methods (`map`, `flatMap`, and optionally `filter` and `foreach`) we can use any class with a for comprehension, and that this is an incredibly useful abstraction. This abstraction is called a monad and has extremely wide application. For example, suppose we have a number of computations that could fail. Let's model this by having them return an `Option`[^try].
+We've seen that by implementing a few methods (`map`, `flatMap`, and optionally `filter` and `foreach`) we can use any class with a for comprehension, and that this is a useful abstraction. This abstraction is called a monad and has extremely wide application. For example, suppose we have a number of computations that could fail. Let's model this by having them return an `Option`[^try].
 
 [^try]: If you were doing this for real you'd want some information on why it failed. Look at `Either` or `Try`, the later being Scala 2.10 and above.
 
@@ -11,7 +11,7 @@ We've seen that by implementing a few methods (`map`, `flatMap`, and optionally 
 
 We've seen `Option` before in passing. Here's a bit more detail.
 
-`Option` is a sealed trait with no subtypes, `Some` and `None`. The `None` type indicates no value is available. This could be the case when getting a value from a `Map` and there is nothing stored, or it might indicate a computation that failed. The `Some` type stores a value of some generic type `A`.
+`Option` is a sealed trait with two subtypes, `Some` and `None`. The `None` type indicates no value is available. This could be the case when getting a value from a `Map` and there is nothing stored, or it might indicate a computation that failed. The `Some` type stores a value of some generic type `A`.
 
 We can process `Option`s using pattern matching, but also with `map`, `flatMap`, and other functions familiar from collections.
 
