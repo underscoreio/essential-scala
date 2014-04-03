@@ -38,11 +38,11 @@ toc:
   - head: /fp/index.html
     body:
      - /fp/structural-recursion.html
-     - /fp/ho-functions.html
-     - /fp/modelling-with-types.html
      - /fp/pattern-matching.html
      - /fp/extractors.html
-
+     - /fp/modelling-with-types.html
+     - /fp/modelling-errors.html
+     - /fp/monads.html
 
   - head: /dsl/index.html
     body:
