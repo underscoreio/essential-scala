@@ -11,9 +11,45 @@ There are many times that our programs must deal with missing data. For example,
 
 We're going to approach this problem using structural recursion. What are the types of data we're dealing with? There are clearly two cases: empty and not-empty. Thus we have a sum type.
 
-## Exercise
+## Exercises
 
-#### Call Me Maybe
+### Covariant Error Handling
+
+**TODO: This exercise was moved from earlier in the course. It partially overlaps with later content. Modify it appropriately to go from `PossibleResult` to `Option` via `Maybe`. Or possibly rewrite the previous example and rename `PossibleResult` to `Maybe`.**
+
+Covariance is the solution to our problem with `PossibleResult`. Recall that we couldn't define `NoResult` as an object because we ended up with a type error:
+
+~~~ scala
+final case object NoResult extends PossibleResult[Nothing]
+
+val possible: PossibleResult[Int] = NoResult // type error
+~~~
+
+The type error is this: *`NoResult` is a `PossibleResult[Nothing]`, which is not a `PossibleResult[Int]`*. How can we make fix this type error? What would the code look like?
+
+Hint: `Nothing` is a subtype of `Int`!
+
+<div class="solution">
+The solution involves making `PossibleResult[Nothing]` a subtype of `PossibleResult[Int]`. `Unit` is a subtype of `Int`, so if we make `PossibleResult` covariant we should be fine:
+
+~~~ scala
+sealed trait PossibleResult[+A]
+final case class ActualResult[A](val value: A) extends PossibleResult[A]
+final case object NoResult extends PossibleResult[Nothing]
+
+val possible: PossibleResult[Int] = NoResult // no type errors!
+~~~
+
+This is more-or-less exactly how Scala's `Option` is defined. Here's a synopsis:
+
+~~~ scala
+sealed trait Option[+A]
+final case class Some[A](get: A) extends Option[A] { /* ... */ }
+final case object None extends Option[Nothing] { /* ... */ }
+~~~
+</div>
+
+### Call Me Maybe
 
 Write the code for our sum type `Maybe`.
 
@@ -35,7 +71,7 @@ The two cases are:
 </div>
 
 
-#### Not Just A Maybe
+### Not Just A Maybe
 
 What functions should our `Maybe` type have to be generally useful?
 
@@ -78,7 +114,7 @@ final case class Full[A](val elt: A) extends Maybe[A] {
 ~~~
 </div>
 
-#### Using Maybe
+### Using Maybe
 
 Our `Maybe` type provides a type-safe way to handle missing values. If we have a `Maybe` we *must* say how we're going to deal with missing values to get a value out of our `Maybe`. Imagine, for example, we have a `Maybe[Int]`. If there is no value we want the empty string. Otherwise we want to convert the `Int` to a string. To do this is simple using `fold`.
 

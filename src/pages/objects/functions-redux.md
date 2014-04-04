@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Functions Redux
+title: Functions
 ---
 
 Much earlier in this Chapter we were introduced to the `apply` methods, which lets us treat objects as functions in a syntactic sense:
@@ -183,7 +183,7 @@ res12: Counter = Counter(3)
 
 ### Truly Functional Counters
 
-Let's revisit our `Counter` exercise from the [Objects as Functions](functions.html) section one last time. At this point we have no need for our `Adder` class - we can simply use functions instead. Rewrite `Counter.adjust` to accept an argument of type `Int => Int`.
+Let's revisit our `Counter` exercise from the [Objects as Functions](apply.html) section one last time. At this point we have no need for our `Adder` class - we can simply use functions instead. Rewrite `Counter.adjust` to accept an argument of type `Int => Int`.
 
 Once you have rewritten `Counter`, demonstrate the increased flexibility of the function argument over the `Adder`.
 

@@ -5,7 +5,6 @@ title: Working with Sequences
 
 In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences: how to process every element of a sequence at once, and the performance characteristics of different sequence implementations.
 
-
 ## Bulk Processing of Elements
 
 When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. In Java we have to do this using loops. Scala gives us a number of powerful options that allow us to solve many problems more elegantly.
@@ -402,23 +401,4 @@ def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
 ~~~
 </div>
 
-## Other useful functions
-
-There are many other useful methods defined on `Seq`. We've seen `contains` in the exercises above (you did do the exercises, right?) Similar functions are `filter` and `find`. Filter returns a sequence containing all the element that pass a test. For example, to get just the positive elements of sequence:
-
-~~~ scala
-scala> Seq(-1, 1, 2, -2).filter(elt => elt > 0)
-res16: Seq[Int] = List(1, 2)
-~~~
-
-Find finds the first element that matches a predicate. Since no element may match, find returns an `Option`.
-
-~~~ scala
-scala> Seq(-1, 1, 2, -2).find(elt => elt > 0)
-res17: Option[Int] = Some(1)
-
-scala> Seq(-1, -2).find(elt => elt > 0)
-res18: Option[Int] = None
-~~~
-
-There are many more methods on sequences. Consult the documentation for more. You can find many of them on the [Scaladoc page](http://www.scala-lang.org/api/current/scala/collection/Seq.html) for `Seq`.
+There are many other methods on sequences. Consult the [API documentation](http://www.scala-lang.org/api/current/scala/collection/Seq.html) for the `Seq` trait for more information.

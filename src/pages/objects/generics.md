@@ -3,7 +3,9 @@ layout: page
 title: "This contains That: Generics"
 ---
 
-In this section we'll look at data that contains other data. We already know how to this in simple cases using fields. Here we are going to give the user freedom about the types we contain in our fields. In other words, we are going to look at **generic types**.
+In the previous sections we saw how to model relationships such as **this and that** and **this or that** using *inheritance* -- a classic object oriented design pattern. In this section we will look at how to model these relationships in another way using **aggregation** -- grouping objects together using other objects.
+
+We already know how to do simple aggregation in simple cases using fields. Here we start generalising over the types in our fields using **generic types**.
 
 ## Generic Types
 
@@ -41,14 +43,42 @@ scala> generic(1) // again, if we omit the type parameter, scala will infer it
 res11: Int = 1
 ~~~
 
-## Exercises
+## This and That
 
-### Pairs
-
-Implement a class called `Pair` that stores two value `one` and `two`. `Pair` should be generic in both arguments. Example usage:
+Let's look at using generics to model a *this and that* relationship. Consider a method that returns two values -- for example, an `Int` and a `String`, or a `Boolean` and a `Double`:
 
 ~~~ scala
-scala> val pair = Pair("hi", 2)
+def intAndString: ??? = // ...
+
+def booleanAndDouble: ??? = // ...
+~~~
+
+The question is what do we use as the return types? We could use a regular class without any type parameters, but then we would have to implement one version of the class for each combination of return types:
+
+~~~ scala
+case class IntAndString(intValue: Int, stringValue: String)
+
+def intAndString: IntAndString = // ...
+
+case class BooleanAndDouble(booleanValue: Boolean, doubleValue: Double)
+
+def booleanAndDoule: BoleanAndDouble = // ...
+~~~
+
+The answer is to use generics to create something called a **product type** -- for example a `Pair` -- that contains the relevant data for *both* return types:
+
+~~~ scala
+def intAndString: Pair[Int, String] = // ...
+
+def booleanAndDouble: Pair[Boolean, Double] = // ...
+~~~
+
+### Exercise: Pairs
+
+Implement the `Pair` class from above. It should store two values -- `one` and `two` -- and be generic in both arguments. Example usage:
+
+~~~ scala
+scala> val pair = Pair[String, Int]("hi", 2)
 pair: Pair[String,Int] = Pair(hi,2)
 
 scala> pair.one
@@ -64,11 +94,20 @@ If one type parameter is good, two type parameters are better:
 ~~~ scala
 case class Pair[A, B](val one: A, val two: B)
 ~~~
+
+Note that we don't always need to specify the type parameters when we construct `Pairs`. The compiler will attempt to infer the types as usual wherever it can:
+
+~~~ scala
+scala> val pair = Pair("hi", 2)
+pair: Pair[String,Int] = Pair(hi,2)
+~~~
 </div>
 
-## Tuples
+### Tuples
 
-A *tuple* is the generalisation of a pair to any number of terms. Scala includes built-in generic tuple types with up to 22 elements, along with special syntax for creating them. The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they can also be written in the sugared form `(A, B, C, ...)`. For example:
+A *tuple* is the generalisation of a pair to any number of terms. Scala includes built-in generic tuple types with up to 22 elements, along with special syntax for creating them. With these classes we can represent any kind of *this and that* relationship between any number of terms.
+
+The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they can also be written in the sugared form `(A, B, C, ...)`. For example:
 
 ~~~ scala
 scala> Tuple2("hi", 1) // unsugared syntax
@@ -113,17 +152,33 @@ scala> x._3
 res6: Boolean = true
 ~~~
 
-## Exercises
+## This or That
 
-### Generic Sum Type
+Now let's look at using generics to model a *this or that* relationship. Previously we did this using inheritance, factoring out the common aspects into a supertype. The functional equivalent of this is called a **sum type**.
 
-A **sum type** is a useful tool that allows us to represent values that could be of one type or another. Let's implement this now.
+Consider a method that, depending on the value of its parameters, returns one of two types:
 
-Implement a trait called `Sum` with two subtypes `Left` and `Right`. Create type parameters so that `Left` and `Right` can wrap up values of two different types.
+~~~ scala
+def intOrString(input: Boolean) =
+  if(input == true) 123 else "abc"
+~~~
 
-Hint: you will need to put both type parameters on all three types.
+We can't simply write this method as shown above because the compiler will infer the result type as `Any`. Instead we have to introduce a new type to explicitly represent the disjunction:
 
-Example usage:
+~~~ scala
+def intOrString(input: Boolean): Sum[Int, String] =
+  if(input == true) {
+    Left[Int, String](123)
+  } else {
+    Right[Int, String]("abc")
+  }
+~~~
+
+### Exercise: Generic Sum Type
+
+Implement a trait `Sum[A, B]` with two subtypes `Left` and `Right`. Create type parameters so that `Left` and `Right` can wrap up values of two different types.
+
+Hint: you will need to put both type parameters on all three types. Example usage:
 
 ~~~ scala
 scala> Left[Int, String](1).value
@@ -154,7 +209,7 @@ final case class Right[A, B](val value: B) extends Sum[A, B]
 Scala has the generic sum type `Either` for two cases, but it does not have types for more cases.
 </div>
 
-### Generic Error Handling
+## Generic Error Handling
 
 In a previous exercise we "solved" the problem of dividing by zero by defining a type called `DivisionResult`. This forced us to handle the possibility of a division by zero in order to access the value.
 
@@ -198,7 +253,7 @@ scala> val possible: PossibleResult[Int] = NoResult
 
 The problem here is that `NoResult` is a `PossibleResult[Nothing]` and a `PossibleResult[Nothing]` is not a `PossibleResult[Int]`.
 
-We'll see how to overcome this limitation in a moment. In the meantime we can define `NoResult` as a class with a type parameter as a stop-gap solution:
+We'll see how to overcome this limitation later. In the meantime we can define `NoResult` as a class with a type parameter as a stop-gap solution:
 
 ~~~ scala
 sealed trait PossibleResult[A]
@@ -216,28 +271,6 @@ Regardless, `PossibleResult` is a powerful concept -- it allows us to represent 
 In fact, `PossibleResult` is such a useful concept that Scala defines a core class called `Option` for this very purpose. `Option` is a trait with two subtypes, `Some` for storing a value and `None` representing an empty value.
 </div>
 
-{% comment %}
-
-### Generic Functions
-
-Add a method `map` to `Box` that takes a function of type `A => B` and returns a `Box[B]`. Example usage:
-
-~~~ scala
-scala> Box(2) map (x => x.toString)
-res27: Box[String] = Box(2)
-~~~
-
-<div class="solution">
-~~~ scala
-case class Box[A](val value: A) {
-  def map[B](f: A => B): Box[B] =
-      Box(f(get))
-}
-~~~
-</div>
-
-{% endcomment %}
-
 ## Type Bounds
 
 It is sometimes useful to constrain a generic type. We can do this with type bounds indicating that a generic type should be a sub- or super-type of some given types. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
@@ -252,84 +285,3 @@ case class WebAnalytics[A <: Visitor](
   isOrganic: Boolean
 )
 ~~~
-
-## Invariance and Covariance
-
-Consider our `Box` type and the type `Foo` declared below.
-
-~~~ scala
-sealed trait Foo()
-final case class Ex1() extends Foo
-final case class Ex2() extends Foo
-~~~
-
-Is a `Box[Ex1]` a subtype of `Box[Foo]`? Let's ask the REPL.
-
-~~~ scala
-scala> def fooIt(in: Box[Foo]): Foo = in.value
-fooIt: (in: Box[Foo])Foo
-
-scala> val box = Box(Ex1())
-box: Box[Ex1] = Box(Ex1())
-
-scala> fooIt(box)
-<console>:15: error: type mismatch;
- found   : Box[Ex1]
- required: Box[Foo]
-Note: Ex1 <: Foo, but class Box is invariant in type A.
-You may wish to define A as +A instead. (SLS 4.5)
-              fooIt(box)
-                    ^
-~~~
-
-This interaction might be surprising. `Ex1` is a subtype of `Foo` so we might expect `Box[Ex1]` to be a subtype of `Box[Foo]`. Subtyping relationships with generic types are subtle. By default generic types in Scala are **invariant**, meaning that for a type `F[A]` neither subtypes nor supertypes of `A` make a subtype of `F[A]`. This is the behaviour we're seeing with `Box`.
-
-**Covariance** is the behaviour most people expect. For a covariant type `F` a subtype of `A` is a subtype of `F[A]`. We can make a generic type covariant by introducing a generic type as `+A` instead of `A`.
-
-**Contravariance** is the opposite of covariance. For a contravariant type `F` a supertype of `A` is a subtype of `F[A]`. Why would we ever want contravariance? The main example is in function types, which we'll see in the next section.
-
-There is no doubt that variance is confusing to many. The good news is it hardly ever comes up in application code. We can typically settle for invariant types at the cost of a few type declarations to keep the compiler happy. For example:
-
-~~~ scala
-scala> val box : Box[Foo] = Box(Ex1())
-box: Box[Foo] = Box(Ex1())
-
-scala> fooIt(box)
-res32: Foo = Ex1()
-~~~
-
-## Exercise
-
-### Covariant Error Handling
-
-Covariance is the solution to our problem with `PossibleResult`. Recall that we couldn't define `NoResult` as an object because we ended up with a type error:
-
-~~~ scala
-final case object NoResult extends PossibleResult[Nothing]
-
-val possible: PossibleResult[Int] = NoResult // type error
-~~~
-
-The type error is this: *`NoResult` is a `PossibleResult[Nothing]`, which is not a `PossibleResult[Int]`*. How can we make fix this type error? What would the code look like?
-
-Hint: `Nothing` is a subtype of `Int`!
-
-<div class="solution">
-The solution involves making `PossibleResult[Nothing]` a subtype of `PossibleResult[Int]`. `Unit` is a subtype of `Int`, so if we make `PossibleResult` covariant we should be fine:
-
-~~~ scala
-sealed trait PossibleResult[+A]
-final case class ActualResult[A](val value: A) extends PossibleResult[A]
-final case object NoResult extends PossibleResult[Nothing]
-
-val possible: PossibleResult[Int] = NoResult // no type errors!
-~~~
-
-This is more-or-less exactly how Scala's `Option` is defined. Here's a synopsis:
-
-~~~ scala
-sealed trait Option[+A]
-final case class Some[A](get: A) extends Option[A] { /* ... */ }
-final case object None extends Option[Nothing] { /* ... */ }
-~~~
-</div>

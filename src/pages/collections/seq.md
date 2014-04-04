@@ -35,7 +35,7 @@ An exception is raised if we use an index that is out of bounds:
 ~~~ scala
 scala> sequence(3)
 java.lang.IndexOutOfBoundsException: 3
-...
+        at ...
 ~~~
 
 ### Sequence length
@@ -47,53 +47,86 @@ scala> sequence.length
 res3: Int = 3
 ~~~
 
-### Membership
+### Searching for elements
 
-The `contains` method tells us a sequence contains an element:
+There are a few ways of searching for elements. The `contains` method tells us whether a sequence contains an element (using `==` for comparison):
 
 ~~~ scala
-scala> sequence.contains("a")
-res2: Boolean = true
+scala> sequence.contains(2)
+res4: Boolean = true
 ~~~
 
-### Prepending/appending elements
+The `find` method is like a generalised version of `contains` - we provide a test function and the sequence returns the first item for which the test returns `true`:
 
-There are many ways to add elements to a sequence. We can prepend an element with the `+:` method.
+~~~ scala
+scala> sequence.find(_ == "a")
+res5: Option[Int] = Some(3)
+
+scala> sequence.find(_ > 4)
+res6: Option[Int] = None
+~~~
+
+The `Option` class here is Scala's built-in equivalent of our `PossibleResult` class from earlier. It has two subtypes -- `Some` and `None` -- representing the presence and absence of a value respectively.
+
+The `filter` method is a variant of `find` that returns *all* the matching elements in the sequence:
+
+~~~ scala
+scala> sequence.filter(_ > 1)
+res7: Seq[Int] = List(2, 3)
+~~~
+
+### Appending/prepending elements
+
+There are many ways to add elements to a sequence. We can append an element with the `:+` method:
+
+~~~ scala
+scala> sequence.:+(4)
+res6: Seq[Int] = List(1, 2, 3, 4)
+~~~
+
+It is more idiomatic to call `:+` as an infix operator:
+
+~~~ scala
+scala> sequence :+ 4
+res7: Seq[Int] = List(1, 2, 3, 4)
+~~~
+
+We can similarly *prepend* an element using the `+:` method:
 
 ~~~ scala
 scala> sequence.+:(0)
 res4: Seq[Int] = List(0, 1, 2, 3)
 ~~~
 
-It is more idiomatic to call `+:` as an infix operator, where the trailing colon makes it right associative:
+Again, it is more idiomatic to call `+:` as an infix operator. Here **the trailing colon makes it right associative**, so we write the operator-style expression the other way around:
 
 ~~~ scala
 scala> 0 +: sequence
 res5: Seq[Int] = List(0, 1, 2, 3)
 ~~~
 
-To append an element we use the `:+` method. Again it is idiomatic to write `:+` as an operator:
+Finally we can concatenate entire sequences using the `++` method.
 
 ~~~ scala
-scala> sequence.:+(4)
-res6: Seq[Int] = List(1, 2, 3, 4)
-
-scala> sequence :+ 4
-res7: Seq[Int] = List(1, 2, 3, 4)
-~~~
-
-Finally we can append and prepend entire sequences using the `++` and `++:` methods.
-
-~~~ scala
-scala> Seq(-2, -1, 0) ++: sequence
-res8: Seq[Int] = List(-2, -1, 0, 1, 2, 3)
-
-scala> sequence.++:(Seq(-2, -1, 0))
-res9: Seq[Int] = List(-2, -1, 0, 1, 2, 3)
-
 scala> sequence ++ Seq(4, 5, 6)
 res10: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 ~~~
+
+<div class="alert alert-info">
+**Syntax tip:** Any Scala method ending with a `:` character becomes right associative when written as an infix operator.
+
+This is another of Scala's general syntax rules. In this case the rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). For example:
+
+~~~ scala
+scala> 1 :: 2 :: 3 :: 4 :: 5 :: Nil
+res1: List[Int] = List(1, 2, 3, 4, 5)
+
+scala> List(1, 2, 3) ::: List(4, 5, 6)
+res2: List[Int] = List(1, 2, 3, 4, 5, 6)
+~~~
+
+The `::` and `:::` methods are specific to lists whereas `+:`, `:+` and `++` work on any type of sequence. We recommend using the general methods wherever possible because make it easy to swap sequence implementations for different performance characteristics.
+</div>
 
 ### Updating elements
 
@@ -104,76 +137,6 @@ scala> sequence.updated(0, 5)
 res11: Seq[Int] = List(5, 2, 3)
 ~~~
 
-
-## Mutable and Immutable Sequences
-
-None of the methods we have covered so far have any side-effects -- like the `copy` method on a case class, they return a new copy of the sequence.
-
-The default implementations are immutable throughout Scala's collections framework for the reasons we have discussed many times already.
-
-Sometimes, however, we need mutable collections for our codebase. Fortunately, Scala provides two parallel collections hierarchies, one in the `scala.collection.mutable` package and one in the `scala.collection.immutable` package.
-
-The default `Seq` is defined to be `scala.collection.immutable.Seq`. If we want a mutable sequence we can use `scala.collection.mutable.Seq`.
-
-~~~ scala
-scala> val mutable = scala.collection.mutable.Seq(1, 2, 3)
-mutable: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3)
-~~~
-
-Note that the concrete implementation class is now an `ArrayBuffer` and not a `List`.
-
-### Destructive update
-
-In addition to all the methods of an immutable sequence, a mutable sequence can be updated using the `update` method. Note that `update` returns `Unit`, so no value is printed in the REPL after this call. When we print the original sequence we see it is changed:
-
-~~~ scala
-scala> mutable.update(0, 5)
-
-scala> mutable
-res14: scala.collection.mutable.Seq[Int] = ArrayBuffer(5, 2, 3)
-~~~
-
-A more idiomatic way of calling `update` is to use **assignment operator syntax**, which is another special syntax built in to Scala, similar to [infix operator syntax](../intro/compound.html) and [function application syntax](../objects/functions.html):
-
-~~~ scala
-scala> mutable(1) = 7
-
-scala> mutable
-res16: scala.collection.mutable.Seq[Int] = ArrayBuffer(5, 7, 3)
-~~~
-
-### Immutable methods on mutable sequences
-
-Methods defined on both mutable and immutable sequences will never perform destructive updates. For example, `:+` always returns a new copy of the sequence without updating the original:
-
-~~~ scala
-scala> val mutable = scala.collection.mutable.Seq[Int](1, 2, 3)
-mutable: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3)
-
-scala> mutable :+ 4
-res10: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3, 4)
-
-scala> mutable
-res11: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3)
-~~~
-
-<div class="alert alert-info">
-**Mutable collections tip:** Scala programmers tend to favour immutable collections and only bring in mutable ones in specific circumastances. Using `import scala.collection.mutable._` at the top of a file tends to create a whole series of naming collisions that we have to work around.
-
-To work around this, I suggest importing the `mutable` package iteself rather than its contents. We can then explicitly refer to any mutable collection using the package name as a prefix, leaving the unprefixed names referring to the immutable versions:
-
-~~~ scala
-scala> import scala.collection.mutable
-import scala.collection.mutable
-
-scala> mutable.Seq(1, 2, 3)
-res0: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3)
-
-scala> Seq(1, 2, 3)
-res1: Seq[Int] = List(1, 2, 3)
-~~~
-</div>
-
 ## In summary
 
 Here is a type table of all the methods we have seen so far:
@@ -183,20 +146,14 @@ Here is a type table of all the methods we have seen so far:
 |-------------+------------+--------------------+-------------|
 | `Seq(...)`  |            | `[A]`, ...         | `Seq[A]`    |
 | `apply`     | `Seq[A]`   | `Int`              | `A`         |
-| `:+`, `+:`  | `Seq[A]`   | `A`                | `Seq[A]`    |
-| `++`, `++:` | `Seq[A]`   | `Seq[A]`           | `Seq[A]`    |
+| `length`    | `Seq[A]`   |                    | `Int`       |
 | `contains`  | `Seq[A]`   | `A`                | `Boolean`   |
-| `size`      | `Seq[A]`   |                    | `Int`       |
+| `find`      | `Seq[A]`   | `A => Boolean`     | `Option[A]` |
+| `filter`    | `Seq[A]`   | `A`                | `Seq[A]`    |
+| `:+`, `+:`  | `Seq[A]`   | `A`                | `Seq[A]`    |
+| `++`        | `Seq[A]`   | `Seq[A]`           | `Seq[A]`    |
+| `updated`   | `Seq[A]`   | `Int` `A`          | `Seq[A]`    |
 |=============================================================|
-{: .table .table-bordered .table-responsive }
-
-and the extras for mutable sequences:
-
-|------------+------------+-------------------+-------------|
-| Method     | We have    | We provide        | We get      |
-|------------+------------+-------------------+-------------|
-| `update`   | `Seq[A]`   | `Int`, `A`        | `Unit`      |
-|===========================================================|
 {: .table .table-bordered .table-responsive }
 
 ## Exercises
@@ -234,18 +191,4 @@ res7: Seq[Any] = List(2, cat, dog, penguin)
 You might expect a type error here, but Scala is capable of determining the least upper bound of `String` and `Int` and setting the type of the returned sequence accordingly.
 
 In most real code appending an `Int` to a `Seq[String]` would be an error. In practice, the type annotations we place on methods and fields protect against this kind of type error, but be aware of this behaviour just in case.
-
-Note that if we try to mutate a sequence (obviously we have to use a mutable sequence), we *do* get a type error:
-
-~~~ scala
-scala> val mutable = scala.collection.mutable.Seq("cat", "dog", "elephant")
-mutable: scala.collection.mutable.Seq[String] = ArrayBuffer(cat, dog, elephant)
-
-scala> mutable(0) = 2
-<console>:9: error: type mismatch;
- found   : Int(2)
- required: String
-              mutable(0) = 2
-                           ^
-~~~
 </div>

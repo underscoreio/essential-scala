@@ -4,6 +4,7 @@
       "path": ".",
       "folder_exclude_patterns": [
         "dist",
+        "core-scala",
         "bower_components",
         "node_modules",
         "assets",

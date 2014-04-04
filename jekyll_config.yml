@@ -16,22 +16,22 @@ toc:
   - head: /objects/index.html
     body:
      - /objects/classes.html
-     - /objects/functions.html
+     - /objects/apply.html
      - /objects/companion-objects.html
      - /objects/case-classes.html
      - /objects/traits.html
      - /objects/sealed-traits.html
      - /objects/traits-as-mixins.html
      - /objects/generics.html
-     - /objects/functions-redux.html
+     - /objects/functions.html
 
   - head: /collections/index.html
     body:
      - /collections/seq.html
      - /collections/working-with-seq.html
      - /collections/for-comprehensions.html
-     - /collections/working-with-for-comprehensions.html
      - /collections/meeting-monads.html
+     - /collections/for-comprehensions-redux.html
      - /collections/map-and-set.html
      - /collections/ranges.html
 
@@ -39,9 +39,9 @@ toc:
     body:
      - /fp/ho-functions.html
      - /fp/structural-recursion.html
+     - /fp/modelling-with-types.html
      - /fp/pattern-matching.html
      - /fp/extractors.html
-     - /fp/modelling-with-types.html
 
   - head: /dsl/index.html
     body:
