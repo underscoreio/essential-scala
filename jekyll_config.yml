@@ -37,9 +37,10 @@ toc:
 
   - head: /fp/index.html
     body:
-     - /fp/ho-functions.html
      - /fp/structural-recursion.html
      - /fp/modelling-with-types.html
+     - /fp/modelling-errors.html
+     - /fp/monads.html
      - /fp/pattern-matching.html
      - /fp/extractors.html
 

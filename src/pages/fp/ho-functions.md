@@ -3,7 +3,7 @@ layout: page
 title: Higher-Order Functions
 ---
 
-A **higher-order function** is a function we pass to another function. We have seen several uses already, particularly with collections. Here we're going to use higher-order functions in some novel situations, with the aim of solidifying our understanding. This section will be heavy on the examples.
+A **higher-order function** is a function that accepts another function. We have seen several uses already, particularly with collections. Here we're going to use higher-order functions in some novel situations, with the aim of solidifying our understanding. This section will be heavy on the examples.
 
 We're going to spend a lot of time with Scala's `List` type, so a quick overview:
 

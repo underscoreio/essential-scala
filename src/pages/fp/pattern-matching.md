@@ -3,7 +3,7 @@ layout: page
 title: "Pattern Matching Redux: Built-in Patterns"
 ---
 
-We have now seen all of the major aspects of classes, case classes, and traits, and collections. Armed with this information, we are in a good position to return to pattern matching and see some of its more powerful features.
+We have seen the duality between algebraic data types and pattern matching. Armed with this information, we are in a good position to return to pattern matching and see some of its more powerful features.
 
 As we discussed earlier, patterns are written in their own DSL that only superficially resembles regular Scala code. **Patterns serve as tests that *match* a specific set of Scala values**. The `match` expression compares a value to each pattern in turn, finds the first pattern that matches, and executes the corresponding block of Scala code.
 
