@@ -44,13 +44,16 @@ toc:
      - /fp/pattern-matching.html
      - /fp/extractors.html
 
+  - head: /implicits/index.html
+    body:
+     - /implicits/enrichment.html
+     - /implicits/type-classes.html
+     - /implicits/conversions.html
+
   - head: /dsl/index.html
     body:
      - /dsl/operators.html
      - /dsl/control.html
-     - /dsl/implicits.html
-     - /dsl/type-classes.html
-     - /dsl/pimping.html
      - /dsl/macros.html
 
   - head: /collections-redux/index.html

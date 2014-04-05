@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Implicits
+title: Implicit Conversions
 ---
 
 Implicits are a general mechanism to get the compiler to do work for you. In particular, with implicits you can get the compiler to:
