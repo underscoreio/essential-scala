@@ -139,7 +139,8 @@ scala> :paste
 
 trait HtmlImplicits {
   implicit object PersonWriter extends HtmlWriter[Person] {
-    def write(person: Person) = s"<span>${person.name} &lt;${person.email}&gt;</span>"
+    def write(person: Person) =
+      s"<span>${person.name} &lt;${person.email}&gt;</span>"
   }
 
   implicit object DateWriter extends HtmlWriter[Date] {
@@ -167,6 +168,36 @@ res4: String = <span>John &lt;john@example.com&gt;</span>
 
 This version of the code has much lighter syntax requirements than its predecessor. We have now assembled the complete type class pattern: `HtmlUtil` specifies our HTML rendering functionality, `HtmlWriter` and `HtmlWriters` implement the functionality as a set of adapters, and the implicit argument to `htmlify` implicitly selects the correct adapter for any given argument. However, we can take things one step further to really simplify things.
 
+## Packaging Type Classes
+
+We can package type classes in two ways: using the trait/singleton approach we introduced for implicit classes, or using the companion objects of the relevant types.
+
+Remember that one of the locations in implicit scope is *the companion objects of types involved in the type error*. This is particularly relevant to type class instances -- if the compiler is searching for a `HtmlWriter[Person]`, it will look in the companion objects of `HtmlWriter`, `Person`, and all of their superclasses.
+
+We can use this behaviour to implement default type class instances for the main data types in our application. For example:
+
+~~~ scala
+case class Person(name: String, email: String)
+
+object Person {
+  implicit val htmlWriter = new HtmlWriter[Person] {
+    def write(person: Person) =
+      s"<span>${person.name} &lt;${person.email}&gt;</span>"
+  }
+}
+~~~
+
+The compiler searches for implicits in local scope *first* before it looks at companion objects. We can therefore override companion object implicits with explicit imports:
+
+~~~ scala
+val person = Person("Dave", "dave@example.com")
+
+HtmlUtil.htmlify(person) // uses Person.htmlWriter
+
+import HtmlImplicits._
+
+HtmlUtil.htmlify(person) // uses HtmlImplicits.PersonWriter
+
 ## Combining Type Classes and Type Enrichment
 
 Type classes allow us to define adapter-style patterns that implement fixed behaviour for any type we specify. Type enrichment allows us to add functionality to existing classes without changing their definitions. We can combine the two techniques to add standard functionality to a range of classes.
@@ -190,16 +221,18 @@ res5: String = <span>John &lt;john@example.com&gt;</span>
 
 This gives us many benefits. We can extend existing types to give them new functionality, use simple syntax to invoke the functionality, *and* choose our preferred implementation by controlling which implicits we have in scope.
 
-### Implicit Scope Rules
+## Take Home Points
 
-Rule #2 above -- the *scope rule* -- states that the compiler only looks for implicits that are "in scope". This refers to a special set of scoping rules called **implicit scope**, which differ slightly from Scala's regular scoping rules.
+Like type enrichment, **type classes** are a general programming pattern. Type classes allow us to define a piece of functionality for a wide range of classes without modifying the source code for those classes.
 
-The complete rules for implicit scope are complicated[^stackoverflow] but you should hardly ever have to rely on them in your code. Here is a simplified version that will suffice for almost all cases:
+The type class pattern consists of three things: a *type class*, a set of *type class instances*, and a method of associating the type class instance for any particular type.
 
- 1. Look in local scope -- including implicit definitions in surrounding expressions and any implicits brought into scope by local `import` statements;
+The Scala implementation of type classes uses **implicit values** to define type class instances and **implicit parameter lists** as the method of instance resolution.
 
- 2. Look at the class/object level -- including any inherited definitions and `imports` within the class/object body;
+We can package type class instances together in traits/singletons or separately in the **companion objects** of individual types.
 
- 3. Look at top-level `imports`;
+We can combine type classes with type enrichment to add new behaviour to existing types across a whole application.
 
- 4. Look in the companion objects of types involved in the type error (including generic types and type parameters).
+## Exercises
+
+### TODO

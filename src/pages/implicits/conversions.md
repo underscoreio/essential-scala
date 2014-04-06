@@ -3,6 +3,24 @@ layout: page
 title: Implicit Conversions
 ---
 
+So far we have seen two powerful programming patterns -- *type enrichment*, which we implemented using *implicit classes*, and *type classes*, which we implemented using *implicit values and parameter lists*.
+
+Scala has a third implicit mechanism called *implicit conversions* that we will cover here for completeness. Implicit conversions can be seen as a more general form of implicit classes, and can be used in a wider variety of contexts.
+
+<div class="alert alert-warning">
+**Here be dragons:** As we shall see later in this section, undisciplined use of implicit conversions can cause as many problems as it fixes for the beginning programmer. Scala even requires us to write a special import statement to silence compiler warnings resulting from the use of implicit conversions:
+
+~~~ scala
+ import scala.language.implicitConversions
+~~~
+
+We recommend using implicit classes and implicit values/arguments over implicit conversions wherever possible. By sticking to the type enrichment and type class design patterns you should find very little cause to use implicit conversions in your code.
+
+You have been warned!
+</div>
+
+
+
 Implicits are a general mechanism to get the compiler to do work for you. In particular, with implicits you can get the compiler to:
 
 * call a function you have not explicitly written, called an **implicit conversion**; and
@@ -46,55 +64,6 @@ res1: String = This is the best method ever!
 ~~~
 
 This pattern is sometimes called pimping, after a [blog post](http://www.artima.com/weblogs/viewpost.jsp?thread=179766) by Martin Odersky.
-
-## Exercises
-
-#### Oh Yeah!
-
-Use your newfound powers to add a method `yeah` to `Int`, which prints `Oh yeah!` as many times as the `Int` on which it is called if the `Int` is positive, and is silent otherwise. Here's an example of usage:
-
-~~~ scala
-scala> 2.yeah
-Oh yeah!
-Oh yeah!
-
-scala> 3.yeah
-Oh yeah!
-Oh yeah!
-Oh yeah!
-
-scala> -1.yeah
-
-~~~
-
-<div class="solution">
-~~~ scala
-class Yeah(n: Int) {
-  def yeah =
-    for(_ <- 0 until n) println("Oh yeah!")
-}
-
-implicit def intToYeah(n: Int): Yeah =
-  new Yeah(n)
-~~~
-</div>
-
-#### Times
-
-Extend `Int` with a method called `times` that executes the body `n` times, where `n` is an `Int`. Bonus marks for using a call-by-name parameter. For example, I should be able to write `5 times println("Hi!")` and have `Hi!` printed five times.
-
-<div class="solution">
-~~~ scala
-class Times(n: Int) {
-  def times(e: => Any) =
-      for(_ <- 0 until n) e
-}
-
-implicit def intToTimes(n: Int): Times =
-  new Times(n)
-~~~
-</div>
-
 
 ## Implicit Parameters
 
@@ -152,38 +121,6 @@ res2: String = dave:~$
 ~~~
 
 ## Exercises
-
-#### Multiple Parameter Lists
-
-Add a method `fold` to `Int`. `fold` has two parameter lists. The first accepts a seed of type `A`. The second accepts a function from `(A, Int) => A`. The method folds over the integers from zero until the given number. Example usage:
-
-~~~ scala
-scala> 4.fold(0)(_ + _)
-res10: Int = 6
-
-scala> -5.fold(1)(_ + _)
-res13: Int = -9
-~~~
-
-Hint: This exercise uses an implicit conversion and multiple parameter lists but *not* implicit parameters.
-
-<div class="solution">
-~~~ scala
-class IntFold(n: Int) {
-  def fold[A](zero: A)(f: (A, Int) => A): A = {
-    var result: A = zero
-
-    val direction = if(n < 0) -1 else 1
-    for(i <- 0 until n by direction) {
-      result = f(result, i)
-    }
-    result
-  }
-}
-
-implicit def intToFold(n: Int): IntFold = new IntFold(n)
-~~~
-</div>
 
 #### Implicit Parameter Lists
 
