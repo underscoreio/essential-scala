@@ -172,9 +172,11 @@ This version of the code has much lighter syntax requirements than its predecess
 
 We can package type classes in two ways: using the trait/singleton approach we introduced for implicit classes, or using the companion objects of the relevant types.
 
-Remember that one of the locations in implicit scope is *the companion objects of types involved in the type error*. This is particularly relevant to type class instances -- if the compiler is searching for a `HtmlWriter[Person]`, it will look in the companion objects of `HtmlWriter`, `Person`, and all of their superclasses.
+Remember that one of the locations in implicit scope is *the companion objects of types involved in the type error*. This is particularly relevant to type class instances -- if the compiler is searching for a `HtmlWriter[Person]`, it will look in the companion objects of `HtmlWriter`, `Person`, and all of their superclasses:
 
+{% comment %}
 We can use this behaviour to implement default type class instances for the main data types in our application. For example:
+{% endcomment %}
 
 ~~~ scala
 case class Person(name: String, email: String)
@@ -187,6 +189,7 @@ object Person {
 }
 ~~~
 
+{% comment %}
 The compiler searches for implicits in local scope *first* before it looks at companion objects. We can therefore override companion object implicits with explicit imports:
 
 ~~~ scala
@@ -198,6 +201,7 @@ import HtmlImplicits._
 
 HtmlUtil.htmlify(person) // uses HtmlImplicits.PersonWriter
 ~~~
+{% endcomment %}
 
 ## Combining Type Classes and Type Enrichment
 
