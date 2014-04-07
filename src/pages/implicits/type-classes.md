@@ -197,6 +197,7 @@ HtmlUtil.htmlify(person) // uses Person.htmlWriter
 import HtmlImplicits._
 
 HtmlUtil.htmlify(person) // uses HtmlImplicits.PersonWriter
+~~~
 
 ## Combining Type Classes and Type Enrichment
 
