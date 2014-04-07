@@ -11,7 +11,7 @@ Scala has a third implicit mechanism called *implicit conversions* that we will 
 **Here be dragons:** As we shall see later in this section, undisciplined use of implicit conversions can cause as many problems as it fixes for the beginning programmer. Scala even requires us to write a special import statement to silence compiler warnings resulting from the use of implicit conversions:
 
 ~~~ scala
- import scala.language.implicitConversions
+import scala.language.implicitConversions
 ~~~
 
 We recommend using implicit classes and implicit values/arguments over implicit conversions wherever possible. By sticking to the type enrichment and type class design patterns you should find very little cause to use implicit conversions in your code.
@@ -19,28 +19,9 @@ We recommend using implicit classes and implicit values/arguments over implicit 
 You have been warned!
 </div>
 
-
-
-Implicits are a general mechanism to get the compiler to do work for you. In particular, with implicits you can get the compiler to:
-
-* call a function you have not explicitly written, called an **implicit conversion**; and
-* supply a parameter to a method that have not explicitly supplied, called an **implicit parameter**.
-
-Implicits allow a new way of factoring code, called a **type class*, but also require care to ensure code remains comprehensible.
-
-In this section we introduce the two forms of implicits: implicit conversions and implicit parameter lists. In later sections we'll see some common uses.
-
-
 ## Implicit conversions
 
-An implicit conversion is one of the two types of implicits. It allows the compiler to automatically apply a conversion from one type to another, when that conversion has not been written in the code. The process works like this:
-
-* we have a class `B` with a method `bar`;
-* we class `A` without method `bar`;
-* we have an implicit conversion from `A` to `B`; and
-* we call method `bar` on an instance of `A`.
-
-If all these conditions are met, the compiler will insert a call to the implicit conversion, converting `A` to `B` so the method call of `foo` compiles.
+**Implicit conversions** are a more general form of implicit classes. We can tag any single-argument method with the `implicit` keyword to allow the compiler to perform automated conversions from one type to another:
 
 ~~~ scala
 scala> class B {
@@ -48,13 +29,8 @@ scala> class B {
      | }
 defined class B
 
-scala> class A {}
+scala> class A
 defined class A
-
-scala> new A().bar // Fails to compile
-<console>:9: error: value bar is not a member of A
-              new A().bar
-                      ^
 
 scala> implicit def aToB(in: A): B = new B()
 aToB: (in: A)B
@@ -63,154 +39,35 @@ scala> new A().bar
 res1: String = This is the best method ever!
 ~~~
 
-This pattern is sometimes called pimping, after a [blog post](http://www.artima.com/weblogs/viewpost.jsp?thread=179766) by Martin Odersky.
+Implicit classes are actually just syntactic sugar for the combination of a regular class and an implicit conversion. With an implicit class we have to define a new type as a target for the conversion; with an implicit method we can convert from any type to any other type as long as an implicit is available in scope.
 
-## Implicit Parameters
+## Designing with Implicit Conversions
 
-Implicit parmaters are the other type of implicit. Implicit parameters allow the compiler to insert parameters to a method call if we do not supply parameters explicitly in our code.
-
-### Multiple parameter lists
-
-Before we can discuss implicit parameters we need to know about multiple parameter lists. In addition to supporting any number of parameters, methods and functions in Scala can have any number of *parameter lists*. For example:
+The power of implicit conversions tends to cause problems for newer Scala developers. We can easily define very general type conversions that play strange games with the semantics of our programs:
 
 ~~~ scala
-scala> def add(a: Int, b: Int)(c: Int, d: Int): Int = {
-     |   a + b + c + d
-     | }
-add: (a: Int, b: Int)(c: Int, d: Int)Int
+scala> implicit def intToBoolean(int: Int) = int == 0
+intToBoolean: (int: Int)Boolean
 
-scala> add(1, 2)(3, 4)
-res0: Int = 10
+scala> if(1) "yes" else "no"
+res0: String = no
+
+scala> if(0) "yes" else "no"
+res1: String = yes
 ~~~
 
-There are a number of reasons why this is useful: it allows for more flexibility when assigning default values to optional arguments, it helps type inference, it provides support for *currying*, and it provides support for *implicit argument lists*. This section covers the last of these three.
+This example is ridiculous, but it demonstrates the potential problems implicits can cause. `intToBoolean` could be defined in a library in a completely different part of our codebase, so how would we debug the bizarre behaviour of the `if` expressions above?
 
-{% comment %}
-TODO: Supply examples of currying and default values?
-{% endcomment %}
+Here are some tips for designing using implicits that will prevent situations like the one above:
 
-### Implicit parameter lists
+ - Wherever possible, stick to the type enrichment and type class programming patterns.
 
-We can add the keyword `implicit` to the beginning of a parameter list which indicates the compiler may implicitly insert arguments for any parameter in the list. For example:
+ - Wherever possible, use implicit classes, values, and parameter lists over implicit conversions.
 
-~~~ scala
-scala> class User(val name: String)
-defined class User
+ - Package implicits clearly, and bring them into scope only where you need them. We recommend using the packaging guidelines introduced earlier this chapter.
 
-scala> def prompt(directory: String)(implicit user: User): String = {
-     |   user.name + ":" + directory + "$"
-     | }
-prompt: (directory: String)(implicit user: User)String
-~~~
-
-When we call `prompt`, we have the option of supplying all the necessary arguments or allowing the compiler to supply those marked as `implicit`:
-
-~~~ scala
-scala> prompt("~")(new User("john"))
-res1: String = john:~$
-~~~
-
-If we omit the implicit arguments from the method call, the compiler will search for values to insert in their place. It searches local scope (roughly - see below for caveats) for `vals` and argumentless `defs` that have been declared with the `implicit` keyword:
-
-~~~ scala
-scala> implicit def currentUser: User = new User("dave")
-currentUser: User
-
-scala> prompt("~") // compiler expands this to: prompt("~")(currentUser)
-res2: String = dave:~$
-~~~
+ - Avoid creating implicit conversions that convert from one general type to another general type -- the more specific your types are, the less likely the implicit is to be applied incorrectly.
 
 ## Exercises
 
-#### Implicit Parameter Lists
-
-A Pet is a Dog or a Cat. Model this in Scala.
-
-<div class="solution">
-~~~ scala
-sealed trait Pet
-final case class Dog() extends Pet
-final case class Cat() extends Pet
-~~~
-</div>
-
-Here is a `Sound` type:
-
-~~~ scala
-case class Sound()
-~~~
-
-Add a method `beg` to this class that takes a `Pet` and returns a `String` sound.
-
-<div class="solution">
-~~~ scala
-case class Sound() {
-  def beg(pet: Pet): String =
-    pet match {
-      case Dog() => "woof"
-      case Cat() => "meow"
-    }
-}
-~~~
-</div>
-
-Make an object `Mealtime` with a method `breakfast`. `Breakfast` has two parameter lists. The first accepts a `Pet`, the second implicit list accepts a `Sound`. When `breakfast` is called is returns the appropriate sound (a `String`) for the pet.
-
-<div class="solution">
-~~~ scala
-object Mealtime {
-  def breakfast(pet: Pet)(implicit sound: Sound) =
-      sound.beg(pet)
-}
-~~~
-</div>
-
-Define an implicit instance of `Sound` so that you can call `Mealtime` with just a `Pet`.
-
-<div class="solution">
-~~~ scala
-implicit val sound = Sound()
-
-Mealtime.breakfast(Cat())
-~~~
-
-Notice that the implicit parameter is supplied by the compiler.
-</div>
-
-Define another implicit instance of `Sound` and call `Mealtime` with just a `Pet`. What happens?
-
-<div class="solution">
-Now there is ambiguity between implicits and the compiler refuses to supply one. And this brings us to the next section...
-</div>
-
-## Rules for Implicit Resolution
-
-Implicits are, by definition, not explicitly used in our code. It is important to have a clear understanding of how the compiler searches for implicits to understand code using them.
-
-### Rules for Implicit Values
-
-When searching for implicit values to supply as implicit parameters, the compiler is restricted by a number of precise rules:
-
- 1. **Marking Rule:** Only definitions marked `implicit` are available.
- 2. **Scope Rule:** An implicit must be in *implicit scope* (see below).
- 3. **Non-Ambiguity Rule:** An implicit can only be used if there are no other applicable implicits in scope.
-
-### Implicit scope
-
- - Must be in scope as a single identifier (i.e. not `a.b`)
- - Except the compiler will look for definitions in the companion objects for the source and target types for conversion.
-
-### Rules for Implicit Conversion Resolution
-
-In addition to the rules for implicit value resolution above, use of implicit conversions is subject to the following additional rules:
-
- 4. **One-at-a-time Rule:** Only a single implicit conversion can be used for any given situation (i.e. the compiler does not chain multiple conversions to resolve a conflict).
- 5. **Explicits-First Rule:** Whenever code type checks as it is written, no implicits are attempted.
-
-### Good Practice for Implicit Conversions
-
-Implicit conversions can easily make code difficult to understand, particularly if the user is unaware they are using implicit conversions in their code. Here are some good practices for managing implicits:
-
-- Separate implicits to their own trait, so the user must explicitly extend that trait to access the implicits.
-- It is often useful to provide a companion object that also contains the implicits. This companion object can be imported in a limited scope to get around ambiguities or to make code clearer.
-- Use a consistent naming convention for the classes you convert to. A common convention is to suffix the class with `W`, meaning wide. For example, if you extend `Int` with new methods you might put those methods in a class `IntW`.
+### TODO

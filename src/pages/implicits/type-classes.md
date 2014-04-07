@@ -235,4 +235,4 @@ We can combine type classes with type enrichment to add new behaviour to existin
 
 ## Exercises
 
-### TODO
+### tODO
