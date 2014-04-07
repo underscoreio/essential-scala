@@ -46,7 +46,7 @@ For the most part this is all stuff we know. The only pieces of syntax we haven'
 ### Invariance, Covariance and Contravariance
 
 <div class="alert alert-warning">
-**Note:** Variance is one of the trickier aspects of Scala's type system. Although it is useful to be aware of its existince, we rarely have to use it in application code. Treat this section as an aside -- the information below isn't required to follow the rest of the course.
+**Note:** Variance is one of the trickier aspects of Scala's type system. Although it is useful to be aware of its existence, we rarely have to use it in application code. We will revisit covariance in the *Functional Programming* chapter, but we won't revisit contravariance for the remainder of the course.
 </div>
 
 The *variance* of a generic type determines how its supertype/subtype relationships change with respect with its type parameters:

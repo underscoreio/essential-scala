@@ -66,7 +66,7 @@ scala> sequence.find(_ > 4)
 res6: Option[Int] = None
 ~~~
 
-The `Option` class here is Scala's built-in equivalent of our `PossibleResult` class from earlier. It has two subtypes -- `Some` and `None` -- representing the presence and absence of a value respectively.
+The `Option` class here is Scala's built-in equivalent of our `Maybe` class from earlier. It has two subtypes -- `Some` and `None` -- representing the presence and absence of a value respectively.
 
 The `filter` method is a variant of `find` that returns *all* the matching elements in the sequence:
 

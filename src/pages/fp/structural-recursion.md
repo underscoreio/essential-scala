@@ -8,7 +8,7 @@ In the previous sections of the course two themes have come up again and again:
 - modelling data using traits and type classes; and
 - operating on data using pattern matching and higher-order functions like `map` and `fold`.
 
-You might have noticed that the way we define data and the way we use it follows a very regular pattern. This is no accident. The concept underlying this iscalled **structural recursion**. Structural recursion gives us a set of rules -- we could implement it as a program -- for constructing functions that always work correctly with a particular type of data known as **algebraic data types**.
+You might have noticed that the way we define data and the way we use it follows a very regular pattern. This is no accident. The concept underlying this is called **structural recursion**. Structural recursion gives us a set of rules -- we could implement it as a program -- for constructing functions that always work correctly with a particular type of data known as **algebraic data types**.
 
 ## Algebraic Data Types
 
@@ -58,7 +58,7 @@ Pattern matching is the most basic method for dealing with algebraic data types.
 ~~~ scala
 computer match {
   case Desktop(ram, cpu, hdd) => ...
-  case Laptop(ram. cpu, hedd, screen, formFactor) => ...
+  case Laptop(ram. cpu, hdd, screen, formFactor) => ...
 }
 ~~~
 
@@ -191,9 +191,9 @@ final case class Leaf[A](val elt: A) extends Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B =
     leaf(elt)
 }
+~~~
 
 As `map` is defined entirely in terms of `fold` we don't need to implement it on `Node` and `Leaf`. Notice how I've used the companion class constructor, `Node.apply`, in the call to `fold`.
-~~~
 </div>
 
 ## Folding vs Pattern Matching
