@@ -174,9 +174,7 @@ We can package type classes in two ways: using the trait/singleton approach we i
 
 Remember that one of the locations in implicit scope is *the companion objects of types involved in the type error*. This is particularly relevant to type class instances -- if the compiler is searching for a `HtmlWriter[Person]`, it will look in the companion objects of `HtmlWriter`, `Person`, and all of their superclasses:
 
-{% comment %}
-We can use this behaviour to implement default type class instances for the main data types in our application. For example:
-{% endcomment %}
+We can use this behaviour to implement type class instances in the companion objects of the main data types in our application, as opposed to packaging them all into one big trait. For example:
 
 ~~~ scala
 case class Person(name: String, email: String)
