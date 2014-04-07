@@ -3,76 +3,25 @@ layout: page
 title: Modelling with Types
 ---
 
-In this section we're going to explore some common functional programming patterns building on structural recursion. We will see how we can use the type system to our advantage to ensure our code maintains certain properties. In section we're going to focus on handling missing values (where we'd use `null` in Java). This will introduce some new features of generics and give us more experience with monads, which we first saw in the [collections](/collections/meeting-monads.html).
+In the next sections we will explore some common functional programming patterns building on structural recursion. We will see how we can use the type system to our advantage to ensure our code maintains certain properties.
 
-Here we're going to concentrate on two cases: handling values that may be missing (where we'd use `null` in Java), and enforcing error checking without the pain of checked exceptions.
+In section we're going to focus on modelling missing values using the `Maybe` type we introduced in the [Modelling Data](/objects/generics.html) exercises.
 
 ## Making Null Optional
 
-There are many times that our programs must deal with missing data. For example, when we try to get an element from a `Map` and that element doesn't exist, what should we do? It's not an error to ask for an element that doesn't exist, so we shouldn't raise an exception. Instead we should return some special value to indicate this condition. In Java we return `null`. `Null` is a member of every type so we can return it no matter what type we are expecting. There is a problem with this, however. If we forget to check for `null` we will receive no warning. We'll just have buggy code waiting to break. Let's do better.
+If you remember, we implemented `Maybe` as a way of eliminating `nulls`. Looking at our code in a fresh light, we can see that it is a *sum type* with two cases -- `Full` and `Empty`:
 
-We're going to approach this problem using structural recursion. What are the types of data we're dealing with? There are clearly two cases: empty and not-empty. Thus we have a sum type.
-
-{% comment %}
-### Covariant Error Handling
-
-**TODO: This exercise was moved from earlier in the course. It partially overlaps with later content. Modify it appropriately to go from `PossibleResult` to `Option` via `Maybe`. Or possibly rewrite the previous example and rename `PossibleResult` to `Maybe`.**
-
-Covariance is the solution to our problem with `PossibleResult`. Recall that we couldn't define `NoResult` as an object because we ended up with a type error:
-
-~~~ scala
-final case object NoResult extends PossibleResult[Nothing]
-
-val possible: PossibleResult[Int] = NoResult // type error
-~~~
-
-The type error is this: *`NoResult` is a `PossibleResult[Nothing]`, which is not a `PossibleResult[Int]`*. How can we make fix this type error? What would the code look like?
-
-Hint: `Nothing` is a subtype of `Int`!
-
-<div class="solution">
-The solution involves making `PossibleResult[Nothing]` a subtype of `PossibleResult[Int]`. `Unit` is a subtype of `Int`, so if we make `PossibleResult` covariant we should be fine:
-
-~~~ scala
-sealed trait PossibleResult[+A]
-final case class ActualResult[A](val value: A) extends PossibleResult[A]
-final case object NoResult extends PossibleResult[Nothing]
-
-val possible: PossibleResult[Int] = NoResult // no type errors!
-~~~
-
-This is more-or-less exactly how Scala's `Option` is defined. Here's a synopsis:
-
-~~~ scala
-sealed trait Option[+A]
-final case class Some[A](get: A) extends Option[A] { /* ... */ }
-final case object None extends Option[Nothing] { /* ... */ }
-~~~
-</div>
-{% endcomment %}
-
-#### Exercise: Call Me Maybe
-
-Write the code for our sum type `Maybe`.
-
-Hint: You have already written this in a previous section.
-
-<div class="solution">
 ~~~ scala
 sealed trait Maybe[A]
-final case class Empty[A] extends Maybe[A]
-final case class Full[A](elt: A) extends Maybe[A]
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
 ~~~
 
-The two cases are:
+`Maybe` is a simplified version of the `Option` type that ships with the core Scala libraries. The main difference is that `Option` is a *monad* with extra methods that we have not implemented. We can learn a lot about `Option` and structural recursion by implementing some of these methods ourselves. First, however, let's revisit the problem of how to eliminate the type parameter from `Empty[A]`.
 
-* The non-empty case, which holds an element.
-* The empty case, which holds no data.
-</div>
+## Covariance Redux
 
-## Covariance
-
-The way we use generics in `Maybe` is a bit inconvenient. We have to declare a generic type on the `Empty` case even though that case doesn't store any data. Recall that `Nothing` is a subtype of all types, so we could instead declare `Empty` as
+The way we use generics in `Maybe` is a bit inconvenient. We have to declare a generic type on the `Empty` case even though that case doesn't store any data. Ideally we would like to define `Empty` as a singleton object as follows:
 
 ~~~ scala
 final case object Empty extends Maybe[Nothing]
@@ -90,84 +39,112 @@ You may wish to define A as +A instead. (SLS 4.5)
        val maybe: Maybe[Int] = Empty
 ~~~
 
-The problem is that `Empty` is not a subtype of `Maybe[Int]`. Subtyping relationships with generic types are subtle. By default generic types in Scala are **invariant**, meaning that for a type `F[A]` neither subtypes nor supertypes of `A` make a subtype of `F[A]`. This is the behaviour we're seeing with `Maybe`.
+The problem is that `Empty` is not a subtype of `Maybe[Int]`. This is because `Maybe[A]` is **invariant** in its type parameter `A`.
 
-**Covariance** is the behaviour most people expect. For a covariant type `F` a subtype of `A` is a subtype of `F[A]`. We can make a generic type covariant by introducing a generic type as `+A` instead of `A`.
+We touched on variance earlier in the course. Generic types in Scala are invariant by default, meaning that for a type `Foo[A]` neither subtypes nor supertypes of `A` make a subtype of `Foo[A]`. This is the behaviour we're seeing with `Maybe`.
 
-#### Exercise: Covariant Maybe
+**Covariance** is the behaviour most people expect from `Maybe`. For a covariant type `Foo` a subtype of `A` is a subtype of `Foo[A]`. We can make `Maybe` covariant by defining it as `Maybe[+A]` instead of `Maybe[A]`.
 
-Redefine `Maybe` to be covariant.
+### Exercise: Covariant Maybe
+
+Redefine `Maybe` to be covariant and redefine `Empty` to be a singleton object rather than a generic class. Verify that the covariance of `Maybe` fixes the type error above:
 
 <div class="solution">
+Here's the code:
+
 ~~~ scala
 sealed trait Maybe[+A]
+final case class Full[A](elt: A) extends Maybe[A]
 final case object Empty extends Maybe[Nothing]
-final case class Full[A](val elt: A) extends Maybe[A]
 ~~~
-
 
 `Maybe` is covariant so sub-types of `A` are allowed in a `Maybe[A]`. This allows `Empty` to extend `Maybe[Nothing]` and be the empty element for any `Maybe[A]`.
 </div>
 
-
-{% comment %}
-## Contravariance
-
-**Contravariance** is the opposite of covariance. For a contravariant type `F` a supertype of `A` is a subtype of `F[A]`.
-
-Why would we ever want contravariance? The main example is in function types. Consider the `map` function on a `Seq[A]`. For concreteness imagine that `A` is type `Dog`. What is the type of functions can we pass to `map`? We can pass a function `Dog => String`. We can't pass a function `Collie => String` (`Collie` is a subtype of `Dog`) because we can't guarantee that all our dogs are collies. Thus subtypes of `A` (in this case `Dog`) aren't allowed. We can pass functions of type `Animal => String`, `Animal` being a supertype of `Dog`, because all our dogs are animals. Thus supertypes are ok. This is exactly contravariance. Thus functions are contravariant in their parameters (and covariant in their return type).
-
-There is no doubt that variance is confusing to many. The good news is it hardly ever comes up in application code. We can typically settle for invariant types at the cost of a few type declarations to keep the compiler happy. As we saw with `Empty` we can add a nuisance type parameter to avoid variance annotations, and wherever we use the type we must fill in the nuisance parameter.
-{% endcomment %}
-
 ## Not Just A Maybe
 
-What functions should our `Maybe` type have to be generally useful?
+Now our `Maybe` type looks a lot like `Option` although we are still missing the methods we need to make it generally useful.
+
+What methods should we add to `Maybe` to make it easier to work with (tip: think about collections and for comprehensions)?
 
 <div class="solution">
 We should have `fold`, which is the generic traversal operator. From `fold` we can derive `map`, `flatMap`, and `foreach`, which are the functions expected by for comprehensions. (We should also consider implementing `filter` but I've skipped it here. Feel free to implement it yourself!)
 </div>
 
-Implement these functions as methods on `Maybe`.
+### Exercise: Methodical Maybe
+
+Implement each of the methods above!
 
 <div class="solution">
+
+First let's look at `fold`. As per our recipe, the method needs to take arguments for each case of our `Maybe`. In this case our argument for `Full` is a function from `A` to a result and our argument for `Empty` is a simple value:
+
 ~~~ scala
 sealed trait Maybe[+A] {
-  def fold[B](full: A => B, empty: B): B
-  def map[B](f: A => B): Maybe[B]
-  def flatMap[B](f: A => Maybe[B]): Maybe[B]
-  def foreach(f: A => Unit): Unit
+  def fold[B](full: A => B, accumulator: B): B
+}
+
+final case class Full[A](elt: A) extends Maybe[A] {
+  def fold[B](full: A => B, empty: B): B =
+    full(elt)
 }
 
 final case object Empty extends Maybe[Nothing] {
-  def fold[B](full: Nothing => B, empty: B): B =
-    empty
-  def map[B](f: Nothing => B): Maybe[B] =
-    Empty
-  def flatMap[B](f: Nothing => Maybe[B]): Maybe[B] =
-    Empty
-  def foreach(f: Nothing => Unit): Unit =
-    ()
-}
-
-final case class Full[A](val elt: A) extends Maybe[A] {
-  def fold[B](full: A => B, empty: B): B =
-    full(elt)
-  def map[B](f: A => B): Maybe[B] =
-    Full(f(elt))
-  def flatMap[B](f: A => Maybe[B]): Maybe[B] =
-    f(elt)
-  def foreach(f: A => Unit): Unit =
-    f(elt)
+  def fold[B](full: Nothing => B, accumulator: B): B =
+    accumulator
 }
 ~~~
 
-We could define all these functions in terms of `fold`. It is probably marginally more efficient to define them directly, at the cost of more code.
+We could define all of the remaining methods in terms of `fold`, but it is probably marginally more efficient to define them directly.
+
+Let's look at `map` and `flatMap`. In each case the `Full` implementation applies the argument to the value, while the `Empty` method simply returns `Empty`:
+
+~~~ scala
+sealed trait Maybe[+A] {
+  def map[B](f: A => B): Maybe[B]
+
+  def flatMap[B](f: A => Maybe[B]): Maybe[B]
+}
+
+final case class Full[A](elt: A) extends Maybe[A] {
+  def map[B](f: A => B): Maybe[B] =
+    Full(f(elt))
+
+  def flatMap[B](f: A => Maybe[B]): Maybe[B] =
+    f(elt)
+}
+
+final case object Empty extends Maybe[Nothing] {
+  def map[B](f: Nothing => B): Maybe[B] =
+    Empty
+
+  def flatMap[B](f: Nothing => Maybe[B]): Maybe[B] =
+    Empty
+}
+~~~
+
+Finally, the implementation of `foreach` is simple: `Full` calls the function while `Empty` does nothing:
+
+~~~ scala
+sealed trait Maybe[+A] {
+  def foreach(f: A => Unit): Unit
+}
+
+final case class Full[A](elt: A) extends Maybe[A] {
+  def foreach(f: A => Unit): Unit =
+    f(elt)
+}
+
+final case object Empty extends Maybe[Nothing] {
+  def foreach(f: Nothing => Unit): Unit =
+    ()
+}
+~~~
 </div>
 
 ## Using Maybe
 
-Our `Maybe` type provides a type-safe way to handle missing values. If we have a `Maybe` we *must* say how we're going to deal with missing values to get a value out of our `Maybe`. Imagine, for example, we have a `Maybe[Int]`. If there is no value we want the empty string. Otherwise we want to convert the `Int` to a string. To do this is simple using `fold`.
+As we have seen previously, our `Maybe` type provides a type-safe way to handle missing values. If we have a `Maybe` we *must* say how we're going to deal with missing values to get a value out. We have already seen how to do this with pattern matching -- we now have `fold` as another means to do the same thing.
 
 ~~~ scala
 scala> val full = Full(1)
@@ -187,18 +164,19 @@ empty fold (full = x => x.toString, empty = "")
 res18: String = ""
 ~~~
 
-The following method converts a `String` to a `Maybe[Int]`.
+As a concrete example, here is a method that attempts to parse a `String` to a `Maybe[Int]`:
 
 ~~~ scala
 def stringToMaybeInt(in: String): Maybe[Int] =
   try {
     Full(in.toInt)
   } catch {
-    case e: NumberFormatException => Empty
+    case exn: NumberFormatException =>
+      Empty
   }
 ~~~
 
-Use it to write code to convert a `String` to an `Int`, returning 0 if the `String` does not represent an `Int`.
+We can combine this method definition with `fold` to produce a variation on this method that returns `0` if the `String` is not a valid number:
 
 <div class="solution">
 ~~~ scala
@@ -209,7 +187,7 @@ def stringToInt(in: String): Int =
 
 ## Option in Scala
 
-Our `Maybe` type is called `Option` in Scala. It's two cases are called `Some` and `None`.  It is ubiquitous in Scala, and works just like `Maybe` except it doesn't provide a `fold` method[^scalaz]. To write the equivalent of `fold` we use a combination of `map` and `getOrElse` as illustrated below.
+Our `Maybe` type is called `Option` in Scala. It's two cases are called `Some` and `None`.  It is ubiquitous in Scala, and works just like `Maybe` except it doesn't provide a `fold` method[^scalaz]. To write the equivalent of `fold` we use a combination of `map` and `getOrElse` as illustrated below:
 
 ~~~ scala
 scala> val some: Option[Int] = Some(1)

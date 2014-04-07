@@ -116,7 +116,7 @@ Fold has a universal property meaning that any transformation of an algebraic da
 
 ## Exercises
 
-#### Tree Algebraic Data Type
+### Tree Algebraic Data Type
 
 A binary tree can be defined as follows:
 
@@ -133,7 +133,7 @@ final case class Leaf[A](val elt: A) extends Tree[A]
 </div>
 
 
-#### Tree Fold
+### Tree Fold
 
 Write a `fold` for `Tree`.
 
@@ -154,7 +154,7 @@ final case class Leaf[A](val elt: A) extends Tree[A] {
 </div>
 
 
-#### Basic Origami
+### Basic Origami
 
 Use your `fold` method to calculate the sum and product of the tree `Node(Leaf(1), Node(Node(Leaf(2), Leaf(3)), Leaf(4)))`
 
@@ -172,7 +172,7 @@ product: Int = 24
 </div>
 
 
-#### Map
+### Map
 
 Using your `fold`, write `map`.
 

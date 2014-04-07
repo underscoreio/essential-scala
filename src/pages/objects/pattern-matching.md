@@ -86,7 +86,7 @@ Scala's pattern matching is extensible, meaning we can define our own patterns. 
 
 We covered a lot of ground already, and it's time to cement our learning with a somewhat larger exercise than we've had before. We'll tackle it in small pieces.
 
-#### Sum Types
+### Sum Types
 
 Imagine you are working on a system to record publications. A publication can be either a book or a periodical. All publications have an ISBN number (which we'll model as a `String`), and a title. Books have an author, while periodicals have an editor. Encode this greatly simplified model in Scala.
 
@@ -111,7 +111,7 @@ case class Periodical(
 ~~~
 </div>
 
-#### Pattern Matching
+### Pattern Matching
 
 The publisher needs to ship out XML to book merchants. The XML looks like this:
 
@@ -168,7 +168,7 @@ object XmlExportService {
 ~~~
 </div>
 
-#### More Pattern Matching
+### More Pattern Matching
 
 The publisher is sending back sales information as XML. Because they hate you they are using a different format to the one you generate for them. Parse the data into a `case class Sale(item: Publication, quantity: Int, unitPrice: Double)`. The data they send looks like
 

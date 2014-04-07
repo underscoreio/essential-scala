@@ -70,4 +70,58 @@ Here are some tips for designing using implicits that will prevent situations li
 
 ## Exercises
 
-### TODO
+### Implicit Class Conversion
+
+Any implicit class can be reimplemented as a class paired with an implicit method. Re-implement the `IntOps` class from the *type enrichment* section in this way. Verify that the class still works the same way as it did before.
+
+<div class="solution">
+Here is the solution. The methods `yeah`, `times`, and `fold` are all exactly as we implemented them previously. The only differences are the removal of the `implicit` keyword on the `class` and the addition of the `implicit def` to do the job of the implicit constructor:
+
+~~~ scala
+scala> :paste
+// Entering paste mode (ctrl-D to finish)
+
+object IntImplicits extends IntImplicits
+
+trait IntImplicits {
+  class IntOps(n: Int) {
+    def yeah =
+      times(_ => println("Oh yeah!"))
+
+    def times(func: Int => Unit) =
+      for(i <- 0 until n) func(i)
+
+    def fold[A](seed: A)(func: (A, Int) => A) =
+      (0 until n).foldLeft(seed)(func)
+  }
+
+  implicit def intToIntOps(value: Int) =
+    new IntOps(value)
+}
+
+// Exiting paste mode, now interpreting.
+
+warning: there were 1 feature warning(s); re-run with -feature for details
+defined module IntImplicits
+defined trait IntImplicits
+~~~
+
+The code still works the same way it did previously. The implicit conversion is not available until we bring it into scope:
+
+~~~ scala
+scala> 5.fold[Seq[Int]](Seq())(_ :+ _)
+<console>:8: error: value fold is not a member of Int
+              5.fold[Seq[Int]](Seq())(_ :+ _)
+                ^
+~~~
+
+Once the conversion has been brought into scope, we can use `yeah`, `times` and `fold` as usual:
+
+~~~ scala
+scala> import IntImplicits._
+import IntImplicits._
+
+scala> 5.fold[Seq[Int]](Seq())(_ :+ _)
+res1: Seq[Int] = List(0, 1, 2, 3, 4)
+~~~
+</div>

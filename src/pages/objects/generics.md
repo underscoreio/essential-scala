@@ -236,7 +236,7 @@ However, objects can't have type parameters. In order to make `Empty` an object 
 ~~~ scala
 scala> :paste
 sealed trait Maybe[A]
-final case class Full[A](val value: A) extends Maybe[A]
+final case class Full[A](value: A) extends Maybe[A]
 final case object Empty extends Maybe[Nothing]
 ^D
 
@@ -257,7 +257,7 @@ We'll see how to overcome this limitation later. In the meantime we can define `
 
 ~~~ scala
 sealed trait Maybe[A]
-final case class Full[A](val value: A) extends Maybe[A]
+final case class Full[A](value: A) extends Maybe[A]
 final case class Empty[A]() extends Maybe[A]
 
 object division {

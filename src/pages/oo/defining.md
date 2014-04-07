@@ -244,23 +244,6 @@ java.lang.Error: Unexpected New
 // stack trace...
 ~~~
 
-{% comment %}
-## Special methods
-
-TODO: Complete ... the important part is introducing `apply` before the next section
-
- - scala makes heavy use of convenion in method names to reduce boilerplate syntax
- - we've already seen three examples of this:
-    - use of single-argument methods as infix operators
-    - argumentless methods for field accessor syntax
-    - foo_= methods for assignment syntax
- - there are some more special method names you should be aware of
- - apply
- - update
- - unapply
- - unary_foo
-{% endcomment %}
-
 ## Singleton objects
 
 Scala does not support the concepts of static fields and methods. Instead, it makes it easy to create *singleton objects* containing non-static methods that serve the same purpose. For example, in Scala the infamous `public static void main` method from Java is written as follows:
