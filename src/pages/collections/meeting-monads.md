@@ -11,15 +11,7 @@ We've seen that by implementing a few methods (`map`, `flatMap`, and optionally 
 
 We've seen `Option` before in passing. Here's a bit more detail.
 
-`Option` is a sealed trait with two subtypes, `Some` and `None`:
-
-~~~ scala
-sealed trait Option[+A] { /* ... */ }
-case class Some[A](value: A) extends Option[A] { /* ... */ }
-case object None extends Option[Nothing] { /* ... */ }
-~~~
-
-The `Some` type stores a value of some generic type `A`, whereas the `None` type indicates no value is available. This could be the case when getting a value from a `Map` and there is nothing stored, or it might indicate a computation that failed.
+`Option` is a sealed trait with two subtypes, `Some` and `None`. The `Some` type stores a value of some generic type `A`, whereas the `None` type indicates no value is available. This could be the case when getting a value from a `Map` and there is nothing stored, or it might indicate a computation that failed.
 
 We have a couple of ways of processing `Options`. One is using pattern matching:
 

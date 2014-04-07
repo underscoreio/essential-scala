@@ -13,8 +13,7 @@ There are many times that our programs must deal with missing data. For example,
 
 We're going to approach this problem using structural recursion. What are the types of data we're dealing with? There are clearly two cases: empty and not-empty. Thus we have a sum type.
 
-## Exercises
-
+{% comment %}
 ### Covariant Error Handling
 
 **TODO: This exercise was moved from earlier in the course. It partially overlaps with later content. Modify it appropriately to go from `PossibleResult` to `Option` via `Maybe`. Or possibly rewrite the previous example and rename `PossibleResult` to `Maybe`.**
@@ -50,12 +49,13 @@ final case class Some[A](get: A) extends Option[A] { /* ... */ }
 final case object None extends Option[Nothing] { /* ... */ }
 ~~~
 </div>
+{% endcomment %}
 
-### Exercise: Call Me Maybe
+#### Exercise: Call Me Maybe
 
 Write the code for our sum type `Maybe`.
 
-Hint: Remember that `Nothing` is a sub-type of every type.
+Hint: You have already written this in a previous section.
 
 <div class="solution">
 ~~~ scala
@@ -110,6 +110,7 @@ final case class Full[A](val elt: A) extends Maybe[A]
 </div>
 
 
+{% comment %}
 ## Contravariance
 
 **Contravariance** is the opposite of covariance. For a contravariant type `F` a supertype of `A` is a subtype of `F[A]`.
@@ -117,6 +118,7 @@ final case class Full[A](val elt: A) extends Maybe[A]
 Why would we ever want contravariance? The main example is in function types. Consider the `map` function on a `Seq[A]`. For concreteness imagine that `A` is type `Dog`. What is the type of functions can we pass to `map`? We can pass a function `Dog => String`. We can't pass a function `Collie => String` (`Collie` is a subtype of `Dog`) because we can't guarantee that all our dogs are collies. Thus subtypes of `A` (in this case `Dog`) aren't allowed. We can pass functions of type `Animal => String`, `Animal` being a supertype of `Dog`, because all our dogs are animals. Thus supertypes are ok. This is exactly contravariance. Thus functions are contravariant in their parameters (and covariant in their return type).
 
 There is no doubt that variance is confusing to many. The good news is it hardly ever comes up in application code. We can typically settle for invariant types at the cost of a few type declarations to keep the compiler happy. As we saw with `Empty` we can add a nuisance type parameter to avoid variance annotations, and wherever we use the type we must fill in the nuisance parameter.
+{% endcomment %}
 
 ## Not Just A Maybe
 
