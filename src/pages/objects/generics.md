@@ -213,12 +213,12 @@ Scala has the generic sum type `Either` for two cases, but it does not have type
 
 In a previous exercise we "solved" the problem of dividing by zero by defining a type called `DivisionResult`. This forced us to handle the possibility of a division by zero in order to access the value.
 
-With our knowledge of generics we can now generalise `DivisionResult` to encapsulate potential errors of any type. Modify `DivisionResult` to create a generic trait called `PossibleResult` with two subtypes, `ActualResult` and `NoResult`. Rewrite `divide` to return a `PossibleResult[Int]`. Example usage:
+With our knowledge of generics we can now generalise `DivisionResult` to encapsulate potential errors of any type. Modify `DivisionResult` to create a generic trait called `Maybe` with two subtypes, `Full` and `Empty`. Rewrite `divide` to return a `Maybe[Int]`. Example usage:
 
 ~~~ scala
 divide(1, 0) match {
-  case ActualResult[Int](value) => println(s"It's finite: ${value}")
-  case NoResult[Int]()          => println(s"It's infinite")
+  case Full[Int](value) => println(s"It's finite: ${value}")
+  case Empty[Int]()     => println(s"It's infinite")
 }
 ~~~
 
@@ -226,49 +226,49 @@ divide(1, 0) match {
 Ideally we would like to write something like this:
 
 ~~~ scala
-sealed trait PossibleResult[A]
-final case class ActualResult[A](val value: A) extends PossibleResult[A]
-final case object NoResult extends PossibleResult[???]
+sealed trait Maybe[A]
+final case class Full[A](val value: A) extends Maybe[A]
+final case object Empty extends Maybe[???]
 ~~~
 
-However, objects can't have type parameters. In order to make `NoResult` an object we need to provide a concrete type in the `extends PossibleResult` part of the definition. But what type should we use? In the absence of a preference for a particular data type, we could use something like `Unit` or `Nothing`. However this leads to type errors:
+However, objects can't have type parameters. In order to make `Empty` an object we need to provide a concrete type in the `extends Maybe` part of the definition. But what type parameter should we use? In the absence of a preference for a particular data type, we could use something like `Unit` or `Nothing`. However this leads to type errors:
 
 ~~~ scala
 scala> :paste
-sealed trait PossibleResult[A]
-final case class ActualResult[A](val value: A) extends PossibleResult[A]
-final case object NoResult extends PossibleResult[Nothing]
+sealed trait Maybe[A]
+final case class Full[A](val value: A) extends Maybe[A]
+final case object Empty extends Maybe[Nothing]
 ^D
 
-defined trait PossibleResult
-defined class ActualResult
-defined module NoResult
+defined trait Maybe
+defined class Full
+defined module Empty
 
-scala> val possible: PossibleResult[Int] = NoResult
+scala> val possible: Maybe[Int] = Empty
 <console>:9: error: type mismatch;
- found   : NoResult.type
- required: PossibleResult[Int]
-       val possible: PossibleResult[Int] = NoResult
+ found   : Empty.type
+ required: Maybe[Int]
+       val possible: Maybe[Int] = Empty
 ~~~
 
-The problem here is that `NoResult` is a `PossibleResult[Nothing]` and a `PossibleResult[Nothing]` is not a `PossibleResult[Int]`.
+The problem here is that `Empty` is a `Maybe[Nothing]` and a `Maybe[Nothing]` is not a `Maybe[Int]`.
 
-We'll see how to overcome this limitation later. In the meantime we can define `NoResult` as a class with a type parameter as a stop-gap solution:
+We'll see how to overcome this limitation later. In the meantime we can define `Empty` as a class with a type parameter as a stop-gap solution:
 
 ~~~ scala
-sealed trait PossibleResult[A]
-final case class ActualResult[A](val value: A) extends PossibleResult[A]
-final case class NoResult[A]() extends PossibleResult[A]
+sealed trait Maybe[A]
+final case class Full[A](val value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
 
 object division {
   def apply(num: Int, den: Int) =
-    if(den == 0) NoResult[Int] else ActualResult(num / den)
+    if(den == 0) Empty[Int] else Full(num / den)
 }
 ~~~
 
-Regardless, `PossibleResult` is a powerful concept -- it allows us to represent objects that may or may not contain a value. We can see this as an alternative to using `null`, except that the compiler can verify that we never get a `NullPointerException`.
+Regardless, `Maybe` is a powerful concept -- it allows us to represent objects that may or may not contain a value. We can see this as an alternative to using `null`, except that the compiler can verify that we never get a `NullPointerException`.
 
-In fact, `PossibleResult` is such a useful concept that Scala defines a core class called `Option` for this very purpose. `Option` is a trait with two subtypes, `Some` for storing a value and `None` representing an empty value.
+In fact, `Maybe` is so useful that Scala defines a core class called `Option` for this very purpose. `Option` is a trait with two subtypes, `Some` for storing a value and `None` representing an empty value.
 </div>
 
 ## Type Bounds

@@ -213,7 +213,7 @@ object Draw {
 
 ## A Short Division Exercise
 
-Dividing by zero is a tricky problem -- it can lead to exceptions. The JVM has as covered as far as floating point division is concerned, but integer division is still a problem:
+Dividing by zero is a tricky problem -- it can lead to exceptions. The JVM has us covered as far as floating point division, but integer division is still a problem:
 
 ~~~ scala
 scala> 1.0 / 0.0

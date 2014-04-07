@@ -111,7 +111,7 @@ for {
 // applying `+` to all combinations of `a` and `b`
 ~~~
 
-This third example asynchronously calculates the sum ot two numbers that can only be obtained asynchronously (all without blocking):
+This third example asynchronously calculates the sum of two numbers that can only be obtained asynchronously (all without blocking):
 
 ~~~ scala
 for {
