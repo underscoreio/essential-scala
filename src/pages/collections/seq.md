@@ -112,21 +112,7 @@ scala> sequence ++ Seq(4, 5, 6)
 res10: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 ~~~
 
-<div class="alert alert-info">
-**Syntax tip:** Any Scala method ending with a `:` character becomes right associative when written as an infix operator.
-
-This is another of Scala's general syntax rules. In this case the rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). For example:
-
-~~~ scala
-scala> 1 :: 2 :: 3 :: 4 :: 5 :: Nil
-res1: List[Int] = List(1, 2, 3, 4, 5)
-
-scala> List(1, 2, 3) ::: List(4, 5, 6)
-res2: List[Int] = List(1, 2, 3, 4, 5, 6)
-~~~
-
-The `::` and `:::` methods are specific to lists whereas `+:`, `:+` and `++` work on any type of sequence. We recommend using the general methods wherever possible because make it easy to swap sequence implementations for different performance characteristics.
-</div>
+Another of Scala's general syntax rules -- any method ending with a `:` character becomes **right associative** when written as an infix operator. This rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). We'll look at this in more detail in a moment.
 
 ### Updating elements
 
@@ -137,9 +123,106 @@ scala> sequence.updated(0, 5)
 res11: Seq[Int] = List(5, 2, 3)
 ~~~
 
-## In summary
+## Lists
 
-Here is a type table of all the methods we have seen so far:
+The default implementation of `Seq` is a `List`, which is a classic [linked list](http://en.wikipedia.org/wiki/Linked_list) data structure. Some Scala libraries work specifically with `Lists` rather than using more generic types like `Seq`. For this reason we should familiarize ourselves with a couple of list-specific methods.
+
+We can write an empty list using the singleton object `Nil`:
+
+~~~ scala
+scala> Nil
+res0: scala.collection.immutable.Nil.type = List()
+~~~
+
+Longer lists can be created by prepending elements in classic linked-list style using the `::` method, which is equivalent to `+:`:
+
+~~~ scala
+scala> 1 :: 2 :: 3 :: Nil
+res1: List[Int] = List(1, 2, 3)
+
+scala> 4 :: 5 :: res1
+res1: List[Int] = List(4, 5, 1, 2, 3)
+~~~
+
+We can also use the `List.apply` method for a more conventional constructor notation:
+
+~~~ scala
+scala> List(1, 2, 3)
+res2: List[Int] = List(1, 2, 3)
+~~~
+
+Finally, the `:::` method is a right-associative `List`-specific version of `++`:
+
+~~~ scala
+scala> List(1, 2, 3) ::: List(4, 5, 6)
+res3: List[Int] = List(1, 2, 3, 4, 5, 6)
+~~~
+
+`::` and `:::` are specific to lists whereas `+:`, `:+` and `++` work on any type of sequence.
+
+Lists have well known performance characteristics -- constant-time prepend and head/tail operations and linear-time append and search operations. Other immutable sequences are available in Scala with different [performance characteristics](http://www.scala-lang.org/docu/files/collections-api/collections_40.html) to match all situations. It is up to us as developers to decide whether we want to tie our code to a specific sequence type like `List` or refer to our sequences as `Seqs` to simplify swapping implementations.
+</div>
+
+## Importing Collections and Other Libraries
+
+The `Seq` and `List` types so ubiquitous in Scala that they are made automatically available at all times. Other collections like `Vector` and `Queue` have to be brought into scope manually.
+
+The main collections package is called `scala.collection.immutable`. We can import specific collections from this package as follows:
+
+~~~ scala
+scala> import scala.collection.immutable.Vector
+import scala.collection.immutable.Vector
+
+scala> Vector(1, 2, 3)
+res1: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
+~~~
+
+We can also use **wildcard imports** to import everything in a package:
+
+~~~ scala
+scala> import scala.collection.immutable._
+import scala.collection.immutable._
+
+scala> Queue(1, 2, 3)
+res2: scala.collection.immutable.Queue[Int] = Queue(1, 2, 3)
+~~~
+
+We can also use `import` to bring methods and fields into scope from a singleton:
+
+~~~ scala
+scala> import scala.collection.immutable.Vector._
+import scala.collection.immutable.Vector.empty
+
+scala> apply(1, 2, 3)
+res3: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
+~~~
+
+We can write import statements anywhere in our code -- impoted identifiers are scoped lexically to the block where we use them:
+
+~~~ scala
+// `empty` is unbound here
+
+def someMethod = {
+  import scala.collection.immutable.Vector.empty
+
+  // `empty` is bound to `Vector.empty` here
+  empty[Int]
+}
+
+// `empty` is unbound again here
+~~~
+
+<div class="alert alert-info">
+**Java tip:** Import statements are significantly more flexible in Scala than Java. The main differences are described nicely in the [Scala Wikibook](http://en.wikibooks.org/wiki/Scala/Import).
+</div>
+
+## Take Home Points
+
+`Seq` is Scala's general sequence datatype. It has a number of general subtypes such as `List`, `Stack`, `Vector`, `Queue`, and `Array`, and specific subtypes such as `String`.
+
+**The default sequences in Scala are immutable.** We also have access to mutable sequences, which are covered separately in the [Collections Redux](/collections-redux/index.html) chapter.
+
+We have covered a variety of methods that operate on sequences. Here is a type table of everything we have seen so far:
 
 |-------------+------------+--------------------+-------------|
 | Method      | We have    | We provide         | We get      |
@@ -153,10 +236,28 @@ Here is a type table of all the methods we have seen so far:
 | `:+`, `+:`  | `Seq[A]`   | `A`                | `Seq[A]`    |
 | `++`        | `Seq[A]`   | `Seq[A]`           | `Seq[A]`    |
 | `updated`   | `Seq[A]`   | `Int` `A`          | `Seq[A]`    |
+| `::`        | `List[A]`  | `A`                | `List[A]`   |
+| `:::`       | `List[A]`  | `List[A]`          | `List[A]`   |
 |=============================================================|
 {: .table .table-bordered .table-responsive }
 
+We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement. This has a number of features that aren't present in Java -- it can be used to import methods from objects, and be written anywhere in our code.
+
 ## Exercises
+
+### Documentation
+
+Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the following questions:
+
+ - There is a synonym of `length` defined on `Seq` -- what is it called?
+
+ - There are two methods for retrieving the head of a `List` -- what are they called and how do they differ?
+
+Tip: There is a link to the Scala API documentation in the left-hand menu of the course notes.
+
+<div class="solution">
+
+</div>
 
 ### Animals
 

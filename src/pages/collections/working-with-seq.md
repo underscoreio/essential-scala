@@ -3,7 +3,7 @@ layout: page
 title: Working with Sequences
 ---
 
-In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences: how to process every element of a sequence at once, and the performance characteristics of different sequence implementations.
+In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences -- how functional programming allows us to process every element of a sequence at once in a terse and declarative style.
 
 ## Bulk Processing of Elements
 
@@ -11,9 +11,9 @@ When working with sequences we often want to deal with the collection as a whole
 
 ### map
 
-Let's take a common example to start -- suppose we want to double every element of a sequence. In Java we would do this using a `for` or a `while` loop. However, this requires writing several lines of looping machinery for only one line of actual doubling functionality.
+Let's start with something simple -- suppose we want to double every element of a sequence. In Java we would do this using a `for` or a `while` loop. However, this requires writing several lines of looping machinery for only one line of actual doubling functionality.
 
-In Scala we can use the `map` method that exists on any type of sequence. `map` takes a function and applies it to every element, creating a sequence of the results. To double every element we can write:
+In Scala we can use the `map` method that exists on every sequence. `map` takes a function and applies it to every element, creating a sequence of the results. To double every element we can write:
 
 ~~~ scala
 scala> val sequence = Seq(1, 2, 3)
@@ -61,27 +61,31 @@ but we end up with a sequence of sequences. Let's look at the types in more deta
 |=========================================================================|
 {: .table .table-bordered }
 
+What is the method `???` that we can use to collect a single flat sequence?
+
 ### flatMap
 
-To answer to our mystery method `???` is `flatMap`. If we simply replace `map` with `flatMap` we get the answer we want:
+Our mystery method above is called `flatMap`. If we simply replace `map` with `flatMap` we get the answer we want:
 
 ~~~ scala
 scala> Seq("a", "wet", "dog").flatMap(_.permutations.toList)
 res15: Seq[String] = List(a, wet, wte, ewt, etw, twe, tew, dog, dgo, odg, ogd, gdo, god)
 ~~~
 
-`flatMap` is similar to `map` except that it expects your function to return a sequence. The sequences for each input element are appended together. For example:
+`flatMap` is similar to `map` except that it expects our function to return a sequence. The sequences for each input element are appended together. For example:
 
 ~~~ scala
 scala> Seq(1, 2, 3).flatMap(num => Seq(num, num * 10))
 res16: List[Int] = List(1, 10, 2, 20, 3, 30)
 ~~~
 
-The end result is (nearly) always the same type as the original sequence: `aList.flatMap(...)` returns another `List`, `anArrayBuffer.flatMap(...)` returns another `ArrayBuffer`, and so on:
+The end result is (nearly) always the same type as the original sequence: `aList.flatMap(...)` returns another `List`, `aVector.flatMap(...)` returns another `Vector`, and so on:
 
 ~~~ scala
-scala> scala.collection.mutable.ArrayBuffer(1, 2, 3).flatMap(num => Seq(num, num * 10))
-res17: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1, 10, 2, 20, 3, 30)
+scala> import scala.collection.immutable.Vector
+
+scala> Vector(1, 2, 3).flatMap(num => Seq(num, num * 10))
+res17: scala.collection.immutable.Vector[Int] = Vector(1, 10, 2, 20, 3, 30)
 ~~~
 
 ### foldLeft and foldRight
@@ -89,13 +93,11 @@ res17: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1, 10, 2, 20, 3, 
 Now let's look at another kind of operation. Say we have a `Seq[Int]` and we want to add all the numbers together. `map` and `flatMap` don't apply here for two reasons:
 
  - they expect a *unary* function, whereas `+` is a *binary* operation;
-
  - they both return sequences of items, whereas we want to return a single `Int`.
 
 There are also two further wrinkles:
 
- - what result do we expect if the sequence is empty? If we're adding items together then`0` seems like a natural result, but what is the answer in general?
-
+ - what result do we expect if the sequence is empty? If we're adding items together then `0` seems like a natural result, but what is the answer in general?
  - although `+` is associative (i.e. `a+b == b+a`), in general we may need to specify an order in which to pass arguments to our binary function.
 
 Let's make another type table to see what we're looking for:
@@ -117,11 +119,11 @@ The methods that fit the bill are called folds, with two common cases `foldLeft`
 
 Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the following:
 
-| Method                              | Operations               | Notes                       |
-|-------------------------------------+--------------------------+-----------------------------|
-| `Seq(1, 2, 3).foldLeft(0)(_ + _)`   | `(((0 + 1) + 2) + 3)`    | Evaluation is left ot right |
-| `Seq(1, 2, 3).foldRight(0)(_ + _)`  | `(1 + (2 + (3 + 0)))`    | Evaluation is right to left |
-|==============================================================================================|
+| Method                              | Operations               | Notes                          |
+|-------------------------------------+--------------------------+--------------------------------|
+| `Seq(1, 2, 3).foldLeft(0)(_ + _)`   | `(((0 + 1) + 2) + 3)`    | Evaluation starts on the left  |
+| `Seq(1, 2, 3).foldRight(0)(_ + _)`  | `(1 + (2 + (3 + 0)))`    | Evaluation starts on the right |
+|=================================================================================================|
 {: .table .table-bordered }
 
 The fold methods are very flexible. In fact we can write *any* transformation on a sequence in terms of fold! This is very deep theoretical result, and it goes beyond sequences. For *any algebraic datatype* there is a systematic process to define a fold that is a universal transformation for that datatype. We're not going to go deeper into this here, but be aware of the power and fundamental nature of fold in your future study of functional programming.
@@ -145,7 +147,7 @@ And a 2...
 And a 3...
 ~~~
 
-### Algebra of transformations
+### Algebra of Transformations
 
 We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `foreach`. It can be difficult to know which to use, but it turns out there is a simple way to decide: look at the types! The type table below gives the types for all the operations we've seen so far. To use it, start with the data you have (always a `Seq[A]` in the table below) and then look at the functions you have available and the result you want to obtain. The final column will tell you which method to use.
 
@@ -357,7 +359,7 @@ def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
 ~~~
 </div>
 
-### Fold left
+### Fold Left
 
 Write your own implementation of `foldLeft` that uses `foreach` and mutable state. Remember you can create a mutable variable using the `var` keyword, and assign a new value using `=`. For example
 
