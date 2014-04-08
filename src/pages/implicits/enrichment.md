@@ -209,7 +209,7 @@ For bonus points, re-implement `yeah` in terms of `times`.
 object IntImplicits extends IntImplicits
 
 trait IntImplicits {
-  implicit class YeahOps(n: Int) {
+  implicit class IntOps(n: Int) {
     def yeah =
       times(_ => println("Oh yeah!"))
 
@@ -237,7 +237,7 @@ res2: Seq[Int] = List(0, 1, 2, 3, 4)
 object IntImplicits extends IntImplicits
 
 trait IntImplicits {
-  implicit class YeahOps(n: Int) {
+  implicit class IntOps(n: Int) {
     // Code from previous exercises...
 
     def fold[A](seed: A)(func: (A, Int) => A) =
