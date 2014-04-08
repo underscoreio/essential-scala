@@ -13,4 +13,4 @@ After covering the main collection types we turn to **for comprehensions**, a sy
 
 Next we will cover the other main collection classes: **maps and sets**. We will discover that they share a great deal in common with sequences, so most of our knowledge transfers directly.
 
-We finish with discussion of **ranges**, which represent sequences of integers.
+We finish with discussion of **ranges**, which can represent large sequences of integers without storing every intermediate value in memory.

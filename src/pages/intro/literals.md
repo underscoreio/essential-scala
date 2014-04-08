@@ -34,7 +34,7 @@ scala> 42L
 res3: Long = 42
 ~~~
 
-Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. Instead, we create them using *methods* called `toShort` and `toByte`. We'll learn more about this in the next section.
+Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. Instead, we create them using *methods* called `toShort` and `toByte`. We'll see this in the next section.
 
 ## Booleans
 
@@ -79,7 +79,7 @@ the
 
 ## Null
 
-Null is the same as Java, though not used nearly as often. It also has its own type, `Null`.
+Null is the same as Java, though not used nearly as often. Scala's `null` also has its own type: `Null`.
 
 ~~~ scala
 scala> null
@@ -91,7 +91,7 @@ res13: Null = null
 
   The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
 
-  In Scala we have the means to define optional values that *are* checked by the compiler. This removes the necessity of using `null`, making our programs much safer. We will learn about these later.
+  Later we will see that Scala has the means to define optional values that *are* checked by the compiler. This removes the necessity of using `null`, making our programs much safer.
 </div>
 
 ## Unit

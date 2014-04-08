@@ -69,7 +69,7 @@ class Administrator(
 ~~~
 
 <div class="alert alert-warning">
-**Warning:** It is inadvisable to extend a case class to create another case class. The implementation of case classes relies on details like the number of fields -- modifying the structure in a subclass can lead to bugs in things like pattern matching.
+**Warning:** It is inadvisable to extend a case class to create another case class. The implementation of case classes relies on details like the number of fields -- modifying the structure in a subclass can lead to bugs in certain features like pattern matching.
 
 It is best practice to only create case classes as leaves of a type hierarchy. If we do have to extend a `case class`, we should always make the subtype a regular `class` and define the extra methods ourselves.
 </div>
@@ -80,7 +80,7 @@ It is best practice to only create case classes as leaves of a type hierarchy. I
 
 ## Subtyping and Polymorphism
 
-A trait is a type just like a class. A class that extends a trait is a *subtype* of that trait, and any object of that class is both a value of the subtype and a value of the supertype. This is a kind of [polymorphism](http://en.wikipedia.org/wiki/Polymorphism_(computer_science)), and is essentially the polymorphism we get from Java.
+A trait is a type just like a class. A class that extends a trait is a *subtype* of that trait, and any object of that class is both a value of the subtype and a value of the supertype. This is a kind of [polymorphism](http://en.wikipedia.org/wiki/Polymorphism_(computer_science)) -- essentially the polymorphism we get from Java.
 
 Anywhere in our code that we expect an instance of the supertype, we can use an instance of the subtype instead. For example, we can assign `User` to a variable of type `Visitor` or pass it to a method that expects a `Visitor` as a parameter:
 
@@ -106,7 +106,7 @@ Scala has a grand supertype called `Any`, under which there are two types, `AnyV
 
 Some of these types are simply Scala aliases for types that exist in Java: `Int` is `int`, `Boolean` is `boolean`, and `AnyRef` is `java.lang.Object`.
 
-There are also two special types at the *bottom* of the hierarchy. `Nothing` is the type of `throw` expressions, and `Unit` is Scala's equivalent of `void`. It might seem odd that these are subtypes of everything else -- this unique property (that we cannot recreate in our own classes) is what allows us to write expressions like the following:
+There are also two special types at the *bottom* of the hierarchy. `Nothing` is the type of `throw` expressions, and `Unit` is Scala's equivalent of `void`. It might seem odd that these are subtypes of everything else -- this unique property (that we cannot recreate in our own classes) is what allows us to conveniently write expressions like the following:
 
 ~~~ scala
 scala> if(true) {
@@ -118,6 +118,8 @@ scala> if(true) {
 res2: Int = 123
 ~~~
 
+Note that the result type is `Int` -- the least common supertype of `Int` and `Nothing`.
+
 ## Exploiting Types
 
 In one sense a type is just a collection of values that share common properties. More than that, though, a type can represent **any property of a program that we can establish without evaluating it.**
@@ -125,6 +127,14 @@ In one sense a type is just a collection of values that share common properties.
 In old languages like C, types were used to specify the machine representation of data, essentially providing optimisation hints to the compiler. In modern languages like Scala, **types are used to ensure that important program properties are maintained**.
 
 A good Scala developer uses types to his or her advantage to avoid bugs and write self-documenting code.
+
+## Take Home Points
+
+Traits are a way of **abstracting over classes** that have similar properties, just like classes are a way of abstracting over objects.
+
+Many relationships between types in programming can be modelled using the phrase **this or that**. These are known in functional programming as **sum types**. Traits are a great tool (although not the only tool) for modelling these relationships.
+
+We can also model sum types using *generics* -- we'll see these later.
 
 ## Exercises
 

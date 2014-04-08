@@ -12,9 +12,7 @@ In the previous section we looked at categorising objects using a single set of 
 
 We achieve composition in Scala by separating each component into its own trait and **mixing the traits we want to use** together to form classes.
 
-The syntax is to write `extends` for the first trait and `with` for each following trait: `A extends B with C with D`. With the visitors example we might have definitions like these:
-
-For example, imagine the following model of staff and students at a university:
+The syntax is to write `extends` for the first trait and `with` for each following trait: `A extends B with C with D`. For example, imagine the following model of staff and students at a university:
 
 ~~~ scala
 trait Person {
@@ -34,6 +32,8 @@ trait Staff extends Person {
 
 trait TeachingAssistant extends Staff with Student
 ~~~
+
+In this example, `TeachingAssistent` ends up with all of the methods from `Person`, `Staff`, and `Student`.
 
 ## Is-a vs Has-a
 
@@ -83,27 +83,17 @@ Ambiguity between traits is resolved using **linearization**. They are effective
 
 Linearization enables us to come up with all sorts of byzantine designs where traits add pieces of behaviour to a few common methods. The simple rule of designing with linearization is: don't. **If you depend on the order in which traits are stacked, you are doing something wrong** -- it is a sure way to introduce bugs into your code.
 
-{% comment %}
-## Self Types
+## Take home points
 
-Sometime we want to provide a trait that adds additional functionality to another base trait. We've seen how we can implement this by extending both traits. This makes the extension trait a subtype of the base trait, which may not be sensible. We can instead express this dependency using a self type. The self type says that the extension trait *requires* the base trait but not that the extension trait *is a* base trait.
+We can model **multiple inheritance** in Scala by **mixing traits** with one another using the `with` keyword.
 
-Take the `DataCollector` example we looked at above. When writing `DataCollector` we will probably have a dependency on `Authorizer`, for the obvious reason that we'll need to put some authorization checks in our code. A `DataCollector` is not an `Authorizer` but it does depend on one. We can express this using a self type.
+Traits solve the method resolution problems of multiple inheritance by defining a **linearization order** that dictates the order of overriding. The linearization order is tied to the order of traits in the header of a class.
 
-trait Authorizer {
-  def authorized(key: ApiKey): Boolean
-}
+**If you find yourself relying on the linearization order in your type heirarchy, stop!** That way madness lies.
 
-trait DataCollector { self: Authorizer =>
-  def record(key: ApiKey, event: Event): Unit = {
-    if(self.authorized(key)) {
-      // Collect data
-    } else {
-      // Not authorized to collect data
-    }
-  }
-}
-{% endcomment %}
+Multiple inheritance is one way (but not the only way) of modelling a **this and that** relationship between types. In functional programming, this is called a **product type**.
+
+We can also model product types using *generics* -- we'll see these later.
 
 ## Exercises
 
@@ -124,6 +114,8 @@ Let's create a simple model for publisher data. Code a set of traits and classes
 Tip: a sequence of type `A` has type `Seq[A]`.
 
 <div class="solution">
+This is as much a problem of parsing the problem description as it is writing code. However, looking at the final Scala code it is easy to verify that all of the initial requirements hold:
+
 ~~~ scala
 trait Publication {
   def title: String

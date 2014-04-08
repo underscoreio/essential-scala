@@ -9,7 +9,7 @@ toc:
   - head: /intro/index.html
     body:
      - /intro/literals.html
-     - /intro/compound.html
+     - /intro/expressions.html
      - /intro/object-literals.html
      - /intro/conclusion.html
 

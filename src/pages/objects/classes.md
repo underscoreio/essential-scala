@@ -18,7 +18,7 @@ scala> class Person {
 defined class Person
 ~~~
 
-We can create a new `Person` object using the `new` operator as follows and access its methods and fields in the usual way:
+We can create a new `Person` object using the `new` operator and access its methods and fields in the usual way:
 
 ~~~ scala
 scala> val noel = new Person
@@ -31,7 +31,7 @@ res24: String = Noel
 Notice the type of the object is `Person`. Each call to `new` creates a distinct object of the same type:
 
 ~~~ scala
-scala> noel // noel the object that prints '@3235186a'
+scala> noel // noel is the object that prints '@3235186a'
 res25: Person = Person@3235186a
 
 scala> val newNoel = new Person // each new object prints a new number
@@ -41,7 +41,7 @@ scala> val anotherNewNoel = new Person
 anotherNewNoel: Person = Person@63ee4826
 ~~~
 
-This means we can write a method that takes aany `Person` as a parameter:
+This means we can write a method that takes any `Person` as a parameter:
 
 ~~~ scala
 scala> object alien {
@@ -84,7 +84,7 @@ res29: String = Dave Gurnell
 
 The constructor parameters `first` and `last` are local variables that can only be used within the body of the class. We must declare a field or method using `val` or `def` to access data from outside the object.
 
-Constructor arguments and fields are often redundant. Fortunately, Scala provides us a useful short-hand way of declaring both in one go. We can prefix the constructor parameters with the `val` keyword to have Scala define fields for them automatically:
+Constructor arguments and fields are often redundant. Fortunately, Scala provides us a useful short-hand way of declaring both in one go. We can prefix constructor parameters with the `val` keyword to have Scala define fields for them automatically:
 
 ~~~ scala
 scala> class Person(val firstName: String, val lastName: String) {
@@ -97,7 +97,7 @@ res29: String = Dave Gurnell
 ~~~
 
 <div class="alert alert-info">
-**Tip:** `val` fields are *immutable* -- they are initialized once after which we cannot change their values. Scala also provides the `var` keyword for defining *mutable* fields.
+**Immutability tip:** `val` fields are *immutable* -- they are initialized once after which we cannot change their values. Scala also provides the `var` keyword for defining *mutable* fields.
 
 Scala programmers tend to prefer to write immutability and side-effect-free code so we can reason about it using the substitution model. In this course we will concentrate almost exclusively on immutable `val` fields.
 </div>
@@ -106,7 +106,7 @@ Scala programmers tend to prefer to write immutability and side-effect-free code
 
 All Scala methods and constructors support *keyword parameters* and *default parameter values*.
 
-Whenever we call a method or constructor, we can **use parameter names as keywords** to specify the parameters in an arbitrary order:
+When we call a method or constructor, we can **use parameter names as keywords** to specify the parameters in an arbitrary order:
 
 ~~~ scala
 scala> new Person(lastName = "Last", firstName="First")
@@ -121,7 +121,7 @@ scala> def greet(firstName: String = "Some", lastName: String = "Guy") =
 greet: (firstName: String, lastName: String)String
 ~~~
 
-If a parameter has a default value we can omit it in your call:
+If a parameter has a default value we can omit it in the method call:
 
 ~~~ scala
 scala> greet("Awesome")
@@ -155,7 +155,7 @@ This is particularly useful when creating methods and constructors with large nu
 
 ## Take Home Points
 
-In this section we learned how to define **classes**, which are a kind of **type**.
+In this section we learned how to define **classes**, which are **types** of object.
 
 Classes let us *abstract across objects* that have similar properties.
 
@@ -259,7 +259,7 @@ class Counter(val count: Int) {
 }
 ~~~
 
-This is an interesting pattern that will become more powerful as we learn more features of Scala. We are using `Adders` to capture computations and pass them to `Counter`. Remember from our earlier discussion that *methods are not expressions* -- they cannot be stored in fields or passed around as data. Our `Adders`, however, give us the benefits of being an object as well as a unit of functionality.
+This is an interesting pattern that will become more powerful as we learn more features of Scala. **We are using `Adders` to capture computations** and pass them to `Counter`. Remember from our earlier discussion that *methods are not expressions* -- they cannot be stored in fields or passed around as data. However, **`Adders` are both objects and computations**.
 
 Using objects as computations is a common paradigm in object oriented programming languages. Consider, for example, the classic `ActionListener` from Java's Swing:
 

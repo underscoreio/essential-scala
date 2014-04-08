@@ -12,7 +12,7 @@ scala> object test {}
 defined module test
 ~~~
 
-Like variable declarations, object declarations are not *expressions* because they don't return a value -- they simply bind a name (`test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
+Like variable declarations, object declarations are not expressions -- they simply bind a name (`test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
 
 Once we have defined `test` we can use it in simple expressions, the simplest of which is just the value itself:
 
@@ -61,11 +61,11 @@ From these examples we can see most of the important bits of method definitions:
 
   * we must declare the types of all parameters using the syntax `name: type`;
 
-  * we can optionally declare the return type of a method -- if we don't declare a return type Scala will infer one from the method body;
+  * we can optionally declare the return type of a method -- if we don't declare one Scala will infer it from the method body;
 
   * the declaration is followed by an `=` sign and a body expression;
 
-  * the return value of the method is determined by evaluating the body.
+  * the return value of the method is determined by evaluating the body -- there is no need to write `return`.
 
 If you remember from the previous section, one type of expression is a *block*. We can use blocks to write multi-line methods with side-effects. Because the block evaluates to the value of its last expression, there is no need to write `return`.
 
@@ -170,7 +170,7 @@ res7: test7.type = test7$@b22e8c9
 
 When the object is first loaded, Scala runs through its definition and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
 
-**The body expression of a field is run only once** after which the final value is stored in the object. The expression is never evaluated again -- notice the lack of println output below.
+**The body expression of a field is run only once** after which the final value is stored in the object. The expression is never evaluated again -- notice the lack of `println` output below.
 
 ~~~ scala
 scala> test7.simpleField
@@ -202,7 +202,7 @@ We have also seen the difference between methods and fields -- fields refer to v
 
 ### Square dance!
 
-Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *and calls `square` as part of its body*.
+Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *and calls `square`* as part of its result calculation.
 
 <div class="solution">
 Here is the solution. `cube(x)` calls `square(x)` and multiplies its value by `x` one more time. The return type of each method is inferred by the compiler as `Double`.

@@ -45,7 +45,7 @@ res11: Int = 1
 
 ## This and That
 
-Let's look at using generics to model a *this and that* relationship. Consider a method that returns two values -- for example, an `Int` and a `String`, or a `Boolean` and a `Double`:
+Let's look at using generics to model a *product type*. Consider a method that returns two values -- for example, an `Int` and a `String`, or a `Boolean` and a `Double`:
 
 ~~~ scala
 def intAndString: ??? = // ...
@@ -65,13 +65,15 @@ case class BooleanAndDouble(booleanValue: Boolean, doubleValue: Double)
 def booleanAndDoule: BoleanAndDouble = // ...
 ~~~
 
-The answer is to use generics to create something called a **product type** -- for example a `Pair` -- that contains the relevant data for *both* return types:
+The answer is to use generics to create a **product type** -- for example a `Pair` -- that contains the relevant data for *both* return types:
 
 ~~~ scala
 def intAndString: Pair[Int, String] = // ...
 
 def booleanAndDouble: Pair[Boolean, Double] = // ...
 ~~~
+
+Generics provide a different approach to defining product types --  one that relies on aggregation as opposed to inheritance.
 
 ### Exercise: Pairs
 
@@ -154,16 +156,17 @@ res6: Boolean = true
 
 ## This or That
 
-Now let's look at using generics to model a *this or that* relationship. Previously we did this using inheritance, factoring out the common aspects into a supertype. The functional equivalent of this is called a **sum type**.
+Now let's look at using generics to model a *sum type*. Again, we have previously implemented this using inheritance, factoring out the common aspects into a supertype. Generics provide a different tool to do the same thing.
 
 Consider a method that, depending on the value of its parameters, returns one of two types:
 
 ~~~ scala
-def intOrString(input: Boolean) =
-  if(input == true) 123 else "abc"
+scala> def intOrString(input: Boolean) =
+     |   if(input == true) 123 else "abc"
+intOrString: (input: Boolean)Any
 ~~~
 
-We can't simply write this method as shown above because the compiler will infer the result type as `Any`. Instead we have to introduce a new type to explicitly represent the disjunction:
+We can't simply write this method as shown above because the compiler infers the result type as `Any`. Instead we have to introduce a new type to explicitly represent the disjunction:
 
 ~~~ scala
 def intOrString(input: Boolean): Sum[Int, String] =
@@ -173,6 +176,8 @@ def intOrString(input: Boolean): Sum[Int, String] =
     Right[Int, String]("abc")
   }
 ~~~
+
+How do we implement `Sum`? We just have to use the idioms we've already seen in the [This or That](traits.html) section!
 
 ### Exercise: Generic Sum Type
 
@@ -209,7 +214,7 @@ final case class Right[A, B](val value: B) extends Sum[A, B]
 Scala has the generic sum type `Either` for two cases, but it does not have types for more cases.
 </div>
 
-## Generic Error Handling
+### Exercise: Maybe that was a Mistake
 
 In a previous exercise we "solved" the problem of dividing by zero by defining a type called `DivisionResult`. This forced us to handle the possibility of a division by zero in order to access the value.
 
@@ -285,3 +290,23 @@ case class WebAnalytics[A <: Visitor](
   isOrganic: Boolean
 )
 ~~~
+
+## Take Home Points
+
+**Generic classes, traits, and methods** allow us to abstract across the types they store, accept, and return. We define them using **type parameters** that we can bind to different concrete types in each use case.
+
+In this section we have used generics to model **product types** ("this and that") and **sum types** ("this or that") using generics. These are alternatives to the inheritance-based approaches we have seen previously using traits.
+
+## Exercises
+
+### Generics versus Traits
+
+Sum types and product types are general concepts that allow us to model almost any kind of data structure. We have seen two methods of writing these types -- traits and generics -- when should we consider using each?
+
+<div class="solution">
+Ultimately the decision is up to us. Different teams will adopt different programming styles. However, we examine look at the properties of each approach to inform our choices:
+
+Inheritance-based approaches -- traits and classes -- allow us to create permanent data structures with specific types and names. We can name every field and method and implement use-case-specific code in each class. Inheritance is therefore better suited to modelling significant aspects of our programs that are re-used in many areas of our codebase.
+
+Generic data structures -- `Tuples`, `Options`, `Eithers`, and so on -- are extremely broad and general purpose. There are a wide range of predefined classes in the Scala standard library that we can use to quickly model relationships between data in our code. These classes are therefore better suited to quick, one-off pieces of data manipulation where defining our own types would introduce unnecessary verbosity to our codebase.
+</div>

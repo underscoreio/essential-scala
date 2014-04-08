@@ -51,9 +51,9 @@ For the most part this is all stuff we know. The only pieces of syntax we haven'
 
 The *variance* of a generic type determines how its supertype/subtype relationships change with respect with its type parameters:
 
-A type `Foo[T]` is **invariant** in terms of `T`, meaning that the types `Foo[A]` and `Foo[B]` are unrelated regardless of the relationship between `A` and `B`.
+A type `Foo[T]` is **invariant** in terms of `T`, meaning that the types `Foo[A]` and `Foo[B]` are unrelated regardless of the relationship between `A` and `B`. This is the default variance of any generic type in Scala.
 
-A type `Foo[+T]` is **covariant** in terms of `T`, meaning that `Foo[A]` is a supertype of `Foo[B]` if `A` is a supertype of `B`. Most Scala collections are covariant in terms of their contents.
+A type `Foo[+T]` is **covariant** in terms of `T`, meaning that `Foo[A]` is a supertype of `Foo[B]` if `A` is a supertype of `B`. Most Scala collection classes are covariant in terms of their contents. We'll see these next chapter.
 
 A type `Foo[-T]` is **contravariant** in terms of `T`, meaning that `Foo[A]` is a *subtype* of `Foo[B]` if `A` is a *supertype* of `B`. The only example of contravariance that I am aware of is function arguments.
 
@@ -83,10 +83,10 @@ Scala programmers use functions *a lot*, so Scala has some neat shorthand for wr
 
 ~~~ scala
 () => A     // short for Function0[A]
-A => B      // short for Function1[A, B]
 (A) => B    // short for Function1[A, B]
 (A, B) => C // short for Function2[A, B, C]
-// and so on...
+// and so on... also:
+A => B      // short for Function1[A, B]
 ~~~
 
 We can write these shorthands wherever we would write function type. For example:
@@ -153,7 +153,7 @@ _(foo)    // expands to `(a) => a(foo)`
 // and so on...
 ~~~
 
-Placeholder syntax, while wonderfully terse, only works in certain situations. It's best to play with it to get a feel for the situations where it can be applied. We can always fall back to longer forms if required.
+Placeholder syntax, while wonderfully terse, only works in certain situations. If the compiler can't infer the correct types of each argument and expression we will get a compilation error. Often tricks like wrapping placeholder functions in parentheses can help -- it's best to play with it to get a feel for the situations where it can be applied. We can always fall back to longer forms if required.
 
 ## Converting methods to functions
 

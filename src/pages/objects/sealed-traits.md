@@ -3,11 +3,11 @@ layout: page
 title: "This or That and Nothing Else: Sealed Traits"
 ---
 
-We have seen how to use traits to model data that is of one type or another. Now let's look at using this information to write code that works with a set of types.
+We have seen how to use traits to model data that is of one type or another. Now let's look at using this information to write code that works with a range of possible types.
 
-Let's return to our web site visitors example. Imagine we want to add the ability to email `Visitors`. We can only actually email `Users` because we don't have an email address for `Anonymous` visitors. If we have a `Visitor`, how can we tell what type it is, and thus whether we can email them?
+Let's return to our web site visitors example. Imagine we want to add the ability to email `Visitors`. We can only actually email `Users` because we don't have an email address for `Anonymous` visitors. This poses a question: if we have a `Visitor`, how can we tell what type it is and thus whether we can email them?
 
-We're going to look at two solutions: an object-oriented solution based on *inheritance* and a functional solution based on *pattern matching*.
+We're going to look at two solutions: an object-oriented solution based on *inheritance* and a functional solution based on **pattern matching**. The pattern matching solution will lead us to **sealed traits**.
 
 ## Approach #1: Inheritance
 
@@ -75,9 +75,11 @@ expr0 match {
 }
 ~~~
 
-`expr0` is an expression that yields the value we want to match on. It is followed by the keyword `match` and a series of `case` clauses. Each clause consists of the keyword `case`, a *pattern*, the `=>` symbol, and a series of zero or more Scala expressions.
+`expr0` is an expression that yields the value we want to match on. It is followed by the keyword `match` and a series of `case` clauses[^match-keyword]. Each clause consists of the keyword `case`, a *pattern*, the `=>` symbol, and a series of zero or more Scala expressions.
 
-Pattern matching operates by checking the return value of `expre0` against each pattern in turn, finding the first pattern that matches, and evaluating the corresponding set of expressions[^compilation]. The whole `match` expression yields the value of the last expression in the corresponding block.
+[^match-keyword]: `match` is actually a keyword, not a method name or syntactic sugar for a method call.
+
+Pattern matching operates by checking the return value of `expr0` against each pattern in turn, finding the first pattern that matches, and evaluating the corresponding set of expressions[^compilation]. The whole `match` expression yields the value of the last expression in the corresponding block.
 
 [^compilation]: In reality patterns are compiled to a more efficient form than a sequence of tests, but the semantics are the same.
 
@@ -110,9 +112,9 @@ scala.MatchError: Anonymous(a,Fri Feb 14 19:47:42 GMT 2014) (of class Anonymous)
     ...
 ~~~
 
-The reason we don't get a compiler error is that there could be any number of implementations of `Visitor` in our codebase or anything using our code as a library. The Scala compiler can't be sure that only two cases exist.
+The fact that we get a runtime error may be surprising. There could be any number of implementations of `Visitor` in our codebase -- it is impossible for Scala to tell at compile time whether our `match` is exhaustive.
 
-This is a problem for our `Visitor` example -- the last thing we want is to get a runtime error when we're trying to send an email! Fortunately there is a way to tell Scala that all subtypes of `Visitor` *must* implemented in the same file. This means the compiler can correctly flag incomplete matches and prevent us from missing out cases. We do this by making `Visitor` a **sealed trait**:
+This is a problem -- the last thing we want is to get a runtime error when we're trying to send an email! Fortunately there is a way to tell Scala that the subtypes of we have provided form a complete set, allowing the compiler to correctly flag incomplete matches at compile time. We do this by making `Visitor` a **sealed trait**:
 
 ~~~ scala
 sealed trait Visitor {
@@ -120,20 +122,9 @@ sealed trait Visitor {
   def createdAt: Date
   def age: Long = new Date().getTime() - createdAt.getTime()
 }
-
-case class Anonymous(
-  val id: String,
-  val createdAt: Date = new Date()
-) extends Visitor
-
-case class User(
-  val id: String,
-  val emailAddress: String,
-  val createdAt: Date = new Date()
-) extends Visitor
 ~~~
 
-When we use a sealed trait we have to define all of its subtypes in the same file, which is a resonable restriction in our `Visitor` example. Once the trait is sealed, the compiler can warn us when we write an inexhaustive `match`:
+When we mark a trait as `sealed` we *must* define all of its subtypes in the same file. This is a resonable restriction in our `Visitor` example. Once the trait is sealed, the compiler knows the complete set of  types we have to cover to make our `matches` exhaustive:
 
 ~~~ scala
 scala> def missingCase(v: Visitor) =
@@ -176,11 +167,11 @@ In this section we looked at two ways of implementing the same piece of function
 
 We have already expressed our preference for the modularity of approach #2. Scala provides a number of language features that directly support this style of coding:
 
- - Case classes make it very easy to create lightweight data-holding classes.
+ - **Case classes** make it very easy to create lightweight data-holding classes.
 
- - Sealed trait allow us to enumerate fixed sets of data types that we do not expect to change.
+ - **Sealed traits** allow us to enumerate fixed sets of data types that we do not expect to change.
 
- - Pattern matching provides a means to run different blocks of code for the types we have defined, quickly deconstructing these into the fields we need.
+ - **Pattern matching** provides a means to run different blocks of code for the types we have defined, quickly deconstructing these into the fields we need.
 
 ## Exercises
 

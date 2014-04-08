@@ -29,7 +29,7 @@ scala> mutable
 res14: scala.collection.mutable.Seq[Int] = ArrayBuffer(5, 2, 3)
 ~~~
 
-A more idiomatic way of calling `update` is to use **assignment operator syntax**, which is another special syntax built in to Scala, similar to [infix operator syntax](../intro/compound.html) and [function application syntax](../objects/apply.html):
+A more idiomatic way of calling `update` is to use **assignment operator syntax**, which is another special syntax built in to Scala, similar to [infix operator syntax](../intro/expressions.html) and [function application syntax](../objects/apply.html):
 
 ~~~ scala
 scala> mutable(1) = 7

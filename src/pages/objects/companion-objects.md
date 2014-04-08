@@ -3,9 +3,9 @@ layout: page
 title: Companion Objects
 ---
 
-Sometimes we want to create a method that logically belongs to a class but is independent of any particular object. In Java we would use a *static method* for this, but Scala has a much simpler solution: singleton objects.
+Sometimes we want to create a method that logically belongs to a class but is independent of any particular object. In Java we would use a *static method* for this, but Scala has a simpler solution that we've seen already: singleton objects.
 
-One common use case is auxiliary constructors. Although Scala does technically let us define multiple constructors for a single class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the **companion object** of the class. For example:
+One common use case is auxiliary constructors. Although Scala does have syntax that lets us define multiple constructors for a class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the **companion object** of the class. For example:
 
 ~~~ scala
 scala> import java.util.Date
@@ -32,7 +32,9 @@ res2: Long = 3661
 ~~~
 
 <div class="alert alert-info">
-**REPL tip:** Note our use of the `:paste` command in the transcript above. Companion objects must be defined in the same compilation unit as the classes they support. In normal application code this simply means defining them both in the same file, but on the REPL we have to enter then in one command using `:paste`. You can enter `:help` on the REPL to find out more.
+**REPL tip:** Note our use of the `:paste` command in the transcript above. Companion objects must be defined in the same compilation unit as the classes they support. In a normal codebase this simply means defining the class and object in the same file, but on the REPL we have to enter then in one command using `:paste`.
+
+You can enter `:help` on the REPL to find out more.
 </div>
 
 Scala has two namespaces: a space of *type names* and a space of *value names*. This separation allows us to name our class and companion object the same thing without conflict.
@@ -50,9 +52,9 @@ res3: Timestamp.type = Timestamp$@602b24e6
 
 Companion objects **replace Java's static methods**. They provide equivalent functionality and are more flexible.
 
-A companion object has the same name as its associated class. This doesn't cause a naming conflict because Scala has two namespaces: the namespace of values and the namespace of types.
+**A companion object has the same name as its associated class.** This doesn't cause a naming conflict because Scala has two namespaces: the namespace of values and the namespace of types.
 
-A companion object must be defined in the same file as the associated class. When typing on the REPL, the class and companion object must be entered in the same block of code using `:paste` mode.
+**A companion object must be defined in the same file as the associated class.** When typing on the REPL, the class and companion object must be entered in the same block of code using `:paste` mode.
 
 ## Exercises
 

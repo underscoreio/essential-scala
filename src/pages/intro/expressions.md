@@ -3,7 +3,7 @@ layout: page
 title: Interacting with Objects
 ---
 
-In the last section we learnt about the basic data types in Scala and how to write simple literals. In this section we will start combining literals using method calls and expressions.
+In the last section we saw the basic data types in Scala and how to write simple literals. In this section we will start combining literals using method calls and expressions.
 
 ## Methods
 
@@ -35,7 +35,7 @@ scala> 123.toByte // and this is how we define a `Byte`
 res2: Byte = 123
 ~~~
 
-But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes - Scala methods can have symbolic names as well as alphanumeric ones!
+But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes -- Scala methods can have symbolic names as well as alphanumeric ones!
 
 ~~~ scala
 scala> 43 - 3 + 2
@@ -45,13 +45,18 @@ scala> 43 .-(3).+(2)
 res20: Int = 42
 ~~~
 
-(Note the space after `43` in the second example, which prevents it being interpreted as a `Double`.)
+<small>Note the space after `43` in the second example, which prevents it being interpreted as a `Double`.</small>
 
-As a general rule, any Scala expression written `a.b(c)` can also be written `a b c`. This is known as **infix operator notation**. Note that `a b c d e` is equivalent to `a.b(c).d(e)`, not `a.b(c, d, e)`. We can use infix operator notation with methods that take one argument.
+As a general rule, any Scala expression written `a.b(c)` can also be written `a b c`. This is known as **infix operator notation**. Note that `a b c d e` is equivalent to `a.b(c).d(e)`, not `a.b(c, d, e)`. We can use infix operator notation with any method that takes one parameter, regardless of whether it has a symbolic or alphanumeric name:
 
-Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions that are implemented in terms of objects and method calls. There are also notations for **prefix, postfix, and right-associative operators** and **assignment-style operators**.
+~~~ scala
+scala> "the quick brown fox" split " "
+res0: Array[String] = Array(the, quick, brown, fox)
+~~~
 
-A question poses itself -- what precedence rules should we associate with infix operators? Scala uses a set of **precedence rules** derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
+Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions instead of verbose method calls. There are also notations for **prefix**, **postfix**, **right-associative**, and **assignment-style operators**.
+
+A question poses itself -- what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
 
 ~~~ scala
 scala> 2 * 3 + 4 * 5
@@ -60,6 +65,8 @@ res0: Int = 26
 scala> (2 * 3) + (4 * 5)
 res1: Int = 26
 ~~~
+
+[precedence rules]: http://stackoverflow.com/questions/2922347/operator-precedence-in-scala
 
 ## Conditionals
 
@@ -85,7 +92,8 @@ scala> { 1; 2; 3 }
 res0: Int = 3
 ~~~
 
-As you can see, executing this code causes the REPL to raise a number of warnings and return the `Int` value `3`.
+<div class="alert alert-info">
+**Side effects tip:** As you can see, executing this code causes the REPL to raise a number of warnings and return the `Int` value `3`.
 
 A block is a sequence of expressions surrounded by braces. A block is also an expression: it executes each of its sub-expressions in order and returns the value of the last expression.
 
@@ -101,17 +109,21 @@ This is a side-effect
 This is a side-effect as well
 res1: Int = 3
 ~~~
+</div>
 
 ## Variable definitions
 
-We should probably mention here how to create local variables for use in expressions. Here is a simple local definition:
+We should mention how to create local variables for use in expressions. Here is a simple local definition:
 
 ~~~ scala
 scala> val x = 1
 x: Int = 1
 ~~~
 
-"Variable definition" is perhaps a slight misnomer here. The `val` keyword actually defines an *immutable value* -- attempting to assign to it will give us a compile error:
+Variable definitions and assignments have type `Unit` and return a value of `()`, even though they perform assignments as side-effects.
+
+<div class="alert alert-info">
+**Immutability tip:** "Variable definition" is perhaps a slight misnomer here. The `val` keyword actually defines an *immutable value* -- attempting to assign to it will give us a compile error:
 
 ~~~ scala
 scala> x = 2
@@ -131,18 +143,19 @@ y: Int = 2
 ~~~
 
 As we will see, Scala programmers vastly prefer to deal with immutable variables and side-effect code wherever possible. We won't be using `var` in this course except in a couple of places.
-
-Note that variable definitions and assignments have type `Unit` and return a value of `()`, even though they perform assignments as side-effects.
+</div>
 
 ## Take home points
 
 All Scala values are objects. This means **we can call methods on any value** we choose, even an `Int` or another primitive value.
 
-Because all values are objects, it makes sense to implement all operations on values as method calls. **Scala has very few operators - almost everything is a method call.** We use syntactic conventions like infix operator notation to keep our code simple and readable, but we can always fall back to standard method notation where it makes sense.
+**Scala has very few operators - almost everything is a method call.** We use syntactic conventions like infix operator notation to keep our code simple and readable, but we can always fall back to standard method notation where it makes sense.
 
 **Expressions are fragments of code that have a type and evaluate to a value.** All method calls are expressions, even calls to methods that return `Unit`. Many of Scala's syntactic constructs are also expressions. This includes conditionals and blocks, which are *statements* in many other languages (i.e. they do not have types or values).
 
-As we will see in the next section, Scala's focus on programming with expressions allows us to write much shorter code than we can in Java. It also allows us to reason about code in a very intuitive way using values and types.
+Variable declarations and assignments are statements -- although they update the value of a location in memory, they have a result type of `Unit`.
+
+As we will see, Scala's focus on programming with expressions allows us to write much shorter code than we can in Java. It also allows us to reason about code in a very intuitive way using values and types.
 
 ## Exercises
 
