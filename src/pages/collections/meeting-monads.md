@@ -77,9 +77,9 @@ Here we've done something completely different to our previous examples using co
 
 ## What's in a Monad?
 
-The concept of a monad is notoriously difficult to explain because it is so general. We recommend ignoring the functional programming literature on the subject unles you find it particularly fascinating.
+The concept of a monad is notoriously difficult to explain because it is so general. We can get a good intuitive understanding by comparing some of the types of monad that we will deal with on a regular basis.
 
-Broadly speaking, a monad is a generic type that allows us to sequence computations while abstracting away some technicality. We do the sequencing using *for comprehensions*, worrying only about the programming logic we care about, and the code in the monad's `map` and `flatMap` methods does all of the plumbing for us. For example:
+Broadly speaking, a monad is a generic type that allows us to sequence computations while abstracting away some technicality. We do the sequencing using *for comprehensions*, worrying only about the programming logic we care about. The code hidden in the monad's `map` and `flatMap` methods does all of the plumbing for us. For example:
 
  - `Option` is a monad that allows us to sequence computations on optional values without worrying about the fact that they may or may not be present;
 

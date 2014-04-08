@@ -125,7 +125,7 @@ for {
 
 ## Exercises
 
-Complete the following using for comprehensions
+Complete the following exercises using for comprehensions:
 
 ### Iteration
 
