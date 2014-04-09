@@ -222,8 +222,8 @@ With our knowledge of generics we can now generalise `DivisionResult` to encapsu
 
 ~~~ scala
 divide(1, 0) match {
-  case Full[Int](value) => println(s"It's finite: ${value}")
-  case Empty[Int]()     => println(s"It's infinite")
+  case Full(value) => println(s"It's finite: ${value}")
+  case Empty()     => println(s"It's infinite")
 }
 ~~~
 
