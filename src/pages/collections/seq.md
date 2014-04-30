@@ -161,7 +161,7 @@ res3: List[Int] = List(1, 2, 3, 4, 5, 6)
 `::` and `:::` are specific to lists whereas `+:`, `:+` and `++` work on any type of sequence.
 
 Lists have well known performance characteristics -- constant-time prepend and head/tail operations and linear-time append and search operations. Other immutable sequences are available in Scala with different [performance characteristics](http://www.scala-lang.org/docu/files/collections-api/collections_40.html) to match all situations. It is up to us as developers to decide whether we want to tie our code to a specific sequence type like `List` or refer to our sequences as `Seqs` to simplify swapping implementations.
-</div>
+
 
 ## Importing Collections and Other Libraries
 
