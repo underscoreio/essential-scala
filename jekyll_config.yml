@@ -23,6 +23,7 @@ toc:
      - /objects/sealed-traits.html
      - /objects/traits-as-mixins.html
      - /objects/generics.html
+     - /objects/modelling-with-generics.html
      - /objects/functions.html
 
   - head: /collections/index.html

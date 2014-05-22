@@ -154,7 +154,7 @@ case class Square(size: Double) extends Shape {
 ~~~
 </div>
 
-### Shaping up 2
+### Shaping up 2 (da streets)
 
 The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape` -- it's also a type of `Rectangle` where the width and height are the same.
 

@@ -55,11 +55,15 @@ The question is: how do we implement the body of the `email` method? We need to 
 trait EmailService {
   def email(visitor: Visitor, subject: String, body: String): Unit = {
     visitor match {
-      case Anonymous(id, createdAt) =>
-        ()
-
+      // This pattern matches any `User` and extracts its fields into
+      // the variables `id`, `email`, and `createdAt`:
       case User(id, email, createdAt) =>
         reallySendAnEmail(email, subject, body)
+
+      // This pattern matches any `Anonymous`. We don't need to
+      // use the values of its fields so use use `_` to ignore them:
+      case Anonymous(_, _) =>
+        ()
     }
   }
 }
@@ -279,6 +283,7 @@ sealed trait Color {
   // We decided to define a "light" colour  as one with
   // an average RGB of more than 0.5:
   def isLight = (red + green + blue) / 3.0 > 0.5
+  def isDark = !isLight
 }
 
 final case object Red extends Color {
