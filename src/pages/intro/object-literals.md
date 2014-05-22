@@ -8,50 +8,50 @@ So far we've seen how to create objects of built-in types like `Int` and `String
 We can define an empty object as follows:
 
 ~~~ scala
-scala> object test {}
-defined module test
+scala> object Test {}
+defined module Test
 ~~~
 
-Like variable declarations, object declarations are not expressions -- they simply bind a name (`test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
+Like variable declarations, object declarations are not expressions -- they simply bind a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
 
-Once we have defined `test` we can use it in simple expressions, the simplest of which is just the value itself:
+Once we have defined `Test` we can use it in simple expressions, the simplest of which is just the value itself:
 
 ~~~ scala
-scala> test
-res0: test.type = test$@1668bd43
+scala> Test
+res0: Test.type = Test$@1668bd43
 ~~~
 
 This expression is equivalent to writing a literal like `123` or `"abc"`.
-Note that the type of the object is reported as `test.type`. This is not like any type we've seen before -- it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
+Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before -- it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
 
 ## Methods
 
 We interact with objects via methods so let's create an object with a method.
 
 ~~~ scala
-scala> object test2 {
+scala> object Test2 {
      |   def name: String = "Probably the best object ever"
      | }
-defined module test2
+defined module Test2
 ~~~
 
 Here we've create a method called `name`. We can call it in the usual way.
 
 ~~~ scala
-scala> test2.name
+scala> Test2.name
 res3: String = Probably the best object ever
 ~~~
 
 Here's an object with a more complex method:
 
 ~~~ scala
-scala> object test3 {
+scala> object Test3 {
      |   def hello(name: String) =
      |     "Hello " + name
      | }
-defined module test3
+defined module Test3
 
-scala> test3.hello("Noel")
+scala> Test3.hello("Noel")
 res7: String = Hello Noel
 ~~~
 
@@ -70,15 +70,15 @@ From these examples we can see most of the important bits of method definitions:
 If you remember from the previous section, one type of expression is a *block*. We can use blocks to write multi-line methods with side-effects. Because the block evaluates to the value of its last expression, there is no need to write `return`.
 
 ~~~ scala
-scala> object test4 {
+scala> object Test4 {
      |   def hello(name: String) = {
      |     println("Running the 'hello' method!")
      |     "Hello " + name
      |   }
      | }
-defined module test4
+defined module Test4
 
-scala> test4.hello("Dave")
+scala> Test4.hello("Dave")
 Running the 'hello' method!
 res6: String = Hello Dave
 ~~~
@@ -91,7 +91,7 @@ An object can also contain other objects, called **fields**. We introduce these 
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
-object test5 {
+object Test5 {
   val name = "Noel"
   def hello(other: String) =
     name + " says hi to " + other
@@ -100,9 +100,9 @@ object test5 {
 
 // Exiting paste mode, now interpreting.
 
-defined module test5
+defined module Test5
 
-scala> test5.hello("Dave")
+scala> Test5.hello("Dave")
 res8: String = Noel says hi to Dave
 ~~~
 
@@ -121,16 +121,16 @@ Here are the important parts:
 As with a method, we can use a block to calculate the value of a field over several lines of code.
 
 ~~~ scala
-scala> object test6 {
+scala> object Test6 {
      |   val name = {
      |     val title = "Dr"
      |     val theDoctor = title + " Who"
      |     theDoctor
      |   }
      | }
-defined module test6
+defined module Test6
 
-scala> test6.name
+scala> Test6.name
 res9: String = "Dr Who"
 ~~~
 
@@ -143,7 +143,7 @@ You might wonder why we need fields when we can have methods of no arguments tha
 Here's an object that shows the difference:
 
 ~~~ scala
-scala> object test7 {
+scala> object Test7 {
      |   val simpleField = {
      |     println("Evaluating simpleField")
      |     42
@@ -153,19 +153,19 @@ scala> object test7 {
      |     42
      |   }
      | }
-defined module test7
+defined module Test7
 ~~~
 
 Notice how the REPL says we've defined a module, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
 
 `objects` and `classes` (which we'll see later) aren't loaded until they are referenced by other code. This is what prevents Scala loading the entire standard library into memory to run a simple `"Hello world!"` app.
 
-Let's force Scala to evaluate our object body by referencing `test7` in an expression:
+Let's force Scala to evaluate our object body by referencing `Test7` in an expression:
 
 ~~~ scala
-scala> test7
+scala> Test7
 Evaluating simpleField
-res7: test7.type = test7$@b22e8c9
+res7: Test7.type = Test7$@b22e8c9
 ~~~
 
 When the object is first loaded, Scala runs through its definition and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
@@ -173,21 +173,21 @@ When the object is first loaded, Scala runs through its definition and calculate
 **The body expression of a field is run only once** after which the final value is stored in the object. The expression is never evaluated again -- notice the lack of `println` output below.
 
 ~~~ scala
-scala> test7.simpleField
+scala> Test7.simpleField
 res8: Int = 42
 
-scala> test7.simpleField
+scala> Test7.simpleField
 res9: Int = 42
 ~~~
 
 The body of a method, on the other hand, is evaluated again and again every time we call the method -- notice the repreated println output below.
 
 ~~~ scala
-scala> test7.noArgMethod
+scala> Test7.noArgMethod
 Evaluating noArgMethod
 res11: Int = 42
 
-scala> test7.noArgMethod
+scala> Test7.noArgMethod
 Evaluating noArgMethod
 res12: Int = 42
 ~~~

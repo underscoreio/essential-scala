@@ -139,6 +139,59 @@ In Scala 2.10 and earlier we can define case classes containing 0 to 22 fields. 
 
 ## Exercises
 
+### Roger Ebert Said it Best...
+
+> No good movie is too long and no bad movie is short enough.
+
+The same can't always be said for code, but in this case we can get rid of a lot of boilerplate by converting `Director` and `Film` to case classes. Do this conversion and work out what code we can cut.
+
+<div class="solution">
+
+Case classes provide our `copy` methods and our `apply` methods and remove the need to write `val` before each constructor argument. The final codebase looks like this:
+
+~~~ scala
+case class Director(firstName: String, lastName: String, yearOfBirth: Int) {
+
+  def name: String =
+    s"$firstName $lastName"
+}
+
+object Director {
+  def older(director1: Director, director2: Director): Director =
+    if (director1.yearOfBirth < director2.yearOfBirth) director1 else director2
+}
+
+case class Film(
+  name: String,
+  yearOfRelease: Int,
+  imdbRating: Double,
+  director: Director) {
+
+  def directorsAge =
+    director.yearOfBirth - yearOfRelease
+
+  def isDirectedBy(director: Director) =
+    this.director == director
+}
+
+object Film {
+  def newer(film1: Film, film2: Film): Film =
+    if (film1.yearOfRelease < film2.yearOfRelease) film1 else film2
+
+  def highestRating(film1: Film, film2: Film): Double = {
+    val rating1 = film1.imdbRating
+    val rating2 = film2.imdbRating
+    if (rating1 > rating2) rating1 else rating2
+  }
+
+  def oldestDirectorAtTheTime(film1: Film, film2: Film): Director =
+    if (film1.directorsAge > film2.directorsAge) film1.director else film2.director
+}
+~~~
+
+Not only is this code significantly shorter, it also provides us with `equals` methods, `toString` methods, and pattern matching functionality that will set us up for later exercises.
+</div>
+
 ### Case Class Counter
 
 Reimplement `Counter` as a case class, using `copy` where appropriate. Additionally initialise `count` to a default value of `0`.

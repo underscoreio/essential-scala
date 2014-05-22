@@ -94,3 +94,148 @@ scala> Person("John Doe").firstName // sugared apply syntax
 res7: String = John
 ~~~
 </div>
+
+### Extended Body of Work
+
+Write companion objects for `Director` and `Film` as follows:
+
+ - the `Director` companion object should contain:
+    - an `apply` method that accepts the same parameters as the constructor of the class
+      and returns a new `Director`;
+    - a method `older` that accepts two `Directors` and returns the oldest of the two.
+
+ - the `Film` companion object should contain:
+    - an `apply` method that accepts the same parameters as the constructor of the class
+      and returns a new `Film`;
+    - a method `highestRating` that accepts two `Films` and returns the highest
+      `imdbRating` of the two;
+    - a method `oldestDirectorAtTheTime` that accepts two `Films` and returns the `Director`
+      who was oldest at the respective time of filming.
+
+<div class="solution">
+
+This exercise is inteded to provide more practice writing code. The model solution, including the class definitions from the previous section, is now:
+
+~~~ scala
+class Director(
+  val firstName: String,
+  val lastName: String,
+  val yearOfBirth: Int) {
+
+  def name: String =
+    s"$firstName $lastName"
+
+  def copy(
+    firstName: String = this.firstName,
+    lastName: String = this.lastName,
+    yearOfBirth: Int = this.yearOfBirth) =
+    new Director(firstName, lastName, yearOfBirth)
+}
+
+object Director {
+  def apply(firstName: String, lastName: String, yearOfBirth: Int) =
+    new Director(firstName, lastName, yearOfBirth)
+
+  def older(director1: Director, director2: Director): Director =
+    if (director1.yearOfBirth < director2.yearOfBirth) director1 else director2
+}
+
+class Film(
+  val name: String,
+  val yearOfRelease: Int,
+  val imdbRating: Double,
+  val director: Director) {
+
+  def directorsAge =
+    director.yearOfBirth - yearOfRelease
+
+  def isDirectedBy(director: Director) =
+    this.director == director
+
+  def copy(
+    name: String = this.name,
+    yearOfRelease: Int = this.yearOfRelease,
+    imdbRating: Double = this.imdbRating,
+    director: Director = this.director) =
+    new Film(name, yearOfRelease, imdbRating, director)
+}
+
+object Film {
+  def apply(
+    name: String,
+    yearOfRelease: Int,
+    imdbRating: Double,
+    director: Director) =
+    new Film(name, yearOfRelease, imdbRating, director)
+
+  def newer(film1: Film, film2: Film): Film =
+    if (film1.yearOfRelease < film2.yearOfRelease) film1 else film2
+
+  def highestRating(film1: Film, film2: Film): Double = {
+    val rating1 = film1.imdbRating
+    val rating2 = film2.imdbRating
+    if (rating1 > rating2) rating1 else rating2
+  }
+
+  def oldestDirectorAtTheTime(film1: Film, film2: Film): Director =
+    if (film1.directorsAge > film2.directorsAge) film1.director else film2.director
+}
+~~~
+
+</div>
+
+### Type or Value?
+
+The similarity in naming of classes and companion objects tends to cause confusion for new Scala developers. When reading a block of code it is important to know which parts refer to a class or *type* and which parts refer to a singleton object or *value*.
+
+This is the inspiration for the new hit quiz, *Type or Value?*, which we will be piloting below. In each case identify whether the word `Film` refers to the type or value:
+
+~~~ scala
+val prestige: Film = bestFilmByChristopherNolan()
+~~~
+
+<div class="solution">
+**Type!** -- this code is defining a value `prestige` of type `Film`.
+</div>
+
+~~~ scala
+new Film("Last Action Hero", 1993, johnMcTiernan)
+~~~
+
+<div class="solution">
+**Type!** -- this is a reference to the *constructor* of `Film`. The constructor is part of the *class* `Film`, which is a *type*.
+</div>
+
+~~~ scala
+Film("Last Action Hero", 1993, johnMcTiernan)
+~~~
+
+<div class="solution">
+**Value!** -- this is shorthand for:
+
+~~~ scala
+Film.apply("Last Action Hero", 1993, johnMcTiernan)
+~~~
+
+`apply` is a method defined on the *singleton object* (or value) `Film`.
+</div>
+
+~~~ scala
+Film.newer(highPlainsDrifter, thomasCrownAffair)
+~~~
+
+<div class="solution">
+**Value!** -- `newer` is another method defined on the *singleton object* `Film`.
+</div>
+
+Finally a tough one...
+
+~~~ scala
+Film.type
+~~~
+
+<div class="solution">
+**Value!** -- This is tricky! You'd be forgiven for getting this one wrong.
+
+`Film.type` refers to the type of the singleton object `Film`, so in this case `Film` is a reference to a value. However, the whole fragment of code is a type.
+</div>

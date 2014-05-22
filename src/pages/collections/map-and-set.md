@@ -170,7 +170,7 @@ Maps, like sequences, extend the `Traversable` trait, which means they inherit t
 Here is an example of `map`:
 
 ~~~ scala
-scala> example.map(pair => pair._1 => pair._2 * 2)
+scala> example.map(pair => pair._1 -> pair._2 * 2)
 res17: scala.collection.immutable.Map[java.lang.String,Int] =
          Map(a -> 2, b -> 4, c -> 6)
 ~~~

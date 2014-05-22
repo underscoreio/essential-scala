@@ -404,3 +404,119 @@ def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
 </div>
 
 There are many other methods on sequences. Consult the [API documentation](http://www.scala-lang.org/api/current/scala/collection/Seq.html) for the `Seq` trait for more information.
+
+{% comment %}
+## Exercises
+
+These exercises use the following types and test data. Copy and paste them into your worksheet and see below for the exercises:
+
+~~~ scala
+case class Film(name: String, year: Int)
+case class Director(name: String, films: List[Film])
+
+val nolan = Director(
+  "Christopher Nolan",
+  List(
+  Film("Memento", 2000),
+  Film("Dark Knight", 2008),
+  Film("Inception", 2010)))
+
+val eastwood = Director(
+  "Clint Eastwood",
+  List(
+    Film("High Plains Drifter", 1973),
+    Film("The Outlaw Josey Wales", 1976),
+    Film("Unforgiven", 1992),
+    Film("Gran Torino", 2008),
+    Film("Invictus", 2009)))
+
+val mcTiernan = Director(
+  "John McTiernan",
+  List(
+    Film("Predator", 1987),
+    Film("Die Hard", 1988),
+    Film("The Hunt for Red October", 1990),
+    Film("The Thomas Crown Affair", 1999)))
+
+val directors = List(nolan, eastwood, mcTiernan)
+~~~
+
+### Nolan Films
+
+List the names of the films directed by Christopher Nolan.
+
+<div class="solution">
+~~~ scala
+nolan.films.map(_.name)
+~~~
+</div>
+
+### Cinephile
+
+List the names of all films by all directors.
+
+<div class="solution">
+~~~ scala
+directors.flatMap(director => director.films.map(film => film.name))
+~~~
+</div>
+
+### Vintage Nolan
+
+Find the date of the earliest Nolan film.
+
+Tip: you can concisely find the minimum of two numbers `a` and `b` using `math.min(a, b)`.
+
+<div class="solution">
+~~~ scala
+nolan.films.foldLeft(9999)((bestGuess, film) => math.min(bestGuess, film.year))
+~~~
+</div>
+
+### Undisputed Classic
+
+Find the *date* of the earliest film by any director.
+
+<div class="solution">
+~~~ scala
+directors
+  .flatMap(director => director.films)
+  .foldLeft(0)((earliestYear, film) => math.min(earliestYear, film.year))
+~~~
+</div>
+
+And now find the *earliest film* by any director. Use non-side-effecting or side-effecting code as you see fit:
+
+<div class="solution">
+Here's the side-effecting code:
+
+~~~ scala
+{
+  var best: Option[Film] = None
+
+  directors.foreach(director => director.films.foreach(film =>
+    best match {
+      case None => best = Some(film)
+      case Some(best) if film.year < best.year => best = Some(film)
+    }
+  ))
+
+  best
+}
+~~~
+
+and here's a non-side-effecting solution:
+
+~~~ scala
+directors
+  .flatMap(director => director.films)
+  .foldLeft[Option[Film]](None)((bestSoFar, film) =>
+    bestSoFar match {
+      case None => Some(film)
+      case Some(bestSoFar) => if (bestSoFar.year < film.year) Some(bestSoFar) else Some(film)
+    })
+~~~
+
+In both cases the result is an `Option[Film]` and not a `Film` to deal with the possibility that there are  no directors and no films. Both solutions quickly use `foreach` or `flatMap` to reduce the list of directors to a list of films. The solutions then iterate over the list, testing the years and accumulating the earliest film.
+</div>
+{% endcomment %}

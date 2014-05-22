@@ -50,6 +50,8 @@ With function application syntax, we now have first class values that behave lik
 
 ### When is a Function not a Function?
 
+We'll get a chance to write some code at the end of the next section. For now we should think about an important theoretical question:
+
 How close does function application syntax get us to creating truly reusable objects to do computations for us? What are we missing?
 
 <div class="solution">

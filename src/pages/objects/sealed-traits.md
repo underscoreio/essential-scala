@@ -179,32 +179,212 @@ We have already expressed our preference for the modularity of approach #2. Scal
 
 Let's revisit the `Shapes` example from the previous section.
 
-First make `Shape` a sealed trait. Then write a singleton object called `Draw` with an `apply` method that takes a `Shape` as an argument and prints it on the console.
+First make `Shape` a sealed trait. Then write a singleton object called `Draw` with an `apply` method that takes a `Shape` as an argument and returns a description of it on the console. For example:
 
-Don't worry -- we won't make you *actually draw the shape* on the console. For the purposes of the exercise, simply print the type.
+~~~ scala
+Draw(Circle(10))      // returns "A circle of radius 10cm"
 
-Finally, verify that the compiler complains when you comment out a clause.
+Draw(Rectangle(3, 4)) // returns "A rectangle of width 3cm and height 4cm"
+
+// and so on...
+~~~
+
+Finally, verify that the compiler complains when you comment out a `case` clause.
 
 <div class="solution">
 ~~~ scala
 object Draw {
   def apply(shape: Shape) = shape match {
     case Rectangle(width, height) =>
-      println(s"Rectangle size ${width}x${height}")
+      s"A rectangle of width ${width}cm and height ${height}cm"
 
     case Square(size) =>
-      println(s"Square size ${size}")
+      s"A square of size ${size}cm"
 
     case Circle(radius) =>
-      println(s"Circle radius ${radius}")
+      s"A circle of radius ${radius}cm"
   }
 }
 ~~~
 </div>
 
+## The Color and the Shape
+
+Write a sealed trait `Color` to make our shapes more interesting.
+
+ - give `Color` three properties for its RGB values;
+ - create three predefined colours: `Red`, `Yellow`, and `Pink`;
+ - provide a means for people to produce their own custom `Colors`
+   with their own RGB values;
+ - provide a means for people to tell whether any `Color` is
+   "light" or "dark".
+
+<div class="alert alert-info">
+**Note:** A lot of this is left deliberately open to interpretation. The important thing is to practice working with traits, classes, and objects.
+
+Decisions such as how to model colours and what is considered a light or dark colour can either be left up to you or discussed with other class members.
+</div>
+
+Edit the code for `Shape` and its subtypes to add a colour to each shape.
+
+Finally, update the code for `Draw.apply` to print the colour of the argument as well as its shape and dimensions (hint: you may want to deal with the colour in a helper method):
+
+ - if the argument is a predefined colour, print that colour by name:
+
+   ~~~ scala
+   Draw(Circle(10, Yellow)) // returns "A yellow square of size 10cm"
+   ~~~
+
+ - if the argument is a custom colour rather than a predefined one,
+   print the word "light" or "dark" instead.
+
+<div class="solution">
+One solution to this exercise is presented below. Remember that a lot of the implementation details are unimportant -- the crucial aspects of a correct solution are:
+
+ - There must be a `sealed trait Color`:
+    - The trait should contain three `def` methods for the RGB values.
+    - The trait should contains the `isLight` method,
+      defined in terms of the RGB values.
+
+ - There must be three objects representing the predefined colours:
+    - Each object must `extend Color`.
+    - Each object should override the RGB values as `vals`.
+    - Marking the objects as `final` is optional.
+    - Making the objects `case objects` is also optional.
+
+ - There must be a class representing custom colours:
+    - The class must `extend Color`.
+    - Marking the class `final` is optional.
+    - Making the class a `case class` is optional (although highly recommended).
+
+ - There should ideally be two methods in `Draw`:
+    - One method should accepti a `Color` as a parameter and one a `Shape`.
+    - The method names are unimportant.
+    - Each method should perform a `match` on the supplied value and provide
+      enough `cases` to cover all possible subtypes.
+
+ - The whole codebase should compile and produce sensible values when tested!
+
+~~~ scala
+// Shape uses Color so we define Color first:
+sealed trait Color {
+  // We decided to store RGB values as doubles between 0.0 and 1.0.
+  //
+  // It is always good practice to define abstract members as `defs`
+  // so we can implement them with `defs`, `vals` or `vars`.
+  def red: Double
+  def green: Double
+  def blue: Double
+
+  // We decided to define a "light" colour  as one with
+  // an average RGB of more than 0.5:
+  def isLight = (red + green + blue) / 3.0 > 0.5
+}
+
+final case object Red extends Color {
+  // Here we have implemented the RGB values as `vals`
+  // because the values cannot change:
+  val red = 1.0
+  val green = 0.0
+  val blue = 0.0
+ }
+
+final case object Yellow extends Color {
+  // Here we have implemented the RGB values as `vals`
+  // because the values cannot change:
+  val red = 1.0
+  val green = 1.0
+  val blue = 0.0
+}
+
+final case object Pink extends Color {
+  // Here we have implemented the RGB values as `vals`
+  // because the values cannot change:
+  val red = 1.0
+  val green = 0.0
+  val blue = 1.0
+}
+
+// The arguments to the case class here generate `val` declarations
+// that implement the RGB methods from `Color`:
+final case class CustomColor(
+  red: Double,
+  green: Double,
+  blue: Double) extends Color
+
+// The code from the previous exercise comes across almost verbatim,
+// except that we add a `color` field to `Shape` and its subtypes:
+sealed trait Shape {
+  def sides: Int
+  def perimeter: Double
+  def area: Double
+  def color: Color
+}
+
+final case class Circle(radius: Double, color: Color) extends Shape {
+  val sides = 1
+  val perimeter = 2 * math.Pi * radius
+  val area = math.Pi * radius * radius
+}
+
+sealed trait Rectangular extends Shape {
+  def width: Double
+  def height: Double
+  val sides = 4
+  val perimeter = 2 * width + 2 * height
+  val area = width * height
+}
+
+final case class Square(size: Double, color: Color) extends Rectangular {
+  val width = size
+  val height = size
+}
+
+final case class Rectangle(
+  width: Double,
+  height: Double,
+  color: Color) extends Rectangular
+
+// We decided to overload the `Draw.apply` method for `Shape` and
+// `Color` on the basis that we may want to reuse the `Color` code
+// directly elsewhere:
+object Draw {
+  def apply(shape: Shape): String = shape match {
+    case Circle(radius, color) =>
+      s"A ${Draw(color)} circle of radius ${radius}cm"
+
+    case Square(size, color) =>
+      s"A ${Draw(color)} square of size ${size}cm"
+
+    case Rectangle(width, height, color) =>
+      s"A ${Draw(color)} rectangle of width ${width}cm and height ${height}cm"
+  }
+
+  def apply(color: Color): String = color match {
+    // We deal with each of the predefined Colors with special cases:
+    case Red    => "red"
+    case Yellow => "yellow"
+    case Pink   => "pink"
+    case color  => if(color.isLight) "light" else "dark"
+  }
+}
+
+// Test code:
+
+Draw(Circle(10, Pink))
+// returns "A pink circle of radius 10.0cm"
+
+Draw(Rectangle(3, 4, CustomColor(0.4, 0.4, 0.6)))
+// returns "A dark rectangle of width 3.0cm and height 4.0cm"
+~~~
+
+</div>
+
 ## A Short Division Exercise
 
-Dividing by zero is a tricky problem -- it can lead to exceptions. The JVM has us covered as far as floating point division, but integer division is still a problem:
+Good Scala developers don't just use types to model data. Types are a great way to put artificial limitations in place to ensure we don't make mistakes in our programs. In this exercise we will see a simple (if contrived) example of this -- using types to prevent division by zero errors.
+
+Dividing by zero is a tricky problem -- it can lead to exceptions. The JVM has us covered as far as floating point division is concerned but integer division is still a problem:
 
 ~~~ scala
 scala> 1.0 / 0.0
@@ -228,7 +408,7 @@ scala> divide(1, 0)
 res8: DivisionResult = Infinite
 ~~~
 
-Finally, write a sample function that calls `divide`, matches on the result, and prints a sensible description.
+Finally, write a sample function that calls `divide`, matches on the result, and returns a sensible description.
 
 <div class="solution">
 Here's the code:
@@ -244,8 +424,8 @@ object divide {
 }
 
 divide(1, 0) match {
-  case Finite(value) => println(s"It's finite: ${value}")
-  case Infinite      => println(s"It's infinite")
+  case Finite(value) => s"It's finite: ${value}"
+  case Infinite      => s"It's infinite"
 }
 ~~~
 
@@ -256,6 +436,7 @@ The implementation of `divide.apply` is simple - we perform a test and return a 
 Finally, the match illustrates a case class pattern with the parentheses, and a case object pattern without.
 </div>
 
+{% comment %}
 ## Really Printing Shapes
 
 We lied earlier...
@@ -316,3 +497,4 @@ object Draw {
 }
 ~~~
 </div>
+{% endcomment %}

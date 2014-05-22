@@ -60,6 +60,19 @@ scala> "Bar" match {
 res0: String = It's bar!
 ~~~
 
+### Alternative patterns
+
+Vertical bars can be used to specify alternatives:
+
+~~~ scala
+scala> "Bar" match {
+     |   case X | Y => "It's foo or bar!"
+     |   case Z     => "It's baz!"
+     | }
+res1: String = It's baz!
+~~~
+
+
 ### Variable capture
 
 Identifiers starting with lowercase letters bind values to variables. The variables can be used in the code to the right of the `=>`:

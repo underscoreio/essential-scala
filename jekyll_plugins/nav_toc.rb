@@ -1,10 +1,20 @@
 module Jekyll
   class NavTocTag < Liquid::Tag
+    def initialize(name, params, tokens)
+      temp = params.strip
+      @chapter = if temp.length == 0 then nil else temp end
+      super
+    end
 
     def render(context)
       site = context.registers[:site]
       curr = context.registers[:page]
-      toc = site.config['toc']
+
+      if @chapter
+        toc = site.config['toc'].select { |group| group['head'] == @chapter }
+      else
+        toc = site.config['toc']
+      end
 
       ans = '<ul class="nav-toc">'
       toc.each { |item| ans += render_group(site, item, curr) }
