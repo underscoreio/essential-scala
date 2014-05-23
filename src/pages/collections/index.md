@@ -3,11 +3,13 @@ layout: page
 title: Collections
 ---
 
-We hardly need to state how important good collection classes are. The Collections API was one of the most significant additions to Java, and Scala's collections framework, completely revised and updated in 2.8, is an equally important addition to Scala.
+We hardly need to state how important collection classes are. The Collections API was one of the most significant additions to Java, and Scala's collections framework, completely revised and updated in 2.8, is an equally important addition to Scala.
 
-In this section we're going to look at the key datastructures in Scala's collection library: **sequences and maps**.
+In this section we're going to look at three key datastructures in Scala's collection library: **options, sequences, and maps**.
 
-We will start with sequences. We begin with basic operations on sequences, and then briefly examine the distinction Scala makes between interface and implementation, and mutable and immutable sequences. We then explore in depth the methods Scala provides to transform sequences.
+We will start with **sequences**. We begin with basic operations on sequences, and then briefly examine the distinction Scala makes between interface and implementation, and mutable and immutable sequences. We then explore in depth the methods Scala provides to transform sequences.
+
+We will then move onto **options**, which are used frequently in the APIs for sequences and maps. Options provide a means for avoiding `nulls` in our code, and are a way to chain together computations that may or may not produce a valid result.
 
 After covering the main collection types we turn to **for comprehensions**, a syntax that allows convenient specification of operations on collections. We'll also briefly look at a generalisation of collections, called **monads**, that work well with for comprehensions.
 

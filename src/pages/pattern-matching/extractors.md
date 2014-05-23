@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Pattern Matching Redux: Extractors"
+title: Custom Patterns
 ---
 
 In the last section we took an in-depth look at all of the types of pattern that are embedded into the pattern matching language. However, in that list we didn't see some of the patterns that we've been using in the course so far -- case class and sequence patterns were nowhere to be seen!

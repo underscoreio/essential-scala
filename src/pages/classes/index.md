@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Modelling Data with Objects
+title: Objects and Classes
 ---
 
 In the previous chapter we saw how to create literal objects and interact with them via method calls. In this section we're going to see how we can create our own types or **"classes"** of object to abstract over values.

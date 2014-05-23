@@ -150,19 +150,19 @@ final case class Empty[A]() extends LinkedList[A]
 Now we have our `LinkedList` class, let's give it some useful methods. Define the following:
 
  - a method called `length` that returns the length of the list;
- - a method `apply` that returns the *n<sup>th</sup>& item in the list;
- - a method `contains` that determines whether an item is in the list.
+ - a method `apply` that returns the <em>n<sup>th</sup></em> item in the list;
+ - a method `contains` that determines whether or not an item is in the list.
 
 In each case, start by writing an abstract method definition in `LinkedList`. Think about the types of the arguments and the types of the results. Then implement the method for `Empty` -- it should be pretty easy to provide a default implementation for an empty list. Finally, implement the method on `Pair`. The implementation will be recursive and defined in terms of `head` and `tail`.
 
-**Hint:** If you need to signal an error in your code, consider throwing an exception. Here are a few examples:
+**Hint:** If you need to signal an error in your code (there's one situation in which you will need to do this), consider throwing an exception. Here is an example:
 
 ~~~ scala
 throw new Exception("Bad things happened")
 ~~~
 
 <div class="solution">
-The hint about exceptions was for the implementation of `apply` in `Empty`. The list is empty -- there is no *n<sup>th</sup>* element to return!
+The hint about exceptions was for the implementation of `apply` in `Empty`. The list is empty -- there is no <em>n<sup>th</sup></em> element to return!
 
 Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
 

@@ -3,11 +3,11 @@ layout: page
 title: "This or That: Traits"
 ---
 
-So far we have seen a lot to do with Scala's *classes*. Classes provide us with a way to **abstract over objects** that have similar properties, allowing us to write code that works with any object in a class.
+**Traits** are building blocks for creating classes. They are half-way between Java's concepts of an *abstract class* and an *interface*. A trait can contribute functionality to to multiple classes, and we can build a single class from multiple traits.
 
-Now let's explore how we can **abstract over classes**, allowing us to write code that works with objects of different classes. We'll start by looking at **traits**, Scala's building blocks for creating classes.
+Let's start by looking at the differences between a trait and a class.
 
-## Traits
+## Traits versus Classes
 
 Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
 

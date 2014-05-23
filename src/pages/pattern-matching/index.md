@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Pattern Matching Redux: Built-in Patterns"
+title: Pattern Matching
 ---
 
 We have seen the duality between algebraic data types and pattern matching. Armed with this information, we are in a good position to return to pattern matching and see some of its more powerful features.
