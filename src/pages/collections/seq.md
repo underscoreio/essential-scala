@@ -346,37 +346,11 @@ class Film(
   yearOfRelease: Int,
   imdbRating: Double)
 
-object Film {
-  def newer(film1: Film, film2: Film): Film =
-    if (film1.yearOfRelease < film2.yearOfRelease) film1 else film2
-
-  def highestRating(film1: Film, film2: Film): Double = {
-    val rating1 = film1.imdbRating
-    val rating2 = film2.imdbRating
-    if (rating1 > rating2) rating1 else rating2
-  }
-
-  def oldestDirectorAtTheTime(film1: Film, film2: Film): Director =
-    if (film1.directorsAge > film2.directorsAge) film1.director else film2.director
-}
-
 case class Director(
   firstName: String,
   lastName: String,
   yearOfBirth: Int,
-  films: Seq[Film]) {
-
-  def ageAtRelease(film: Film) =
-    film.yearOfRelease - director.yearOfBirth
-
-  def name: String =
-    s"$firstName $lastName"
-}
-
-object Director {
-  def older(director1: Director, director2: Director): Director =
-    if (director1.yearOfBirth < director2.yearOfBirth) director1 else director2
-}
+  films: Seq[Film])
 
 val memento           = new Film("Memento", 2000, 8.5)
 val darkKnight        = new Film("Dark Knight", 2008, 9.0)
@@ -393,50 +367,113 @@ val dieHard           = new Film("Die Hard", 1988, 8.3)
 val huntForRedOctober = new Film("The Hunt for Red October", 1990, 7.6)
 val thomasCrownAffair = new Film("The Thomas Crown Affair", 1999, 6.8)
 
-val clintEastwood = new Director("Clint", "Eastwood", 1930,
+val eastwood = new Director("Clint", "Eastwood", 1930,
   Seq(highPlainsDrifter, outlawJoseyWales, unforgiven, granTorino, invictus))
 
-val johnMcTiernan = new Director("John", "McTiernan", 1951,
+val mcTiernan = new Director("John", "McTiernan", 1951,
   Seq(predator, dieHard, huntForRedOctober, thomasCrownAffair))
 
-val christopherNolan = new Director("Christopher", "Nolan", 1970,
+val nolan = new Director("Christopher", "Nolan", 1970,
   Seq(memento, darkKnight, inception))
 
 val someGuy = new Director("Just”, "Some Guy”, 1990,
   Seq())
 
-val directors = Seq(clintEastwood, johnMcTiernan, christopherNolan, someGuy)
+val directors = Seq(eastwood, mcTiernan, nolan, someGuy)
 
 // TODO: Write your code here!
 ~~~
 
-Write code in `FilmBuff` to do the following:
+Using this sample code, write implementations of the following methods:
 
- - Find a director who born before 1950.
+ - Accept a parameter `numberOfFilms` of type `Int` -- find all directors
+   who have directed more than `numberOfFilms`:
 
    <div class="solution">
+    We use `filter` because we are expecting more than one result:
+
    ~~~ scala
-   directors.find(_.yearOfBirth < 1950)
-   // returns Some(clintEastwood)
+   def directorsWithBackCatalogOfSize(numberOfFilms: Int): Seq[Director] =
+     directors.filter(_.films.length > numberOfFilms)
    ~~~
    </div>
 
- - Fetch a list of all directors who have directed more than 3 films
-   (according to the database).
+ - Accept a parameter `year` of type `Int` -- find a director who was born
+   before that year:
 
    <div class="solution">
+   We use `find` because we are expecting at most one result. This solution
+   will return the first director found who matches the criteria of the search:
+
    ~~~ scala
-   directors.filter(_.films.length > 3)
-   // returns Seq(clintEastwood, johnMcTiernan)
+   def directorBornBefore(year: Int): Option[Director] =
+     directors.find(_.yearOfBirth < year)
+   ~~~
+
+   The `Option` type is discussed in more detail later this chapter.
+   </div>
+
+ - Accept two parameters, `year` and `numberOfFilms`, and return a list of directors
+   who were born before `year` who have also directed more than than `numberOfFilms`:
+
+   <div class="solution">
+   This solution performs each part of the query separately and uses
+   `filter` and `contains` to calculate the intersection of the results:
+
+   ~~~ scala
+   def (year: Int, numberOfFilms: Int): Seq[Director] = {
+     val byAge   = directors.filter(_.yearOfBirth < year)
+     val byFilms = directors.filter(_.films.length > numberOfFilms)
+     byAge.filter(byFilms.contains)
+   }
    ~~~
    </div>
 
- - Fetch a list of all directors who have directed a film when they
-   were over 45 years old (hint: use `Director.ageAtRelease`).
+ - Accept an optional parameter `ascending` of type `Boolean`. Sort the directors by age
+   in the specified order:
 
    <div class="solution">
+   Here is one solution. Note that sorting by ascending age is the same as sorting by descending year of birth:
+
    ~~~ scala
-   directors.filter(d => d.films.find(f => d.ageAtRelease(f) > 45).isDefined)
-   // returns Seq(clintEastwood)
+   def directorsSortedByAge(ascending: Boolean = true) =
+     if(ascending) {
+       directors.sortedWith((a, b) => a.yearOfBirth < b.yearOfBirth)
+     } else {
+       directors.sortedWith((a, b) => a.yearOfBirth > b.yearOfBirth)
+     }
    ~~~
+
+   Because Scala is a functional language, we can also factor our code as follows:
+
+   ~~~ scala
+   def directorsSortedByAge(ascending: Boolean = true) =
+     val comparator =
+       if(ascending) {
+         (a, b) => a.yearOfBirth < b.yearOfBirth
+       } else {
+         (a, b) => a.yearOfBirth > b.yearOfBirth
+       }
+
+     directors.sortedWith(comparator)
+   }
+   ~~~
+
+   Here is a final refactoring that is slightly less efficient because it rechecks
+   the value of `ascending` multiple times.
+
+   ~~~ scala
+   def directorsSortedByAge(ascending: Boolean = true) =
+     directors.sortedWith { (a, b) =>
+       if(ascending) {
+         a.yearOfBirth < b.yearOfBirth
+       } else {
+         a.yearOfBirth > b.yearOfBirth
+       }
+     }
+   ~~~
+
+   Note the use of braces instead of parentheses on the call to `sortedWith` in the
+   last example. We can use this syntax on any method call of one argument to give
+   it a control-structure-like look and feel.
    </div>

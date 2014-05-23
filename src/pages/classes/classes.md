@@ -225,29 +225,29 @@ Write two classes, `Director` and `Film`, with fields and methods as follows:
 Copy-and-paste the following demo data into your code and adjust your constructors so that the code works without modification:
 
 ~~~ scala
-val clintEastwood     = new Director("Clint", "Eastwood", 1930)
-val johnMcTiernan     = new Director("John", "McTiernan", 1951)
-val christopherNolan  = new Director("Christopher", "Nolan", 1970)
+val eastwood          = new Director("Clint", "Eastwood", 1930)
+val mcTiernan         = new Director("John", "McTiernan", 1951)
+val nolan             = new Director("Christopher", "Nolan", 1970)
 val someGuy           = new Director("Just”, "Some Guy”, 1990)
 
-val memento           = new Film("Memento", 2000, 8.5, christopherNolan)
-val darkKnight        = new Film("Dark Knight", 2008, 9.0, christopherNolan)
-val inception         = new Film("Inception", 2010, 8.8, christopherNolan)
+val memento           = new Film("Memento", 2000, 8.5, nolan)
+val darkKnight        = new Film("Dark Knight", 2008, 9.0, nolan)
+val inception         = new Film("Inception", 2010, 8.8, nolan)
 
-val highPlainsDrifter = new Film("High Plains Drifter", 1973, 7.7, clintEastwood)
-val outlawJoseyWales  = new Film("The Outlaw Josey Wales", 1976, 7.9, clintEastwood)
-val unforgiven        = new Film("Unforgiven", 1992, 8.3, clintEastwood)
-val granTorino        = new Film("Gran Torino", 2008, 8.2, clintEastwood)
-val invictus          = new Film("Invictus", 2009, 7.4, clintEastwood)
+val highPlainsDrifter = new Film("High Plains Drifter", 1973, 7.7, eastwood)
+val outlawJoseyWales  = new Film("The Outlaw Josey Wales", 1976, 7.9, eastwood)
+val unforgiven        = new Film("Unforgiven", 1992, 8.3, eastwood)
+val granTorino        = new Film("Gran Torino", 2008, 8.2, eastwood)
+val invictus          = new Film("Invictus", 2009, 7.4, eastwood)
 
-val predator          = new Film("Predator", 1987, 7.9, johnMcTiernan)
-val dieHard           = new Film("Die Hard", 1988, 8.3, johnMcTiernan)
-val huntForRedOctober = new Film("The Hunt for Red October", 1990, 7.6, johnMcTiernan)
-val thomasCrownAffair = new Film("The Thomas Crown Affair", 1999, 6.8, johnMcTiernan)
+val predator          = new Film("Predator", 1987, 7.9, mcTiernan)
+val dieHard           = new Film("Die Hard", 1988, 8.3, mcTiernan)
+val huntForRedOctober = new Film("The Hunt for Red October", 1990, 7.6, mcTiernan)
+val thomasCrownAffair = new Film("The Thomas Crown Affair", 1999, 6.8, mcTiernan)
 
-clintEastwood.yearOfBirth               // should be 1930
-dieHard.director.name                   // should be "John McTiernan"
-invictus.isDirectedBy(christopherNolan) // should be false
+eastwood.yearOfBirth         // should be 1930
+dieHard.director.name        // should be "John McTiernan"
+invictus.isDirectedBy(nolan) // should be false
 ~~~
 
 Implement a method of `Film` called `copy`. This method should accept the same parameters as the constructor and create a new copy of the film. Give each parameter a default value so you can copy a film changing any subset of its values:

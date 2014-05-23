@@ -287,7 +287,147 @@ and the extras for mutable Sets:
 
 ## Exercises
 
-### Union of Sets
+### Favorites
+
+Copy and paste the following code into an editor:
+
+~~~ scala
+val people = Set(
+  "Alice",
+  "Bob",
+  "Charlie",
+  "Derek",
+  "Edith",
+  "Fred")
+
+val ages = Map(
+  "Alice"   -> 20,
+  "Bob"     -> 30,
+  "Charlie" -> 50,
+  "Derek"   -> 40,
+  "Edith"   -> 10,
+  "Fred"    -> 60)
+
+val favoriteColors = Map(
+  "Bob"     -> "green",
+  "Derek"   -> "magenta",
+  "Fred"    -> "yellow")
+
+val favoriteLolcats = Map(
+  "Alice"   -> "Long Cat",
+  "Charlie" -> "Ceiling Cat",
+  "Edith"   -> "Cloud Cat")
+~~~
+
+Use the code as test data for the following exercises:
+
+Write a method `favoriteColor` that accepts a person's name as a parameter and returns their favorite colour.
+
+<div class="solution">
+The person may or may not be a key in the `favoriteColors` map so the function should return an `Optional` result:
+
+~~~ scala
+def favoriteColor(person: String): Option[String] =
+  favoriteColours.get(person)
+~~~
+</div>
+
+Update `favoriteColor` to return a person's favorite color *or* beige as a default.
+
+<div class="solution">
+Now we have a default value we can return a `String` instead of an `Option[String]`:
+
+~~~ scala
+def favoriteColor(person: String): String =
+  favoriteColours.get(person).getOrElse("beige")
+~~~
+
+**Pro tip:** We didn't mention this above, but there is a `getOrElse` method on `Map` that does these two steps in one. See the documentation for details:
+
+~~~ scala
+def favoriteColor(person: String): String =
+  favoriteColours.getOrElse(person, "beige")
+~~~
+</div>
+
+Write a method called `printColors` that prints everyone's favorite colour.
+
+
+<div class="solution">
+Now that we have a default value we can change the return type to `String`:
+
+~~~ scala
+def favoriteColor(person: String): String =
+  favoriteColours.get(person).getOrElse("beige")
+~~~
+
+**Pro tip:** We didn't mention this above, but there is a `getOrElse` method on `Map` that does these two steps in one. See the documentation for details:
+
+~~~ scala
+def favoriteColor(person: String): String =
+  favoriteColours.getOrElse(person, "beige")
+~~~
+</div>
+
+Write a method `printColors` that prints everyone's favorite color!
+
+<div class="solution">
+We can write this one using `foreach` or a for comprehension:
+
+~~~ scala
+def printColors = for {
+  person <- people
+} println(s"${person}'s favorite color is ${favoriteColor(person)}!")
+~~~
+
+or:
+
+~~~ scala
+def printColors = people foreach { person =>
+  println(s"${person}'s favorite color is ${favoriteColor(person)}!")
+}
+~~~
+</div>
+
+Write a method `lookup` that accepts a name and one of the maps and returns the relevant value from the map. Ensure that the return type of the method matches the value type of the map.
+
+<div class="solution">
+Here we write a generic method using a type parameter:
+
+~~~ scala
+def lookup[A](name: String, values: Map[String, A]) =
+  values get name
+~~~
+</div>
+
+Calculate the color of the oldest person:
+
+<div class="solution">
+First we find the oldest person, then we look up the answer:
+
+~~~ scala
+val oldest: Option[String] =
+  people.foldLeft(Option.empty[String]) { (oldest, person) =>
+    if(ages.getOrElse(person, 0) > ages.getOrElse(oldest, 0)) {
+      Some(person)
+    } else {
+      oldest
+    }
+  }
+
+val favorite: Option[String] =
+  for {
+    oldest <- oldest
+    color  <- favoriteColors.get(oldest)
+  } yield color
+~~~
+</div>
+
+### Do-It-Yourself Part 2
+
+Now we have some practice with maps and sets let's see if we can implement some useful library functions for ourselves:
+
+#### Union of Sets
 
 Write a method that takes two sets and returns a set containing the union of the elements. Use iteration, like `map` or `foldLeft`, not the built-in `union` method to do so!
 
@@ -309,7 +449,7 @@ def union[A](set1: Set[A], set2: Set[A]): Set[A] = {
 ~~~
 </div>
 
-### Union of Maps
+#### Union of Maps
 
 Now let's write union for maps. Assume we have two `Map[A, Int]` and add corresponding elements in the two maps. So the union of `Map('a' -> 1, 'b' -> 2)` and `Map('a' -> 2, 'b' -> 4)` should be `Map('a' -> 3, 'b' -> 6)`.
 
@@ -327,7 +467,7 @@ def union[A](map1: Map[A, Int], map2: Map[A, Int]): Map[A, Int] = {
 ~~~
 </div>
 
-### Generic Union
+#### Generic Union
 
 There are many things that can be added, such as strings (string concatenation), sets (union), and of course numbers. It would be nice if we could generalise our `union` method on maps to handle anything for which a sensible `add` operation can be defined. How can we go about doing this?
 

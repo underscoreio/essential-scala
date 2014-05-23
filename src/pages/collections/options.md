@@ -101,7 +101,7 @@ sealed trait Option[+A] {
 }
 ~~~
 
-Because of the limited size of `0` or `1`, there is a bit of redundancy here. However, these methods give us a lot flexibility for manipulating optional values. For example, we can use `map` and `flatMap` to define optional versions of common operations:
+Because of the limited size of `0` or `1`, there is a bit of redundancy here: `filter` and `find` effectively do the same thing, and `foldLeft` and `foldRight` only differ int the order of their arguments. However, these methods give us a lot flexibility for manipulating optional values. For example, we can use `map` and `flatMap` to define optional versions of common operations:
 
 ~~~ scala
 scala> def sum(optionA: Option[Int], optionB: Option[Int]): Option[Int] =
@@ -175,3 +175,202 @@ Once we get past the initial foreignness of using for comprehensions to "iterate
 
 [^option-length]: Note that `Option` doesn't actually have a `length` method -- this example is for illustrative purposes only.
 
+## Exercises
+
+### Adding Things
+
+Write a method `addOptions` that accepts two parameters of type `Option[Int]` and adds them together. Use a for comprehension to structure your code.
+
+<div class="solution">
+We can reuse code from the text above for this:
+
+~~~ scala
+def addOptions(opt1: Option[Int], opt2: Option[Int]) =
+  for {
+    a <- opt1
+    b <- opt2
+  } yield a + b
+~~~
+</div>
+
+Write a second version of your code using `map` and `flatMap` instead of a for comprehension.
+
+<div class="solution">
+The pattern is to use `flatMap` for all clauses except the innermost, which becomes a `map`:
+
+~~~ scala
+def addOptions2(opt1: Option[Int], opt2: Option[Int]) =
+  opt1 flatMap { a =>
+    opt2 map { b =>
+      a + b
+    }
+  }
+~~~
+</div>
+
+### Adding All of the Things
+
+Overload `addOptions` with another implementation that accepts three `Option[Int]` parameters and adds them all together.
+
+<div class="solution">
+For comprehensions can have as many clauses as we want so all we need to do is add an extra line to the previous solution:
+
+~~~ scala
+def addOptions(opt1: Option[Int], opt2: Option[Int], opt3: Option[Int]) =
+  for {
+    a <- opt1
+    b <- opt2
+    c <- opt3
+  } yield a + b + c
+~~~
+</div>
+
+Write a second version of your code using `map` and `flatMap` instead of a for comprehension.
+
+<div class="solution">
+Here we can start to see the simplicity of for comprehensions:
+
+~~~ scala
+def addOptions2(opt1: Option[Int], opt2: Option[Int], opt3: Option[Int]) =
+  opt1 flatMap { a =>
+    opt2 flatMap { b =>
+      opt3 map { c =>
+        a + b + c
+      }
+    }
+  }
+~~~
+</div>
+
+### A(nother) Short Division Exercise
+
+Write a method `divide` that accepts two `Int` parameters and divides one by the other. Use `Option` to avoid exceptions when the denominator is `0`.
+
+<div class="solution">
+We saw this code in the [Traits](/traits/) chapter when we wrote the `DivisionResult` class. The implementation is much simpler now we can use `Option` to do the heavy lifting:
+
+~~~ scala
+def divide(numerator: Int, denominator: Int) =
+  if(denominator) None else Some(numerator / denominator)
+~~~
+</div>
+
+Using your `divide` method and a for comprehension, write a method called `divideOptions` that accepts two parameters of type `Option[Int]` and divides one by the other:
+
+<div class="solution">
+In this example the `divide` operation returns an `Option[Int]` instead of an `Int`. In order to process the result we need to move the calculation from the `yield` block to a for-clause:
+
+~~~ scala
+def divideOptions(numerator: Option[Int], denominator: Option[Int]) =
+  for {
+    a <- numerator
+    b <- denominator
+    c <- divide(a, b)
+  } yield c
+~~~
+</div>
+
+### A Simple Calculator
+
+A final, longer exercise. Write a method called `calculator` that accepts three string parameters:
+
+~~~ scala
+def calculator(operand1: String, operator: String, operand2: String): Unit
+~~~
+
+Implement the method as follows:
+
+ 1. Convert the operands to `Ints`;
+
+ 2. Perform the desired mathematical operator on the two operands:
+
+     - provide support for at least four operations: `+`, `-`, `*` and `/`;
+     - use `Option` to guard against errors (invalid inputs or division by zero).
+
+ 3. Finally print the result or a generic error message.
+
+**Tip:** Start by supporting just one operator before extending your method to other cases.
+
+<div class="solution">
+The trick to this one is realising that each clause in the *for* comprehension can contain an entire block of Scala code:
+
+~~~ scala
+def calculator(operand1: String, operator: String, operand2: String): Unit = {
+  val result = for {
+    a   <- readInt(operand1)
+    b   <- readInt(operand2)
+    ans <- operator match {
+             case "+" => Some(a + b)
+             case "-" => Some(a - b)
+             case "*" => Some(a * b)
+             case "/" => divide(a, b)
+             case _   => None
+           }
+  } yield ans
+
+  ans match {
+    case Some(number) => println(s"The answer is $number!")
+    case None         => println(s"Error calculating $operand1 $operator $operand2")
+  }
+}
+~~~
+
+Another approach involves factoring the calculation part out into its own private function:
+
+~~~ scala
+def calculator(operand1: String, operator: String, operand2: String): Unit = {
+  def calcInternal(a: Int, b: Int) =
+    operator match {
+      case "+" => Some(a + b)
+      case "-" => Some(a - b)
+      case "*" => Some(a * b)
+      case "/" => divide(a, b)
+      case _   => None
+    }
+
+  val result = for {
+    a   <- readInt(operand1)
+    b   <- readInt(operand2)
+    ans <- calcInternal(a, b)
+  } yield ans
+
+  ans match {
+    case Some(number) => println(s"The answer is $number!")
+    case None         => println(s"Error calculating $operand1 $operator $operand2")
+  }
+}
+~~~
+</div>
+
+For the enthusiastic only, write a second version of your code using `flatMap` and `map`.
+
+<div class="solution">
+This version of the code is much clearer if we factor out the calculation part into its own function. Without this it would be very hard to read:
+
+~~~ scala
+def calculator(operand1: String, operator: String, operand2: String): Unit = {
+  def calcInternal(a: Int, b: Int) =
+    operator match {
+      case "+" => Some(a + b)
+      case "-" => Some(a - b)
+      case "*" => Some(a * b)
+      case "/" => divide(a, b)
+      case _   => None
+    }
+
+  val result =
+    readInt(operand1) flatMap { a =>
+      readInt(operand2) flatMap { b =>
+        calcInternal(a, b) map { result =>
+          result
+        }
+      }
+    }
+
+  result match {
+    case Some(number) => println(s"The answer is $number!")
+    case None         => println(s"Error calculating $operand1 $operator $operand2")
+  }
+}
+~~~
+</div>

@@ -199,7 +199,7 @@ val prestige: Film = bestFilmByChristopherNolan()
 </div>
 
 ~~~ scala
-new Film("Last Action Hero", 1993, johnMcTiernan)
+new Film("Last Action Hero", 1993, mcTiernan)
 ~~~
 
 <div class="solution">
@@ -207,14 +207,14 @@ new Film("Last Action Hero", 1993, johnMcTiernan)
 </div>
 
 ~~~ scala
-Film("Last Action Hero", 1993, johnMcTiernan)
+Film("Last Action Hero", 1993, mcTiernan)
 ~~~
 
 <div class="solution">
 **Value!** -- this is shorthand for:
 
 ~~~ scala
-Film.apply("Last Action Hero", 1993, johnMcTiernan)
+Film.apply("Last Action Hero", 1993, mcTiernan)
 ~~~
 
 `apply` is a method defined on the *singleton object* (or value) `Film`.
