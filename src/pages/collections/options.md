@@ -45,7 +45,7 @@ def readInt(str: String): Option[Int] =
   if(str matches "\\d+") Some(str.toInt) else None
 ~~~
 
-The `toInt` method of `String` throws a `NumberFormatException` if the string isn't a valid series of digits, so we have to guard its use with a regular expression. If the number is correctly formatted we return `Some` of the `Int` result. Otherwise we return `None. Example usage:
+The `toInt` method of `String` throws a `NumberFormatException` if the string isn't a valid series of digits, so we have to guard its use with a regular expression. If the number is correctly formatted we return `Some` of the `Int` result. Otherwise we return `None`. Example usage:
 
 ~~~ scala
 scala> readInt("123")
@@ -278,7 +278,7 @@ A final, longer exercise. Write a method called `calculator` that accepts three 
 def calculator(operand1: String, operator: String, operand2: String): Unit
 ~~~
 
-Implement the method as follows:
+and behaves as follows:
 
  1. Convert the operands to `Ints`;
 
