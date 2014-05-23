@@ -45,7 +45,7 @@ def readInt(str: String): Option[Int] =
   if(str matches "\\d+") Some(str.toInt) else None
 ~~~
 
-The `toInt` method of `String` throws a `NumberFormatException` if the string isn't a valid series of digits, so we have to guard its use with a regular expression. If the number is correctly formatted we return `Some` of the `Int` result. Otherwise we return `None. Example usage:
+The `toInt` method of `String` throws a `NumberFormatException` if the string isn't a valid series of digits, so we have to guard its use with a regular expression. If the number is correctly formatted we return `Some` of the `Int` result. Otherwise we return `None`. Example usage:
 
 ~~~ scala
 scala> readInt("123")
@@ -174,4 +174,3 @@ Let's stop to think about this block of code for a moment. There are three ways 
 Once we get past the initial foreignness of using for comprehensions to "iterate through" options, we find a useful control structure that frees us from excessive use of `map` and `flatMap`.
 
 [^option-length]: Note that `Option` doesn't actually have a `length` method -- this example is for illustrative purposes only.
-
