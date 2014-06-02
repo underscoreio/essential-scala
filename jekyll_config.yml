@@ -13,27 +13,36 @@ toc:
      - /intro/object-literals.html
      - /intro/conclusion.html
 
-  - head: /objects/index.html
+  - head: /classes/index.html
     body:
-     - /objects/classes.html
-     - /objects/apply.html
-     - /objects/companion-objects.html
-     - /objects/case-classes.html
-     - /objects/traits.html
-     - /objects/sealed-traits.html
-     - /objects/traits-as-mixins.html
-     - /objects/generics.html
-     - /objects/functions.html
+     - /classes/classes.html
+     - /classes/apply.html
+     - /classes/companion-objects.html
+     - /classes/case-classes.html
+
+  - head: /traits/index.html
+    body:
+     - /traits/traits.html
+     - /traits/sealed-traits.html
+     - /traits/traits-as-mixins.html
+     - /traits/generics.html
+     - /traits/inheritance-versus-generics.html
+     - /traits/functions.html
 
   - head: /collections/index.html
     body:
      - /collections/seq.html
      - /collections/working-with-seq.html
      - /collections/for-comprehensions.html
+     - /collections/options.html
      - /collections/meeting-monads.html
      - /collections/for-comprehensions-redux.html
      - /collections/map-and-set.html
      - /collections/ranges.html
+
+  - head: /pattern-matching/index.html
+    body:
+     - /pattern-matching/extractors.html
 
   - head: /fp/index.html
     body:
@@ -41,8 +50,6 @@ toc:
      - /fp/modelling-with-types.html
      - /fp/modelling-errors.html
      - /fp/monads.html
-     - /fp/pattern-matching.html
-     - /fp/extractors.html
 
   - head: /implicits/index.html
     body:

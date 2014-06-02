@@ -173,75 +173,107 @@ The goals of this exercise are for you to learn your way around the collections 
 
 When you have answered these questions look at the type table above to find the correct method to use. Done in this way the actual programming should be straightforward.
 
-### Iteration
 
-Halve every element of `Seq(2, 4, 6)`, returning a sequence of the results.
+## Exercises
+
+### Heroes of the Silver Screen
+
+These exercises re-use the example code from the *Directorial Debut* exercise from the previous section:
+
+#### Nolan Films
+
+List the names of the films directed by Christopher Nolan.
 
 <div class="solution">
-Let's follow the process. The types are:
-
-1. We have a `Seq[Int]`
-2. We want a `Seq[Int]` as the result.
-3. The operation of halving is the function `(x: Int) => x / 2`, which has the type `Int => Int`.
-
-Looking at the type table we see that `map` is the only function that fits the types we have available. Our solution is:
-
 ~~~ scala
-scala> Seq(2, 4, 5).map(_ / 2)
-res14: Seq[Int] = List(1, 2, 2)
+nolan.films.map(_.name)
 ~~~
 </div>
 
-### Printing
+#### Cinephile
 
-Print every element of the sequence `Seq(1, 2, 3)`.
+List the names of all films by all directors.
 
 <div class="solution">
-Follow the process again. The types are:
-
-1. We have a `Seq[Int]`.
-2. We don't care about our result (we are running code for side-effect) so we're happy with the result type `Unit`.
-3. Our operation is `println`, which has type `Any => Unit`.
-
-Looking at the type table we see that `foreach` meets our requirements, so the final solution is:
-
 ~~~ scala
-Seq(1, 2, 3).foreach(println _)
+directors.flatMap(director => director.films.map(film => film.name))
 ~~~
 </div>
 
-### Multiplication
+#### Vintage McTiernan
 
-Multiply together all the elements of `Seq(1, 2, 3)`.
+Find the date of the earliest McTiernan film.
 
-This exercise is a bit harder than the ones we have done so far, but if you follow the same process you should get the answer.
+Tip: you can concisely find the minimum of two numbers `a` and `b` using `math.min(a, b)`.
 
 <div class="solution">
-We have a `Seq[Int]`, we want to get an `Int`, and we know that multiplication is `(Int, Int) => Int`. Looking at the type table we clearly need to use a `fold`, but we need to provide another `Int` to be the "zero" element for the fold. What should this be?
-
-Let's play around with different values of the zero element to see what they do, and then we'll describe how to reason your way to the correct answer.
-
 ~~~ scala
-scala> Seq(1, 2, 3).foldLeft(0)(_ * _)
-res16: Int = 0
-
-scala> Seq(1, 2, 3).foldLeft(1)(_ * _)
-res17: Int = 6
-
-scala> Seq(1, 2, 3).foldLeft(2)(_ * _)
-res18: Int = 12
+mcTiernan.films.foldLeft(9999) { (current, film) =>
+  math.min(current, film.yearOfRelease)
+}
 ~~~
-
-Here we have tried three values for the zero: `0`, `1`, and `2`. It is clear that `1` is the correct answer, but how can we arrive at that answer in a systematic way?
-
-The answer is to consider what should happen in the case of a single element sequence like `Seq(2)`. What should we multiply `2` by to get `2`? Clearly the answer is `1`, so this is the correct value to use as the zero.
-
-From a slightly more mathematical perspective, `1` is the identity for multiplication. That is `x * 1 = x`. So another way to solve the problem is to find the identity for the operation you're using.
-
-Finally note that the zero element is the result when we have an empty sequence. Sometimes it is easier to come up with a good answer for the empty sequence than to use the other methods above.
 </div>
 
-### Minimum
+#### High Score Table
+
+Find all films sorted by descending IMDB rating:
+
+<div class="solution">
+~~~ scala
+directors
+  .flatMap(director => director.films)
+  .sortWith((a, b) => a.imdbRating > b.imdbRating)
+~~~
+</div>
+
+Now find the *average score* across all films:
+
+<div class="solution">
+We cache the list of films in a variable because we use it twice -- once to calculate the sum of the ratings and once to fetch the number of films:
+
+~~~ scala
+val films = directors.flatMap(director => director.films)
+
+films.foldLeft(0)((a, b) => a.imdbRating + b.imdbRating) / films.length
+~~~
+</div>
+
+#### Tonight's Listings
+
+Print the following for every film: `"Tonight only! FILM NAME by DIRECTOR!"`
+
+<div class="solution">
+Println is used for its side-effects so we don't need to accumulate a result -- we use `println` as a simple iterator:
+
+~~~ scala
+directors.foreach { director =>
+  director.films.foreach { film =>
+    println(s"Tonight! ${film.name} by ${director.name}!")
+  }
+}
+~~~
+</div>
+
+#### From the Archives
+
+And now find the *earliest film* by any director:
+
+<div class="solution">
+Here's the solution:
+
+~~~ scala
+directors
+  .flatMap(director => director.films)
+  .sortWith((a, b) => a.yearOfRelease < b.yearOfRelease)
+  .headOption
+~~~
+</div>
+
+### Do-It-Yourself
+
+Now we know the essential methods of `Seq`, we can write our own versions of some other library methods.
+
+#### Minimum
 
 Write a method to find the smallest element of a `Seq[Int]`.
 
@@ -254,11 +286,11 @@ Thus the solution is:
 
 ~~~ scala
 def smallest(seq: Seq[Int]): Int =
-  seq.foldLeft(Int.MaxValue)(Math.min _)
+  seq.foldLeft(Int.MaxValue)(math.min)
 ~~~
 </div>
 
-### Unique
+#### Unique
 
 Given `Seq(1, 1, 2, 4, 3, 4)` create the sequence containing each number only once. Order is not important, so `Seq(1, 2, 4, 3)` or `Seq(4, 3, 2, 1)` are equally valid answers. Hint: Use `contains` to check if a sequence contains a value.
 
@@ -300,7 +332,7 @@ unique(Seq(1, 1, 2, 4, 3, 4))
 Note how I created the empty sequence. I could have written `Seq[Int]()` but in both cases I need to supply a type (`Int`) to help the type inference along.
 </div>
 
-### Reverse
+#### Reverse
 
 Write a function that reverses the elements of a sequence. Your output does not have to use the same concrete implementation as the input. Hint: use `foldLeft`.
 
@@ -337,7 +369,7 @@ def reverse[A](seq: Seq[A]): Seq[A] = {
 ~~~
 </div>
 
-### Map
+#### Map
 
 Write `map` in terms of `foldRight`.
 
@@ -359,7 +391,7 @@ def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
 ~~~
 </div>
 
-### Fold Left
+#### Fold Left
 
 Write your own implementation of `foldLeft` that uses `foreach` and mutable state. Remember you can create a mutable variable using the `var` keyword, and assign a new value using `=`. For example
 

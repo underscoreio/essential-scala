@@ -3,11 +3,11 @@ layout: page
 title: "This or That: Traits"
 ---
 
-So far we have seen a lot to do with Scala's *classes*. Classes provide us with a way to **abstract over objects** that have similar properties, allowing us to write code that works with any object in a class.
+**Traits** are building blocks for creating classes. They are half-way between Java's concepts of an *abstract class* and an *interface*. A trait can contribute functionality to to multiple classes, and we can build a single class from multiple traits.
 
-Now let's explore how we can **abstract over classes**, allowing us to write code that works with objects of different classes. We'll start by looking at **traits**, Scala's building blocks for creating classes.
+Let's start by looking at the differences between a trait and a class.
 
-## Traits
+## Traits versus Classes
 
 Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
 
@@ -96,30 +96,6 @@ scala> ageString(User("a", "me@example.com"))
 res14: String = a is 0ms old
 ~~~
 
-## Scala's Type Hierarchy
-
-Unlike Java, which separates primitive and object types, everything in Scala is an object. As a result, "primitive" value types like `Int` and `Boolean` form part of the same type hierarchy as classes and traits.
-
-<img src="scala-type-hierarchy.svg" alt="Scala type hierarchy">
-
-Scala has a grand supertype called `Any`, under which there are two types, `AnyVal` and `AnyRef`. `AnyVal` is the supertype of all value types, which `AnyRef` is the supertype of all "reference types" or classes. All Scala and Java classes are subtypes of `AnyRef`.
-
-Some of these types are simply Scala aliases for types that exist in Java: `Int` is `int`, `Boolean` is `boolean`, and `AnyRef` is `java.lang.Object`.
-
-There are also two special types at the *bottom* of the hierarchy. `Nothing` is the type of `throw` expressions, and `Unit` is Scala's equivalent of `void`. It might seem odd that these are subtypes of everything else -- this unique property (that we cannot recreate in our own classes) is what allows us to conveniently write expressions like the following:
-
-~~~ scala
-scala> if(true) {
-     |   123
-     | } else {
-     |   // Nothing is a subtype of Int, so the `if` is an Int overall:
-     |   throw new Exception("division by zero")
-     | }
-res2: Int = 123
-~~~
-
-Note that the result type is `Int` -- the least common supertype of `Int` and `Nothing`.
-
 ## Exploiting Types
 
 In one sense a type is just a collection of values that share common properties. More than that, though, a type can represent **any property of a program that we can establish without evaluating it.**
@@ -178,7 +154,7 @@ case class Square(size: Double) extends Shape {
 ~~~
 </div>
 
-### Shaping up 2
+### Shaping up 2 (da streets)
 
 The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape` -- it's also a type of `Rectangle` where the width and height are the same.
 

@@ -3,8 +3,7 @@ layout: page
 title: For Comprehensions Redux
 ---
 
-In the [previous section](for-comprehensions.html) we looked at the fundamentals of for comprehensions. In this section we're going to looking at some handy additional features in for comprehensions,  and finally we'll briefly look at the relationship between for comprehensions and monads.
-
+[Earlier](for-comprehensions.html) we looked at the fundamentals of for comprehensions. In this section we're going to looking at some handy additional features in for comprehensions,  and finally we'll briefly look at the relationship between for comprehensions and monads.
 
 ## Filtering
 
@@ -16,7 +15,6 @@ res0: Seq[Int] = List(1, 2)
 ~~~
 
 The code is converted to a `withFilter` call, or if that doesn't exist to `filter`.
-
 
 ## Parallel Iteration
 
@@ -55,27 +53,25 @@ res4: Seq[(Int, Int)] = List((1,0), (2,1), (3,2))
 
 Finally note that `zip` and `zipWithIndex` are available on all collection classes, including `Map` and `Set`.
 
-
 ## Pattern Matching
 
-The pattern on the left hand side of a generator is not named accidentally. We can include any pattern there and only process results matching the pattern. This provides another way of filtering results. So instead of
+The pattern on the left hand side of a generator is not named accidentally. We can include any pattern there and only process results matching the pattern. This provides another way of filtering results. So instead of:
 
 ~~~ scala
 scala> for(x <- Seq(1, 2, 3).zip(Seq(4, 5, 6))) yield { val (a, b) = x; a + b }
 res3: Seq[Int] = List(5, 7, 9)
 ~~~
 
-we can write
+we can write:
 
 ~~~ scala
 scala> for((a, b) <- Seq(1, 2, 3).zip(Seq(4, 5, 6))) yield a + b
 res6: Seq[Int] = List(5, 7, 9)
 ~~~
 
-
 ## Intermediate Results
 
-It is often useful to create an intermediate result within a sequence of generators. We can do this by inserting an assignment expression like so
+It is often useful to create an intermediate result within a sequence of generators. We can do this by inserting an assignment expression like so:
 
 ~~~ scala
 scala> for {

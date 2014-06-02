@@ -38,6 +38,43 @@ java.lang.IndexOutOfBoundsException: 3
         at ...
 ~~~
 
+We can also access the head and tail of the sequence:
+
+~~~ scala
+scala> sequence.head
+res0: Int = 1
+
+scala> sequence.tail
+res1: Seq[Int] = List(2, 3)
+
+scala> sequence.tail.head
+res2: Int = 2
+~~~
+
+Again, trying to access an element that doesn't exist throws an exception:
+
+~~~ scala
+scala> Seq().head
+java.util.NoSuchElementException: head of empty list
+  at scala.collection.immutable.Nil$.head(List.scala:337)
+  ...
+
+scala> Seq().tail
+java.lang.UnsupportedOperationException: tail of empty list
+  at scala.collection.immutable.Nil$.tail(List.scala:339)
+  ...
+~~~
+
+If we want to safely get the `head` without yielding an exception, we can use `headOption`:
+
+~~~ scala
+scala> sequence.headOption
+res7: Option[Int] = Some(1)
+
+scala> Seq().headOption
+res8: Option[Nothing] = None
+~~~
+
 ### Sequence length
 
 Fortunately, finding the length of a sequence is straightforward:
@@ -59,7 +96,7 @@ res4: Boolean = true
 The `find` method is like a generalised version of `contains` - we provide a test function and the sequence returns the first item for which the test returns `true`:
 
 ~~~ scala
-scala> sequence.find(_ == "a")
+scala> sequence.find(_ == 3)
 res5: Option[Int] = Some(3)
 
 scala> sequence.find(_ > 4)
@@ -73,6 +110,15 @@ The `filter` method is a variant of `find` that returns *all* the matching eleme
 ~~~ scala
 scala> sequence.filter(_ > 1)
 res7: Seq[Int] = List(2, 3)
+~~~
+
+### Sorting elements
+
+We can use the `sortWith` method to sort a list using a binary function. The function takes two list items as parameters and returns `true` if they are in the correct order and `false` if they are the wrong way around:
+
+~~~ scala
+scala> sequence.sortWith(_ < _)
+res 8: Seq[Int] = List(3, 2, 1)
 ~~~
 
 ### Appending/prepending elements
@@ -114,6 +160,7 @@ res10: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 
 Another of Scala's general syntax rules -- any method ending with a `:` character becomes **right associative** when written as an infix operator. This rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). We'll look at this in more detail in a moment.
 
+{% comment %}
 ### Updating elements
 
 The `updated` method replaces the *nth* item in a sequence with a new value:
@@ -122,10 +169,11 @@ The `updated` method replaces the *nth* item in a sequence with a new value:
 scala> sequence.updated(0, 5)
 res11: Seq[Int] = List(5, 2, 3)
 ~~~
+{% endcomment %}
 
 ## Lists
 
-The default implementation of `Seq` is a `List`, which is a classic [linked list](http://en.wikipedia.org/wiki/Linked_list) data structure. Some Scala libraries work specifically with `Lists` rather than using more generic types like `Seq`. For this reason we should familiarize ourselves with a couple of list-specific methods.
+The default implementation of `Seq` is a `List`, which is a classic [linked list](http://en.wikipedia.org/wiki/Linked_list) data structure similar to the one we developed in an earlier exercise. Some Scala libraries work specifically with `Lists` rather than using more generic types like `Seq`. For this reason we should familiarize ourselves with a couple of list-specific methods.
 
 We can write an empty list using the singleton object `Nil`:
 
@@ -224,22 +272,28 @@ def someMethod = {
 
 We have covered a variety of methods that operate on sequences. Here is a type table of everything we have seen so far:
 
-|-------------+------------+--------------------+-------------|
-| Method      | We have    | We provide         | We get      |
-|-------------+------------+--------------------+-------------|
-| `Seq(...)`  |            | `[A]`, ...         | `Seq[A]`    |
-| `apply`     | `Seq[A]`   | `Int`              | `A`         |
-| `length`    | `Seq[A]`   |                    | `Int`       |
-| `contains`  | `Seq[A]`   | `A`                | `Boolean`   |
-| `find`      | `Seq[A]`   | `A => Boolean`     | `Option[A]` |
-| `filter`    | `Seq[A]`   | `A`                | `Seq[A]`    |
-| `:+`, `+:`  | `Seq[A]`   | `A`                | `Seq[A]`    |
-| `++`        | `Seq[A]`   | `Seq[A]`           | `Seq[A]`    |
-| `updated`   | `Seq[A]`   | `Int` `A`          | `Seq[A]`    |
-| `::`        | `List[A]`  | `A`                | `List[A]`   |
-| `:::`       | `List[A]`  | `List[A]`          | `List[A]`   |
-|=============================================================|
+|-------------+------------+---------------------+-------------|
+| Method      | We have    | We provide          | We get      |
+|-------------+------------+---------------------+-------------|
+| `Seq(...)`  |            | `[A]`, ...          | `Seq[A]`    |
+| `apply`     | `Seq[A]`   | `Int`               | `A`         |
+| `head`      | `Seq[A]`   |                     | `A`         |
+| `tail`      | `Seq[A]`   |                     | `Seq[A]`    |
+| `length`    | `Seq[A]`   |                     | `Int`       |
+| `contains`  | `Seq[A]`   | `A`                 | `Boolean`   |
+| `find`      | `Seq[A]`   | `A => Boolean`      | `Option[A]` |
+| `filter`    | `Seq[A]`   | `A => Boolean`      | `Seq[A]`    |
+| `sortWith`  | `Seq[A]`   | `(A, A) => Boolean` | `Seq[A]`    |
+| `:+`, `+:`  | `Seq[A]`   | `A`                 | `Seq[A]`    |
+| `++`        | `Seq[A]`   | `Seq[A]`            | `Seq[A]`    |
+| `::`        | `List[A]`  | `A`                 | `List[A]`   |
+| `:::`       | `List[A]`  | `List[A]`           | `List[A]`   |
+|==============================================================|
 {: .table .table-bordered .table-responsive }
+
+{% comment %}
+| `updated`   | `Seq[A]`   | `Int` `A`           | `Seq[A]`    |
+{% endcomment %}
 
 We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement. This has a number of features that aren't present in Java -- it can be used to import methods from objects, and be written anywhere in our code.
 
@@ -247,16 +301,41 @@ We can always use `Seq` and `List` in our code. Other collections can be brought
 
 ### Documentation
 
-Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the following questions:
+Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the follo
 
  - There is a synonym of `length` defined on `Seq` -- what is it called?
 
- - There are two methods for retrieving the head of a `List` -- what are they called and how do they differ?
+ - There are two methods for retrieving the first item in a `List` --
+   what are they called and how do they differ?
 
-Tip: There is a link to the Scala API documentation in the left-hand menu of the course notes.
+ - What method can be used used to display the elements of the sequence as a string?
+
+ - What method of `Option` can be used to determine whether the option contains a value?
+
+**Tip:** There is a link to the Scala API documentation in the left-hand menu of the course notes.
 
 <div class="solution">
+The synonym for `length` is `size`.
 
+The methods for retrieving the first element in a list are:
+ - `head`       -- returns `A`, throwing an exception if the list is empty
+ - `headOption` -- returns `Option[A]`, returning `None` if the list is empty
+
+The `mkString` method allows us to quickly display a `Seq` as a `String`:
+
+~~~ scala
+Seq(1, 2, 3).mkString(",")               // returns "1,2,3"
+Seq(1, 2, 3).mkString("[ ", ", ", " ]"") // returns "[ 1, 2, 3 ]"
+~~~
+
+`Options` contain two methods, `isDefined` and `isEmpty`, that we can use as a quick test:
+
+~~~ scala
+Some(123).isDefined // returns true
+Some(123).isEMpty   // returns false
+None.isDefined      // returns false
+None.isEMpty        // returns true
+~~~
 </div>
 
 ### Animals
@@ -293,3 +372,147 @@ You might expect a type error here, but Scala is capable of determining the leas
 
 In most real code appending an `Int` to a `Seq[String]` would be an error. In practice, the type annotations we place on methods and fields protect against this kind of type error, but be aware of this behaviour just in case.
 </div>
+
+### Intranet Movie Database
+
+Let's revisit our films and directors example from the [Classes](/classes) chapter.
+
+The code below is a partial rewrite of the previous sample code in which `Films` are stored as a field of `Director` instead of the other way around. Copy and paste this into a new Scala worksheet and continue with the exercises below:
+
+~~~ scala
+case class Film(
+  name: String,
+  yearOfRelease: Int,
+  imdbRating: Double)
+
+case class Director(
+  firstName: String,
+  lastName: String,
+  yearOfBirth: Int,
+  films: Seq[Film])
+
+val memento           = new Film("Memento", 2000, 8.5)
+val darkKnight        = new Film("Dark Knight", 2008, 9.0)
+val inception         = new Film("Inception", 2010, 8.8)
+
+val highPlainsDrifter = new Film("High Plains Drifter", 1973, 7.7)
+val outlawJoseyWales  = new Film("The Outlaw Josey Wales", 1976, 7.9)
+val unforgiven        = new Film("Unforgiven", 1992, 8.3)
+val granTorino        = new Film("Gran Torino", 2008, 8.2)
+val invictus          = new Film("Invictus", 2009, 7.4)
+
+val predator          = new Film("Predator", 1987, 7.9)
+val dieHard           = new Film("Die Hard", 1988, 8.3)
+val huntForRedOctober = new Film("The Hunt for Red October", 1990, 7.6)
+val thomasCrownAffair = new Film("The Thomas Crown Affair", 1999, 6.8)
+
+val eastwood = new Director("Clint", "Eastwood", 1930,
+  Seq(highPlainsDrifter, outlawJoseyWales, unforgiven, granTorino, invictus))
+
+val mcTiernan = new Director("John", "McTiernan", 1951,
+  Seq(predator, dieHard, huntForRedOctober, thomasCrownAffair))
+
+val nolan = new Director("Christopher", "Nolan", 1970,
+  Seq(memento, darkKnight, inception))
+
+val someGuy = new Director("Just", "Some Guy", 1990,
+  Seq())
+
+val directors = Seq(eastwood, mcTiernan, nolan, someGuy)
+
+// TODO: Write your code here!
+~~~
+
+Using this sample code, write implementations of the following methods:
+
+ - Accept a parameter `numberOfFilms` of type `Int` -- find all directors
+   who have directed more than `numberOfFilms`:
+
+   <div class="solution">
+    We use `filter` because we are expecting more than one result:
+
+   ~~~ scala
+   def directorsWithBackCatalogOfSize(numberOfFilms: Int): Seq[Director] =
+     directors.filter(_.films.length > numberOfFilms)
+   ~~~
+   </div>
+
+ - Accept a parameter `year` of type `Int` -- find a director who was born
+   before that year:
+
+   <div class="solution">
+   We use `find` because we are expecting at most one result. This solution
+   will return the first director found who matches the criteria of the search:
+
+   ~~~ scala
+   def directorBornBefore(year: Int): Option[Director] =
+     directors.find(_.yearOfBirth < year)
+   ~~~
+
+   The `Option` type is discussed in more detail later this chapter.
+   </div>
+
+ - Accept two parameters, `year` and `numberOfFilms`, and return a list of directors
+   who were born before `year` who have also directed more than than `numberOfFilms`:
+
+   <div class="solution">
+   This solution performs each part of the query separately and uses
+   `filter` and `contains` to calculate the intersection of the results:
+
+   ~~~ scala
+   def (year: Int, numberOfFilms: Int): Seq[Director] = {
+     val byAge   = directors.filter(_.yearOfBirth < year)
+     val byFilms = directors.filter(_.films.length > numberOfFilms)
+     byAge.filter(byFilms.contains)
+   }
+   ~~~
+   </div>
+
+ - Accept an optional parameter `ascending` of type `Boolean`. Sort the directors by age
+   in the specified order:
+
+   <div class="solution">
+   Here is one solution. Note that sorting by ascending age is the same as sorting by descending year of birth:
+
+   ~~~ scala
+   def directorsSortedByAge(ascending: Boolean = true) =
+     if(ascending) {
+       directors.sortedWith((a, b) => a.yearOfBirth < b.yearOfBirth)
+     } else {
+       directors.sortedWith((a, b) => a.yearOfBirth > b.yearOfBirth)
+     }
+   ~~~
+
+   Because Scala is a functional language, we can also factor our code as follows:
+
+   ~~~ scala
+   def directorsSortedByAge(ascending: Boolean = true) =
+     val comparator =
+       if(ascending) {
+         (a, b) => a.yearOfBirth < b.yearOfBirth
+       } else {
+         (a, b) => a.yearOfBirth > b.yearOfBirth
+       }
+
+     directors.sortedWith(comparator)
+   }
+   ~~~
+
+   Here is a final refactoring that is slightly less efficient because it rechecks
+   the value of `ascending` multiple times.
+
+   ~~~ scala
+   def directorsSortedByAge(ascending: Boolean = true) =
+     directors.sortedWith { (a, b) =>
+       if(ascending) {
+         a.yearOfBirth < b.yearOfBirth
+       } else {
+         a.yearOfBirth > b.yearOfBirth
+       }
+     }
+   ~~~
+
+   Note the use of braces instead of parentheses on the call to `sortedWith` in the
+   last example. We can use this syntax on any method call of one argument to give
+   it a control-structure-like look and feel.
+   </div>

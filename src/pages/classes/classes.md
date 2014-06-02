@@ -153,6 +153,34 @@ res12: String = Greetings, Mr Awesome Guy
 This is particularly useful when creating methods and constructors with large number of parameters.
 </div>
 
+## Scala's Type Hierarchy
+
+Unlike Java, which separates primitive and object types, everything in Scala is an object. As a result, "primitive" value types like `Int` and `Boolean` form part of the same type hierarchy as classes and traits.
+
+<img src="scala-type-hierarchy.svg" alt="Scala type hierarchy">
+
+Scala has a grand supertype called `Any`, under which there are two types, `AnyVal` and `AnyRef`. `AnyVal` is the supertype of all value types, which `AnyRef` is the supertype of all "reference types" or classes. All Scala and Java classes are subtypes of `AnyRef`.
+
+Some of these types are simply Scala aliases for types that exist in Java: `Int` is `int`, `Boolean` is `boolean`, and `AnyRef` is `java.lang.Object`.
+
+There are two special types at the *bottom* of the hierarchy. `Nothing` is the type of `throw` expressions, and `Null` is the type of the value `null`. These special types are subtypes of everything else, which helps us assign types to `throw` and `null` while keeping other types in our code sane. The following code illustrates this:
+
+~~~ scala
+scala> def badness = throw new Exception("Error")
+badness: Nothing
+
+scala> null
+res1: Null = null
+
+scala> if(true) 123 else badness
+res2: Int = 123
+
+scala> if(false) "it worked" else null
+res3: String = null
+~~~
+
+Although the types of `badness` and `res1` are `Nothing` and `Null` respectively, the types of `res2` and `res3` are still sensible. This is because `Int` is the least common supertype of `Int` and `Nothing`, and `String` is the least common supertype of `String` and `Null`.
+
 ## Take Home Points
 
 In this section we learned how to define **classes**, which are **types** of object.
@@ -161,15 +189,121 @@ Classes let us *abstract across objects* that have similar properties.
 
 The properties of the objects of a class take the form of **fields** and **methods**. Fields are pre-computed values stored within the object and methods are computations we can call.
 
-Finally, we learned the main syntactic rules about defining methods:
+We learned the main syntactic rules about defining methods:
 
  - **parameters require types** and can optionally have **default values**;
  - **return types may be omitted** in many cases;
  - all methods can be called using **keyword parameters**.
 
+Finally we learned about Scala's type hierarchy, including the overlap with Java's type hierarchy, the special types `Any`, `AnyRef`, `AnyVal`, `Nothing`, `Null`, and `Unit`, and the fact that Java and Scala classes both occupy the same subtree of the type hierarchy.
+
 ## Exercises
 
 We now have enough machinery to have some fun playing with classes.
+
+### Directorial Debut
+
+Write two classes, `Director` and `Film`, with fields and methods as follows:
+
+ - `Director` should contain:
+    - a field `firstName` of type `String`
+    - a field `lastName` of type `String`
+    - a field `yearOfBirth` of type `Int`
+    - a method called `name` that accepts no parameters
+      and returns the full name
+
+ - `Film` should contain:
+    - a field `name` of type `String`
+    - a field `yearOfRelease` of type `Int`
+    - a field `imdbRating` of type `Double`
+    - a field `director` of type `Director`
+    - a method `directorsAge` that returns
+      the age of the director at the time of release
+    - a method `isDirectedBy` that accepts a `Director`
+      as a parameter and returns a `Boolean`
+
+Copy-and-paste the following demo data into your code and adjust your constructors so that the code works without modification:
+
+~~~ scala
+val eastwood          = new Director("Clint", "Eastwood", 1930)
+val mcTiernan         = new Director("John", "McTiernan", 1951)
+val nolan             = new Director("Christopher", "Nolan", 1970)
+val someGuy           = new Director("Just", "Some Guy", 1990)
+
+val memento           = new Film("Memento", 2000, 8.5, nolan)
+val darkKnight        = new Film("Dark Knight", 2008, 9.0, nolan)
+val inception         = new Film("Inception", 2010, 8.8, nolan)
+
+val highPlainsDrifter = new Film("High Plains Drifter", 1973, 7.7, eastwood)
+val outlawJoseyWales  = new Film("The Outlaw Josey Wales", 1976, 7.9, eastwood)
+val unforgiven        = new Film("Unforgiven", 1992, 8.3, eastwood)
+val granTorino        = new Film("Gran Torino", 2008, 8.2, eastwood)
+val invictus          = new Film("Invictus", 2009, 7.4, eastwood)
+
+val predator          = new Film("Predator", 1987, 7.9, mcTiernan)
+val dieHard           = new Film("Die Hard", 1988, 8.3, mcTiernan)
+val huntForRedOctober = new Film("The Hunt for Red October", 1990, 7.6, mcTiernan)
+val thomasCrownAffair = new Film("The Thomas Crown Affair", 1999, 6.8, mcTiernan)
+
+eastwood.yearOfBirth         // should be 1930
+dieHard.director.name        // should be "John McTiernan"
+invictus.isDirectedBy(nolan) // should be false
+~~~
+
+Implement a method of `Film` called `copy`. This method should accept the same parameters as the constructor and create a new copy of the film. Give each parameter a default value so you can copy a film changing any subset of its values:
+
+~~~ scala
+highPlainsDrifter.copy(name = "L'homme des hautes plaines")
+// returns Film("L'homme des hautes plaines", 1973, 7.7, /* etc */)
+
+thomasCrownAffair.copy(yearOfRelease = 1968,
+  director = new Director("Norman", "Jewison", 1926))
+// returns Film("The Thomas Crown Affair", 1926, /* etc */)
+
+inception.copy().copy().copy()
+// returns a new copy of `inception`
+~~~
+
+<div class="solution">
+This exercise provides some hands on experience writing Scala classes, fields and methods. The model solution is as follows:
+
+~~~ scala
+class Director(
+  val firstName: String,
+  val lastName: String,
+  val yearOfBirth: Int) {
+
+  def name: String =
+    s"$firstName $lastName"
+
+  def copy(
+    firstName: String = this.firstName,
+    lastName: String = this.lastName,
+    yearOfBirth: Int = this.yearOfBirth) =
+    new Director(firstName, lastName, yearOfBirth)
+}
+
+class Film(
+  val name: String,
+  val yearOfRelease: Int,
+  val imdbRating: Double,
+  val director: Director) {
+
+  def directorsAge =
+    director.yearOfBirth - yearOfRelease
+
+  def isDirectedBy(director: Director) =
+    this.director == director
+
+  def copy(
+    name: String = this.name,
+    yearOfRelease: Int = this.yearOfRelease,
+    imdbRating: Double = this.imdbRating,
+    director: Director = this.director) =
+    new Film(name, yearOfRelease, imdbRating, director)
+}
+~~~
+</div>
 
 ### A Simple Counter
 

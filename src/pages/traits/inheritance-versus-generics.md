@@ -1,47 +1,9 @@
 ---
 layout: page
-title: "This contains That: Generics"
+title: "Inheritance versus Generics"
 ---
 
-In the previous sections we saw how to model relationships such as **this and that** and **this or that** using *inheritance* -- a classic object oriented design pattern. In this section we will look at how to model these relationships in another way using **aggregation** -- grouping objects together using other objects.
-
-We already know how to do simple aggregation in simple cases using fields. Here we start generalising over the types in our fields using **generic types**.
-
-## Generic Types
-
-Generic types naturally arise in collections, so let's consider a really simple collection -- a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
-
-~~~ scala
-scala> case class Box[A](val value: A)
-defined class Box
-
-scala> Box(2)
-res0: Box[Int] = Box(2)
-
-scala> res0.value
-res1: Int = 2
-
-scala> Box("hi") // if we omit the type parameter, scala will infer its value
-res2: Box[String] = Box(hi)
-
-scala> res2.value
-res3: String = hi
-~~~
-
-The syntax `[A]` is called a **type parameter** -- it binds a name to a type. Wherever `A` occurs in our class definition we will substitute in the same type. This works in the same way that binding a name to a value (using `val`) allows us to substitute in the value wherever the name occurs. The only difference is that we're operating on types rather than values.
-
-We can also add type parameters to methods, which limits the scope of the parameter to the method declaration and body:
-
-~~~ scala
-scala> def generic[A](in: A): A = in
-generic: [A](in: A)A
-
-scala> generic[String]("foo")
-res10: String = foo
-
-scala> generic(1) // again, if we omit the type parameter, scala will infer it
-res11: Int = 1
-~~~
+In previous sections we saw how to model relationships such as **this and that** and **this or that** using *inheritance* -- a classic object oriented design pattern. In this section we will look at how to model these relationships using generics and aggregation.
 
 ## This and That
 
@@ -62,7 +24,7 @@ def intAndString: IntAndString = // ...
 
 case class BooleanAndDouble(booleanValue: Boolean, doubleValue: Double)
 
-def booleanAndDoule: BoleanAndDouble = // ...
+def booleanAndDouble: BooleanAndDouble = // ...
 ~~~
 
 The answer is to use generics to create a **product type** -- for example a `Pair` -- that contains the relevant data for *both* return types:

@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>app</key>
-	<string>com.bohemiancoding.sketch.beta</string>
+	<string>com.bohemiancoding.sketch</string>
 	<key>build</key>
-	<integer>5347</integer>
+	<integer>5355</integer>
 	<key>commit</key>
-	<string>9c36051e8fd492279e960780830d475c5696520c</string>
+	<string>b7d299b0a34651d1a0e066786b75aa36168d5809</string>
 	<key>fonts</key>
 	<array>
 		<string>OpenSans</string>
@@ -23,14 +23,9 @@
 		<string>OpenSans</string>
 		<string>OpenSans</string>
 		<string>OpenSans</string>
-		<string>OpenSans</string>
-		<string>OpenSans</string>
-		<string>OpenSans</string>
-		<string>OpenSans</string>
-		<string>OpenSans</string>
 	</array>
 	<key>length</key>
-	<integer>64351</integer>
+	<integer>35485</integer>
 	<key>version</key>
 	<integer>18</integer>
 </dict>
