@@ -196,7 +196,7 @@ The names `IntImplicits` and `IntOps` are quite vague -- we would probably name 
 Extend your previous example to give `Int` an extra method called `times` that accepts a function of type `Int => Unit` as an argument and executes it `n` times. Example usage:
 
 ~~~ scala
-scala> 3.times(i => println("Look - it's the number $i!"))
+scala> 3.times(i => println(s"Look - it's the number $i!"))
 Look - it's the number 0!
 Look - it's the number 1!
 Look - it's the number 2!

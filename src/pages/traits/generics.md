@@ -168,21 +168,27 @@ Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this ins
 
 ~~~ scala
 sealed trait LinkedList[A] {
-  def length: Int
-  def apply(index: Int): A
-  def contains(item: A): Boolean
+  def head: A
+  def tail: LinkedList[A]
+
+  def length: Int =
+    tail.length + 1
+
+  def apply(index: Int): A =
+    if(index == 0) head else tail(index - 1)
+
+  def contains(item: A): Boolean =
+    (item == head) || (tail contains item)
 }
 
-case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
-  def length = tail.length + 1
-  def apply(index: Int) = if(index == 0) head else tail(index - 1)
-  def contains(item: A) = (item == head) || (tail contains item)
-}
+case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
 
 case class Empty[A]() extends LinkedList[A] {
-  def length = 0
-  def apply(index: Int) = throw new Exception("List not long enough!")
-  def contains(item: A) = false
+  def head = throw new Exception("Attempt to get head of an empty list!")
+  def tail = throw new Exception("Attempt to get head of an empty list!")
+
+  override def length = 0
+  override def contains(item: A) = false
 }
 ~~~
 </div>

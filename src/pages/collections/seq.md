@@ -38,6 +38,43 @@ java.lang.IndexOutOfBoundsException: 3
         at ...
 ~~~
 
+We can also access the head and tail of the sequence:
+
+~~~ scala
+scala> sequence.head
+res0: Int = 1
+
+scala> sequence.tail
+res1: Seq[Int] = List(2, 3)
+
+scala> sequence.tail.head
+res2: Int = 2
+~~~
+
+Again, trying to access an element that doesn't exist throws an exception:
+
+~~~ scala
+scala> Seq().head
+java.util.NoSuchElementException: head of empty list
+  at scala.collection.immutable.Nil$.head(List.scala:337)
+  ...
+
+scala> Seq().tail
+java.lang.UnsupportedOperationException: tail of empty list
+  at scala.collection.immutable.Nil$.tail(List.scala:339)
+  ...
+~~~
+
+If we want to safely get the `head` without yielding an exception, we can use `headOption`:
+
+~~~ scala
+scala> sequence.headOption
+res7: Option[Int] = Some(1)
+
+scala> Seq().headOption
+res8: Option[Nothing] = None
+~~~
+
 ### Sequence length
 
 Fortunately, finding the length of a sequence is straightforward:
@@ -59,7 +96,7 @@ res4: Boolean = true
 The `find` method is like a generalised version of `contains` - we provide a test function and the sequence returns the first item for which the test returns `true`:
 
 ~~~ scala
-scala> sequence.find(_ == "a")
+scala> sequence.find(_ == 3)
 res5: Option[Int] = Some(3)
 
 scala> sequence.find(_ > 4)
@@ -240,10 +277,12 @@ We have covered a variety of methods that operate on sequences. Here is a type t
 |-------------+------------+---------------------+-------------|
 | `Seq(...)`  |            | `[A]`, ...          | `Seq[A]`    |
 | `apply`     | `Seq[A]`   | `Int`               | `A`         |
+| `head`      | `Seq[A]`   |                     | `A`         |
+| `tail`      | `Seq[A]`   |                     | `Seq[A]`    |
 | `length`    | `Seq[A]`   |                     | `Int`       |
 | `contains`  | `Seq[A]`   | `A`                 | `Boolean`   |
 | `find`      | `Seq[A]`   | `A => Boolean`      | `Option[A]` |
-| `filter`    | `Seq[A]`   | `A`                 | `Seq[A]`    |
+| `filter`    | `Seq[A]`   | `A => Boolean`      | `Seq[A]`    |
 | `sortWith`  | `Seq[A]`   | `(A, A) => Boolean` | `Seq[A]`    |
 | `:+`, `+:`  | `Seq[A]`   | `A`                 | `Seq[A]`    |
 | `++`        | `Seq[A]`   | `Seq[A]`            | `Seq[A]`    |
@@ -341,7 +380,7 @@ Let's revisit our films and directors example from the [Classes](/classes) chapt
 The code below is a partial rewrite of the previous sample code in which `Films` are stored as a field of `Director` instead of the other way around. Copy and paste this into a new Scala worksheet and continue with the exercises below:
 
 ~~~ scala
-class Film(
+case class Film(
   name: String,
   yearOfRelease: Int,
   imdbRating: Double)
@@ -376,7 +415,7 @@ val mcTiernan = new Director("John", "McTiernan", 1951,
 val nolan = new Director("Christopher", "Nolan", 1970,
   Seq(memento, darkKnight, inception))
 
-val someGuy = new Director("Just”, "Some Guy”, 1990,
+val someGuy = new Director("Just", "Some Guy", 1990,
   Seq())
 
 val directors = Seq(eastwood, mcTiernan, nolan, someGuy)

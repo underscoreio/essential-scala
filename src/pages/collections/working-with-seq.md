@@ -256,45 +256,17 @@ directors.foreach { director =>
 
 #### From the Archives
 
-And now find the *earliest film* by any director. Use non-side-effecting or side-effecting code as you see fit:
+And now find the *earliest film* by any director:
 
 <div class="solution">
-Here's the side-effecting code:
-
-~~~ scala
-{
-  var best: Option[Film] = None
-
-  directors.foreach { director =>
-    director.films.foreach { film =>
-      best match {
-        case None => best = Some(film)
-        case Some(best) if film.year < best.year => best = Some(film)
-      }
-    }
-  }
-
-  best
-}
-~~~
-
-and here's a non-side-effecting solution:
+Here's the solution:
 
 ~~~ scala
 directors
   .flatMap(director => director.films)
-  .foldLeft[Option[Film]](None) { (bestSoFar, film) =>
-    bestSoFar match {
-      case Some(bestSoFar) =>
-        if (bestSoFar.year < film.year) Some(bestSoFar) else Some(film)
-
-      case None =>
-        Some(film)
-    }
-  }
+  .sortWith((a, b) => a.yearOfRelease < b.yearOfRelease)
+  .headOption
 ~~~
-
-In both cases the result is an `Option[Film]` and not a `Film` to deal with the possibility that there are  no directors and no films. The solutions start by reducing the list of directors to a list of films, and then iterate over the list testing the years and accumulating the earliest film.
 </div>
 
 ### Do-It-Yourself
@@ -314,7 +286,7 @@ Thus the solution is:
 
 ~~~ scala
 def smallest(seq: Seq[Int]): Int =
-  seq.foldLeft(Int.MaxValue)(Math.min _)
+  seq.foldLeft(Int.MaxValue)(math.min)
 ~~~
 </div>
 

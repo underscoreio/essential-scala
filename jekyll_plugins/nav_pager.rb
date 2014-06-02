@@ -9,11 +9,11 @@ module Jekyll
       prev_index = curr_index && (curr_index > 0) && curr_index - 1
       next_index = curr_index && (curr_index < toc.length - 1) && curr_index + 1
 
-      prev_path = prev_index && toc[prev_index]
-      prev_page = prev_index && site.pages.find { |page| page.url == prev_path }
+      prev_path  = prev_index && toc[prev_index]
+      prev_page  = prev_index && site.pages.find { |page| page.url == prev_path }
 
-      next_path = next_index && toc[next_index]
-      next_page = next_index && site.pages.find { |page| page.url == next_path }
+      next_path  = next_index && toc[next_index]
+      next_page  = next_index && site.pages.find { |page| page.url == next_path }
 
       ans = '<ul class="nav-pager">'
 

@@ -98,10 +98,10 @@ Lists and sequences can be captured in several ways:
 You can use any object as a fixed-length extractor pattern by giving it a method called `unapply` with a particular type signature:
 
 ~~~ scala
-def unapply(value: A): Boolean // pattern with 0 parameters
-def unapply(value: A): Option[B]            // 1 parameter
-def unapply(value: A): Option[(B1, B2)]     // 2 parameters
-                                            // etc...
+def unapply(value: A): Boolean           // pattern with 0 parameters
+def unapply(value: A): Option[B]                      // 1 parameter
+def unapply(value: A): Option[(B1, B2)]               // 2 parameters
+                                                      // etc...
 ~~~
 
 Each pattern matches values of type `A` and captures arguments of type `B`, `B1`, and so on. Case class patterns and `::` are examples of fixed-length extractors.
@@ -157,12 +157,12 @@ The extractor below splits a string into its component words:
 
 ~~~ scala
 scala> object Words {
-     |   def unapplySeq(str: String) = Some(str.split(" " ).toSeq)
+     |   def unapplySeq(str: String) = Some(str.split(" ").toSeq)
      | }
 defined module Words
 
 scala> "the quick brown fox" match {
-     |   case Words(a, b, c) => s"3 words: $a $b $c"
+     |   case Words(a, b, c)    => s"3 words: $a $b $c"
      |   case Words(a, b, c, d) => s"4 words: $a $b $c $d"
      | }
 res0: String = 4 words: the quick brown fox
@@ -182,6 +182,15 @@ scala> "the quick brown fox" match {
      |   case Words(a, b, _*) => a + b
      | }
 res2: String = "thequick"
+~~~
+
+We can combine wildcard patterns with the `@` operator to capture the remaining elements in the sequence:
+
+~~~ scala
+scala> "the quick brown fox" match {
+     |   case Words(a, b, rest @ _*) => rest
+     | }
+res3: Seq[String] = WrappedArray("brown", "fox")
 ~~~
 
 ## Exercises

@@ -215,7 +215,7 @@ Write two classes, `Director` and `Film`, with fields and methods as follows:
  - `Film` should contain:
     - a field `name` of type `String`
     - a field `yearOfRelease` of type `Int`
-    - a field `imdbRating` of type `Int`
+    - a field `imdbRating` of type `Double`
     - a field `director` of type `Director`
     - a method `directorsAge` that returns
       the age of the director at the time of release
@@ -228,7 +228,7 @@ Copy-and-paste the following demo data into your code and adjust your constructo
 val eastwood          = new Director("Clint", "Eastwood", 1930)
 val mcTiernan         = new Director("John", "McTiernan", 1951)
 val nolan             = new Director("Christopher", "Nolan", 1970)
-val someGuy           = new Director("Just”, "Some Guy”, 1990)
+val someGuy           = new Director("Just", "Some Guy", 1990)
 
 val memento           = new Film("Memento", 2000, 8.5, nolan)
 val darkKnight        = new Film("Dark Knight", 2008, 9.0, nolan)
