@@ -233,6 +233,43 @@ We have also seen the difference between methods and fields -- fields refer to v
 
 ## Exercises
 
+### Cat-o-matique
+
+The table below shows the names, colour, and favourite foods of three cats. Define an object for cat. (For experienced programmers: we haven't covered classes yet.)
+
+|-----------+-----------------+-------|
+| Name      | Colour          | Food  |
+|-----------+-----------------+-------|
+| Oswald    | Black           | Milk  |
+| Henderson | Ginger          | Chips |
+| Quentin   | Tabby and white | Curry |
+|=====================================|
+{: .table .table-bordered .table-responsive }
+
+<div class="solution">
+
+This is just a finger exercise to get you used to the syntax of defining objects. You should have a solution similar to the code below.
+
+~~~ scala
+object Oswald {
+  val colour: String = "Black"
+  val food: String = "Milk"
+}
+
+object Henderson {
+  val colour: String = "Ginger"
+  val food: String = "Chips"
+}
+
+object Quentin {
+  val colour: String = "Tabby and white"
+  val food: String = "Curry"
+}
+~~~
+
+</div>
+
+
 ### Square dance!
 
 Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *and calls `square`* as part of its result calculation.
