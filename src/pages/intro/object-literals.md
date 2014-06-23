@@ -24,11 +24,11 @@ res0: Test.type = Test$@1668bd43
 This expression is equivalent to writing a literal like `123` or `"abc"`.
 Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before -- it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
 
-Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions, or more commonly other declarations such as declaring methods, fields, or even more objects. Thus the syntax for an object declaration is
+Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions. It is more common, however, to put declarations such as declaring methods, fields, or even more objects. Thus the syntax for an object declaration is
 
 ~~~ scala
 object name {
-  declarationsAndExpressions
+  declarationOrExpression ...
 }
 ~~~
 
@@ -210,7 +210,7 @@ We have seen the syntax for declaring objects
 
 ~~~ scala
 object name {
-  declarationsAndExpressions
+  declarationOrExpression ...
 }
 ~~~
 
