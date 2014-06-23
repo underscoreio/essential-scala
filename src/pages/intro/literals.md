@@ -115,13 +115,11 @@ Unit is an important concept in Scala. Many of Scala's syntactic constructs are 
 
 ## Take home points
 
-We have been introduced to the basic data types in Scala, which are identical to the basic types available in Java.
+In this section we have seen **literal** expressions, which evaluate to basic data types. These basics types are mostly identical to Java, except for `Unit` which has no equivalent.
 
-We have seen how to write **literal** values of each type. The syntax is, again, very similar to Java.
+We note that every literal expression has a **type**, and evalutes to a **value** -- something which is also true for more complex Scala expressions.
 
-Finally, we have noted that every literal has a **value** and a **type** - something which is also true for more complex Scala expressions.
-
-In the next section we will start combining values into **expressions** and producing code that has useful effects.
+In the next section we will start combining expressions into **compound expressions** and producing code that has useful effects.
 
 ## Exercises
 

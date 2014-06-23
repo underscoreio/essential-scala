@@ -3,18 +3,18 @@ layout: page
 title: Object Literals
 ---
 
-So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. More useful programs will require us to create objects tailored to the problem we're solving. In fact, creating the right objects could be seen as the goal of programming in Scala. We will start by seeing how to **define objects**.
+So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. More useful programs will require us to create objects tailored to the problem we're solving. In fact, creating the right objects could be seen as the goal of programming in Scala. We will start by seeing how to **declare objects** using **object literals**.
 
-We can define an empty object as follows:
+We can declare an empty object as follows:
 
 ~~~ scala
 scala> object Test {}
 defined module Test
 ~~~
 
-Like variable declarations, object declarations are not expressions -- they simply bind a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
+An object declaration is not an expression -- it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
 
-Once we have defined `Test` we can use it in simple expressions, the simplest of which is just the value itself:
+Once we have bound the name `Test` we can use it in simple expressions, where it evalutes to the object we have declared. The simplest expression is just the name on its own, which evalutes to the value itself:
 
 ~~~ scala
 scala> Test
@@ -23,6 +23,16 @@ res0: Test.type = Test$@1668bd43
 
 This expression is equivalent to writing a literal like `123` or `"abc"`.
 Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before -- it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
+
+Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions, or more commonly other declarations such as declaring methods, fields, or even more objects. Thus the syntax for an object declaration is
+
+~~~ scala
+object name {
+  declarationsAndExpressions
+}
+~~~
+
+Let's see how to declare methods and fields.
 
 ## Methods
 
@@ -134,7 +144,7 @@ scala> Test6.name
 res9: String = "Dr Who"
 ~~~
 
-Scala programmers prefer to use immutable fields wherever possible. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` in this course.
+Scala programmers prefer to use immutable fields wherever possible. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` in this course and you should do the same in your Scala programming.
 
 ## Methods versus fields
 
@@ -195,6 +205,29 @@ res12: Int = 42
 ## Take home points
 
 In this section we have created our own objects, given them methods and fields, and referenced them in expressions.
+
+We have seen the syntax for declaring objects
+
+~~~ scala
+object name {
+  declarationsAndExpressions
+}
+~~~
+
+and for declaring methods
+
+~~~ scala
+def name(parameter: type, ...) = bodyExpression
+~~~
+
+and for declaring fields
+
+~~~ scala
+val name = valueExpression
+var name = valueExpression
+~~~
+
+All of these are **declarations**, binding names to values. Declarations are different to expressions in that do not evaluates to values and do not have a type.
 
 We have also seen the difference between methods and fields -- fields refer to values stored within an object, whereas methods refer to computations that produce values.
 
