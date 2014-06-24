@@ -200,23 +200,73 @@ Although the types of `badness` and `res1` are `Nothing` and `Null` respectively
 
 ## Take Home Points
 
-In this section we learned how to define **classes**, which are **types** of object.
-
-Classes let us *abstract across objects* that have similar properties.
+In this section we learned how to define **classes**, which allow us to create many objects with the same **type**. Thus, classes let us *abstract across objects* that have similar properties.
 
 The properties of the objects of a class take the form of **fields** and **methods**. Fields are pre-computed values stored within the object and methods are computations we can call.
 
-We learned the main syntactic rules about defining methods:
+The syntax for declaring classes is
 
- - **parameters require types** and can optionally have **default values**;
- - **return types may be omitted** in many cases;
- - all methods can be called using **keyword parameters**.
+~~~ scala
+class name(parameter: type, ...) {
+  declarationOrExpression ...
+}
+~~~
+
+We create objects from a class by calling the constructor using the keyword `new`.
+
+We also learned about **keyword parameters** and **default parameters**.
 
 Finally we learned about Scala's type hierarchy, including the overlap with Java's type hierarchy, the special types `Any`, `AnyRef`, `AnyVal`, `Nothing`, `Null`, and `Unit`, and the fact that Java and Scala classes both occupy the same subtree of the type hierarchy.
 
 ## Exercises
 
 We now have enough machinery to have some fun playing with classes.
+
+### Cats, Again
+
+Recall the cats from a previous exercise:
+
+|-----------+-----------------+-------|
+| Name      | Colour          | Food  |
+|-----------+-----------------+-------|
+| Oswald    | Black           | Milk  |
+| Henderson | Ginger          | Chips |
+| Quentin   | Tabby and white | Curry |
+|=====================================|
+{: .table .table-bordered .table-responsive }
+
+Define a class `Cat` and then create an object for each cat in the table above.
+
+<div class="solution">
+This is another finger exercise to get you used to the syntax of defining classes.
+
+~~~ scala
+class Cat(val colour: String, val food: String)
+
+val oswald = new Cat("Black", "Milk")
+val henderson = new Cat("Ginger", "Chips")
+val quentin = new Cat("Tabby and white", "Curry")
+~~~
+
+</div>
+
+
+### Cats on the Prowl
+
+Define an object `ChipShop` with a method `willServe`. This method should accept a `Cat` and return `true` if the cat's favourite food is chips, and false otherwise.
+
+<div class="solution">
+~~~ scala
+object ChipShop {
+  def willServe(cat: Cat): Boolean =
+    if(cat.food == "Chips")
+      true
+    else
+      false
+}
+~~~
+</div>
+
 
 ### Directorial Debut
 

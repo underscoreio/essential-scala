@@ -19,6 +19,7 @@ toc:
      - /classes/apply.html
      - /classes/companion-objects.html
      - /classes/case-classes.html
+     - /classes/pattern-matching.html
 
   - head: /traits/index.html
     body:

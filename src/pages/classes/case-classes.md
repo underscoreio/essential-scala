@@ -133,6 +133,15 @@ The differences between a case object and a regular singleton object are:
 
 Case classes are the **bread and butter of Scala data types**. Use them, learn them, love them.
 
+The syntax for declaring a case class is the same as for declaring a class, but with `case` appended
+
+~~~ scala
+case class name(parameter: type, ...) {
+  declarationOrExpression ...
+}
+~~~
+
+
 Case classes have numerous auto-generated methods and features that save typing. We can override this behaviour on a piece-by-piece basis by implementing the relevant methods ourselves.
 
 In Scala 2.10 and earlier we can define case classes containing 0 to 22 fields. In Scala 2.11 (June 2014 release) we gain the ability to define arbitrarily-sized case classes.

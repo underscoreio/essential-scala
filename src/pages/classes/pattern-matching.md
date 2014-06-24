@@ -3,58 +3,30 @@ layout: page
 title: Pattern Matching
 ---
 
-We have seen how to use traits to model data that is of one type or another. Now we'll look at how to use this data. Presumably the distinction between types is important or we wouldn't have bothered making it in the first place. Let's imagine we want to add the ability to email `Visitor`s. We can only email `User`s, because we don't know the email address for `Anonymous` visitors. If we have a `Visitor` how can we tell what subtype we have, and thus if we can email them?
+Until now we have interacted with objects by calling methods or accessing fields. With case classes we can interact in another way, via **pattern matching**.
 
-We're going to look at two solutions: an object-oriented solution based on dynamic dispatch, and a functional solution based on pattern matching.
-
-The object-oriented solution is to add an abstract method to `Visitor` along with implementations in the subtypes. The code looks something like this (trimmed for simplicity).
+Pattern matching is like an extended `if` expression that allows us to evaluate an expression depending on the "shape" of the data. Recall the `Person` case class we've seen in previous examples:
 
 ~~~ scala
-trait Visitor {
-  def email(subject: String, body: String): Unit
-}
-
-case class Anonymous() extends Visitor {
-  // Do nothing; you can't email an anonymous visitor
-  def email(subject: String, body: String) =
-    ()
-}
-
-case class User() extends Visitor {
-  def email(subject: String, body: String) = {
-    reallySendAnEmail(email, subject, body)
-  }
-}
+case class Person(firstName: String, lastName: String)
 ~~~
 
-Then if we have a `Visitor` we can simply call the `email` method and stuff happens, as if by magic.
-
-I maintain **this is a bad design**. As we add more features to do with `Visitor`s we'll find the `Visitor` class getting bigger and bigger. It will be harder to maintain and test, and any system that uses `Visitor` will have to carry around all its dependencies.
-
-A better design is to keep our case classes as [value objects](http://en.wikipedia.org/wiki/Value_object), meaning they shouldn't change (i.e. they are immutable), and they should only have methods that relate directly to the data they hold. The `age` method is fine, as it depends only on the `createdAt` date. The `email` method depends on a whole host of email processing code and thus should not appear in the `Visitor` trait. Instead methods to email `Visitor`s should be in a separate service. Let's call it `EmailService`.
+Now imagine we wanted to implement a `Stormtrooper` that is looking for members of the rebellion. We could use pattern matching like this:
 
 ~~~ scala
-trait EmailService {
-  def email(v: Visitor, subject: String, body: String): Unit = {
-    // What do we put here?
-  }
-}
-~~~
-
-In the `email` method we now need to know if we have a `User` or an `Anonymous`. Scala has an awesome general purpose tool called **pattern matching** that we use in this situation. The code looks like this:
-
-~~~ scala
-trait EmailService {
-  def email(v: Visitor, subject: String, body: String): Unit = {
-    v match {
-      case Anonymous(id, createdAt) =>
-        ()
-      case User(id, address, createdAt) =>
-        reallySendAnEmail(address, subject, body)
+object Stormtrooper {
+  def inspect(person: Person): String =
+    person match {
+      case Person("Luke", "Skywalker") => "Stop rebel scum!"
+      case Person("Han", "Solo") => "Stop rebel scum!"
+      case _ => "Move along"
     }
-  }
 }
 ~~~
+
+This shows the essence of pattern matching.
+
+...
 
 Pattern matching is introduced using the `match` keyword. It is followed by a sequence of `case` expressions. After each `case` keyword is a pattern, an `=>`, and an expression. Pattern matching is itself an expression and thus produces a value.
 
@@ -230,93 +202,3 @@ object XmlImportService {
 </div>
 
 ## Sealed Traits
-
-The Scala compiler won't complain if we miss out a case in our pattern matching, but we will get an exception at runtime. For example:
-
-~~~ scala
-scala> def missingCase(v: Visitor) =
-     |   v match {
-     |     case User(_, _, _) => "Got a user"
-     |   }
-missingCase: (v: Visitor)String
-
-scala> missingCase(Anonymous("a"))
-missingCase(Anonymous("a"))
-scala.MatchError: Anonymous(a,Fri Feb 14 19:47:42 GMT 2014) (of class Anonymous)
-  at .missingCase(<console>:12)
-    ...
-~~~
-
-The reason we don't get a compiler error is that other code could extend `Visitor`, creating new subtypes, so the Scala compiler can't be sure that only the two cases exist. This means that even a pattern match that appears complete could be rendered incomplete by additional subclasses. To avoid compilation errors in some cases but not others the compiler is silent in all cases.
-
-However, when we define `Visitor` we can tell the Scala compiler that we are defining at the same time all the possible subtypes. In this case the compiler can correctly flag incomplete matches and the code above would fail to compile. We can do this by using a `sealed` trait.
-
-We using a sealed trait we must define all the subtypes in the same file. For the `Visitor` example no other subtypes seem plausible -- either a visitor is anonymous or they are not. In this case we should use a sealed trait.
-
-~~~ scala
-sealed trait Visitor {
-  def id: String // A unique id we assign to each user
-  def createdAt: Date // The date this user first visited our site
-
-  // How long has this visitor been around?
-  def age: Long =
-    new Date().getTime() - createdAt.getTime()
-
-}
-
-case class Anonymous(
-  val id: String,
-  val createdAt: Date = new Date()
-) extends Visitor
-
-case class User(
-  val id: String,
-  val email: String,
-  val createdAt: Date = new Date()
-) extends Visitor
-~~~
-
-When we do this, the compiler warns us if we don't have exhaustive pattern matching:
-
-~~~ scala
-scala> def missingCase(v: Visitor) =
-       |  v match {
-       |    case User(_, _, _) => "Got a user"
-       |  }
-<console>:21: warning: match may not be exhaustive.
-It would fail on the following input: Anonymous(_, _)
-               v match {
-               ^
-missingCase: (v: Visitor)String
-~~~
-
-Note that we can still extend subtypes of a sealed trait outside of the file where they are defined. For example, in other code we could extend `User` or `Anonymous`. If we want to prevent this possibility we should declare them as `sealed` (if we want to allow extensions within the file) or `final` if we want to disallow all extensions. For the analytics example it probably doesn't make sense to allow any extension, so the simplified code should look like this:
-
-~~~ scala
-sealed trait Visitor { ... }
-final case class User(...) extends Visitor
-final case class Anonymous(...) extends Visitor
-~~~
-
-Now imagine the problem of parsing HTTP headers. Most of the HTTP headers are defined in various RFCs, and we could define types for these as follows:
-
-~~~ scala
-sealed trait Header { ... }
-final case class Accept(...) extends Header
-final case class AcceptCharset(...) extends Header
-...
-~~~
-
-It certainly doesn't make sense to subtype one of the defined headers so we can defined them as `final`. However custom headers are used all the time, so we need to provide some extension point. To achieve this we can define a `CustomHeader` subtype of `Header` that is neither `sealed` nor `final`. This allows the user to extend `CustomHeader` in their code, but we still retain the benefits of `sealed` and `final` types in ours[^http].
-
-[^http]: There are so many HTTP headers that we're unlikely to perform pattern matching on them, but hopefully you can generalise this example to your own problems.
-
-## Conclusion
-
-We've covered a lot of material. Let's recap the main points.
-
-We've been looking at data that can be one of a number of choices. We can model this by having each case `extend` a common trait. We usually use case classes as the leaf nodes of our hierarchy.
-
-It is good practice to model our data as value objects, and avoid methods that depend on more than the data present in the objects. Instead we can use pattern matching to decompose data and take appropriate action for each case.
-
-Finally, we saw we can used `sealed` and `final` to control how our data can be extended by external users.
