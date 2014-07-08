@@ -20,6 +20,7 @@ toc:
      - /classes/companion-objects.html
      - /classes/case-classes.html
      - /classes/pattern-matching.html
+     - /classes/conclusions.html
 
   - head: /traits/index.html
     body:

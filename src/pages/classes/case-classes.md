@@ -148,6 +148,18 @@ In Scala 2.10 and earlier we can define case classes containing 0 to 22 fields. 
 
 ## Exercises
 
+### Case Cats
+
+Recall that a `Cat` has a `String` colour and food. Define a case class to represent a `Cat`.
+
+<div class="solution">
+Another simple finger exercise.
+
+~~~
+case class Cat(colour: String, food: String)
+~~~
+</div>
+
 ### Roger Ebert Said it Best...
 
 > No good movie is too long and no bad movie is short enough.
