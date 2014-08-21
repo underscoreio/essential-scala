@@ -207,7 +207,7 @@ The properties of the objects of a class take the form of **fields** and **metho
 The syntax for declaring classes is
 
 ~~~ scala
-class name(parameter: type, ...) {
+class Name(parameter: type, ...) {
   declarationOrExpression ...
 }
 ~~~

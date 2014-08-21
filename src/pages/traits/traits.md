@@ -3,21 +3,38 @@ layout: page
 title: "This or That: Traits"
 ---
 
-**Traits** are building blocks for creating classes. They are half-way between Java's concepts of an *abstract class* and an *interface*. A trait can contribute functionality to to multiple classes, and we can build a single class from multiple traits.
+**Traits** are templates for creating classes, in the same way that classes are templates for creating objects. Traits allow us to express that two or more classes can be considered the same, and thus both implement the same operations. In other words, traits allow us to express that multiple classes share a common super-type (outside of the `Any` super-type that all classes share).
 
-Let's start by looking at the differences between a trait and a class.
+<div class="java-tip">
+Traits are very much like Java 8's *interfaces* with *default methods*. If you have not used Java 8, you can think of traits as being like a cross between interfaces and *abstract classes*.
+</div>
 
-## Traits versus Classes
 
-Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
+Plan
+- Example of trait
+- Trait syntax
+- Differences from a class
+- Meaning of a trait (OR)
 
- - **A trait cannot have a constructor** -- we can't create objects directly from a trait. Instead we use one or more traits to create a class, and then create objects from that class.
+## An Example of Traits
 
-   We can base as many classes as we like on a trait, and combine as many traits as we like to create a class.
+Let's start with an example of a trait. Imagine we're modelling visitors to a website. There are two types of visitor: those who have registered on our site and those who are anonymous. We can model these with two classes:
 
- - Traits can define **abstract fields and methods** that have names and type signatures but no implementations. We must specify the implementation by the time we create a class from the trait, but until that point we're free to leave definitions abstract.
+~~~ scala
+import java.util.Date
 
-For example, we can use traits to model visitors to a web site:
+case class Anonymous(id: String, createdAt: Date = new Date())
+
+case class User(
+  id: String,
+  email: String,
+  createdAt: Date = new Date()
+)
+~~~
+
+With these class definitions we're saying that both anonymous and registered visitors have an id and a creation date, but we only know the email address of registered visitors.
+
+There is obvious duplication here, and it would be nice to not have to write the same definitions twice. More important though, is to create some common type for the two kinds of visitors. If they had some type in common (other than `AnyRef` and `Any`) we could write methods that worked on any kind of visitor. We can do this with a trait like so:
 
 ~~~ scala
 import java.util.Date
@@ -30,18 +47,88 @@ trait Visitor {
   def age: Long = new Date().getTime - createdAt.getTime
 }
 
-case class Anonymous(val id: String) extends Visitor {
-  val createdAt = new Date()
-}
+case class Anonymous(val id: String, createdAt: Date = new Date()) extends Visitor
 
 case class User(
-  val id: String,
-  val createdAt: Date = new Date(),
-  val email: String
+  id: String,
+  email: String,
+  createdAt: Date = new Date()
 ) extends Visitor
 ~~~
 
-The trait `Visitor` prescribes two abstract methods: `id` and `createdAt`. It also defines a concrete method, `age`, that is defined in terms of one of the abstract methods.
+Note the two changes:
+
+- we defined the trait `Visitor`; and
+- we declared that `Anonymous` and `User` are subtypes of the `Visitor` trait by using the `extends` keyword.
+
+The `Visitor` trait expresses an interface that any sub-types must implement: they must implement a `String` called `id` and a `createdAt` `Date`. Any sub-type of `Visitor` also automatically has a method `age` as defined in `Visitor`.
+
+By defining the `Visitor` trait we can write methods that work with any sub-type of visitor, like so:
+
+~~~ scala
+scala> def older(v1: Visitor, v2: Visitor): Boolean =
+         v1.createdAt.before(v2.createdAt)
+
+scala> older(Anonymous("1"), User("2", "test@example.com"))
+older(Anonymous("1"), User("2", "test@example.com"))
+res4: Boolean = true
+~~~
+
+Here the method `older` can be called with either an `Anonymous` or a `User` as they are both subtypes of `Visitor`. This illustrates the most important role of using traits, and the one on which we're focusing: defining a logical relationship between traits and classes. Given the definitions above we can say that a `Visitor` *is-a* `User` or an `Anonymous`.
+
+## Trait Syntax
+
+We've seen an example of declaring and using a trait above. Let's quickly summarise the syntax before we move on.
+
+To declare a trait we write
+
+~~~ scala
+trait Name {
+  declarationOrExpression ...
+}
+~~~
+
+Note how this syntax closely mirrors that for declaring a class.
+
+To declare that a class is a subtype of a trait we write
+
+~~~ scala
+class Name(...) extends TraitName {
+  ...
+}
+~~~
+
+More commonly we'll use case classes, but the syntax is the same
+
+~~~ scala
+case class Name(...) extends TraitName {
+ ...
+}
+~~~
+
+## Traits versus Classes
+
+Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
+
+ - **A trait cannot have a constructor** -- we can't create objects directly from a trait. Instead we use one or more traits to create a class, and then create objects from that class. We can base as many classes as we like on a trait.
+
+ - Traits can define **abstract fields and methods** that have names and type signatures but no implementations. We saw this in the `Visitor` trait. We must specify the implementation by the time we create a class from the trait, but until that point we're free to leave definitions abstract.
+
+Let's return to the `Visitor` trait to further explore abstract definitions. Recall the definition of `Visitor` is
+
+~~~ scala
+import java.util.Date
+
+trait Visitor {
+  def id: String      // Unique id assigned to each user
+  def createdAt: Date // Date this user first visited the site
+
+  // How long has this visitor been around?
+  def age: Long = new Date().getTime - createdAt.getTime
+}
+~~~
+
+`Visitor` prescribes two abstract methods: `id` and `createdAt`. It also defines a concrete method, `age`, that is defined in terms of one of the abstract methods.
 
 `Visitor` is used as a building block for two classes: `Anonymous` and `User`. Each class `extends Visitor`, meaning it inherits all of its fields and methods:
 
@@ -56,7 +143,7 @@ scala> res14.age
 res16: Long = 8871
 ~~~
 
-`id` and `createdAt` are abstract so they must be defined in the class to satisfy the compiler. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as more general version of `val`[^uap]. It is good practice to always define abstract members using `def` unless we specifically want to restrict them to being fields.
+`id` and `createdAt` are abstract so they must be defined in extending classes to satisfy the compiler. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as more general version of `val`[^uap]. It is good practice to always define abstract members using `def`.
 
 The `extends` keyword can be used to extend classes as well as traits. When we do this we need to specify the parameters of the super-constructor in the definition:
 

@@ -20,32 +20,35 @@ $(function() {
 
   // Transform
   //
-  // <div class="solution">blah</div>
+  // <div class="className">blah</div>
   //
   // To
   //
-  // <div class="solution-block">
+  // <div class="panel panel-default">
   //   <h5>...</h5>
-  //   <div class="solution">blah</div>
+  //   <div class="className">blah</div>
   // </div>
   //
   // with click handler on h5 to toggle visibility of solution
+  function addToggle(className, name) {
+    $('.'+className).each(function() {
+      var toggleable = $(this);
 
-  $('.solution').each(function() {
-    var solution = $(this);
+      toggleable
+        .addClass("panel-body")
+        .wrap('<div class="panel panel-default"></div>')
+        .hide();
 
-    solution
-      .addClass("panel-body")
-      .wrap('<div class="panel panel-default"></div>')
-      .hide();
+      $('<a href="javascript:void 0"><div class="panel-heading"><h5>'+name+' (click to reveal)</h5></div></a>')
+        .insertBefore(toggleable)
+        .click(function(evt) {
+          toggleable.toggle();
+          evt.preventDefault();
+        });
+    });
+  }
 
-    $('<div class="panel-heading"><h5><a href="javascript:void 0">Solution (click to reveal)</a></h5></div>')
-      .insertBefore(solution)
-      .find("a")
-      .click(function(evt) {
-        solution.toggle();
-        evt.preventDefault();
-      });
+  addToggle('solution', 'Solution')
 
-  })
+  addToggle('java-tip', 'Java Tip');
 });
