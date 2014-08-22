@@ -128,7 +128,7 @@ trait Visitor {
 }
 ~~~
 
-`Visitor` prescribes two abstract methods: `id` and `createdAt`. It also defines a concrete method, `age`, that is defined in terms of one of the abstract methods.
+`Visitor` prescribes two abstract methods. That is, methods which do not have an implementation. These are `id` and `createdAt`. It also defines a concrete method, `age`, that is defined in terms of one of the abstract methods.
 
 `Visitor` is used as a building block for two classes: `Anonymous` and `User`. Each class `extends Visitor`, meaning it inherits all of its fields and methods:
 
@@ -143,7 +143,7 @@ scala> res14.age
 res16: Long = 8871
 ~~~
 
-`id` and `createdAt` are abstract so they must be defined in extending classes to satisfy the compiler. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as more general version of `val`[^uap]. It is good practice to always define abstract members using `def`.
+`id` and `createdAt` are abstract so they must be defined in extending classes to satisfy the compiler. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as a more general version of `val`[^uap]. It is good practice to never define `val`s in a trait, but rather to use `def`. A concrete implementation can then implement it using using a `def` or `val` as appropriate.
 
 The `extends` keyword can be used to extend classes as well as traits. When we do this we need to specify the parameters of the super-constructor in the definition:
 
