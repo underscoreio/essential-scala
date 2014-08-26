@@ -30,13 +30,19 @@ $(function() {
   // </div>
   //
   // with click handler on h5 to toggle visibility of solution
-  function addToggle(className, name) {
+  function addToggle(className, name, additionalClasses) {
     $('.'+className).each(function() {
       var toggleable = $(this);
+      var extraClasses;
+      if(additionalClasses) {
+        extraClasses = additionalClasses;
+      } else {
+        extraClasses = ''
+      }
 
       toggleable
         .addClass("panel-body")
-        .wrap('<div class="panel panel-default"></div>')
+        .wrap('<div class="panel panel-default ' + extraClasses + '"></div>')
         .hide();
 
       $('<a href="javascript:void 0"><div class="panel-heading"><h5>'+name+' (click to reveal)</h5></div></a>')

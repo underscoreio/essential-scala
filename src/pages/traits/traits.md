@@ -61,7 +61,7 @@ Note the two changes:
 - we defined the trait `Visitor`; and
 - we declared that `Anonymous` and `User` are subtypes of the `Visitor` trait by using the `extends` keyword.
 
-The `Visitor` trait expresses an interface that any sub-types must implement: they must implement a `String` called `id` and a `createdAt` `Date`. Any sub-type of `Visitor` also automatically has a method `age` as defined in `Visitor`.
+The `Visitor` trait expresses an interface that any sub-type must implement: they must implement a `String` called `id` and a `createdAt` `Date`. Any sub-type of `Visitor` also automatically has a method `age` as defined in `Visitor`.
 
 By defining the `Visitor` trait we can write methods that work with any sub-type of visitor, like so:
 
@@ -74,7 +74,7 @@ older(Anonymous("1"), User("2", "test@example.com"))
 res4: Boolean = true
 ~~~
 
-Here the method `older` can be called with either an `Anonymous` or a `User` as they are both subtypes of `Visitor`. This illustrates the most important role of using traits, and the one on which we're focusing: defining a logical relationship between traits and classes. Given the definitions above we can say that a `Visitor` *is-a* `User` or an `Anonymous`.
+Here the method `older` can be called with either an `Anonymous` or a `User` as they are both subtypes of `Visitor`. This illustrates the most important role of using traits, and the one on which we're focusing: defining a logical relationship between traits and classes. Given the definitions above we can say that a `Visitor` *is-a* `User` *or* an `Anonymous`.
 
 ## Trait Syntax
 
@@ -83,7 +83,7 @@ We've seen an example of declaring and using a trait above. Let's quickly summar
 To declare a trait we write
 
 ~~~ scala
-trait Name {
+trait TraitName {
   declarationOrExpression ...
 }
 ~~~
@@ -106,13 +106,35 @@ case class Name(...) extends TraitName {
 }
 ~~~
 
-## Traits versus Classes
+## Modelling Data With Traits
+
+The most important use of traits, and the one we're focusing on in this course, is to model a **logical or** relationship.
+
+In the example above we modelled a website visitor which is either a registered user or anonymous. There are many other cases. Attempting to login to a website can succeed or failure. A smartphone can run iOS, Android, Windows Mobile, Firefox OS, or a few other operating systems. These are all cases of logical ors.
+
+In some examples we can enumerate all the cases (logins either succeed or fail; there are no other choices), whilst in other cases we cannot (such as the smartphone example; new mobile operating systems will continue to be developed). The trait pattern allows us to model either case but we will shortly see an refinement specifically for the case when we can completely enumerate all the variants. For now this is our pattern:
+
+<div class="pattern">
+### The Logical Or Pattern
+
+If *A* is a *B* or a *C*, we write
+<p></p>
+
+~~~ scala
+trait A
+
+case class B() extends A
+case class C() extends A
+~~~
+</div>
+
+## Traits Compared to Classes
 
 Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
 
- - **A trait cannot have a constructor** -- we can't create objects directly from a trait. Instead we use one or more traits to create a class, and then create objects from that class. We can base as many classes as we like on a trait.
+ - **A trait cannot have a constructor** -- we can't create objects directly from a trait. Instead we can use a trait to create a class, and then create objects from that class. We can base as many classes as we like on a trait.
 
- - Traits can define **abstract fields and methods** that have names and type signatures but no implementations. We saw this in the `Visitor` trait. We must specify the implementation by the time we create a class from the trait, but until that point we're free to leave definitions abstract.
+ - Traits can define **abstract methods** that have names and type signatures but no implementation. We saw this in the `Visitor` trait. We must specify the implementation when we create a class that extends the trait, but until that point we're free to leave definitions abstract.
 
 Let's return to the `Visitor` trait to further explore abstract definitions. Recall the definition of `Visitor` is
 
@@ -128,7 +150,7 @@ trait Visitor {
 }
 ~~~
 
-`Visitor` prescribes two abstract methods. That is, methods which do not have an implementation. These are `id` and `createdAt`. It also defines a concrete method, `age`, that is defined in terms of one of the abstract methods.
+`Visitor` prescribes two abstract methods. That is, methods which do not have an implementation but must be implemented by extending classes. These are `id` and `createdAt`. It also defines a concrete method, `age`, that is defined in terms of one of the abstract methods.
 
 `Visitor` is used as a building block for two classes: `Anonymous` and `User`. Each class `extends Visitor`, meaning it inherits all of its fields and methods:
 
@@ -143,7 +165,7 @@ scala> res14.age
 res16: Long = 8871
 ~~~
 
-`id` and `createdAt` are abstract so they must be defined in extending classes to satisfy the compiler. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as a more general version of `val`[^uap]. It is good practice to never define `val`s in a trait, but rather to use `def`. A concrete implementation can then implement it using using a `def` or `val` as appropriate.
+`id` and `createdAt` are abstract so they must be defined in extending classes. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as a more general version of `val`[^uap]. It is good practice to never define `val`s in a trait, but rather to use `def`. A concrete implementation can then implement it using using a `def` or `val` as appropriate.
 
 The `extends` keyword can be used to extend classes as well as traits. When we do this we need to specify the parameters of the super-constructor in the definition:
 
