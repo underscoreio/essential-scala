@@ -117,7 +117,7 @@ In some examples we can enumerate all the cases (logins either succeed or fail; 
 <div class="pattern">
 ### The Logical Or Pattern
 
-If *A* is a *B* or a *C*, we write
+If A *is a* B *or* a C, we write
 <p></p>
 
 ~~~ scala

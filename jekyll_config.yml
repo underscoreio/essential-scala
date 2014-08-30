@@ -25,6 +25,7 @@ toc:
   - head: /traits/index.html
     body:
      - /traits/traits.html
+     - /traits/structural-recursion.html
      - /traits/sealed-traits.html
      - /traits/traits-as-mixins.html
      - /traits/generics.html
