@@ -110,7 +110,7 @@ posts       : ../posts
 layouts     : ../layouts
 includes    : ../includes
 
-destination : core-scala
+destination : essential-scala
 plugins     : jekyll_plugins
 
 keep_files  : [ 'css', 'js', 'images' ]

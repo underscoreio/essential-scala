@@ -21,13 +21,13 @@ module.exports = (grunt) ->
           ]
           yuicompress: true
         files:
-          "core-scala/css/screen.css": "src/css/screen.less"
-          "core-scala/css/print.css" : "src/css/print.less"
+          "essential-scala/css/screen.css": "src/css/screen.less"
+          "essential-scala/css/print.css" : "src/css/print.less"
 
     uglify:
       site:
         files:
-          "core-scala/js/site.js": [
+          "essential-scala/js/site.js": [
             "bower_components/jquery/jquery.js"
             "bower_components/bootstrap/js/collapse.js"
             "bower_components/bootstrap/js/scrollspy.js"
@@ -43,14 +43,14 @@ module.exports = (grunt) ->
           expand: true
           cwd: "bower_components/bootstrap/img/"
           src: ["**"]
-          dest: "core-scala/images/"
+          dest: "essential-scala/images/"
         }]
       images:
         files: [{
           expand: true
           cwd: "src/images"
           src: ["**"]
-          dest: "core-scala/images/"
+          dest: "essential-scala/images/"
         }]
 
     exec:
@@ -101,7 +101,7 @@ module.exports = (grunt) ->
       server:
         options:
           port: 4000
-          base: 'core-scala'
+          base: 'essential-scala'
 
   grunt.registerTask "build", [
     "less"
