@@ -104,7 +104,7 @@ Types necessarily do not contain all possible information about the values that 
 
 We must build a mental model of Scala programs if we are to use Scala. Three fundamental components of this model are *expressions*, *types*, and *values*.
 
-Expressions are the parts of a program that evalute to a value. They are the major part of a Scala program.
+Expressions are the parts of a program that evaluate to a value. They are the major part of a Scala program.
 
 Expressions have types, which express some restrictions on programs. During *compile-time* the types of our programs are checked. If they are inconsistent then compilation fails and we cannot evaluate, or run, our program.
 
