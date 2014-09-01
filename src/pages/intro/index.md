@@ -53,12 +53,14 @@ Compilation is a process of checking that a program makes sense. There are two w
 
 If a program passes the checks at compile-time, it may then be run. This is the process of the computer performing the instructions in the program. All Scala programs evaluate to a value.
 
-Even though a program successfully compiles it can still fail at run-time. In Scala dividing an integer by zero causes a run-time error. The type of integers, `Int`, allows division so the program type checks. At run-time the program fails because there is no `Int` that can represent the result of the division.
-
+Even though a program successfully compiles it can still fail at run-time. In Scala dividing an integer by zero causes a run-time error.
 ~~~ scala
 scala> 2 / 0
 java.lang.ArithmeticException: / by zero
 ~~~
+
+The type of integers, `Int`, allows division so the program type checks. At run-time the program fails because there is no `Int` that can represent the result of the division.
+
 
 ## Expressions, Types, and Values
 
@@ -75,11 +77,23 @@ res13: Int = 2
 
 Here we have two values, `2` and `3`, and we combine them into a larger program that evaluates to `2`.
 
-In Scala all values are **objects**, which has a particular meaning we see shortly.
+In Scala all values are **objects**, which has a particular meaning we will see shortly.
 
 Now let's turn to types. Types are restrictions on our programs that limit how we can manipulate objects. We have already seen two types, `String` and `Int`, and seen that we can perform different operations depending on the type.
 
 At this point the most important point about types is that **expressions have types but values do not**. We cannot inspect an arbitrary piece of the computer's memory and divine how to interpret it without knowing the program that created it. For example, in Scala the `Int` and `Float` types are both represented by 32-bits of memory. There are no tags or other indications that a given 32-bits should be interpreted as an `Int` or a `Float`.
+
+We can show that types exist at compile-time by asking the Scala console to tell us the type of an expression that causes a run-time error.
+
+~~~ scala
+scala> :type 2 / 0
+Int
+
+scala> 2 / 0
+java.lang.ArithmeticException: / by zero
+~~~
+
+We see that the expression `2 / 0` has type `Int` even though this expression fails when we evaluate it.
 
 Types, which exist at compile-time, restrict us to writing programs that give a consistent interpretation to values. We cannot claim that a particular 32-bits is at one point an `Int` and another a `Float`. When a program type checks, Scala guarantees that all values are used consistently and thus it does not need to record type information in a value's representation. This process of removing type information is called *type erasure*.
 
