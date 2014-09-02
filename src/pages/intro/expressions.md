@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Interacting with Objects
+title: Compound Expressions
 ---
 
 In the last section we saw the basic data types in Scala and how to write simple literals. In this section we will start combining literals using method calls.
@@ -42,51 +42,6 @@ anExpression.methodName(param1, param2, ...)
 ~~~
 
 where `anExpression` is an expression that evaluates to the object on which we call the method, `methodName` is the name of the method we call, and the optional parameters ,`param1`, `param2`, and so on, are also expressions.
-
-## Operators
-
-Because every value in Scala is an object, we can also call methods on primitive types such as `Int` and `Boolean`. This is in contrast to Java where `int` and `boolean` are not objects:
-
-~~~ scala
-scala> 123.toShort // this is how we define a `Short` in Scala
-res1: Short = 123
-
-scala> 123.toByte // and this is how we define a `Byte`
-res2: Byte = 123
-~~~
-
-But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes -- Scala methods can have symbolic names as well as alphanumeric ones!
-
-~~~ scala
-scala> 43 - 3 + 2
-res18: Int = 42
-
-scala> 43 .-(3).+(2)
-res20: Int = 42
-~~~
-
-<small>Note the space after `43` in the second example, which prevents `43.` being interpreted as a `Double`.</small>
-
-As a general rule, any Scala expression written `a.b(c)` can also be written `a b c`. This is known as **infix operator notation**. Note that `a b c d e` is equivalent to `a.b(c).d(e)`, not `a.b(c, d, e)`. We can use infix operator notation with any method that takes one parameter, regardless of whether it has a symbolic or alphanumeric name:
-
-~~~ scala
-scala> "the quick brown fox" split " "
-res0: Array[String] = Array(the, quick, brown, fox)
-~~~
-
-Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions instead of verbose method calls. There are also notations for **prefix**, **postfix**, **right-associative**, and **assignment-style operators**.
-
-A question poses itself -- what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
-
-~~~ scala
-scala> 2 * 3 + 4 * 5
-res0: Int = 26
-
-scala> (2 * 3) + (4 * 5)
-res1: Int = 26
-~~~
-
-[precedence rules]: http://stackoverflow.com/questions/2922347/operator-precedence-in-scala
 
 ## Conditionals
 
@@ -204,22 +159,4 @@ if(false) "hello"
 The result type and value are `Any` and `()` respectively.
 
 All code being equal, conditionals without `else` expressions only evaluate to a value half of the time. Scala works around this by returning the `Unit` value if the `else` branch should be evaluted. We would usually only use these expressions for their side-effects.
-</div>
-
-### Substitution
-
-What is the difference between the following expressions? What are the similarities?
-
-~~~ scala
-1 + 2 + 3
-
-6
-~~~
-
-<div class="solution">
-The expressions have the same result type and return value. However, they arrive at their results in different ways.
-
-As neither expression has any side-effects, they are interchangeable from a user's point of view. Anywhere you can write `1 + 2 + 3` you can also write `6`. This is known as the **substitution model of evaluation**, although you may remember the principle from simplifying algebraic formulae at school.
-
-As programmers we must develop a mental model of how our code operates. In the absence of side-effects, the substitution model always works. If we know the types and values of each component of an expression, we know the type and value of the expression as a whole. In functional programming we aim to avoid side-effects for this reason: it makes our programs easy to reason about without having to look beyond the current block of code.
 </div>
