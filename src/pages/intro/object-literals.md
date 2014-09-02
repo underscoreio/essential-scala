@@ -3,7 +3,9 @@ layout: page
 title: Object Literals
 ---
 
-So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. More useful programs will require us to create objects tailored to the problem we're solving. In fact, creating the right objects could be seen as the goal of programming in Scala. We will start by seeing how to **declare objects** using **object literals**.
+So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own choosing using **object literals**.
+
+When we write an object literal we use a **declaration**, which a different kind of program to an expression. A declaration does not evaluate to a value. Instead is gives a name to a value. This name can then be used to refer to the value in other code.
 
 We can declare an empty object as follows:
 
@@ -12,9 +14,9 @@ scala> object Test {}
 defined module Test
 ~~~
 
-An object declaration is not an expression -- it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
+This is not an expression -- it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
 
-Once we have bound the name `Test` we can use it in simple expressions, where it evalutes to the object we have declared. The simplest expression is just the name on its own, which evalutes to the value itself:
+Once we have bound the name `Test` we can use it in simple expressions, where it evaluates to the object we have declared. The simplest expression is just the name on its own, which evaluates to the value itself:
 
 ~~~ scala
 scala> Test
@@ -24,13 +26,26 @@ res0: Test.type = Test$@1668bd43
 This expression is equivalent to writing a literal like `123` or `"abc"`.
 Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before -- it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
 
-Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions. It is more common, however, to put declarations such as declaring methods, fields, or even more objects. Thus the syntax for an object declaration is
+Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions. It is more common, however, to put declarations such as declaring methods, fields, or even more objects.
+
+<div class="callout callout-info">
+
+#### Object Declaration Syntax
+
+The syntax for declaring an object is
 
 ~~~ scala
 object name {
   declarationOrExpression ...
 }
 ~~~
+
+where
+
+- `name` is the name of the object; and
+- the optional `declarationOrExpression`s are declarations or expressions.
+
+</div>
 
 Let's see how to declare methods and fields.
 
@@ -40,8 +55,8 @@ We interact with objects via methods so let's create an object with a method.
 
 ~~~ scala
 scala> object Test2 {
-     |   def name: String = "Probably the best object ever"
-     | }
+         def name: String = "Probably the best object ever"
+       }
 defined module Test2
 ~~~
 
@@ -56,42 +71,47 @@ Here's an object with a more complex method:
 
 ~~~ scala
 scala> object Test3 {
-     |   def hello(name: String) =
-     |     "Hello " + name
-     | }
+         def hello(name: String) =
+           "Hello " + name
+       }
 defined module Test3
 
 scala> Test3.hello("Noel")
 res7: String = Hello Noel
 ~~~
 
-From these examples we can see most of the important bits of method definitions:
+<div class="callout callout-info">
+#### Method Declaration Syntax
 
-  * they start with the `def` keyword, followed by a name and an optional list of parameters;
-
-  * we must declare the types of all parameters using the syntax `name: type`;
-
-  * we can optionally declare the return type of a method -- if we don't declare one Scala will infer it from the method body;
-
-  * the declaration is followed by an `=` sign and a body expression;
-
-  * the return value of the method is determined by evaluating the body -- there is no need to write `return`.
-
-If you remember from the previous section, one type of expression is a *block*. We can use blocks to write multi-line methods with side-effects. Because the block evaluates to the value of its last expression, there is no need to write `return`.
+The syntax for declaring a method is
 
 ~~~ scala
-scala> object Test4 {
-     |   def hello(name: String) = {
-     |     println("Running the 'hello' method!")
-     |     "Hello " + name
-     |   }
-     | }
-defined module Test4
-
-scala> Test4.hello("Dave")
-Running the 'hello' method!
-res6: String = Hello Dave
+def name(parameter: type, ...): resultType =
+  bodyExpression
 ~~~
+
+or
+
+~~~ scala
+def name: resultType =
+  bodyExpression
+~~~
+
+where
+
+- `name` is the name of the method;
+- the optional `parameter`s are the names given to parameters to the method;
+- the `type`s are the types of the method parameters;
+- the optional `resultType` is the type of the result of the method;
+- the `bodyExpression` is an expression that calling the method evaluates to.
+
+Method parameters are optional, but if a method has parameters their type must be given. Although the result type is optional it is good practice to define it as it serves as (machine checked!) documentation.
+</div>
+
+<div class="java-tip">
+The return value of the method is determined by evaluating the body -- there is no need to write `return`.
+</div>
+
 
 ## Fields
 
@@ -101,7 +121,7 @@ An object can also contain other objects, called **fields**. We introduce these 
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
-object Test5 {
+object Test4 {
   val name = "Noel"
   def hello(other: String) =
     name + " says hi to " + other
@@ -110,41 +130,38 @@ object Test5 {
 
 // Exiting paste mode, now interpreting.
 
-defined module Test5
+defined module Test4
 
-scala> Test5.hello("Dave")
+scala> Test4.hello("Dave")
 res8: String = Noel says hi to Dave
 ~~~
 
-Here are the important parts:
+<div class="callout callout-info">
+#### Field Declaration Syntax
 
-  * field definitions start with the `val` or `var` keyword, followed by a name and an optional type.
-
-  * `val` defines an immutable field, `var` defines a mutable one;
-
-  * field definitions don't take parameters;
-
-  * the declaration is followed by an `=` sign and a body expression;
-
-  * the value of the field is determined by evaluating the body.
-
-As with a method, we can use a block to calculate the value of a field over several lines of code.
+The syntax for declaring a field is
 
 ~~~ scala
-scala> object Test6 {
-     |   val name = {
-     |     val title = "Dr"
-     |     val theDoctor = title + " Who"
-     |     theDoctor
-     |   }
-     | }
-defined module Test6
-
-scala> Test6.name
-res9: String = "Dr Who"
+val name: type = valueExpression
 ~~~
 
-Scala programmers prefer to use immutable fields wherever possible. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` in this course and you should do the same in your Scala programming.
+or
+
+~~~ scala
+var name: type = valueExpression
+~~~
+
+where
+
+- `name` is the name of the field;
+- the optional `type` declaration gives the type of the field;
+- the `valueExpression` evaluates to the object that is bound to the `name`.
+</div>
+
+Using `val` defines an *immutable* field, meaning we cannot change the value bound to the name. A `var` field is *mutable*, allowing us to change the bound value.
+
+**Always prefer `val` to `var`.** Scala programmers prefer to use immutable fields wherever possible. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` for most of this course and you should do the same in your Scala programming.
+
 
 ## Methods versus fields
 
@@ -154,17 +171,19 @@ Here's an object that shows the difference:
 
 ~~~ scala
 scala> object Test7 {
-     |   val simpleField = {
-     |     println("Evaluating simpleField")
-     |     42
-     |   }
-     |   def noArgMethod = {
-     |     println("Evaluating noArgMethod")
-     |     42
-     |   }
-     | }
+         val simpleField = {
+           println("Evaluating simpleField")
+           42
+         }
+         def noArgMethod = {
+           println("Evaluating noArgMethod")
+           42
+         }
+       }
 defined module Test7
 ~~~
+
+Here we have used a `println` expression to print something to the console, and a block expression (expressions surrounded by `{` and `}`) to group expressions. We'll see more about block expressions in the next section.
 
 Notice how the REPL says we've defined a module, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
 
@@ -214,10 +233,10 @@ object name {
 }
 ~~~
 
-and for declaring methods
+for declaring methods
 
 ~~~ scala
-def name(parameter: type, ...) = bodyExpression
+def name(parameter: type, ...): resultType = bodyExpression
 ~~~
 
 and for declaring fields
@@ -227,7 +246,7 @@ val name = valueExpression
 var name = valueExpression
 ~~~
 
-All of these are **declarations**, binding names to values. Declarations are different to expressions in that do not evaluates to values and do not have a type.
+All of these are **declarations**, binding names to values. Declarations are different to expressions. They do not evaluate to a value and do not have a type.
 
 We have also seen the difference between methods and fields -- fields refer to values stored within an object, whereas methods refer to computations that produce values.
 
@@ -235,7 +254,7 @@ We have also seen the difference between methods and fields -- fields refer to v
 
 ### Cat-o-matique
 
-The table below shows the names, colour, and favourite foods of three cats. Define an object for cat. (For experienced programmers: we haven't covered classes yet.)
+The table below shows the names, colour, and favourite foods of three cats. Define an object for each cat. (For experienced programmers: we haven't covered classes yet.)
 
 |-----------+-----------------+-------|
 | Name      | Colour          | Food  |
@@ -431,7 +450,7 @@ This imposes a significant limitation on our ability to write programs in Scala.
 Are methods values? Are they expressions? Why might this be the case?
 
 <div class="solution">
-First let's deal with the equivalence between methods and expressions. As we know, expressions and computations that produce values. A simple test of whether something is an expression is to see if we can assign it to a field.
+First let's deal with the equivalence between methods and expressions. As we know, expressions are computations that produce values. A simple test of whether something is an expression is to see if we can assign it to a field.
 
 ~~~ scala
 scala> object calculator {
