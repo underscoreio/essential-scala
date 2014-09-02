@@ -3,54 +3,51 @@ layout: page
 title: Compound Expressions
 ---
 
-In the last section we saw the basic data types in Scala and how to write simple literals. In this section we will start combining literals using method calls.
-
-## Methods
-
-Every value in Scala is an object. We interact with objects by calling *methods* on them. Method calls are *expressions* and thus they have a type and evaluate to a value just like literals.
-
-For example, we can get the uppercase version of a `String` by calling its `toUpperCase` method:
-
-~~~ scala
-scala> "hello".toUpperCase
-res21: String = HELLO
-~~~
-
-We can chain method calls together to make more complex programs:
-
-~~~ scala
-scala> "hello".toUpperCase.toLowerCase
-res22: String = hello
-~~~
-
-Some methods accept *parameters* or *arguments*, which control how the method works.
-
-~~~ scala
-scala> "abcdef".take(3)
-"abcdefg12345".take(3)
-res0: String = abc
-
-scala> "abcdef".take(2)
-"abcdefg12345".take(2)
-res1: String = ab
-~~~
-
-Thus the syntax for a method call is
-
-~~~ scala
-anExpression.methodName(param1, param2, ...)
-~~~
-
-where `anExpression` is an expression that evaluates to the object on which we call the method, `methodName` is the name of the method we call, and the optional parameters ,`param1`, `param2`, and so on, are also expressions.
+We have almost finished our basic introduction to Scala. In this section we are going to look at two special kinds of expressions, **conditionals** and **blocks**, we will need in more complicated programs.
 
 ## Conditionals
 
-Conditionals are an essential part of any programming language. Scala's `if` statement has the same syntax as Java's. One important difference is that **Scala's conditional is an expression** -- it has a type and returns a value.
+A conditional allows us to choose an expression to evaluate based on some condition. For example, we can choose a string based on some condition
+
+~~~
+scala> if(1 < 2) "Yes" else "No"
+res2: String = Yes
+~~~
+
+The expression that is not selected does not get evaluated. This is apparent if use an expression with a side-effect
+
+~~~
+scala> if(1 < 2) println("Yes") else println("No")
+Yes
+~~~
+
+We can tell the expression `println("No")` is not evaluated because `No` is not output to the console.
+
+<div class="callout callout-info">
+#### Conditional Expression Syntax
+
+The syntax for a conditional expression is
 
 ~~~ scala
-scala> if(true) 42 else 40
-res47: Int = 42
+if(condition)
+  trueExpression
+else
+  falseExpression
 ~~~
+
+where
+
+- `condition` is an expression with `Boolean` type;
+- `trueExpression` is the expression evaluated if `condition` evalutes to `true`; and
+- `falseExpression` is the expression evaluated if `condition` evalutes to `false`.
+</div>
+
+
+
+<div class="java-tip">
+Scala's `if` statement has the same syntax as Java's. One important difference is that **Scala's conditional is an expression** -- it has a type and returns a value.
+</div>
+
 
 ## Blocks
 
@@ -70,46 +67,82 @@ res0: Int = 3
 <div class="alert alert-info">
 **Side effects tip:** As you can see, executing this code causes the REPL to raise a number of warnings and return the `Int` value `3`.
 
-A block is a sequence of expressions surrounded by braces. A block is also an expression: it executes each of its sub-expressions in order and returns the value of the last expression.
+A block is a sequence of expressions or declarations surrounded by braces. A block is also an expression: it executes each of its sub-expressions in order and returns the value of the last expression.
 
-What's the point of this? Why execute `1` and `2` if we're going to throw their values away? This is a good question, and is the reason the Scala compiler raised those warnings above. The main reason to use a block is to use code that produces side-effects before calculating a final value:
+What's the point of this? Why execute `1` and `2` if we're going to throw their values away? This is a good question, and is the reason the Scala compiler raised those warnings above.
+</div>
+
+One reason to use a block is to use code that produces side-effects before calculating a final value:
 
 ~~~ scala
 scala> {
-     |   println("This is a side-effect")
-     |   println("This is a side-effect as well")
-     |   3
-     | }
+         println("This is a side-effect")
+         println("This is a side-effect as well")
+         3
+       }
 This is a side-effect
 This is a side-effect as well
 res1: Int = 3
 ~~~
-</div>
 
+We can also use a block when we want to name intermediate results, such as
+
+~~~ scala
+scala> def name: String = {
+         val title = "Professor"
+         val name = "Funkenstein"
+         title + " " + name
+       }
+name: String
+
+scala> name
+res4: String = Professor Funkenstein
+~~~
+
+<div class="callout callout-info">
+
+#### Block Expression Syntax
+
+The syntax of a block expression is
+
+~~~ scala
+{
+   declarationOrExpression ...
+   expression
+}
+~~~
+
+where
+
+- the optional `declarationOrExpression`s are declarations or expression; and
+- `expression` is an expression determining the type and value of the block expression.
+</div>
 
 ## Take home points
 
-All Scala values are objects. We **interact with objects by calling methods** on them. If you come from a Java background note we can call methods on `Int` or any other primitive value.
-
-The syntax for a method call is
+Conditional expressions allow us to choose an expression to evaluate based on a `Boolean` condition. The syntax is
 
 ~~~ scala
-anExpression.methodName(parameter, ...)
+if(condition)
+  trueExpression
+else
+  falseExpression
 ~~~
 
-or
+A conditional, being an expression, has a type and evaluates to an object.
+
+
+A block allows us to sequence expressions and declarations. It is commonly used when we want to sequence expressions with side-effects, or name intermediate results in a computation. The syntax is
 
 ~~~ scala
-anExpression methodName parameter
+{
+   declarationOrExpression ...
+   expression
+}
 ~~~
 
-**Scala has very few operators - almost everything is a method call.** We use syntactic conventions like infix operator notation to keep our code simple and readable, but we can always fall back to standard method notation where it makes sense.
+The type and value of a block is that of the last expression in the block.
 
-**Expressions are fragments of code that have a type and evaluate to a value.** All method calls are expressions, even calls to methods that return `Unit`. Many of Scala's syntactic constructs are also expressions. This includes conditionals and blocks, which are *statements* in many other languages (i.e. they do not have types or values).
-
-Variable declarations and assignments are statements -- although they update the value of a location in memory, they have a result type of `Unit`.
-
-As we will see, Scala's focus on programming with expressions allows us to write much shorter code than we can in Java. It also allows us to reason about code in a very intuitive way using values and types.
 
 ## Exercises
 
