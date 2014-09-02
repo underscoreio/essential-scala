@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Everything is an Object
+title: Expressions, Types, and Values
 ---
 
 In this chapter we look at the fundamentals of Scala: **expressions, types, and values**. Understanding these concepts is necessary to build a mental model of how Scala programs work.
@@ -21,7 +21,7 @@ scala> "Hello world!".toUpperCase
 res5: String = HELLO WORLD!
 ~~~
 
-Once again, the type of this program is `String`, but in this case it evalutes to `"HELLO WORLD!"`
+Once again, the type of this program is `String`, but in this case it evaluates to `"HELLO WORLD!"`
 
 ## Compile-time and Run-time
 
@@ -54,6 +54,7 @@ Compilation is a process of checking that a program makes sense. There are two w
 If a program passes the checks at compile-time, it may then be run. This is the process of the computer performing the instructions in the program. All Scala programs evaluate to a value.
 
 Even though a program successfully compiles it can still fail at run-time. In Scala dividing an integer by zero causes a run-time error.
+
 ~~~ scala
 scala> 2 / 0
 java.lang.ArithmeticException: / by zero
