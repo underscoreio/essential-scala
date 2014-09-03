@@ -136,7 +136,7 @@ where
 - `Name` is the name of the class;
 - the optional `parameter`s are the names given to constructor parameters;
 - the `type`s are the types of the constructor parameters;
-- the `declarationOrExpression`s are declarations or expressions.
+- the optional `declarationOrExpression`s are declarations or expressions.
 </div>
 
 ## Default and Keyword Parameters

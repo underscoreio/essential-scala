@@ -37,7 +37,7 @@ res2: Long = 3661
 You can enter `:help` on the REPL to find out more.
 </div>
 
-Scala has two namespaces: a space of *type names* and a space of *value names*. This separation allows us to name our class and companion object the same thing without conflict.
+As we saw earlier, Scala has two namespaces: a space of *type names* and a space of *value names*. This separation allows us to name our class and companion object the same thing without conflict.
 
 It is important to note that **the companion object is not an instance of the class** -- it is a singleton object with its own type:
 
@@ -46,9 +46,25 @@ scala> Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
 res3: Timestamp.type = Timestamp$@602b24e6
 ~~~
 
+<div class="callout callout-info">
+#### Companion Object Syntax
+
+To define a companion object for a class, in the *same file* as the class define an object with the same name.
+
+~~~ scala
+class Name {
+  ...
+}
+
+object Name {
+  ...
+}
+~~~
+</div>
+
 ## Take home points
 
-**Companion objects** provide us with a means to associate functionality with a class without associating it with any instance of that class.
+**Companion objects** provide us with a means to associate functionality with a class without associating it with any instance of that class. They are commonly used to provide additional constructors.
 
 Companion objects **replace Java's static methods**. They provide equivalent functionality and are more flexible.
 

@@ -36,7 +36,15 @@ scala> add3(2) // shorthand for add3.apply(2)
 res7: Int = 5
 ~~~
 
-With this simple trick, objects can "look" syntactically like functions. There are lots of things that we can now do now that we couldn't do with methods, including assign them to variables and pass them around as arguments.
+With this one simple trick, objects can "look" syntactically like functions. There are lots of things that we can now do now that we couldn't do with methods, including assign them to variables and pass them around as arguments.
+
+<div class="callout callout-info">
+
+#### Function Application Syntax
+
+The method call `object.apply(parameter, ...)` can also be written as `object(parameter, ...)`
+
+</div>
 
 ## Take home points
 
