@@ -7,18 +7,27 @@ A class is a template for creating objects that have similar methods and fields.
 
 ## Defining a Class
 
-Here is a definition for a simple `Person` class:
+Here is a declaration for a simple `Person` class:
 
 ~~~ scala
 scala> class Person {
-     |   val firstName = "Noel"
-     |   val lastName = "Welsh"
-     |   def name = firstName + " " + lastName
-     | }
+         val firstName = "Noel"
+         val lastName = "Welsh"
+         def name = firstName + " " + lastName
+       }
 defined class Person
 ~~~
 
-We can create a new `Person` object using the `new` operator and access its methods and fields in the usual way:
+Like an object declaration, a class declaration binds a name (in this case `Person`) and is not an expression. However, unlike an object name, we cannot use a class name in an expression. A class is not a value, and there is a different *namespace* in which classes live.
+
+~~~ scala
+scala> Person
+<console>:8: error: not found: value Person
+              Person
+              ^
+~~~
+
+We can create a new `Person` object using the `new` operator. Objects are values and we access their methods and fields in the usual way:
 
 ~~~ scala
 scala> val noel = new Person
@@ -45,9 +54,9 @@ This means we can write a method that takes any `Person` as a parameter:
 
 ~~~ scala
 scala> object alien {
-     |   def greet(p: Person) =
-     |     "Greetings, " + p.firstName + " " + p.lastName
-     | }
+         def greet(p: Person) =
+           "Greetings, " + p.firstName + " " + p.lastName
+       }
 defined module alien
 
 scala> alien.greet(noel)
@@ -69,10 +78,10 @@ The solution is to introduce a **constructor**, which allows us to pass paramete
 
 ~~~ scala
 scala> class Person(first: String, last: String) {
-     |   val firstName = first
-     |   val lastName = last
-     |   def name = firstName + " " + lastName
-     | }
+         val firstName = first
+         val lastName = last
+         def name = firstName + " " + lastName
+       }
 defined class Person
 
 scala> val dave = new Person("Dave", "Gurnell")
@@ -82,14 +91,14 @@ scala> dave.name
 res29: String = Dave Gurnell
 ~~~
 
-The constructor parameters `first` and `last` are local variables that can only be used within the body of the class. We must declare a field or method using `val` or `def` to access data from outside the object.
+The constructor parameters `first` and `last` are can only be used within the body of the class. We must declare a field or method using `val` or `def` to access data from outside the object.
 
 Constructor arguments and fields are often redundant. Fortunately, Scala provides us a useful short-hand way of declaring both in one go. We can prefix constructor parameters with the `val` keyword to have Scala define fields for them automatically:
 
 ~~~ scala
 scala> class Person(val firstName: String, val lastName: String) {
-     |   def name = firstName + " " + lastName
-     | }
+         def name = firstName + " " + lastName
+       }
 defined class Person
 
 scala> new Person("Dave", "Gurnell").name
@@ -102,10 +111,14 @@ res29: String = Dave Gurnell
 Scala programmers tend to prefer to write immutability and side-effect-free code so we can reason about it using the substitution model. In this course we will concentrate almost exclusively on immutable `val` fields.
 </div>
 
-We've now seen all the essential syntax for classes, so let's summarise it here. A class is defined using
+<div class="callout callout-info">
+
+#### Class Declaration Syntax
+
+The syntax for declaring a class is
 
 ~~~ scala
-class name(parameter: type, ...) {
+class Name(parameter: type, ...) {
   declarationOrExpression ...
 }
 ~~~
@@ -113,11 +126,18 @@ class name(parameter: type, ...) {
 or
 
 ~~~ scala
-class name(val parameter: type, ...) {
+class Name(val parameter: type, ...) {
   declarationOrExpression ...
 }
 ~~~
 
+where
+
+- `Name` is the name of the class;
+- the optional `parameter`s are the names given to constructor parameters;
+- the `type`s are the types of the constructor parameters;
+- the `declarationOrExpression`s are declarations or expressions.
+</div>
 
 ## Default and Keyword Parameters
 
@@ -134,7 +154,7 @@ This comes in doubly useful when used in combination with **default parameter va
 
 ~~~ scala
 scala> def greet(firstName: String = "Some", lastName: String = "Guy") =
-     |   "Greetings, " + firstName + " " + lastName + "!"
+         "Greetings, " + firstName + " " + lastName + "!"
 greet: (firstName: String, lastName: String)String
 ~~~
 
@@ -157,7 +177,7 @@ res11: String = Greetings, Some Dave!
 
 ~~~ scala
 scala> def greet(title: String = "Mr", firstName: String = "Some", lastName: String = "Guy") =
-     |   "Greetings, " + title + " " + firstName + " " + lastName + "!"
+         "Greetings, " + title + " " + firstName + " " + lastName + "!"
 greet: (firstName: String, lastName: String)String
 
 scala> greet("Awesome") // this is now incorrect
@@ -176,7 +196,9 @@ Unlike Java, which separates primitive and object types, everything in Scala is 
 
 <img src="scala-type-hierarchy.svg" alt="Scala type hierarchy">
 
-Scala has a grand supertype called `Any`, under which there are two types, `AnyVal` and `AnyRef`. `AnyVal` is the supertype of all value types, which `AnyRef` is the supertype of all "reference types" or classes. All Scala and Java classes are subtypes of `AnyRef`.
+Scala has a grand supertype called `Any`, under which there are two types, `AnyVal` and `AnyRef`. `AnyVal` is the supertype of all value types, which `AnyRef` is the supertype of all "reference types" or classes. All Scala and Java classes are subtypes of `AnyRef`[^value-classes].
+
+[^value-classes]: We can actually define subtypes of `AnyVal`, which are known as [value classes](http://docs.scala-lang.org/overviews/core/value-classes.html). These are useful in a few specialised circumstances and we're not going to discuss them here.
 
 Some of these types are simply Scala aliases for types that exist in Java: `Int` is `int`, `Boolean` is `boolean`, and `AnyRef` is `java.lang.Object`.
 
@@ -207,7 +229,7 @@ The properties of the objects of a class take the form of **fields** and **metho
 The syntax for declaring classes is
 
 ~~~ scala
-class name(parameter: type, ...) {
+class Name(parameter: type, ...) {
   declarationOrExpression ...
 }
 ~~~
@@ -426,11 +448,11 @@ We can work around this using *method overloading* to recreate our original pare
 
 ~~~ scala
 scala> class Counter(val count: Int) {
-     |   def dec: Counter = dec()
-     |   def inc: Counter = inc()
-     |   def dec(amount: Int = 1): Counter = new Counter(count - amount)
-     |   def inc(amount: Int = 1): Counter = new Counter(count + amount)
-     | }
+         def dec: Counter = dec()
+         def inc: Counter = inc()
+         def dec(amount: Int = 1): Counter = new Counter(count - amount)
+         def inc(amount: Int = 1): Counter = new Counter(count + amount)
+       }
 defined class Counter
 
 scala> new Counter(10).inc.inc(10).count
