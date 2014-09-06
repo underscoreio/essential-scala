@@ -10,15 +10,9 @@ Traits are very much like Java 8's *interfaces* with *default methods*. If you h
 </div>
 
 
-Plan
-- Example of trait
-- Trait syntax
-- Differences from a class
-- Meaning of a trait (OR)
-
 ## An Example of Traits
 
-Let's start with an example of a trait. Imagine we're modelling visitors to a website. There are two types of visitor: those who have registered on our site and those who are anonymous. We can model these with two classes:
+Let's start with an example of a trait. Imagine we're modelling visitors to a website. There are two types of visitor: those who have registered on our site and those who are anonymous. We can model this with two classes:
 
 ~~~ scala
 import java.util.Date
@@ -61,9 +55,9 @@ Note the two changes:
 - we defined the trait `Visitor`; and
 - we declared that `Anonymous` and `User` are subtypes of the `Visitor` trait by using the `extends` keyword.
 
-The `Visitor` trait expresses an interface that any sub-type must implement: they must implement a `String` called `id` and a `createdAt` `Date`. Any sub-type of `Visitor` also automatically has a method `age` as defined in `Visitor`.
+The `Visitor` trait expresses an interface that any subtype must implement: they must implement a `String` called `id` and a `createdAt` `Date`. Any sub-type of `Visitor` also automatically has a method `age` as defined in `Visitor`.
 
-By defining the `Visitor` trait we can write methods that work with any sub-type of visitor, like so:
+By defining the `Visitor` trait we can write methods that work with any subtype of visitor, like so:
 
 ~~~ scala
 scala> def older(v1: Visitor, v2: Visitor): Boolean =
@@ -74,11 +68,10 @@ older(Anonymous("1"), User("2", "test@example.com"))
 res4: Boolean = true
 ~~~
 
-Here the method `older` can be called with either an `Anonymous` or a `User` as they are both subtypes of `Visitor`. This illustrates the most important role of using traits, and the one on which we're focusing: defining a logical relationship between traits and classes. Given the definitions above we can say that a `Visitor` *is-a* `User` *or* an `Anonymous`.
+Here the method `older` can be called with either an `Anonymous` or a `User` as they are both subtypes of `Visitor`.
 
-## Trait Syntax
-
-We've seen an example of declaring and using a trait above. Let's quickly summarise the syntax before we move on.
+<div class="callout callout-info">
+#### Trait Syntax
 
 To declare a trait we write
 
@@ -87,8 +80,6 @@ trait TraitName {
   declarationOrExpression ...
 }
 ~~~
-
-Note how this syntax closely mirrors that for declaring a class.
 
 To declare that a class is a subtype of a trait we write
 
@@ -104,27 +95,6 @@ More commonly we'll use case classes, but the syntax is the same
 case class Name(...) extends TraitName {
  ...
 }
-~~~
-
-## Modelling Data With Traits
-
-The most important use of traits, and the one we're focusing on in this course, is to model a **logical or** relationship.
-
-In the example above we modelled a website visitor which is either a registered user or anonymous. There are many other cases. Attempting to login to a website can succeed or failure. A smartphone can run iOS, Android, Windows Mobile, Firefox OS, or a few other operating systems. These are all cases of logical ors.
-
-In some examples we can enumerate all the cases (logins either succeed or fail; there are no other choices), whilst in other cases we cannot (such as the smartphone example; new mobile operating systems will continue to be developed). The trait pattern allows us to model either case but we will shortly see an refinement specifically for the case when we can completely enumerate all the variants. For now this is our pattern:
-
-<div class="pattern">
-### The Logical Or Pattern
-
-If A *is a* B *or* a C, we write
-<p></p>
-
-~~~ scala
-trait A
-
-case class B() extends A
-case class C() extends A
 ~~~
 </div>
 
@@ -167,59 +137,29 @@ res16: Long = 8871
 
 `id` and `createdAt` are abstract so they must be defined in extending classes. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as a more general version of `val`[^uap]. It is good practice to never define `val`s in a trait, but rather to use `def`. A concrete implementation can then implement it using using a `def` or `val` as appropriate.
 
-The `extends` keyword can be used to extend classes as well as traits. When we do this we need to specify the parameters of the super-constructor in the definition:
-
-~~~ scala
-class Administrator(
-  id: String,
-  createdAt: Date = new Date(),
-  email: String
-) extends User(id, createdAt, email)
-~~~
-
-<div class="alert alert-warning">
-**Warning:** It is inadvisable to extend a case class to create another case class. The implementation of case classes relies on details like the number of fields -- modifying the structure in a subclass can lead to bugs in certain features like pattern matching.
-
-It is best practice to only create case classes as leaves of a type hierarchy. If we do have to extend a `case class`, we should always make the subtype a regular `class` and define the extra methods ourselves.
-</div>
-
 [^uap]: This is all part of the [uniform access principle] we saw in the exercises for [Object Literals](object-literals.html).
 
 [uniform access principle]: http://en.wikipedia.org/wiki/Uniform_access_principle
-
-## Subtyping and Polymorphism
-
-A trait is a type just like a class. A class that extends a trait is a *subtype* of that trait, and any object of that class is both a value of the subtype and a value of the supertype. This is a kind of [polymorphism](http://en.wikipedia.org/wiki/Polymorphism_(computer_science)) -- essentially the polymorphism we get from Java.
-
-Anywhere in our code that we expect an instance of the supertype, we can use an instance of the subtype instead. For example, we can assign `User` to a variable of type `Visitor` or pass it to a method that expects a `Visitor` as a parameter:
-
-~~~ scala
-scala> val visitor: Visitor = User("a", "me@example.com")
-visitor: Visitor = User(a,me@example.com,Fri Feb 14 12:05:25 GMT 2014)
-
-scala> def ageString(v: Visitor) =
-     |   v.id + " is " + v.age + "ms old"
-ageString: (v: Visitor)String
-
-scala> ageString(User("a", "me@example.com"))
-res14: String = a is 0ms old
-~~~
-
-## Exploiting Types
-
-In one sense a type is just a collection of values that share common properties. More than that, though, a type can represent **any property of a program that we can establish without evaluating it.**
-
-In old languages like C, types were used to specify the machine representation of data, essentially providing optimisation hints to the compiler. In modern languages like Scala, **types are used to ensure that important program properties are maintained**.
-
-A good Scala developer uses types to his or her advantage to avoid bugs and write self-documenting code.
 
 ## Take Home Points
 
 Traits are a way of **abstracting over classes** that have similar properties, just like classes are a way of abstracting over objects.
 
-Many relationships between types in programming can be modelled using the phrase **this or that**. These are known in functional programming as **sum types**. Traits are a great tool (although not the only tool) for modelling these relationships.
+Using a traits has two parts. Declaring the trait
 
-We can also model sum types using *generics* -- we'll see these later.
+~~~ scala
+trait TraitName {
+  declarationOrExpression ...
+}
+~~~
+
+and extending the trait from a class (usually a case class)
+
+~~~ scala
+case class Name(...) extends TraitName {
+  ...
+}
+~~~
 
 ## Exercises
 
@@ -267,7 +207,9 @@ case class Square(size: Double) extends Shape {
 
 The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape` -- it's also a type of `Rectangle` where the width and height are the same.
 
-We want to avoid case-class-to-case-class inheritance, so refactor the solution to the last exercise so that `Square` and `Rectangle` are subtypes of a common type `Rectangular`.
+Refactor the solution to the last exercise so that `Square` and `Rectangle` are subtypes of a common type `Rectangular`.
+
+**Tip:** A trait can extend another trait.
 
 <div class="solution">
 The new code looks like this:
