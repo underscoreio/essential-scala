@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Traits and Inheritance"
+title: "Modelling Data with Traits"
 ---
 
 So far we have seen a lot to do with Scala's *classes*. Classes provide us with a way to **abstract over objects** that have similar properties, allowing us to write code that works with any object in a class.
