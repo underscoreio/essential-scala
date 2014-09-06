@@ -9,8 +9,8 @@ Case classes are created simply by prepending a class definition with the keywor
 
 ~~~ scala
 scala> case class Person(firstName: String, lastName: String) {
-     |   def name = firstName + " " + lastName
-     | }
+         def name = firstName + " " + lastName
+       }
 defined class Person
 ~~~
 
@@ -106,6 +106,25 @@ res8: Boolean = true
 
 Finally, the companion object also contains code to implement an **extractor pattern** for use in *pattern matching*. We'll see this later this chapter.
 
+<div class="callout callout-info">
+#### Case Class Declaration Syntax
+
+The syntax to declare a case class is
+
+~~~ scala
+case class Name(parameter: type, ...) {
+  declarationOrExpression ...
+}
+~~~
+
+where
+
+- `Name` is the name of the case class;
+- the optional `parameter`s are the names given to constructor parameters;
+- the `type`s are the types of the constructor parameters;
+- the optional `declarationOrExpression`s are declarations or expressions.
+</div>
+
 ## Case objects
 
 A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a **case object**. A case object is defined just like a case class and has the same default methods as a case class.
@@ -136,7 +155,7 @@ Case classes are the **bread and butter of Scala data types**. Use them, learn t
 The syntax for declaring a case class is the same as for declaring a class, but with `case` appended
 
 ~~~ scala
-case class name(parameter: type, ...) {
+case class Name(parameter: type, ...) {
   declarationOrExpression ...
 }
 ~~~

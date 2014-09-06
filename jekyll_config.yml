@@ -8,9 +8,10 @@ toc:
 
   - head: /intro/index.html
     body:
+     - /intro/objects.html
      - /intro/literals.html
-     - /intro/expressions.html
      - /intro/object-literals.html
+     - /intro/expressions.html
      - /intro/conclusion.html
 
   - head: /classes/index.html

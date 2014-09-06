@@ -3,7 +3,7 @@ layout: page
 title: Literal Objects
 ---
 
-The simplest expressions are literals. A literal expression represents a fixed value that stands "for itself". Here's an example:
+We have already some of Scala's basic types. In these section we're going to round out that knowledge by covering all of Scala's **literal expressions**. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
 ~~~ scala
 scala> 42
@@ -34,7 +34,7 @@ scala> 42L
 res3: Long = 42
 ~~~
 
-Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. Instead, we create them using *methods* called `toShort` and `toByte`. We'll see this in the next section.
+Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. Instead, we create them using methods called `toShort` and `toByte`.
 
 ## Booleans
 
@@ -57,7 +57,7 @@ scala> 'a'
 res34: Char = a
 ~~~
 
-<div class="alert alert-info">
+<div class="java-tip">
   **Java tip:** Although they are written with initial capitals, Scala's `Int`, `Double`, `Float`, `Long`, `Short`, `Byte`, `Boolen` and `Char` refer to exactly the same things as `int`, `double`, `float`, `long`, `short`, `byte`, `boolean`, and `char` in Java.
 
   In Scala all of these types act like objects with methods and fields. However, once your code is compiled, a Scala `Int` is exactly the same as a Java `int`. This makes interoperability between the two languages a breeze.
@@ -86,7 +86,7 @@ scala> null
 res13: Null = null
 ~~~
 
-<div class="alert alert-info">
+<div class="java-tip">
   **Java tip:** Although `nulls` are common in Java code, they are considered very bad practice in Scala.
 
   The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
@@ -119,7 +119,7 @@ In this section we have seen **literal** expressions, which evaluate to basic da
 
 We note that every literal expression has a **type**, and evalutes to a **value** -- something which is also true for more complex Scala expressions.
 
-In the next section we will start combining expressions into **compound expressions** and producing code that has useful effects.
+In the next section we will learn how to define our own object literals.
 
 ## Exercises
 

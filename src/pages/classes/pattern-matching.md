@@ -24,7 +24,7 @@ object Stormtrooper {
 }
 ~~~
 
-Here's it in use:
+Here it is in use:
 
 ~~~ scala
 scala> Stormtrooper.inspect(Person("Noel", "Welsh"))
@@ -34,7 +34,10 @@ scala> Stormtrooper.inspect(Person("Han", "Solo"))
 res2: String = Stop, rebel scum!
 ~~~
 
-This shows the essence of pattern matching. More formally, the syntax of pattern matching is as follows:
+<div class="callout callout-info">
+#### Pattern Matching Syntax
+
+The syntax of a pattern matching expression is
 
 ~~~ scala
 expr0 match {
@@ -44,11 +47,21 @@ expr0 match {
 }
 ~~~
 
-The expression `expr0` evaluates to the value we match. The patterns, or *guards*, are checked against this value in order. The right-hand side expression of the first pattern that matches is then evaluated[^compilation]. Pattern matching is itself an expression and thus evaluates to a value -- the value of the matched expression.
+where
+
+- the expression `expr0` evaluates to the value we match;
+- the patterns, or *guards*, `pattern1`, `pattern2`, and so on are checked against this value in order; and
+- the right-hand side expression (`expr1`, `expr2`, and so on) of the first pattern that matches is evaluated[^compilation].
+
+Pattern matching is itself an expression and thus evaluates to a value -- the value of the matched expression.
+</div>
 
 [^compilation]: In reality patterns are compiled to a more efficient form than a sequence of tests, but the semantics are the same.
 
-For case classes the pattern syntax matches the constructor syntax. Take the data
+
+## Pattern Syntax
+
+Scala has an expressive syntax for writing patterns or guards. For case classes the pattern syntax matches the constructor syntax. Take the data
 
 ~~~ scala
 Person("Noel", "Welsh")
