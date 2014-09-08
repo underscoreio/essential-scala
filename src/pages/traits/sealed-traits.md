@@ -15,7 +15,7 @@ sealed trait Visitor {
 }
 ~~~
 
-When we mark a trait as `sealed` we *must* define all of its subtypes in the same file. This is a resonable restriction in our `Visitor` example. Once the trait is sealed, the compiler knows the complete set of subtypes and will warn us if a pattern matching expression is missing as case:
+When we mark a trait as `sealed` we *must* define all of its subtypes in the same file. This is a reasonable restriction in our `Visitor` example. Once the trait is sealed, the compiler knows the complete set of subtypes and will warn us if a pattern matching expression is missing a case:
 
 ~~~ scala
 scala> def missingCase(v: Visitor) =
@@ -65,7 +65,15 @@ Remember subtypes must be defined in the same file as a sealed trait.
 
 ## Take home points
 
-Sealed traits and final (case) classes allow us to control extensibility of types. **The majority of cases** should use the sealed trait / final case class pattern. The main advantages of this pattern are:
+Sealed traits and final (case) classes allow us to control extensibility of types. **The majority of cases** should use the sealed trait / final case class pattern.
+
+~~~ scala
+sealed trait TraitName { ... }
+final case class Name(...) extends TraitName
+~~~
+
+
+The main advantages of this pattern are:
 
 - the compiler will warn if we miss a case in pattern matching; and
 - we can control extension points of sealed traits and thus make stronger guarantees about the behaviour of subtypes.

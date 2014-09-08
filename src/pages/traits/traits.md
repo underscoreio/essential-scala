@@ -163,6 +163,56 @@ case class Name(...) extends TraitName {
 
 ## Exercises
 
+### Cats, and More Cats
+
+Demand for Cat Simulator 1.0 is exploding! For v2 we're going to go beyond the domestic cat to model `Tiger`s, `Lion`s, and `Panther`s in additional to the `Cat`. Define a trait `Feline` and then define all the different species as subtypes of `Feline`. To make things interesting, define:
+
+- on `Feline` a `colour` as before;
+- on `Feline` a `String` `sound`, which for a cat is `"meow"` and is `"roar"` for all other felines;
+- only `Cat` has a favourite food; and
+- `Lion`s have an `Int` `maneSize`.
+
+<div class="solution">
+This is mostly a finger exercise to get you used to trait syntax but there are a few interesting things in the solution.
+
+~~~ scala
+trait Feline {
+  def colour: String
+  def sound: String
+}
+case class Lion(colour: String, maneSize: Int) extends Feline {
+  val sound = "roar"
+}
+case class Tiger(colour: String) extends Feline {
+  val sound = "roar"
+}
+case class Cat(colour: String, food: String) extends Feline {
+  val sound = "meow"
+}
+~~~
+
+Notice that `sound` is not defined as a constructor argument. Since it is a constant, it doesn't make sense to give user a chance to modify it. There is a lot of duplication in the definition of `sound`. We could define a default value in `Feline` like so
+
+~~~ scala
+trait Feline {
+  def colour: String
+  def sound: String = "roar"
+}
+~~~
+
+This is generally a bad practice. If we define a default implementation it should be an implementation that is suitable for all subtypes.
+
+Another alternative to define an intermediate type, perhaps called `BigCat` that defines sound as `"roar"`. This is a better solution.
+
+~~~ scala
+trait BigCat extends Feline {
+  val sound = "roar"
+}
+case class Tiger(...) extends BigCat
+case class Lion(...) extends BigCat
+~~~
+</div>
+
 ### Shaping up with traits
 
 Define a trait called `Shape` and give it three abstract methods:
