@@ -110,3 +110,45 @@ Expressions are the parts of a program that evaluate to a value. They are the ma
 Expressions have types, which express some restrictions on programs. During *compile-time* the types of our programs are checked. If they are inconsistent then compilation fails and we cannot evaluate, or run, our program.
 
 Values exist in the computer's memory, and are what a running program manipulates. In Scala, all values are *objects*, the meaning of which we will discuss soon.
+
+## Exercises
+
+Using the Scala console or worksheet, determine the type and value of the following expressions:
+
+~~~ scala
+1 + 2
+~~~
+
+<div class="solution">
+Type is `Int` and value is `3`.
+</div>
+
+~~~ scala
+"3".toInt
+~~~
+
+<div class="solution">
+Type is `Int` and value is `3`.
+</div>
+
+~~~ scala
+"foo".toInt
+~~~
+
+<div class="solution">
+Type is `Int`, but this one doesn't evalute to a value -- it raises an exception instead, and a raised exception is not a value. How can we tell this? We can't continuing computing with the result of the expression. For example, we can't print it. Compare
+
+~~~ scala
+scala> println("foo")
+foo
+~~~
+
+and
+
+~~~ scala
+scala> println("foo".toInt)
+java.lang.NumberFormatException: For input string: "foo"
+~~~
+
+In the latter no printing occurs indicating the `println` is never evaluated.
+</div>

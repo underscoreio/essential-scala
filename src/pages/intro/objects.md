@@ -142,6 +142,33 @@ As we will see, Scala's focus on programming with expressions allows us to write
 
 ## Exercises
 
+### Operator Style
+
+Rewrite in operator-style
+
+~~~ scala
+"foo".take(1)
+~~~
+
+<div class="solution">
+~~~ scala
+"foo" take 1
+~~~
+</div>
+
+Rewrite in method call style
+
+~~~ scala
+1 + 2 + 3
+~~~
+
+<div class="solution">
+~~~ scala
+(1).+(2).+(3)
+~~~
+
+Note the need to wrap the `1` in brackets. If you fail to do this then `1.` will be interpreted as a `Double` and your result will have type `Double` not `Int`. A mildly subtle difference.
+</div>
 
 ### Substitution
 
