@@ -60,6 +60,8 @@ module.exports = (grunt) ->
         cmd: "bundle exec jekyll build --trace --config jekyll_config.yml"
       deploy:
         cmd: 'echo "Deployment not implemented. Search for this text in gruntfile.coffee and replace it with your own deployment command."'
+      bundle:
+        cmd: 'tar zcvf essential-scala.tar.gz essential-scala'
 
     bower:
       install: {}
@@ -119,6 +121,11 @@ module.exports = (grunt) ->
   grunt.registerTask "deploy", [
     "build"
     "exec:deploy"
+  ]
+
+  grunt.registerTask "bundle", [
+    "build"
+    "exec:bundle"
   ]
 
   grunt.registerTask "default", [

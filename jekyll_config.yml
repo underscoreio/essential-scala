@@ -28,6 +28,7 @@ toc:
     body:
      - /traits/traits.html
      - /traits/sealed-traits.html
+     - /traits/modelling-data-with-traits.html
      - /traits/traits-as-mixins.html
      - /traits/generics.html
      - /traits/inheritance-versus-generics.html
