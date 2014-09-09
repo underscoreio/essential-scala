@@ -14,7 +14,7 @@ scala> if(1 < 2) "Yes" else "No"
 res2: String = Yes
 ~~~
 
-The expression that is not selected does not get evaluated. This is apparent if use an expression with a side-effect
+The expression that is not selected does not get evaluated. This is apparent if we use an expression with a side-effect
 
 ~~~
 scala> if(1 < 2) println("Yes") else println("No")
