@@ -9,23 +9,32 @@ Our goal in this section is to see how to translate a data model into Scala code
 
 ## The Has-a And Pattern
 
-Our first pattern is to model data that contains other data. We might describe this as "`A` has a `B` and `C`". For example, a `Cat` has a colour and a favourite food; a `Visitor` has an id and a creation date; and so on.
+Our first pattern is to model data that contains other data. We might describe this as "`A` *has a* `B` *and* `C`". For example, a `Cat` has a colour and a favourite food; a `Visitor` has an id and a creation date; and so on.
 
 The way we write this is to use a case class. We've already done this many times in exercises; now we're formalising the pattern.
 
 <div class="callout callout-info">
 #### Has-a And Pattern
 
-If `A` has a `b` (with type `B`) *and* a `c` (with type `C`) write
+If `A` has a `b` (with type `B`) and a `c` (with type `C`) write
 
 ~~~ scala
 case class A(b: B, c: C)
+~~~
+
+or
+
+~~~ scala
+trait A {
+  def b: B
+  def c: C
+}
 ~~~
 </div>
 
 ## The Is-a Or Pattern
 
-Our next pattern is the model data that is two or more distinct cases. We might describe this as "`A` is a `B` or `C`". For example, a `Feline` is a `Cat`, `Lion`, or `Tiger`; a `Visitor` is a `Anonymous` or `User`; and so on.
+Our next pattern is the model data that is two or more distinct cases. We might describe this as "`A` *is a* `B` *or* `C`". For example, a `Feline` is a `Cat`, `Lion`, or `Tiger`; a `Visitor` is a `Anonymous` or `User`; and so on.
 
 We write this using the sealed trait / final case class pattern.
 
@@ -36,62 +45,108 @@ If `A` is a `B` or `C` write
 
 ~~~ scala
 sealed trait A
-final case class B()
-final case class C()
+final case class B() extends A
+final case class C() extends A
 ~~~
 </div>
 
 ## Algebraic Data Types
 
-An algebraic data type is any data that uses the above two patterns.
+An algebraic data type is any data that uses the above two patterns. In the functional programming literature, data using the "has-a and" pattern is known as a *product type*, and the "is-a or" pattern is a *sum type*.
 
-This illustrates the most important role of using traits, and the one on which we're focusing: defining a logical relationship between traits and classes. Given the definitions above we can say that a `Visitor` *is-a* `User` *or* an `Anonymous`.
+## The Missing Patterns
 
+We have looked at relationships along two dimensions: is-a/has-a, and and/or. We can draw up a little table and see we only have patterns for two of the four cells in the table.
 
+|-----------+--------------+----------|
+|           | And          | Or       |
+|-----------+--------------+----------|
+| **Is-a**  |              | Sum type |
+| **Has-a** | Product type |          |
+|=====================================|
+{: .table .table-bordered .table-responsive }
 
-## Modelling Data With Traits
+What about the missing two patterns?
 
-The most important use of traits, and the one we're focusing on in this course, is to model a **logical or** relationship.
-
-In the example above we modelled a website visitor which is either a registered user or anonymous. There are many other cases. Attempting to login to a website can succeed or failure. A smartphone can run iOS, Android, Windows Mobile, Firefox OS, or a few other operating systems. These are all cases of logical ors.
-
-In some examples we can enumerate all the cases (logins either succeed or fail; there are no other choices), whilst in other cases we cannot (such as the smartphone example; new mobile operating systems will continue to be developed). The trait pattern allows us to model either case but we will shortly see an refinement specifically for the case when we can completely enumerate all the variants. For now this is our pattern:
-
-<div class="callout callout-info">
-### The Logical Or Pattern
-
-If A *is a* B *or* a C, we write
+The "is-a and" pattern means that `A` is a `B` and `C`. This pattern is in some ways the inverse of the sum type pattern, and we can implement it as
 
 ~~~ scala
-trait A
+trait B
+trait C
+trait A extends B with C
+~~~
 
-case class B() extends A
-case class C() extends A
+In Scala a trait can extend as many traits as we like using the `with` keyword like `A extends B with C with D` and so on. We aren't going to use this pattern in this course. If we want to represent that some data conforms to a number of different interfaces we will often be better off using a *type class*, which we will explore later. There are, however, several legitimate uses of this pattern:
+
+- for modularity, using a what's known as the [cake pattern](http://jonasboner.com/2008/10/06/real-world-scala-dependency-injection-di/); and
+- sharing implementation across several classes where it doesn't make sense to make default implementations in the main trait.
+
+The "has-a or" patterns means that `A` has a `B` or `C`. There are two ways we can implement this. We can say that `A` has a `d` of type `D`, where `D` is a `B` or `C`. We can mechanically apply our two patterns to implement this:
+
+~~~ scala
+trait A {
+  def d: D
+}
+sealed trait D
+final case class B() extends D
+final case class C() extends D
+~~~
+
+Alternatively we could implement this as `A` is a `D` or `E`, and `D` has a `B` and `E` has a `C`. Again this translates directly into code
+
+~~~ scala
+sealed trait A
+final case class D(b: B) extends A
+final case class E(c: C) extends A
+~~~
+
+## Take Home Points
+
+We have seen that we can mechanically translate data using the "has-a and" and "is-a or" patterns (or, more succintly, the product and sum types) into Scala code. This type of data is known as an algebraic data type. Understanding these patterns is very important for writing idiomatic Scala code.
+
+## Exercises
+
+### Stop on a Dime
+
+A traffic light is red, green, or yellow. Translate this description into Scala code.
+
+<div class="solution">
+This is a direct application of the sum type pattern.
+
+~~~ scala
+sealed trait TrafficLight
+final case object Red extends TrafficLight
+final case object Green extends TrafficLight
+final case object Yellow extends TrafficLight
+~~~
+
+As there are fields or methods on the three cases, and thus there is no need to create than one instance of them, I used case objects instead of case classes.
+</div>
+
+### Calculator
+
+A calculation may succeed (with an `Int` result) or fail (with a `String` message). Implement this.
+
+<div class="solution">
+~~~ scala
+sealed trait Calculation
+final case class Success(result: Int) extends Calculation
+final case class Failure(reason: String) extends Calculation
 ~~~
 </div>
 
-## Subtyping and Polymorphism
+### Water, Water, Everywhere
 
-A trait is a type just like a class. A class that extends a trait is a *subtype* of that trait, and any object of that class is both a value of the subtype and a value of the supertype. This is a kind of [polymorphism](http://en.wikipedia.org/wiki/Polymorphism_(computer_science)) -- essentially the polymorphism we get from Java.
+Bottled water has a size (an `Int`), a source (which is a well, spring, or tap), and a `Boolean` carbonated. Implement this in Scala.
 
-Anywhere in our code that we expect an instance of the supertype, we can use an instance of the subtype instead. For example, we can assign `User` to a variable of type `Visitor` or pass it to a method that expects a `Visitor` as a parameter:
+<div class="solution">
+Crank the handle on the product and sum type patterns.
 
 ~~~ scala
-scala> val visitor: Visitor = User("a", "me@example.com")
-visitor: Visitor = User(a,me@example.com,Fri Feb 14 12:05:25 GMT 2014)
-
-scala> def ageString(v: Visitor) =
-     |   v.id + " is " + v.age + "ms old"
-ageString: (v: Visitor)String
-
-scala> ageString(User("a", "me@example.com"))
-res14: String = a is 0ms old
+final case class BottledWater(size: Int, source: Source, carbonated: Boolean)
+sealed trait Source
+final case object Well extends Source
+final case object Spring extends Source
+final case object Tap extends Source
 ~~~
-
-## Exploiting Types
-
-In one sense a type is just a collection of values that share common properties. More than that, though, a type can represent **any property of a program that we can establish without evaluating it.**
-
-In old languages like C, types were used to specify the machine representation of data, essentially providing optimisation hints to the compiler. In modern languages like Scala, **types are used to ensure that important program properties are maintained**.
-
-A good Scala developer uses types to his or her advantage to avoid bugs and write self-documenting code.
+</div>
