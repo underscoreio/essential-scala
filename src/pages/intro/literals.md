@@ -3,7 +3,7 @@ layout: page
 title: Literal Objects
 ---
 
-We have already some of Scala's basic types. In these section we're going to round out that knowledge by covering all of Scala's **literal expressions**. A literal expression represents a fixed value that stands "for itself". Here's an example:
+We have already covered some of Scala's basic types. In these section we're going to round out that knowledge by covering all of Scala's **literal expressions**. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
 ~~~ scala
 scala> 42
