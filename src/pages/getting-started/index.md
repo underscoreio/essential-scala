@@ -25,7 +25,7 @@ Accept the default location and you will see an empty main Eclipse window:
 
 ## Creating your first Scala application
 
-Your *Eclipse workspace* is two things: a folder containing files and settings, and a main window where you will be doing most of your Scala programming. In your workspace you can will *projects* for each Scala application you work on.
+Your *Eclipse workspace* is two things: a folder containing files and settings, and a main window where you will be doing most of your Scala programming. In your workspace you can find *projects* for each Scala application you work on.
 
 Let's create a project for this course now. Select the **File menu** and choose **New > Scala Project**:
 
