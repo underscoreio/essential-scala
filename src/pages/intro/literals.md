@@ -87,7 +87,7 @@ res13: Null = null
 ~~~
 
 <div class="java-tip">
-  **Java tip:** Although `nulls` are common in Java code, they are considered very bad practice in Scala.
+  **Java tip:** Although `null`s are common in Java code, they are considered very bad practice in Scala.
 
   The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
 
