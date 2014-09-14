@@ -31,7 +31,7 @@ Let's create a project for this course now. Select the **File menu** and choose 
 
 ![Scala IDE: Create a new Scala Project](scala-ide-new-project.png)
 
-Enter a **Project name** of `core-scala` and click **Finish**. The tree view on the left of your workspace should now contain an empty project:
+Enter a **Project name** of `essential-scala` and click **Finish**. The tree view on the left of your workspace should now contain an empty project:
 
 ![Scala IDE: Empty project](scala-ide-empty-project.png)
 
