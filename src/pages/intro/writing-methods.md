@@ -52,7 +52,7 @@ The first technique is to look at the result type, in this case `Double`. How ca
 
 #### Consider the Input Type
 
-Our next technique is to look at type of input parameters to the method. In this case we have a `Double`. We have established we need to create `Double`, so what methods can we call to create `Double` from out input. There are many such methods, and here we have to use our domain knowledge to select `*` as the correct method to call.
+Our next technique is to look at the type of input parameters to the method. In this case we have a `Double`. We have established we need to create `Double`, so what methods can we call to create `Double` from out input. There are many such methods, and here we have to use our domain knowledge to select `*` as the correct method to call.
 
 Thus we can write our complete method as
 
