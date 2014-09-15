@@ -422,7 +422,7 @@ The full sequence of evaluation is as follows:
        concatentation, and yielding `"3c31"`
 </div>
 
-### Greetings, humans
+### Greetings, human
 
 Define an object called `person` that contains fields called `firstName` and `lastName`. Define a second object called `alien` containing a method called `greet` that takes your person as a parameter and returns a greeting using their `firstName`.
 
