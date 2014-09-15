@@ -101,8 +101,8 @@ scala> class Person(val firstName: String, val lastName: String) {
        }
 defined class Person
 
-scala> new Person("Dave", "Gurnell").name
-res29: String = Dave Gurnell
+scala> new Person("Dave", "Gurnell").firstName
+res29: String = Dave
 ~~~
 
 <div class="alert alert-info">
