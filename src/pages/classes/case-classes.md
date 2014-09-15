@@ -42,7 +42,7 @@ What's more, the class and companion are pre-populated with some very useful fea
    res2: Person = Person("Dave","Gurnell")
    ~~~
 
-3. **Sensible `equals`, and `hashCode` methods** that operate on the field field values in the object.
+3. **Sensible `equals`, and `hashCode` methods** that operate on the field values in the object.
 
    This makes it easy to use case classes with collections like `Lists`, `Sets` and `Maps`. It also means we can compare objects on the basis of their contents rather than their reference identity:
 
