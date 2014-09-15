@@ -219,6 +219,8 @@ The meaning of the two methods (polymorphism and pattern matching) is slightly d
 
 The general rule is: if a method only depends on other fields and methods in a class it is a good candidate to use polymorphism. If the method depends on other data (for example, if we needed a `Cook` to make dinner) consider implementing is using pattern matching outside of the classes in question. If we want to have more than one implementation we should use pattern matching and implement it outside the classes.
 
+## Object-Oriented vs Functional Extensibility
+
 ## Exercises
 
 #### Traffic Lights
@@ -275,3 +277,81 @@ In this case I think polymorphism is best, as `tick` doesn't depend on any exter
 </div>
 
 #### Calculation
+
+In the last section we created a `Calculation` data type like so:
+
+~~~ scala
+sealed trait Calculation
+final case class Success(result: Int) extends Calculation
+final case class Failure(reason: String) extends Calculation
+~~~
+
+We're now going to write some methods that use a `Calculation` to perform a larger calculation. These methods will have a somewhat unusual shape -- this is a precursor to things we'll be exploring soon -- but if you follow the patterns you will be fine.
+
+Create a `Calculator` object. On `Calculator` define methods `+` and `-` that accept a `Calculation` and an `Int`, and return a new `Calculation`. Here are some examples
+
+~~~ scala
+assert(Calculator.+(Success(1), 1) == Success(2))
+assert(Calculator.-(Success(1), 1) == Success(0))
+assert(Calculator.+(Faillure("Badness"), 1) == Failure("Badness"))
+~~~
+
+<div class="solution">
+Start by implementing the framework the exercise calls for:
+
+~~~ scala
+object Calculator {
+  def +(calc: Calculation, operand: Int): Calculation = ???
+  def -(calc: Calculation, operand: Int): Calculation = ???
+}
+~~~
+
+Now apply the structural recursion pattern:
+
+~~~ scala
+object Calculator {
+  def +(calc: Calculation, operand: Int): Calculation =
+    calc match {
+        case Success(result) => ???
+        case Failure(reason) => ???
+    }
+  def -(calc: Calculation, operand: Int): Calculation =
+    calc match {
+      case Success(result) => ???
+      case Failure(reason) => ???
+    }
+}
+~~~
+
+To write the remaining bodies of the methods we can no longer rely on the patterns. However, a bit of thought quickly leads us to the correct answer. We know that `+` and `-` are binary operations; we need two integers to use them. We also know we need to return a `Calculation`. Looking at the `Failure` cases, we don't have two `Int`s available. The only result that makes sense to return is `Failure`. On the `Success` side, we *do* have two `Int`s and thus we should return `Success`. This gives us:
+
+~~~ scala
+object Calculator {
+  def +(calc: Calculation, operand: Int): Calculation =
+    calc match {
+        case Success(result) => Success(result + operand)
+        case Failure(reason) => Failure(reason)
+    }
+  def -(calc: Calculation, operand: Int): Calculation =
+    calc match {
+      case Success(result) => Success(result - operand)
+      case Failure(reason) => Failure(reason)
+    }
+}
+~~~
+</div>
+
+#### A Calculator
+
+We're now going to expand on the concepts in the last exercise to implement a simple interpreter for programs containing only numeric operations.
+
+We start by defining some types to represent the expressions we'll be operating on. In the compiler literature this is known as an *abstract syntax tree*.
+
+Our representation is:
+
+- An `Expression` is an `Addition`, `Subtraction`, or a `Number`
+- An Addition has a `left` and `right` Expression
+- A Subtraction has a `left` and `right` Expression
+- A Number has a `value` of type Int
+
+Implement this in Scala.
