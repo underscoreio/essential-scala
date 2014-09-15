@@ -443,7 +443,7 @@ object alien {
 alien.greet(person)
 ~~~
 
-Notice the type on tpe `h` parameter of `greet`: `person.type`. This is one of the *singleton types* we were referring to earlier - it is specific to the object `person`, which prevents us using `greet` on any other object. This is very different from a type such as `Int` that is shared by all Scala integers.
+Notice the type on the `p` parameter of `greet`: `person.type`. This is one of the *singleton types* we were referring to earlier - it is specific to the object `person`, which prevents us using `greet` on any other object. This is very different from a type such as `Int` that is shared by all Scala integers.
 
 This imposes a significant limitation on our ability to write programs in Scala. We can only write methods that work with built-in types or single objects of our own creation. In order to build useful programs we need the ability to *define our own types* and create multiple values of each. We can do this using `classes`, which we will cover in the next section.
 </div>
