@@ -48,7 +48,7 @@ We're now ready to write the body of our method. We will develop a number of tec
 
 #### Consider the Result Type
 
-The first technique is to look at the result type, in this case `Double`. How can we create `Double` values? We could write a literal, but that obviously won't be correct in this case. The other way we know to create a `Double` is to call a method on some boject, which brings us to the next technique.
+The first technique is to look at the result type, in this case `Double`. How can we create `Double` values? We could write a literal, but that obviously won't be correct in this case. The other way we know to create a `Double` is to call a method on some object, which brings us to the next technique.
 
 #### Consider the Input Type
 
