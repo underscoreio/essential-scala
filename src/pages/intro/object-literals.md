@@ -402,6 +402,9 @@ The full sequence of evaluation is as follows:
              1. Stores the value `3` in `b`
     1. Calls `argh.c`, which...
        1. Prints `"c"`
+       1. Evalutates `a`
+         1. Prints `"a"`
+         1. Returns `1` - Which we discard
        1. Evaluates `b + "c"`, which...
           1. Retrieves the value `3` from `b`
           1. Retrieves the value `"c"`
