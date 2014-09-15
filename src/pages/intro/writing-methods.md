@@ -29,7 +29,7 @@ assert(square(-2.0) == 4.0)
 
 ## Write the Declaration
 
-With types and test cases ready we can no write the method declaration. We haven't developed the body yet so use `???`, another nifty Scala feature, in its place.
+With types and test cases ready we can now write the method declaration. We haven't developed the body yet so use `???`, another nifty Scala feature, in its place.
 
 ~~~ scala
 def square(in: Double): Double =
