@@ -8,9 +8,6 @@ Sometimes we want to create a method that logically belongs to a class but is in
 One common use case is auxiliary constructors. Although Scala does have syntax that lets us define multiple constructors for a class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the **companion object** of the class. For example:
 
 ~~~ scala
-scala> import java.util.Date
-import java.util.Date
-
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
