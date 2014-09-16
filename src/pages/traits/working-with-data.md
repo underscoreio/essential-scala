@@ -356,17 +356,17 @@ object Calculator {
 Now write a division method that fails if the divisor is 0. The following tests should pass.
 
 ~~~ scala
-assert(Calculation./(Success(4), Success(2)) == 2)
-assert(Calculation./(Success(4), 0) == Failure("Division by zero"))
+assert(Calculator./(Success(4), 2) == Success(2))
+assert(Calculator./(Success(4), 0) == Failure("Division by zero"))
 ~~~
 
 <div class="solution">
 ~~~ scala
 def /(calc: Calculation, operand: Int): Calculation =
   operand match {
-    0 => Failure("Division by zero")
-    _ => calc match {
-           case Success(result) => result / operand
+    case 0 => Failure("Division by zero")
+    case _ => calc match {
+           case Success(result) => Success(result / operand)
            case Failure(reason) => Failure(reason)
          }
   }
