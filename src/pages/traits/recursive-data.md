@@ -42,7 +42,6 @@ Start with the tests and method declaration.
 val example = Cell(1, Cell(2, Cell(3, Empty)))
 assert(sum(example) == 6)
 assert(sum(example.tail) == 5)
-assert(sum(example.tail.tail == 3)
 assert(sum(Empty) == 0)
 
 def sum(list: IntList): Int = ???
@@ -136,7 +135,7 @@ because `notATailCall` does not immediatley return -- it adds an number to the r
 A tail call can be optimised to not use stack space. Due to limitations in the JVM, Scala only optimises tail calls where the caller calls itself. Since tail recursion is an important property to maintain, we can use the `@tailrec` annotation to ask the compiler to check that methods we believe are tail recursion really are. Here we have two versions of `sum` annotated. One is tail recursive and one is not. You can see the compiler complains about the method that is not tail recursive.
 
 ~~~ scala
-import scala.annotation.tailrec
+scala> import scala.annotation.tailrec
 import scala.annotation.tailrec
 
 scala> @tailrec
@@ -239,21 +238,21 @@ assert(double(Cell(2, Cell(1, Empty))) == Cell(4, Cell(2, Empty)))
 
 <div class="solution">
 ~~~ scala
-def double(list: IntList): Int =
+def double(list: IntList): IntList =
   list match {
     case Empty => Empty
     case Cell(hd, tl) => Cell(hd * 2, double(tl))
   }
 
 sealed trait IntList {
-  def double: Int
+  def double: IntList
 }
 final case object Empty extends IntList {
-  def double: Int =
+  def double: IntList =
     Empty
 }
 final case class Cell(head: Int, tail: IntList) extends IntList {
-  def double: Int =
+  def double: IntList =
     Cell(head * 2, tail.double)
 }
 ~~~
@@ -285,7 +284,6 @@ object TreeOps {
       case Leaf(elt) => elt
       case Node(l, r) => sum(l) + sum(r)
     }
-  }
 
   def double(tree: Tree): Tree =
     tree match {
@@ -355,11 +353,11 @@ sealed trait Expression {
 }
 final case class Addition(left: Expression, right: Expression) extends Expression {
   def eval: Double =
-    (left.eval.value + right.eval.value)
+    (left.eval + right.eval)
 }
 final case class Subtraction(left: Expression, right: Expression) extends Expression {
   def eval: Double =
-    (left.eval.value - right.eval.value)
+    (left.eval - right.eval)
 }
 final case class Number(value: Int) extends Expression {
   def eval: Double =
