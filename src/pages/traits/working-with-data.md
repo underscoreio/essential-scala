@@ -373,48 +373,10 @@ def /(calc: Calculation, operand: Int): Calculation =
 ~~~
 </div>
 
-#### A Calculator
+#### Email
 
-We're now going to expand on the concepts in the last exercise to implement a simple interpreter for programs containing only numeric operations.
-
-We start by defining some types to represent the expressions we'll be operating on. In the compiler literature this is known as an *abstract syntax tree*.
-
-Our representation is:
-
-- An `Expression` is an `Addition`, `Subtraction`, or a `Number`
-- An Addition has a `left` and `right` Expression
-- A Subtraction has a `left` and `right` Expression
-- A Number has a `value` of type Int
-
-Implement this in Scala.
+Recall the `Visitor` trait we looked at earlier: a website `Visitor` is either `Anonymous` or a signed-in `User`. Now imagine we wanted to add the ability to send emails to visitors. We can only email signed-in users, and sending an email requires a lot of knowledge about SMTP settings, MIME headers, and so on. Would an `email` method be better implemented using polymorphism on the `Visitor` trait or using pattern matching in an `EmailService` object? Why?
 
 <div class="solution">
-The algebraic data type pattern is appropriate to implement the calculatur abstract syntax tree:
-
-~~~ scala
-sealed trait Expression
-final case class Addition(left: Expression, right: Expression) extends Expression
-final case class Subtraction(left: Expression, right: Expression) extends Expression
-final case class Number(value: Int) extends Expression
-~~~
-
-Implementing *eval* is straightforward structural recursion
-
-~~~ scala
-sealed trait Expression {
-  def eval: Number
-}
-final case class Addition(left: Expression, right: Expression) extends Expression {
-  def eval: Number =
-    Number(left.eval.value + right.eval.value)
-}
-final case class Subtraction(left: Expression, right: Expression) extends Expression {
-  def eval: Number =
-    Number(left.eval.value - right.eval.value)
-}
-final case class Number(value: Int) extends Expression {
-  def eval: Number =
-    this
-}
-~~~
+I would implement the method in an `EmailService` object. There are a lot of details to do with sending an email that have nothing to do with our `Visitor` class. I would rather keep these details in a separate abstraction.
 </div>
