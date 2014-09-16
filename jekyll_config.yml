@@ -30,7 +30,11 @@ toc:
      - /traits/sealed-traits.html
      - /traits/modelling-data-with-traits.html
      - /traits/working-with-data.html
-     - /traits/traits-as-mixins.html
+     - /traits/recursive-data.html
+     - /traits/conclusions.html
+
+  - head: /sequencing/index.html
+    body:
      - /traits/generics.html
      - /traits/inheritance-versus-generics.html
      - /traits/functions.html
