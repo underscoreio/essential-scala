@@ -3,7 +3,7 @@ layout: page
 title: Working With Data
 ---
 
-In the previous section we saw how to define algebraic data types using a combination of the sum- (or) and product-type (and) patterns. In this section we'll a pattern for using algebraic data types, known as **structural recursion**. We'll actually see two variants of this pattern: one using **polymorphism** and one using **pattern matching**.
+In the previous section we saw how to define algebraic data types using a combination of the sum (or) and product type (and) patterns. In this section we'll see a pattern for using algebraic data types, known as **structural recursion**. We'll actually see two variants of this pattern: one using **polymorphism** and one using **pattern matching**.
 
 Structural recursion is the precise opposite of the process of building an algebraic data type. If `A` has a `B` and `C` (the product-type pattern), to construct an `A` we must have a `B` and a `C`. The sum- and product-type patterns tell us how to combine data to make bigger data. Structural recursion says that if we have an `A` as defined before, we must break it into its constituent `B` and `C` that we then combine in some way to get closer to our desired answer. Structural recursion is essentially the process of breaking down data into smaller pieces.
 
@@ -11,7 +11,7 @@ Just as we have two paterns for building algebraic data types, we will have two 
 
 ## Structural Recursion using Polymorphism
 
-Polymorphic dispatch, or just polymorphism for short, is a fundamental object-oriented technique. If we define a method in a trait with different implementations in classes extending that trait, when we call that method the implementation on the actual concrete instance will be used. Here's a very simple example. We start with a simple definition using the familiar product-type (or) pattern.
+Polymorphic dispatch, or just polymorphism for short, is a fundamental object-oriented technique. If we define a method in a trait, and have different implementations in classes extending that trait, when we call that method the implementation on the actual concrete instance will be used. Here's a very simple example. We start with a simple definition using the familiar product type (or) pattern.
 
 ~~~ scala
 sealed trait A {
@@ -27,7 +27,7 @@ final case class C() extends A {
 }
 ~~~
 
-In use we declare a value with type `A` but we see in use the concrete implementation on `B` or `C` is used.
+We declare a value with type `A` but we see the concrete implementation on `B` or `C` is used.
 
 ~~~ scala
 scala> val anA: A = B()
@@ -81,7 +81,7 @@ If `A` has a `b` (with type `B`) and a `c` (with type `C`), and we want to write
 
 ~~~ scala
 case class A(b: B, c: C) {
-  def f: Fjj = ???
+  def f: F = ???
 }
 ~~~
 
@@ -93,7 +93,7 @@ In the body of the method we must use `b`, `c`, and any method parameters to con
 <div class="callout callout-info">
 #### The Is-a Or Polymorphism Pattern
 
-If `A` is a `B` or `C`, and we want to write a method `f` returning an `F`, define `f` as an abstract method on `A` and provide concrete implementations on `B` and `C`.
+If `A` is a `B` or `C`, and we want to write a method `f` returning an `F`, define `f` as an abstract method on `A` and provide concrete implementations in `B` and `C`.
 
 ~~~ scala
 sealed trait A {
@@ -113,7 +113,7 @@ final case class C() extends A {
 
 ## Structural Recursion using Pattern Matching
 
-Structural recursion with pattern matching proceeds along the same lines as with polymorphism. We simply have a case for every subtype, and each pattern matching case must extract the fields we're interested in.
+Structural recursion with pattern matching proceeds along the same lines as polymorphism. We simply have a case for every subtype, and each pattern matching case must extract the fields we're interested in.
 
 <div class="callout callout-info">
 #### The Has-a And Pattern Matching Pattern
@@ -127,7 +127,7 @@ def f(a: A): F =
   }
 ~~~
 
-In the body of the method we must use `b`, `c`, to construct the result of type `F`.
+In the body of the method we use `b` and `c` to construct the result of type `F`.
 
 </div>
 
