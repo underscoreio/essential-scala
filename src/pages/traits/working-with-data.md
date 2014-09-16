@@ -341,6 +341,26 @@ object Calculator {
 ~~~
 </div>
 
+Now write a division method that fails if the divisor is 0. The following tests should pass.
+
+~~~ scala
+assert(Calculation./(Success(4), Success(2)) == 2)
+assert(Calculation./(Success(4), 0) == Failure("Division by zero"))
+~~~
+
+<div class="solution">
+~~~ scala
+def /(calc: Calculation, operand: Int): Calculation =
+  operand match {
+    0 => Failure("Division by zero")
+    _ => calc match {
+           case Success(result) => result / operand
+           case Failure(reason) => Failure(reason)
+         }
+  }
+~~~
+</div>
+
 #### A Calculator
 
 We're now going to expand on the concepts in the last exercise to implement a simple interpreter for programs containing only numeric operations.
@@ -355,3 +375,34 @@ Our representation is:
 - A Number has a `value` of type Int
 
 Implement this in Scala.
+
+<div class="solution">
+The algebraic data type pattern is appropriate to implement the calculatur abstract syntax tree:
+
+~~~ scala
+sealed trait Expression
+final case class Addition(left: Expression, right: Expression) extends Expression
+final case class Subtraction(left: Expression, right: Expression) extends Expression
+final case class Number(value: Int) extends Expression
+~~~
+
+Implementing *eval* is straightforward structural recursion
+
+~~~ scala
+sealed trait Expression {
+  def eval: Number
+}
+final case class Addition(left: Expression, right: Expression) extends Expression {
+  def eval: Number =
+    Number(left.eval.value + right.eval.value)
+}
+final case class Subtraction(left: Expression, right: Expression) extends Expression {
+  def eval: Number =
+    Number(left.eval.value - right.eval.value)
+}
+final case class Number(value: Int) extends Expression {
+  def eval: Number =
+    this
+}
+~~~
+</div>
