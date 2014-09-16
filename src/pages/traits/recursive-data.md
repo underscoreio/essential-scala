@@ -181,7 +181,7 @@ def length(list: IntList): Int =
   }
 </div>
 
-Now define `length` using pattern matching.
+Now define `length` using polymorphism.
 
 <div class="solution">
 ~~~ scala
