@@ -1,18 +1,23 @@
 sealed trait IntList {
   def double: IntList
   def product: Int
+  def sum: Int
 }
 final case object Empty extends IntList {
   def double: IntList =
     Empty
   def product: Int =
     1
+  def sum: Int =
+    0
 }
 final case class Cell(head: Int, tail: IntList) extends IntList {
   def double: IntList =
     Cell(head * 2, tail.double)
   def product: Int =
     head * tail.product
+  def sum: Int =
+    head + tail.sum
 }
 
 Cell(1, Cell(2, Cell(3, Empty)))
@@ -23,7 +28,6 @@ def sum(list: IntList): Int =
     case Empty => 0
     case Cell(hd, tl) => hd + sum(tl)
   }
-
 
 def length(list: IntList): Int =
   list match {

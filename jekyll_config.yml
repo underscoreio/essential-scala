@@ -35,9 +35,9 @@ toc:
 
   - head: /sequencing/index.html
     body:
-     - /traits/generics.html
+     - /sequencing/functions.html
+     - /sequencing/generics.html
      - /traits/inheritance-versus-generics.html
-     - /traits/functions.html
 
   - head: /collections/index.html
     body:
