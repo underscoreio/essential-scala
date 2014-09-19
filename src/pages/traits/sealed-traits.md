@@ -182,7 +182,7 @@ sealed trait Color {
   def green: Double
   def blue: Double
 
-  // We decided to define a "light" colour  as one with
+  // We decided to define a "light" colour as one with
   // an average RGB of more than 0.5:
   def isLight = (red + green + blue) / 3.0 > 0.5
   def isDark = !isLight
