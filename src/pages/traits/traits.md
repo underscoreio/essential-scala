@@ -41,7 +41,7 @@ trait Visitor {
   def age: Long = new Date().getTime - createdAt.getTime
 }
 
-case class Anonymous(val id: String, createdAt: Date = new Date()) extends Visitor
+case class Anonymous(id: String, createdAt: Date = new Date()) extends Visitor
 
 case class User(
   id: String,
@@ -186,12 +186,15 @@ case class Lion(colour: String, maneSize: Int) extends Feline {
 case class Tiger(colour: String) extends Feline {
   val sound = "roar"
 }
+case class Pather(colour: String) extends Feilne {
+  val sound = "roar"
+}
 case class Cat(colour: String, food: String) extends Feline {
   val sound = "meow"
 }
 ~~~
 
-Notice that `sound` is not defined as a constructor argument. Since it is a constant, it doesn't make sense to give user a chance to modify it. There is a lot of duplication in the definition of `sound`. We could define a default value in `Feline` like so
+Notice that `sound` is not defined as a constructor argument. Since it is a constant, it doesn't make sense to give users a chance to modify it. There is a lot of duplication in the definition of `sound`. We could define a default value in `Feline` like so
 
 ~~~ scala
 trait Feline {
@@ -210,6 +213,7 @@ trait BigCat extends Feline {
 }
 case class Tiger(...) extends BigCat
 case class Lion(...) extends BigCat
+case class Panther(...) extends BigCat
 ~~~
 </div>
 

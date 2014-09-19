@@ -48,7 +48,7 @@ If all the subtypes of a trait are known, seal the trait
 
 ~~~ scala
 sealed trait TraitName {
-  declarationOrExpression ...
+  ...
 }
 ~~~
 
@@ -56,7 +56,7 @@ Consider making subtypes `final` if there is no case for extending them
 
 ~~~ scala
 final case class Name(...) extends TraitName {
- ...
+  ...
 }
 ~~~
 
