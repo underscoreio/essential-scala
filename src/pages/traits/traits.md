@@ -26,7 +26,7 @@ case class User(
 )
 ~~~
 
-With these class definitions we're saying that both anonymous and registered visitors have an id and a creation date, but we only know the email address of registered visitors.
+With these class definitions we're saying that both anonymous and registered visitors have an id and a creation date. But we only know the email address of registered visitors.
 
 There is obvious duplication here, and it would be nice to not have to write the same definitions twice. More important though, is to create some common type for the two kinds of visitors. If they had some type in common (other than `AnyRef` and `Any`) we could write methods that worked on any kind of visitor. We can do this with a trait like so:
 
