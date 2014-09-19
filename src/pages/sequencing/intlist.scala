@@ -71,3 +71,46 @@ assert(TreeOps.double(Cell(1, Empty)) == Cell(2, Empty))
 
 assert(Cell(2, Cell(1, Empty)).double == Cell(4, Cell(2, Empty)))
 assert(TreeOps.double(Cell(2, Cell(1, Empty))) == Cell(4, Cell(2, Empty)))
+
+object GenericFold {
+  sealed trait IntList {
+    def fold[A](f: (Int, A) => A, empty: A): A
+    def double: IntList
+    def product: Int
+    def sum: Int
+    def length: Int
+  }
+  final case object Empty extends IntList {
+    def fold[A](f: (Int, A) => A, empty: A): A =
+      empty
+    def double: IntList =
+      fold[IntList](((hd, tl) => Cell(hd * 2, tl)), Empty)
+    def product: Int =
+      fold[Int](_ * _, 1)
+    def sum: Int =
+      fold[Int](_ + _, 0)
+    def length: Int =
+      fold[Int]((hd, tl) => 1 + tl, 0)
+  }
+  final case class Cell(head: Int, tail: IntList) extends IntList {
+    def fold[A](f: (Int, A) => A, empty: A): A =
+      f(head, tail.fold(f, empty))
+    def double: IntList =
+      fold[IntList](((hd, tl) => Cell(hd * 2, tl)), Empty)
+    def product: Int =
+      fold[Int](_ * _, 1)
+    def sum: Int =
+      fold[Int](_ + _, 0)
+    def length: Int =
+      fold[Int]((hd, tl) => 1 + tl, 0)
+  }
+
+  def fold[A](list: IntList, f: (Int, A) => A, empty: A): A =
+    list match {
+      case Empty => empty
+      case Cell(hd, tl) => f(hd, fold(tl, f, empty))
+    }
+
+  def double(list: IntList): IntList =
+    fold[IntList](list, (hd, tl) => Cell(hd * 2, tl), Empty)
+}

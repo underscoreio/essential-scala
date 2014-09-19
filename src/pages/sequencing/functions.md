@@ -212,7 +212,7 @@ def abstraction(list: IntList, f: ???, empty: Int): Int =
 
 Rename this function to `fold`, which is the name it is usually known as, and finish the implementation.
 
-<div class="callout callout-info">
+<div class="solution>
 ~~~ scala
 def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int =
   list match {
@@ -224,7 +224,7 @@ def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int =
 
 Now reimplement the pattern matching variants of `sum`, `length`, and `product` in terms of `fold`.
 
-<div class="callout callout-info">
+<div class="solution">
 ~~~ scala
 def sum(list: IntList): Int =
   fold(list, _ + _, 0)
@@ -239,7 +239,7 @@ def product(list: IntList): Int =
 
 Now implement `fold` using polymorphism and similarly reimplement the polymorphic versions of `sum`, `length`, and `product` in terms of the polymorphic `fold`.
 
-<div class="callout callout-info">
+<div class="solution">
 ~~~ scala
 sealed trait IntList {
   def fold(f: (Int, Int) => Int, empty: Int): Int
@@ -303,4 +303,33 @@ def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int =
 ~~~
 
 If we could generalise the types of `fold` from `Int` to some general type then we could write `double`. And that, dear reader, is what we turn to next.
+</div>
+
+Implement a generalised version of `fold` and rewrite `double` in terms of it.
+
+<div class="solution">
+We want to generalise the return type of `fold`. Our starting point is
+
+~~~ scala
+def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int
+~~~
+
+Replacing the return type and tracing it back we arrive at
+
+~~~ scala
+def fold[A](list: IntList, f: (Int, A) => A, empty: A): A
+~~~
+
+where we've used a generic type on the method to capture the variable return type. With this we can implement `double`. When we try to do so we'll see that type inference fails, so we have to give it a bit of help.
+
+~~~ scala
+def fold[A](list: IntList, f: (Int, A) => A, empty: A): A =
+  list match {
+    case Empty => empty
+    case Cell(hd, tl) => f(hd, fold(tl, f, empty))
+  }
+
+def double(list: IntList): IntList =
+  fold[IntList](list, (hd, tl) => Cell(hd * 2, tl), Empty)
+~~~
 </div>

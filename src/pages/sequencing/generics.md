@@ -1,18 +1,16 @@
 ---
 layout: page
-title: "This contains That: Generics"
+title: Generics
 ---
 
-Scala gives us the ability to parameterise types. Parameterised types, known as *generic types*, are useful for representing all sorts of data structures including
+Generic types allow us to **abstract over types**. There are useful for all sorts of data structures, but commonly encountered in collections so that's where we'll start.
 
-We already know how to do simple aggregation in simple cases using fields. Here we start generalising over the types in our fields using **generic types**.
+## Pandora's Box
 
-## Generic Types
-
-Generic types naturally arise in collections, so let's consider a really simple collection -- a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
+Let's start with a collection that is even simpler than our list -- a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
 ~~~ scala
-scala> case class Box[A](val value: A)
+scala> case class Box[A](value: A)
 defined class Box
 
 scala> Box(2)
@@ -28,7 +26,7 @@ scala> res2.value
 res3: String = hi
 ~~~
 
-The syntax `[A]` is called a **type parameter** -- it binds a name to a type. Wherever `A` occurs in our class definition we will substitute in the same type. This works in the same way that binding a name to a value (using `val`) allows us to substitute in the value wherever the name occurs. The only difference is that we're operating on types rather than values.
+The syntax `[A]` is called a **type parameter**. Type parameters work in a way analagous to method parameters. When we call a method with bind the method's parameter names to the values given in the method call. When we "invoke" a class with a generic type, but creating an instance of the class, we bind the type parameters to concrete types. Wherever a type parameter occurs in class we substitute in the concrete type.
 
 We can also add type parameters to methods, which limits the scope of the parameter to the method declaration and body:
 
@@ -42,6 +40,25 @@ res10: String = foo
 scala> generic(1) // again, if we omit the type parameter, scala will infer it
 res11: Int = 1
 ~~~
+
+<div class="callout callout-info">
+#### Type Parameter Syntax
+
+We declare generic types with a list of type names within square brackets like `[A, B, C]`. By convention we use single uppercase letters for generic types.
+
+Generic types can be declared in a class or trait declaration in which case they are visible throughout the rest of the declaration.
+
+~~~ scala
+case class Name[A](...){ ... }
+trait TraitName[A](...){ ... }
+~~~
+
+Alternatively they may be declared in a method declaration, in which case they are only visible within the method.
+
+~~~ scala
+def name[A](...){ ... }
+~~~
+</div>
 
 ## Arrays
 
@@ -84,76 +101,128 @@ scala> array4(1)
 res4: Any = abc
 ~~~
 
-Again, the type of the elements retrieved from the array matches the type parameter on the array. `AnyVal` and `Any` aren't particularly useful types -- if we were using this code in a real application, we may have to use pattern matching to identify the type of data retrieved.
+Again, the type of the elements retrieved from the array matches the type parameter on the array. `AnyVal` and `Any` aren't particularly useful types -- if we were using this code in a real application, we may have to use pattern matching to identify the type of data retrieved and we would lose type-safety.
 
-## Linked Lists
+## Generic Algebraic Data Types
 
-A linked list is another type of generic sequence, similar to an array. Unlike an array, however, a linked list is stored internally as a chain of pairs. For example, the sequence `1, 2, 3` would be represented as follows:
+We described type parameters as analogous to method parameters, and this analogy continues when extending a trait that has type parameters. Extending a trait, as we do in a sum type, is the type level equivalent of calling a method and we must supply values for an type parameters of the trait we're extending.
 
-<img src="linked-list.svg" alt="A linked list">
-
-In this example we have four links in our chain. `d` represents an empty list, and `a`, `b`, and `c` are pairs built on top of it:
+In previous sections we've seen sum types like the following:
 
 ~~~ scala
-val d = Empty()
-val c = Pair(3, d)
-val b = Pair(2, c)
-val a = Pair(1, b)
+sealed trait Calculation
+final case class Success(result: Double) extends Calculation
+final case class Failure(reason: String) extends Calculation
 ~~~
 
-In addition to being links in a chain, these data structures all represent complete sequences of integers:
+Let's generalise this so that our result is not restricted to a `Double` but can be some generic type. In doing so let's change the name from `Calculation` to `Result` as we're not restricted to numeric calculations anymore. Now our data definition becomes:
 
- - `a` represents the sequence `1, 2, 3`
- - `b` represents the sequence `2, 3`
- - `c` represents the sequence `3` (only one element)
- - `d` represents an empty sequence
-
-Using this implementation, we can build lists of arbitrary length by repeatedly taking an existing list and prepending a new element[^list].
-
-[^list]: This is how Scala's built-in `List` data structure works. We will be introduced to `List` in the chapter on *Collections*.
-
-### Exercise: Making a List
-
-To implement a `LinkedList` in Scala we need to combine our newfound knowledge of generic types with our existing knowledge of sealed traits. We can define a linked list as a sealed trait `LinkedList[A]` with two subtypes:
-
- - a class `Pair[A]` with two fields, `head` and `tail`:
-    - `head` is the item at this position in the list;
-    - `tail` is another `LinkedList[A]` -- either another `Pair` or an `Empty`;
- - a class `Empty[A]` with no fields.
-
-Start by writing the simplest trait and classes you can so that you can build a list. You should be able to use your implementation as follows:
+A `Result` of type `A` is either a `Success` of type `A` or a `Failure` with a `String` reason. This translates to the following code
 
 ~~~ scala
-val list: LinkedList[Int] = Pair(1, Pair(2, Pair(3, Empty())))
-
-list.isInstanceOf[LinkedList[Int]] // returns true
-
-list.head      // returns 1 as an Int
-list.tail.head // returns 2 as an Int
-list.tail.tail // returns Pair(3, Empty()) as a LinkedList[Int]
+sealed trait Result[A]
+case class Success[A](result: A) extends Result[A]
+case class Failure[A](reason: String) extends Result[A]
 ~~~
+
+Notice that both `Success` and `Failure` introduce a type parameter `A` which is passed to `Result` when it is extended. `Success` also has a value of type `A`, but `Failure` only introduce `A` so it can pass it onward to `Result`. In a later section we'll introduce **variance**, giving us a cleaner way to ipmlement this, but for now this is the pattern we'll use.
+
+<div class="callout callout-info">
+#### Invariant Generic Sum Type Pattern
+
+If `A` of type `T` is a `B` or `C` write
+
+~~~ scala
+sealed trait A[T]
+final case class B[T]() extends A[T]
+final case class C[T]() extends A[T]
+~~~
+</div>
+
+
+## Exercises
+
+#### Generic List
+
+Our `IntList` type was defined as
+
+~~~ scala
+sealed trait IntList
+final case object Empty extends IntList
+final case class Cell(head: Int, tail: IntList) extends IntList
+~~~
+
+Change the name to `LinkedList` and make it generic in the type of data stored in the list.
 
 <div class="solution">
-Here is the model solution. `Empty` doesn't contain any data so it may seem more natural to define it as a singleton object. However, objects can't have type parameters so we have to define it as a class. We'll be able to work around this later when we learn about something called *variance*:
+
+This is an application of the generic sum type pattern.
 
 ~~~ scala
 sealed trait LinkedList[A]
-
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-
 final case class Empty[A]() extends LinkedList[A]
 ~~~
 </div>
 
-### Exercise: Checking it Twice
+#### Working With Generic Types
 
-Now we have our `LinkedList` class, let's give it some useful methods. Define the following:
+There isn't much we can do with our `LinkedList` type. Remember that types define the available operations, and with a generic type like `A` there isn't a concrete type that defines any available operations. (Remember generic types are made concrete when a class is instantiated, which is too late to make use of the information.)
 
- - a method called `length` that returns the length of the list;
- - a method `apply` that returns the <em>n<sup>th</sup></em> item in the list;
- - a method `contains` that determines whether or not an item is in the list.
+However, we can still do some useful things with our `LinkedList`! Implement `length`, returning the length of the `LinkedList`.
 
-In each case, start by writing an abstract method definition in `LinkedList`. Think about the types of the arguments and the types of the results. Then implement the method for `Empty` -- it should be pretty easy to provide a default implementation for an empty list. Finally, implement the method on `Pair`. The implementation will be recursive and defined in terms of `head` and `tail`.
+<div class="solution">
+This code is largely unchanged from the implementation of `length` on `IntList`.
+
+~~~ scala
+sealed trait LinkedList[A] {
+  def length: Int
+}
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
+  def length: Int =
+    1 + tail.length
+}
+final case class Empty[A]() extends LinkedList[A] {
+  def length: Int =
+    0
+}
+
+val example = Pair(1, Pair(2, Pair(3, Empty())))
+assert(example.length == 3)
+assert(example.tail.length == 2)
+assert(Empty().length == 0)
+~~~
+</div>
+
+On the JVM we can compare all values for equality. Implement a method `contains` that determines whether or not a given item is in the list.
+
+<div class="solution">
+This is another example of the standard structural recursion pattern. The important point is we take a parameter of type `A`.
+
+~~~ scala
+sealed trait LinkedList[A] {
+  def contains(item: A): Boolean
+}
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
+  def contains(item: A): Boolean =
+    if(head == item)
+      true
+    else
+      tail.contains(item)
+}
+final case class Empty[A]() extends LinkedList[A] {
+  def contains(item: A): Boolean =
+    false
+}
+
+val example = Pair(1, Pair(2, Pair(3, Empty())))
+assert(example.contains(3) == true)
+assert(example.contains(4) == false)
+assert(Empty().contains(0) == false)
+~~~
+</div>
+
+Implement a method `apply` that returns the <em>n<sup>th</sup></em> item in the list
 
 **Hint:** If you need to signal an error in your code (there's one situation in which you will need to do this), consider throwing an exception. Here is an example:
 
@@ -162,33 +231,37 @@ throw new Exception("Bad things happened")
 ~~~
 
 <div class="solution">
-The hint about exceptions was for the implementation of `apply` in `Empty`. The list is empty -- there is no <em>n<sup>th</sup></em> element to return!
+There are a few interesting things in this exercise. Possibly the easiest part is the use of the generic type as the return type of the `apply` method.
 
-Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
+Next up is the `Empty` case, which the hint suggested you through an `Exception` for. Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
+
+Finally we get to the actual structural recursion, which is perhaps the trickiest part. The key insight is that if the index is zero, we're selecting the current element, otherwise we subtract one from the index and recurse. We can recursively define the integers in terms of addition by one. For example, 3 = 2 + 1 = 1 + 1 + 1. Here we are performing structural recursion on the list *and* on the integers.
 
 ~~~ scala
 sealed trait LinkedList[A] {
-  def head: A
-  def tail: LinkedList[A]
-
-  def length: Int =
-    tail.length + 1
-
+  def apply(index: Int): A
+}
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
   def apply(index: Int): A =
-    if(index == 0) head else tail(index - 1)
-
-  def contains(item: A): Boolean =
-    (item == head) || (tail contains item)
+    if(index == 0)
+      head
+    else
+      tail(index - 1)
+}
+final case class Empty[A]() extends LinkedList[A] {
+  def apply(index: Int): A =
+    throw new Exception("Attempted to get element from empty list")
 }
 
-case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-
-case class Empty[A]() extends LinkedList[A] {
-  def head = throw new Exception("Attempt to get head of an empty list!")
-  def tail = throw new Exception("Attempt to get head of an empty list!")
-
-  override def length = 0
-  override def contains(item: A) = false
-}
+val example = Pair(1, Pair(2, Pair(3, Empty())))
+assert(example(0) == 1)
+assert(example(1) == 2)
+assert(example(2) == 3)
+assert(try {
+  example(3)
+  false
+} catch {
+  case e: Exception => true
+})
 ~~~
 </div>

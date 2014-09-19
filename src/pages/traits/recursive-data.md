@@ -28,9 +28,33 @@ final case class Cell(head: Int, tail: IntList) extends IntList
 
 Here `Empty` is the base case. We construct the list containing `1`, `2`, and `3` as follows:
 
+A linked list is another type of generic sequence, similar to an array. Unlike an array, however, a linked list is stored internally as a chain of pairs. For example, the sequence `1, 2, 3` would be represented as follows:
+
+<img src="../traits/linked-list.svg" alt="A linked list">
+
 ~~~ scala
 Cell(1, Cell(2, Cell(3, Empty)))
 ~~~
+
+In this example we have four links in our chain. `d` represents an empty list, and `a`, `b`, and `c` are pairs built on top of it:
+
+~~~ scala
+val d = Empty()
+val c = Pair(3, d)
+val b = Pair(2, c)
+val a = Pair(1, b)
+~~~
+
+In addition to being links in a chain, these data structures all represent complete sequences of integers:
+
+ - `a` represents the sequence `1, 2, 3`
+ - `b` represents the sequence `2, 3`
+ - `c` represents the sequence `3` (only one element)
+ - `d` represents an empty sequence
+
+Using this implementation, we can build lists of arbitrary length by repeatedly taking an existing list and prepending a new element[^list].
+
+[^list]: This is how Scala's built-in `List` data structure works. We will be introduced to `List` in the chapter on *Collections*.
 
 We can apply the same structural recursion patterns to process a recursive algebraic data type. The only wrinkle is that we must make a recursive call when the data definition is recursion.
 
