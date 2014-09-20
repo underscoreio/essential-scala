@@ -3,7 +3,7 @@ layout: page
 title: Function Types
 ---
 
-Scala has 23 built-in generic classes for functions of 0 to 22 arguments. Here's what they look like:
+In the previous section we described how to write function literals and function types, but we glossed over how exactly function types are implemented. Scala has 23 built-in generic classes for functions of 0 to 22 arguments. Here's what they look like:
 
 ~~~ scala
 trait Function0[+R] {
@@ -23,10 +23,10 @@ trait Function2[-A, -B, +C] {
 
 For the most part this is all stuff we know. The only pieces of syntax we haven't seen are the `+` and `-` annotations on the type parameters. These are called *variance annotations*. Let's look at this for a moment.
 
-### Invariance, Covariance and Contravariance
+## Invariance, Covariance and Contravariance
 
 <div class="alert alert-warning">
-**Note:** Variance is one of the trickier aspects of Scala's type system. Although it is useful to be aware of its existence, we rarely have to use it in application code. We will revisit covariance in the *Functional Programming* chapter, but we won't revisit contravariance for the remainder of the course.
+**Note:** Variance is one of the trickier aspects of Scala's type system. Although it is useful to be aware of its existence, we rarely have to use it in application code.
 </div>
 
 The *variance* of a generic type determines how its supertype/subtype relationships change with respect with its type parameters:
@@ -49,6 +49,7 @@ class Box[A](value: A) {
 
 To understand variance, consider what functions can we safely pass to this `map` method:
 
+
  - A function from `A` to `B` is clearly ok.
 
  - A function from `A` to a subtype of `B` is ok because it's result type will have all the properties of `B` that we might depend on. This indicates that functions are covariant in their result type.
@@ -56,3 +57,7 @@ To understand variance, consider what functions can we safely pass to this `map`
  - A function expecting a supertype of `A` is also ok, because the `A` we have in the box will have all the properties that the function expects.
 
  - A function expecting a subtype of `A` is not ok, because our value may in reality be a different subtype of `A`.
+
+## Methods on Functions
+
+As functions are instances of a `Function` class it's natural to ask what methods we get from the class apart for the `apply` method.
