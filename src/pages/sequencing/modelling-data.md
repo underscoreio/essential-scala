@@ -1,11 +1,11 @@
 ---
 layout: page
-title: "Inheritance versus Generics"
+title: "Modelling Data with Generic Types"
 ---
 
-In previous sections we saw how to model relationships such as **this and that** and **this or that** using *inheritance* -- a classic object oriented design pattern. In this section we will look at how to model these relationships using generics and aggregation.
+In this section we'll see the additional power the generic types give us when modelling data. We see that with generic types we can implement **generic sum and product types**, and also model some other useful abstractions such as **optional values**.
 
-## This and That
+## Generic Product Types
 
 Let's look at using generics to model a *product type*. Consider a method that returns two values -- for example, an `Int` and a `String`, or a `Boolean` and a `Double`:
 
@@ -15,7 +15,7 @@ def intAndString: ??? = // ...
 def booleanAndDouble: ??? = // ...
 ~~~
 
-The question is what do we use as the return types? We could use a regular class without any type parameters, but then we would have to implement one version of the class for each combination of return types:
+The question is what do we use as the return types? We could use a regular class without any type parameters, with our usual algebraic data type patterns, but then we would have to implement one version of the class for each combination of return types:
 
 ~~~ scala
 case class IntAndString(intValue: Int, stringValue: String)
@@ -59,6 +59,8 @@ If one type parameter is good, two type parameters are better:
 case class Pair[A, B](val one: A, val two: B)
 ~~~
 
+This is just the product type pattern we have seen before, but we introduce generic types.
+
 Note that we don't always need to specify the type parameters when we construct `Pairs`. The compiler will attempt to infer the types as usual wherever it can:
 
 ~~~ scala
@@ -71,7 +73,9 @@ pair: Pair[String,Int] = Pair(hi,2)
 
 A *tuple* is the generalisation of a pair to any number of terms. Scala includes built-in generic tuple types with up to 22 elements, along with special syntax for creating them. With these classes we can represent any kind of *this and that* relationship between any number of terms.
 
-The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they can also be written in the sugared form `(A, B, C, ...)`. For example:
+The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they can also be written in the sugared[^sugar] form `(A, B, C, ...)`. For example:
+
+[^sugar]: The term "syntactic sugar" is used to refer to convenience syntax that is not needed but makes programming sweeter. Operator syntax is another example of syntactic sugar that Scala provides.
 
 ~~~ scala
 scala> Tuple2("hi", 1) // unsugared syntax
@@ -98,8 +102,8 @@ We can also pattern match on tuples as follows:
 
 ~~~ scala
 scala> (1, "a") match {
-     |   case (a, b) => a + b
-     | }
+         case (a, b) => a + b
+       }
 res3: String = 1a
 ~~~
 
@@ -116,15 +120,15 @@ scala> x._3
 res6: Boolean = true
 ~~~
 
-## This or That
+## Generic Sum Types
 
-Now let's look at using generics to model a *sum type*. Again, we have previously implemented this using inheritance, factoring out the common aspects into a supertype. Generics provide a different tool to do the same thing.
+Now let's look at using generics to model a *sum type*. Again, we have previously implemented this using our algebraic data type pattern, factoring out the common aspects into a supertype. Generics allow us to abstract over this pattern, providing a, well, generic implementation.
 
 Consider a method that, depending on the value of its parameters, returns one of two types:
 
 ~~~ scala
 scala> def intOrString(input: Boolean) =
-     |   if(input == true) 123 else "abc"
+         if(input == true) 123 else "abc"
 intOrString: (input: Boolean)Any
 ~~~
 
@@ -139,7 +143,7 @@ def intOrString(input: Boolean): Sum[Int, String] =
   }
 ~~~
 
-How do we implement `Sum`? We just have to use the idioms we've already seen in the [This or That](traits.html) section!
+How do we implement `Sum`? We just have to use the patterns we've already seen, with the addition of generic types.
 
 ### Exercise: Generic Sum Type
 
@@ -165,7 +169,7 @@ res26: String = foo
 ~~~
 
 <div class="solution">
-The code is very similar to `Box`, except that we need both type parameters:
+The code is an adaptation of our invariant generic sum type pattern, with another type parameter:
 
 ~~~ scala
 sealed trait Sum[A, B]
@@ -173,28 +177,35 @@ final case class Left[A, B](val value: A) extends Sum[A, B]
 final case class Right[A, B](val value: B) extends Sum[A, B]
 ~~~
 
-Scala has the generic sum type `Either` for two cases, but it does not have types for more cases.
+Scala's standard library has the generic sum type `Either` for two cases, but it does not have types for more cases.
 </div>
 
-### Exercise: Maybe that was a Mistake
 
-In a previous exercise we "solved" the problem of dividing by zero by defining a type called `DivisionResult`. This forced us to handle the possibility of a division by zero in order to access the value.
+## Generic Optional Values
 
-With our knowledge of generics we can now generalise `DivisionResult` to encapsulate potential errors of any type. Modify `DivisionResult` to create a generic trait called `Maybe` with two subtypes, `Full` and `Empty`. Rewrite `divide` to return a `Maybe[Int]`. Example usage:
+Many expressions may sometimes produce a value and sometimes not. For example, when we look up an element in a hash table (associative array) by a key, there may not be a value there. If we're talking to a web service, that service may be down and not reply to us. If we're looking ofr a file, that file may have been deleted. There are a number of ways to model this situation of an optional value. We could throw an exception, or we could return `null` when a value is not available. The disadvantage of both these methods is they don't encode any information in the type system.
 
-~~~ scala
-divide(1, 0) match {
-  case Full(value) => println(s"It's finite: ${value}")
-  case Empty()     => println(s"It's infinite")
-}
-~~~
+We generally want to write robust programs, and in Scala we try to utilise the type system to encode properties we want our programs to maintain. One common property is "correctly handle errors". If we can encode an *optional value* in the type system, the compiler will force us to consider the case where a value is not available, thus increasing the robustness of our code.
+
+### Exercise: Maybe that Was a Mistake
+
+Create a generic trait called `Maybe` of a generic type `A` with two subtypes, `Full` containing an `A`, and `Empty` containing no value.
 
 <div class="solution">
+We can apply our invariant generic sum type pattern and get
+
+~~~ scala
+sealed trait Maybe[A]
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
+~~~
+</div>
+
 Ideally we would like to write something like this:
 
 ~~~ scala
 sealed trait Maybe[A]
-final case class Full[A](val value: A) extends Maybe[A]
+final case class Full[A](value: A) extends Maybe[A]
 final case object Empty extends Maybe[???]
 ~~~
 
@@ -236,7 +247,6 @@ object division {
 Regardless, `Maybe` is a powerful concept -- it allows us to represent objects that may or may not contain a value. We can see this as an alternative to using `null`, except that the compiler can verify that we never get a `NullPointerException`.
 
 In fact, `Maybe` is so useful that Scala defines a core class called `Option` for this very purpose. `Option` is a trait with two subtypes, `Some` for storing a value and `None` representing an empty value.
-</div>
 
 ## Type Bounds
 
