@@ -37,6 +37,7 @@ toc:
     body:
      - /sequencing/generics.html
      - /sequencing/functions.html
+     - /sequencing/function-types.html
      - /sequencing/modelling-data.html
 
   - head: /collections/index.html
