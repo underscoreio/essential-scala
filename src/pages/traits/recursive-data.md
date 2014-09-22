@@ -96,7 +96,7 @@ When defining recursive algebraic data types, there must be at least two cases: 
 ~~~ scala
 sealed trait RecursiveExample
 final case class RecursiveCase(recursion: RecursiveExample) extends RecursiveExample
-final case class BaseCase() extends RecursiveExample
+final case object BaseCase() extends RecursiveExample
 ~~~
 </div>
 
