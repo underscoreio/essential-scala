@@ -174,8 +174,6 @@ The goals of this exercise are for you to learn your way around the collections 
 When you have answered these questions look at the type table above to find the correct method to use. Done in this way the actual programming should be straightforward.
 
 
-## Exercises
-
 ### Heroes of the Silver Screen
 
 These exercises re-use the example code from the *Directorial Debut* exercise from the previous section:
