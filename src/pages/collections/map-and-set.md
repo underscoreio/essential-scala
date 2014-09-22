@@ -407,11 +407,11 @@ First we find the oldest person, then we look up the answer:
 
 ~~~ scala
 val oldest: Option[String] =
-  people.foldLeft(Option.empty[String]) { (oldest, person) =>
-    if(ages.getOrElse(person, 0) > ages.getOrElse(oldest, 0)) {
+  people.foldLeft(Option.empty[String]) { (older, person) =>
+    if(ages.getOrElse(person, 0) > older.flatMap(ages.get).getOrElse(0)) {
       Some(person)
     } else {
-      oldest
+      older
     }
   }
 
