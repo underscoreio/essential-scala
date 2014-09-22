@@ -335,7 +335,7 @@ This is a straightforward algebraic data type.
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
-final case class Number(value: Int) extends Expression
+final case class Number(value: Double) extends Expression
 ~~~
 </div>
 
