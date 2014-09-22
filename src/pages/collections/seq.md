@@ -245,7 +245,7 @@ scala> apply(1, 2, 3)
 res3: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
 ~~~
 
-We can write import statements anywhere in our code -- impoted identifiers are scoped lexically to the block where we use them:
+We can write import statements anywhere in our code -- imported identifiers are scoped lexically to the block where we use them:
 
 ~~~ scala
 // `empty` is unbound here
