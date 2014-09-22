@@ -134,7 +134,7 @@ list.tail.tail // returns Pair(3, Empty()) as a LinkedList[Int]
 ~~~
 
 <div class="solution">
-Here is the model solution. `Empty` doesn't contain any data so it may seem more natural to define it as a singleton object. However, objects can't have type parameters so we have to define it as a class. We'll be able to work around this later when we learn about something called *variance*:
+Here is the model solution. `Empty` doesn't contain any data so it may seem more natural to define it as a singleton object. However, objects can't have type parameters so we have to define it as a class. We'll be able to work around this later when we learn about something called *variance* :
 
 ~~~ scala
 sealed trait LinkedList[A]
