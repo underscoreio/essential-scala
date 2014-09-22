@@ -56,7 +56,7 @@ res14: Int = 2
 If one type parameter is good, two type parameters are better:
 
 ~~~ scala
-case class Pair[A, B](val one: A, val two: B)
+case class Pair[A, B](one: A, two: B)
 ~~~
 
 This is just the product type pattern we have seen before, but we introduce generic types.
@@ -162,9 +162,9 @@ scala> val sum: Sum[Int, String] = Right("foo")
 sum: Sum[Int,String] = Right(foo)
 
 scala> sum match {
-     |   case Left(x) => x.toString
-     |   case Right(x) => x
-     | }
+         case Left(x) => x.toString
+         case Right(x) => x
+       }
 res26: String = foo
 ~~~
 
@@ -173,8 +173,8 @@ The code is an adaptation of our invariant generic sum type pattern, with anothe
 
 ~~~ scala
 sealed trait Sum[A, B]
-final case class Left[A, B](val value: A) extends Sum[A, B]
-final case class Right[A, B](val value: B) extends Sum[A, B]
+final case class Left[A, B](value: A) extends Sum[A, B]
+final case class Right[A, B](value: B) extends Sum[A, B]
 ~~~
 
 Scala's standard library has the generic sum type `Either` for two cases, but it does not have types for more cases.
@@ -183,7 +183,7 @@ Scala's standard library has the generic sum type `Either` for two cases, but it
 
 ## Generic Optional Values
 
-Many expressions may sometimes produce a value and sometimes not. For example, when we look up an element in a hash table (associative array) by a key, there may not be a value there. If we're talking to a web service, that service may be down and not reply to us. If we're looking ofr a file, that file may have been deleted. There are a number of ways to model this situation of an optional value. We could throw an exception, or we could return `null` when a value is not available. The disadvantage of both these methods is they don't encode any information in the type system.
+Many expressions may sometimes produce a value and sometimes not. For example, when we look up an element in a hash table (associative array) by a key, there may not be a value there. If we're talking to a web service, that service may be down and not reply to us. If we're looking for a file, that file may have been deleted. There are a number of ways to model this situation of an optional value. We could throw an exception, or we could return `null` when a value is not available. The disadvantage of both these methods is they don't encode any information in the type system.
 
 We generally want to write robust programs, and in Scala we try to utilise the type system to encode properties we want our programs to maintain. One common property is "correctly handle errors". If we can encode an *optional value* in the type system, the compiler will force us to consider the case where a value is not available, thus increasing the robustness of our code.
 
@@ -201,7 +201,7 @@ final case class Empty[A]() extends Maybe[A]
 ~~~
 </div>
 
-Ideally we would like to write something like this:
+The invariant generic sum type pattern is a bit satisfying. Ideally we would like to write something like this:
 
 ~~~ scala
 sealed trait Maybe[A]
@@ -229,24 +229,34 @@ scala> val possible: Maybe[Int] = Empty
        val possible: Maybe[Int] = Empty
 ~~~
 
-The problem here is that `Empty` is a `Maybe[Nothing]` and a `Maybe[Nothing]` is not a `Maybe[Int]`.
+The problem here is that `Empty` is a `Maybe[Nothing]` and a `Maybe[Nothing]` is not a `Maybe[Int]`. However, we now know how to overcome this problem: we can use a variance annotation, which we learned about in the last section. Covariance is the most natural variance in this case.
 
-We'll see how to overcome this limitation later. In the meantime we can define `Empty` as a class with a type parameter as a stop-gap solution:
+In the Scala standard library, this abstraction is called `Option`, with cases `Some` and `None`.
 
 ~~~ scala
-sealed trait Maybe[A]
+sealed trait Maybe[+A]
 final case class Full[A](value: A) extends Maybe[A]
-final case class Empty[A]() extends Maybe[A]
+final case object Empty extends Maybe[Nothing]
 
 object division {
   def apply(num: Int, den: Int) =
-    if(den == 0) Empty[Int] else Full(num / den)
+    if(den == 0) Empty else Full(num / den)
 }
 ~~~
 
-Regardless, `Maybe` is a powerful concept -- it allows us to represent objects that may or may not contain a value. We can see this as an alternative to using `null`, except that the compiler can verify that we never get a `NullPointerException`.
+This pattern is the most commonly used one with generic sum types.
 
-In fact, `Maybe` is so useful that Scala defines a core class called `Option` for this very purpose. `Option` is a trait with two subtypes, `Some` for storing a value and `None` representing an empty value.
+<div class="callout callout-info">
+#### Covariant Generic Sum Type Pattern
+
+If `A` of type `T` is a `B` or `C`, and `C` is not generic, write
+
+~~~ scala
+sealed trait A[+T]
+final case class B[T](t: T) extends A[T]
+final case object C extends A[Nothing]
+~~~
+</div>
 
 ## Type Bounds
 
@@ -265,13 +275,13 @@ case class WebAnalytics[A <: Visitor](
 
 ## Take Home Points
 
-**Generic classes, traits, and methods** allow us to abstract across the types they store, accept, and return. We define them using **type parameters** that we can bind to different concrete types in each use case.
+In this section we have used generics to model sum types, product types, and optional values using generics.
 
-In this section we have used generics to model **product types** ("this and that") and **sum types** ("this or that") using generics. These are alternatives to the inheritance-based approaches we have seen previously using traits.
+We saw the covariant generic sum type pattern, which allows us to avoid unnecessary generic type parameters.
 
 ## Exercises
 
-### Generics versus Traits
+#### Generics versus Traits
 
 Sum types and product types are general concepts that allow us to model almost any kind of data structure. We have seen two methods of writing these types -- traits and generics -- when should we consider using each?
 
@@ -281,4 +291,16 @@ Ultimately the decision is up to us. Different teams will adopt different progra
 Inheritance-based approaches -- traits and classes -- allow us to create permanent data structures with specific types and names. We can name every field and method and implement use-case-specific code in each class. Inheritance is therefore better suited to modelling significant aspects of our programs that are re-used in many areas of our codebase.
 
 Generic data structures -- `Tuples`, `Options`, `Eithers`, and so on -- are extremely broad and general purpose. There are a wide range of predefined classes in the Scala standard library that we can use to quickly model relationships between data in our code. These classes are therefore better suited to quick, one-off pieces of data manipulation where defining our own types would introduce unnecessary verbosity to our codebase.
+</div>
+
+#### Covariance
+
+Implement our `Sum` example using the covariant generic sum type pattern.
+
+<div class="solution">
+~~~ scala
+sealed trait Sum[+A, +B]
+final case class Left[A](value: A) extends Sum[A, Nothing]
+final case class Right[B](value: B) extends Sum[Nothing, B]
+~~~
 </div>
