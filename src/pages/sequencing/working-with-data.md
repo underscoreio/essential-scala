@@ -117,7 +117,7 @@ final case object Empty extends Maybe[Nothing] {
     empty
 }
 ~~~
-/div>
+</div>
 
 #### Folding Sum
 
