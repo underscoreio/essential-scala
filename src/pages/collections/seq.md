@@ -301,7 +301,7 @@ We can always use `Seq` and `List` in our code. Other collections can be brought
 
 ### Documentation
 
-Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the follo
+Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the following:
 
  - There is a synonym of `length` defined on `Seq` -- what is it called?
 
