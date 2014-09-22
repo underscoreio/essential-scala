@@ -251,7 +251,7 @@ We saw this code in the [Traits](/traits/) chapter when we wrote the `DivisionRe
 
 ~~~ scala
 def divide(numerator: Int, denominator: Int) =
-  if(denominator) None else Some(numerator / denominator)
+  if(denominator < 1) None else Some(numerator / denominator)
 ~~~
 </div>
 
