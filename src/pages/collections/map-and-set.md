@@ -183,7 +183,7 @@ res18: scala.collection.immutable.Iterable[java.lang.String] =
          List(a = 1, b = 2, c = 3)
 ~~~
 
-It turns out the code does work, but we get back an `Iterable` result (look the type, not the value) -- a far more general data type.
+It turns out the code does work, but we get back an `Iterable` result (look at the type, not the value) -- a far more general data type.
 
 Scala's collections framework is built in a clever (and complicated) way that always ensures you get something sensible back out of one of the standard operations like `map` and `flatMap`. We won't go into the details here (it's practically a training course in its own right), suffice to say that you can normally guess using common sense (and judicious use of the REPL) the type of collection you will get back from any operation.
 
