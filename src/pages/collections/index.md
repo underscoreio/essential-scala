@@ -11,7 +11,7 @@ We will start with **sequences**. We begin with basic operations on sequences, a
 
 After covering the main collection types we turn to **for comprehensions**, a syntax that allows convenient specification of operations on collections. We'll also briefly look at a generalisation of collections, called **monads**, that work well with for comprehensions.
 
-With for comprhensions under our belt we will move onto **options**, which are used frequently in the APIs for sequences and maps. Options provide a means to sequence computations and are an essential companion for for comprehensions.
+With for comprehensions under our belt we will move onto **options**, which are used frequently in the APIs for sequences and maps. Options provide a means to sequence computations and are an essential companion for for comprehensions.
 
 Next we will cover the other main collection classes: **maps and sets**. We will discover that they share a great deal in common with sequences, so most of our knowledge transfers directly.
 
