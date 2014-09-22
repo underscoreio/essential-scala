@@ -196,7 +196,7 @@ Let's revisit our `Counter` exercise from the [Objects as Functions](apply.html)
 Once you have rewritten `Counter`, demonstrate the increased flexibility of the function argument over the `Adder`.
 
 <div class="solution">
-Here's a version fo `Counter` that no longer depends on `Adder`. I've rewritten `inc` and `dec` in terms `adjust` for illustrative purposes:
+Here's a version of `Counter` that no longer depends on `Adder`. I've rewritten `inc` and `dec` in terms `adjust` for illustrative purposes:
 
 ~~~ scala
 case class Counter(count: Int = 0) {
