@@ -70,9 +70,9 @@ res9: Int = 0
 
 ~~~ scala
 scala> readInt("123") match {
-     |   case Some(number) => number + 1
-     |   case None         => 0
-     | }
+         case Some(number) => number + 1
+         case None         => 0
+       }
 res10: Int = 124
 ~~~
 
@@ -105,7 +105,7 @@ Because of the limited size of `0` or `1`, there is a bit of redundancy here: `f
 
 ~~~ scala
 scala> def sum(optionA: Option[Int], optionB: Option[Int]): Option[Int] =
-     |   optionA.flatMap(a => optionB.map(b => a + b))
+         optionA.flatMap(a => optionB.map(b => a + b))
 
 scala> sum(readInt("1"), readInt("2"))
 res12: Option[Int] = Some(3)

@@ -126,7 +126,7 @@ Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the follow
 |=================================================================================================|
 {: .table .table-bordered }
 
-The fold methods are very flexible. In fact we can write *any* transformation on a sequence in terms of fold! This is very deep theoretical result, and it goes beyond sequences. For *any algebraic datatype* there is a systematic process to define a fold that is a universal transformation for that datatype. We're not going to go deeper into this here, but be aware of the power and fundamental nature of fold in your future study of functional programming.
+As we know from studying algebraic data types, the fold methods are very flexible. We can write *any* transformation on a sequence in terms of fold.
 
 ### foreach
 

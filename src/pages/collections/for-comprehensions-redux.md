@@ -3,7 +3,7 @@ layout: page
 title: For Comprehensions Redux
 ---
 
-[Earlier](for-comprehensions.html) we looked at the fundamentals of for comprehensions. In this section we're going to looking at some handy additional features in for comprehensions,  and finally we'll briefly look at the relationship between for comprehensions and monads.
+[Earlier](for-comprehensions.html) we looked at the fundamentals of for comprehensions. In this section we're going to looking at some handy additional features in for comprehensions.
 
 ## Filtering
 

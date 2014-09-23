@@ -20,8 +20,8 @@ The equivalent program written with a for comprehension is:
 
 ~~~ scala
 scala> for {
-     |   x <- Seq(1, 2, 3)
-     | } yield x * 2
+         x <- Seq(1, 2, 3)
+       } yield x * 2
 res1: Seq[Int] = List(2, 4, 6)
 ~~~
 
@@ -41,9 +41,9 @@ This is getting complicated. The equivalent for comprehension is much more... co
 
 ~~~ scala
 scala> for {
-     |   subseq  <- data
-     |   element <- subseq
-     | } yield element * 2
+         subseq  <- data
+         element <- subseq
+       } yield element * 2
 res3: Seq[Int] = List(2, 4, 6, 8, 10, 12)
 ~~~
 
@@ -69,9 +69,9 @@ Note that if we omit the `yield` keyword the final expression, the overall type 
 
 ~~~ scala
 scala> for {
-     |  seq <- Seq(Seq(1), Seq(2, 3))
-     |  elt <- seq
-     |} println(elt * 2) // Note: no 'yield' keyword
+         seq <- Seq(Seq(1), Seq(2, 3))
+         elt <- seq
+       } println(elt * 2) // Note: no 'yield' keyword
 2
 4
 6

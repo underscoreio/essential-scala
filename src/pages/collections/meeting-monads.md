@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Meeting Monads
+title: Monads
 ---
 
-We've seen that by implementing a few methods (`map`, `flatMap`, and optionally `filter` and `foreach`), we can use any class with a **for comprehension**. This is an incredibly useful abstraction called a **monad** that goes way beyond iterating over sequences of elements.
+We've seen that by implementing a few methods (`map`, `flatMap`, and optionally `filter` and `foreach`), we can use any class with a **for comprehension**. We've seen this abstraction before; it is called a **monad** and we know that goes way beyond iterating over sequences of elements.
 
 ## What's in a Monad?
 
