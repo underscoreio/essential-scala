@@ -40,6 +40,8 @@ toc:
      - /sequencing/function-types.html
      - /sequencing/modelling-data.html
      - /sequencing/working-with-data.html
+     - /sequencing/sequencing-computation.html
+     - /sequencing/conclusions.html
 
   - head: /collections/index.html
     body:
