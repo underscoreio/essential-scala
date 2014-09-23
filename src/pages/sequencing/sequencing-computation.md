@@ -129,7 +129,7 @@ def mightFail3: Maybe[Int] =
   Empty // This one failed
 ~~~
 
-We want to sequence all these computations. If any one of them fails the whole computation fails. Otherwise we'll add up all the numbers we get. We can do this with `flatMap` and `map` as follows.
+We want to sequence all these computations. If any one of them fails the whole computation fails. Otherwise we'll add up all the numbers we get. We can do this with `flatMap` as follows.
 
 ~~~ scala
 mightFail1 flatMap { x =>
@@ -152,6 +152,14 @@ mightFail1 flatMap { x =>
 ~~~
 
 the computation succeeds and we get `Full(3)`.
+
+The general idea is a monad represents a value in some context. The context depends on the monad we're using. We've seen examples where the context is:
+
+- an optional value, such as we might get when retrieving a value from a database;
+- an sum of values, which might represent a error message and a value we're computing with; and
+- a list of values.
+
+We use `map` when we want to transform the value within the context to a new value, while keeping the context the same. We use `flatMap` when we want to transform the value *and* possibly provide a new context.
 
 ## Exercises
 
@@ -225,7 +233,7 @@ final case object Empty extends Maybe[Nothing] {
 
 #### Sequencing Computations
 
-Both `LinkedList` and `Maybe` declare a class `Empty` so we're going to use Scala's builtin `List` class for this exercise. It has the same `map` we defined for `LinkedList`, and also a `flatMap` method.
+Both our `LinkedList` and `Maybe` declare a class `Empty` so we're going to use Scala's builtin `List` class for this exercise. It has the same `map` we defined for `LinkedList`, and also a `flatMap` method.
 
 Given this list
 
@@ -233,7 +241,7 @@ Given this list
 val list = List(1, 2, 3)
 ~~~
 
-return a `List[Int]` containing both each element and its negation.
+return a `List[Int]` containing both all the elements and their negation. Order is not important. Hint: Given an element create a list containing it and its negation.
 
 <div class="solution">
 ~~~ scala
