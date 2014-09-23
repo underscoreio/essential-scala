@@ -337,7 +337,7 @@ final case class Leaf(val elt: Int) extends Tree {
 ~~~
 </div>
 
-#### A Calculator
+### A Calculator
 
 We're now going to work on a larger problem to implement a simple interpreter for programs containing only numeric operations.
 

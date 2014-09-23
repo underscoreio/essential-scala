@@ -81,7 +81,7 @@ The main advantages of this pattern are:
 
 ## Exercises
 
-## Printing Shapes
+### Printing Shapes
 
 Let's revisit the `Shapes` example from the previous section.
 
@@ -114,7 +114,7 @@ object Draw {
 ~~~
 </div>
 
-## The Color and the Shape
+### The Color and the Shape
 
 Write a sealed trait `Color` to make our shapes more interesting.
 
@@ -287,7 +287,7 @@ Draw(Rectangle(3, 4, CustomColor(0.4, 0.4, 0.6)))
 
 </div>
 
-## A Short Division Exercise
+### A Short Division Exercise
 
 Good Scala developers don't just use types to model data. Types are a great way to put artificial limitations in place to ensure we don't make mistakes in our programs. In this exercise we will see a simple (if contrived) example of this -- using types to prevent division by zero errors.
 
@@ -344,7 +344,8 @@ Finally, the match illustrates a case class pattern with the parentheses, and a 
 </div>
 
 {% comment %}
-## Really Printing Shapes
+
+### Really Printing Shapes
 
 We lied earlier...
 
