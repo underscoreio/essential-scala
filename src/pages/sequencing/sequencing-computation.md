@@ -263,9 +263,9 @@ list.map(maybe => maybe flatMap { x => if(x % 2 == 0) Full(x) else Empty })
 ~~~
 </div>
 
-### Calculator, Again
+### A Calculator, Again
 
-We're going to return to the calculator example we saw at the end of the last chapter. This time we're going to use the general abstractions we've created here, and our new knowledge of `map`, `flatMap`, and `fold`.
+We're going to return to the interpreter example we saw at the end of the last chapter. This time we're going to use the general abstractions we've created here, and our new knowledge of `map`, `flatMap`, and `fold`.
 
 We're going to represent calculations as `Sum[String, Double]`, where the `String` is an error message. Last time we saw `Sum` we had this definition:
 
