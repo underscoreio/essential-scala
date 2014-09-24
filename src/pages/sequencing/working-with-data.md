@@ -134,14 +134,14 @@ Implement `fold` for `Sum`.
 <div class="solution">
 ~~~ scala
 sealed trait Sum[A, B] {
-  def fold[C](left: A => C, right: A => C): C
+  def fold[C](left: A => C, right: B => C): C
 }
 final case class Left[A, B](value: A) extends Sum[A, B] {
-  def fold[C](left: A => C, right: A => C): C =
+  def fold[C](left: A => C, right: B => C): C =
     left(value)
 }
 final case class Right[A, B](value: B) extends Sum[A, B] {
-  def fold[C](left: A => C, right: A => C): C =
+  def fold[C](left: A => C, right: B => C): C =
     right(value)
 }
 ~~~
