@@ -56,6 +56,7 @@ toc:
 
   - head: /implicits/index.html
     body:
+     - /implicits/building-type-classes.html
      - /implicits/using-type-classes.html
      - /implicits/enrichment.html
      - /implicits/type-classes.html
