@@ -212,7 +212,7 @@ def abstraction(list: IntList, f: ???, empty: Int): Int =
 
 Rename this function to `fold`, which is the name it is usually known as, and finish the implementation.
 
-<div class="solution>
+<div class="solution">
 ~~~ scala
 def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int =
   list match {
