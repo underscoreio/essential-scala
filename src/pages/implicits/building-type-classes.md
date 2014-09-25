@@ -50,8 +50,8 @@ scala> import java.util.Date
 import java.util.Date
 
 scala> object DateWriter extends HtmlWriter[Date] {
-     |   def write(in: Date) = s"<span>${in.toString}</span>"
-     | }
+         def write(in: Date) = s"<span>${in.toString}</span>"
+       }
 defined module DateWriter
 
 scala> DateWriter.write(new Date)
