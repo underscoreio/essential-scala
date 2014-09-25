@@ -54,22 +54,16 @@ toc:
      - /collections/map-and-set.html
      - /collections/ranges.html
 
-  - head: /pattern-matching/index.html
-    body:
-     - /pattern-matching/extractors.html
-
-  - head: /fp/index.html
-    body:
-     - /fp/structural-recursion.html
-     - /fp/modelling-with-types.html
-     - /fp/modelling-errors.html
-     - /fp/monads.html
-
   - head: /implicits/index.html
     body:
+     - /implicits/using-type-classes.html
      - /implicits/enrichment.html
      - /implicits/type-classes.html
      - /implicits/conversions.html
+
+  - head: /pattern-matching/index.html
+    body:
+     - /pattern-matching/extractors.html
 
   - head: /dsl/index.html
     body:
