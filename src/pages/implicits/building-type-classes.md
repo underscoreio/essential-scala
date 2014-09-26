@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Building Type Classes
+title: Type Class Foundations
 ---
 
 Type classes in Scala involve the interaction of a number of components. In this section we're going to build them up from the beginning, to gain an understanding of how all the pieces hang together.
@@ -114,7 +114,6 @@ Implement a trait `Equal` of some type `A`, with a method `equals` that compares
 trait Equal[A] {
   def equal(v1: A, v2: A): Boolean
 }
- scala
 ~~~
 </div>
 
