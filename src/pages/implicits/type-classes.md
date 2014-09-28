@@ -3,140 +3,132 @@ layout: page
 title: Type Classes
 ---
 
-We have seen how *type enrichment* allows us to augment individual existing types with extra functionality. Now we will see how we can add new functionality that cross-cuts a wide range of types using a new design pattern -- **type classes**.
+We have now seen all the fundamental pieces of type classes. They are quite involved, so let's recap the steps needed to construct and use a type class.
 
-## Type classes
+<div class="callout callout-info">
+#### Type Class Pattern
 
-*Type classes* are a programming idiom borrowed from the Haskell programming language. They provide a neat way to add functionality to existing classes without changing the classes themselves. Type classes are useful for a couple of reasons:
+To implement a type class we must implement three things:
 
- - as with type enrichment, we may want to add functionality to classes that we don't have access to;
+1. a trait, defining the interface we will support;
+2. some implicit instances of the trait; and
+3. an object with one or more methods using implicit parameters to select the appropriate instance.
 
- - we may want to implement the same functionality in multiple different ways for a single type.
-
-Broadly speaking, a type class in Scala involves three things:
-
- - a **type class** -- a trait specifying some kind of desirable functionality;
-
- - a set of **type class instances** -- objects that implement the type class functionality for various data types;
-
- - an automatic way of selecting an appropriate instance using a new feature of Scala, **implicit parameter lists**.
-
-Let's motivate this with an example -- converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
-
-To motivate this approach let's start by naively implementing `toHtml` using a simple trait:
+The trait is *the* type class and always has a generic type parameter
 
 ~~~ scala
-scala> trait HtmlWriteable {
-     |   def toHtml: String
-     | }
-defined trait HtmlWriteable
-
-scala> case class Person(name: String, email: String) extends HtmlWriteable {
-     |   def toHtml = s"<span>$name &lt;$email&gt;</span>"
-     | }
-defined class Person
-
-scala> Person("John", "john@example.com").toHtml
-res0: String = <span>John &lt;john@example.com&gt;</span>
+trait TypeClass[A] {
+  declarationOrExpression ...
+}
 ~~~
 
-This solution has a number of drawbacks. First, we are restricted to having just one way of rendering a `Person`. If we want to list people on our company homepage, for example, it is unlikely we will want to list everybody's email addresses without obfuscation. Second, this pattern can only be applied to classes that we have written ourselves. If we want to render `java.util.Data` to HTML, for example, we will have to write some other form of library function.
-
-We can overcome both of these problems by moving our HTML rendering to an adapter class:
+Instances implement the type class for a particular type.
 
 ~~~ scala
-scala> trait HtmlWriter[T] {
-     |   def write(in: T): String
-     | }
-defined trait HtmlWriter
-
-scala> object PersonWriter extends HtmlWriter[Person] {
-     |   def write(person: Person) = s"<span>${person.name} &lt;${person.email}&gt;</span>"
-     | }
-defined module PersonWriter
-
-scala> PersonWriter.write(Person("John", "john@example.com"))
-res1: String = <span>John &lt;john@example.com&gt;</span>
+object AnInstance {
+  implicit object theInstance extends TypeClass[TheClass] {
+    ...
+  }
+}
 ~~~
 
-This is better. We can now define `HtmlWriter` functionality for other types, including types we have not written ourselves:
+The convenience interface provides methods using implicit parameters to require instances. Methods have a generic type that controls type class instance selection.
 
 ~~~ scala
-scala> import java.util.Date
-import java.util.Date
+object Interface {
+  def method[A](implicit instance: TypeClass[A]) = ...
+  ...
+}
+~~~
+</div>
 
-scala> object DateWriter extends HtmlWriter[Date] {
-     |   def write(in: Date) = s"<span>${in.toString}</span>"
-     | }
-defined module DateWriter
+Now we have type classes down let's look in more detail at the implicit resolution rules and type class instance packaging.
 
-scala> DateWriter.write(new Date)
-res2: String = <span>Sat Apr 05 16:01:58 BST 2014</span>
+## Implicit Resolution Rules
+
+Scala has three types of implicits -- implicit classes, implicit values, and implicit conversions -- of which we've only seen one. Each works in the same way -- the compiler detects a type error in our code, locates a matching implicit, and applies it to fix the error. This is a powerful mechanism, but we need to control it very carefully to prevent the compiler changing our code in ways we don't expect. For this reason, there is a strict set of **implicit resolution rules** that we can use to dictate the compiler's behaviour:
+
+ 1. **Explicits first rule** -- if the code already type checks, the compiler ignores implicits altogether;
+ 2. **Marking rule** -- the compiler only uses definitions marked with the `implicit` keyword;
+ 3. **Scope rule** -- the compiler only uses definitions that are *in scope* at the current location in the code (see below);
+ 4. **Non-ambiguity rule** -- the compiler only applies an implicit if it is the only candidate available;
+ 5. **One-at-a-time rule** -- the compiler never chains implicits together to fix type errors -- doing so would drastically increase compile times;
+
+Note that the name of the implicit doesn't come into play in this process.
+
+### Implicit Scope
+
+The *scope rule* of implicit resolution uses a special set of scoping rules that allow us to package implicits in useful ways. These rules, collectively referred to as **implicit scope**, form a search path that the compiler uses to locate implicits:
+
+ 1. **Local scope** -- First look locally for any identifier that is tagged as `implicit`. This must be a single identifier (i.e. `a`, not `a.b`), and can be defined locally or in the surrounding class, object, or trait, or `imported` from elsewhere.
+
+ 2. **Companion objects** -- If an implicit cannot be found locally, the compiler looks in the companion objects of types involved in the type error. Will see more of this rule in the next section.
+
+## Packaging Implicit Values
+
+We are going to look at two methods for packaging our implicit value: in traits, and in companion objects.
+
+### Packaging in Traits
+
+We've seen we can package implicits in an object that we then import into the scope where we need the implicits. A more sophisticed way of packaging an implicit value is to define it inside a trait called `SomethingImplicits` and extend that trait to create a singleton of the same name:
+
+~~~ scala
+trait EmailImplicits {
+  implicit object EmailEqual extends Equal[Person] {
+    def equal(v1: Person, v2: Person): Boolean =
+      v1.email == v2.email
+  }
+}
+
+object EmailImplicits extends EmailImplicits
 ~~~
 
-We can also write another `HtmlWriter` for writing `People` on our homepage:
+This gives developers two convenient ways of using our code:
+
+ 1. quickly bring our implicit into scope via the singleton object using an `import`:
+
+    ~~~ scala
+    // `EmailEqual` is not in scope here
+
+    def testMethod = {
+      import EmailImplicits._
+
+      // `EmailEqual` is in scope here
+
+      Eq(Person("Noel", "noel@example.com"), Person("Dave", "noel@example.com"))
+    }
+
+    // `EmailEqual` is no longer in scope here
+    ~~~
+
+ 2. stack our trait with a set of other traits to produce a library of implicits that can be brought into scope using inheritance or an `import`:
+
+    ~~~ scala
+    object AllTheImplicits extends EmailImplicits
+      with MoreImplicits
+      with YetMoreImplicits
+
+    import AllTheImplicits._
+
+    // `EmailEqual` is in scope here
+    // along with other implicit classes
+    ~~~
+
+<div class="alert alert-info">
+**Implicits tip:** Some Scala developers dislike implicits because they can be hard to debug. The reason for this is that an implicit definition at one point in our codebase can have an invisible affect on the meaning of a line of code written elsewhere.
+
+While this is a valid criticism of implicits, the solution is not to abandon them altogether but to apply strict design principles to regulate their use. Here are some tips:
+
+ 1. Keep tight control over the scope of your implicits. Package them into traits and objects and only import them where you want to use them.
+
+ 2. Package all your implicits in traits/objects with names ending in `Implicits`. This makes them easy to find using a global search across your codebase.
+
+ 3. Only use implicits on specific types. Defining an implicit class on a general type like `Any` is more likely to cause problems than defining it on a specific type like `WebSiteVisitor`.
+</div>
+
+Let's redefine our adapters for `HtmlWriter` so we can bring them all into scope. Note that outside the Scala console implicit values are subject to the same packaging restrictions as implicit classes -- they have to be defined inside another class, object, or trait. We'll use the packaging convention we discussed above:
 
 ~~~ scala
-scala> object ObfuscatedPersonWriter extends HtmlWriter[Person] {
-     |   def write(person: Person) =
-     |     s"<span>${person.name} &lt;${person.email.replaceAll("@", " at ")}&gt;</span>"
-     | }
-defined module ObfuscatedPersonWriter
-
-scala> ObfuscatedPersonWriter.write(Person("John", "john@example.com"))
-res3: String = <span>John &lt;john at example.com&gt;</span>
-~~~
-
-Much safer -- it'll take a spam bot more than a few microseconds to decypher that!
-
-The key thing with this design pattern is that we can render any type of data in any way we want simply by choosing the correct adapter for any given situation. However, we have to know what each writer is called. Ideally we'd like to use the same interface to convert any type to HTML. We can do this using a new Scala feature, **implicit parameter lists**.
-
-## Implicit Parameter Lists
-
-Here is an example of an implicit parameter list:
-
-~~~ scala
-scala> object HtmlUtil {
-     |   def htmlify[T](data: T)(implicit writer: HtmlWriter[T]): String = {
-     |     writer.write(data)
-     |   }
-     | }
-defined module HtmlUtil
-~~~
-
-The `htmlify` method accepts two arguments: some `data` to convert to HTML and a `writer` to do the conversion. The `writer` is an implicit argument, so the compiler will automatically use any compatible `HtmlWriter` that we have defined using the `implicit` keyword.
-
-The `implicit` keyword applies to the *whole parameter list*, not just an individual parameter. This makes the parameter list optional -- when we call `HtmlUtil.htmlify` we can either specify the list as normal:
-
-~~~ scala
-scala> HtmlUtil.htmlify(Person("John", "john@example.com"))(PersonWriter)
-res2: String = <span>John &lt;john@example.com&gt;</span>
-~~~
-
-or we can omit the implicit parameter list. The compiler searches for **implicit values** of the correct type it can use to fill in the missing arguments. We have only seen implicit classes before so let's look at implicit values in a bit more detail.
-
-## Implicit Values
-
-We can tag any `val`, `var`, `object` or zero-argument `def` with the `implicit` keyword, making it a potential candidate for an implicit parameter:
-
-~~~ scala
-scala> implicit object PersonWriter extends HtmlWriter[Person] {
-     |   def write(person: Person) =
-     |     s"<span>${person.name} &lt;${person.email}&gt;</span>"
-     | }
-defined module PersonWriter
-~~~
-
-When the compiler expands an implicit argument list, it searches for candidate values for each argument by type. In our `htmlify` method the exact type will be decided by the type parameter `T` -- if `T` is `Person`, for example, the compiler searches for a value of type `HtmlWriter[Person]`.
-
-The same resolution rules apply for implicit values as for implicit classes. If the compiler is unable to find suitable candidates for all parameters in the list, we get a compilation error.
-
-Let's redefine our adapters for `HtmlWriter` so we can bring them all into scope. Note that outside the REPL implicit values are subject to the same packaging restrictions as implicit classes -- they have to be defined inside another class, object, or trait. We'll use the packaging convention we discussed in the previous section:
-
-~~~ scala
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
-
 trait HtmlImplicits {
   implicit object PersonWriter extends HtmlWriter[Person] {
     def write(person: Person) =
@@ -149,11 +141,6 @@ trait HtmlImplicits {
 }
 
 object HtmlImplicits extends HtmlImplicits
-
-// Exiting paste mode, now interpreting.
-
-defined trait HtmlWriters
-defined object HtmlWriters
 ~~~
 
 We can now use our adapters with `htmlify`:
@@ -168,7 +155,7 @@ res4: String = <span>John &lt;john@example.com&gt;</span>
 
 This version of the code has much lighter syntax requirements than its predecessor. We have now assembled the complete type class pattern: `HtmlUtil` specifies our HTML rendering functionality, `HtmlWriter` and `HtmlWriters` implement the functionality as a set of adapters, and the implicit argument to `htmlify` implicitly selects the correct adapter for any given argument. However, we can take things one step further to really simplify things.
 
-## Packaging Type Classes
+### Packaging in Companion Objects
 
 We can package type classes in two ways: using the trait/singleton approach we introduced for implicit classes, or using the companion objects of the relevant types.
 
@@ -200,29 +187,6 @@ import HtmlImplicits._
 HtmlUtil.htmlify(person) // uses HtmlImplicits.PersonWriter
 ~~~
 {% endcomment %}
-
-## Combining Type Classes and Type Enrichment
-
-Type classes allow us to define adapter-style patterns that implement fixed behaviour for any type we specify. Type enrichment allows us to add functionality to existing classes without changing their definitions. We can combine the two techniques to add standard functionality to a range of classes.
-
-To do this we keep the type class (`HtmlWriter`) and adapters (`PersonWriter`, `DateWriter` and so on) from our type class example, but replace our `HtmlUtils` singleton with an implicit generic class. For example:
-
-~~~ scala
-scala> implicit class HtmlOps[T](data: T) {
-     |   def toHtml(implicit writer: HtmlWriter[T]) =
-     |     writer.write(data)
-     | }
-defined class HtmlOps
-~~~
-
-This allows us to invoke our type-class pattern on any type for which we have an adapter *as if it were a built-in feature of the class*:
-
-~~~ scala
-scala> Person("John", "john@example.com").toHtml
-res5: String = <span>John &lt;john@example.com&gt;</span>
-~~~
-
-This gives us many benefits. We can extend existing types to give them new functionality, use simple syntax to invoke the functionality, *and* choose our preferred implementation by controlling which implicits we have in scope.
 
 ## Take Home Points
 
@@ -361,60 +325,5 @@ val visitors: Seq[Visitor] = Seq(Anonymous("001", new Date), User("003", "dave@x
 <div class="solution">
 ~~~ scala
 visitors.map(visitor => JsUtil.toJson(visitor))
-~~~
-</div>
-
-### Prettier Conversion Syntax
-
-Let's improve our JSON syntax by combining type classes and type enrichment. Convert `JsUtil` to an `implicit class` with a `toJson` method. Sample usage:
-
-~~~ scala
-Anonymous("001", new Date).toJson
-~~~
-
-<div class="solution">
-~~~ scala
-implicit class JsUtil[A](value: A) {
-  def toJson(implicit writer: JsWriter[A]) =
-    writer write value
-}
-~~~
-
-In the previous exercise we only defined `JsWriters` for our main case classes. With this convenient syntax, it makes sense for us to have an complete set of `JsWriters` for all the serializable types in our codebase, including `Strings` and `Dates`:
-
-~~~ scala
-implicit object StringWriter extends JsWriter[String] {
-  def write(value: String) = JsString(value)
-}
-
-implicit object DateWriter extends JsWriter[Date] {
-  def write(value: Date) = JsString(value.toString)
-}
-~~~
-
-With these definitions we can simplify our existing `JsWriters` for `Anonymous`, `User`, and `Visitor`:
-
-~~~ scala
-implicit object AnonymousWriter extends JsWriter[Anonymous] {
-  def write(value: Anonymous) = JsObject(Map(
-    "id"        -> value.id.toJson,
-    "createdAt" -> value.createdAt.toJson
-  ))
-}
-
-implicit object UserWriter extends JsWriter[User] {
-  def write(value: User) = JsObject(Map(
-    "id"        -> value.id.toJson,
-    "email"     -> value.email.toJson,
-    "createdAt" -> value.createdAt.toJson
-  ))
-}
-
-implicit object VisitorWriter extends JsWriter[Visitor] {
-  def write(value: Visitor) = value match {
-    case anon: Anonymous => anon.toJson
-    case user: User      => user.toJson
-  }
-}
 ~~~
 </div>
