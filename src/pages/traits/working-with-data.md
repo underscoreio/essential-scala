@@ -122,7 +122,7 @@ If `A` has a `b` (with type `B`) and a `c` (with type `C`), and we want to write
 
 ~~~ scala
 def f(a: A): F =
-  match a {
+  a match {
     case A(b, c) => ???
   }
 ~~~
@@ -139,7 +139,7 @@ If `A` is a `B` or `C`, and we want to write a method `f` accepting an `A` and r
 
 ~~~ scala
 def f(a: A): F =
-  match a {
+  a match {
     case B() => ???
     case C() => ???
   }
@@ -204,7 +204,7 @@ object Diner {
     feline match {
       case Lion() => Antelope
       case Tiger() => TigerFood
-      case Panter() => Licorice
+      case Panther() => Licorice
       case Cat(food) => CatFood(food)
     }
 }
@@ -246,25 +246,25 @@ final case object Green extends TrafficLight
 final case object Yellow extends TrafficLight
 ~~~
 
-Using polymorphim and then using pattern matching implement a method called `tick` which returns a `TrafficLight`, then next one in the standard `Red` -> `Green` -> `Yellow` -> `Red` cycle. Which do you think is better for this application?
+Using polymorphism and then using pattern matching implement a method called `next` which returns the next `TrafficLight` in the standard `Red` -> `Green` -> `Yellow` -> `Red` cycle. Which do you think is better for this application?
 
 <div class="solution">
 First with polymorphism:
 
 ~~~ scala
 sealed trait TrafficLight {
-  def tick: TrafficLight
+  def next: TrafficLight
 }
 final case object Red extends TrafficLight {
-  def tick: TrafficLight =
+  def next: TrafficLight =
     Green
 }
 final case object Green extends TrafficLight {
-  def tick: TrafficLight =
+  def next: TrafficLight =
     Yellow
 }
 final case object Yellow extends TrafficLight {
-  def tick: TrafficLight =
+  def next: TrafficLight =
     Red
 }
 ~~~
@@ -273,7 +273,7 @@ Now with pattern matching:
 
 ~~~ scala
 sealed trait TrafficLight {
-  def tick: TrafficLight =
+  def next: TrafficLight =
     this match {
       case Red => Green
       case Green => Yellow
@@ -285,7 +285,7 @@ final case object Green extends TrafficLight
 final case object Yellow extends TrafficLight
 ~~~
 
-In this case I think polymorphism is best, as `tick` doesn't depend on any external data and we probably only one one implementation of it. Notice how I defined my pattern matching implementation on `TrafficLight`. This achieves the same thing as polymorphism (subtypes have a method `tick`) while using pattern matching for the actual implementation. It's a neat implementation method that is something advantegeous to use.
+In this case I think polymorphism is best, as `next` doesn't depend on any external data and we probably only one one implementation of it. Notice how I defined my pattern matching implementation on `TrafficLight`. This achieves the same thing as polymorphism (subtypes have a method `next`) while using pattern matching for the actual implementation. It's a neat implementation method that is something advantegeous to use.
 </div>
 
 #### Calculation
@@ -305,7 +305,7 @@ Create a `Calculator` object. On `Calculator` define methods `+` and `-` that ac
 ~~~ scala
 assert(Calculator.+(Success(1), 1) == Success(2))
 assert(Calculator.-(Success(1), 1) == Success(0))
-assert(Calculator.+(Faillure("Badness"), 1) == Failure("Badness"))
+assert(Calculator.+(Failure("Badness"), 1) == Failure("Badness"))
 ~~~
 
 <div class="solution">

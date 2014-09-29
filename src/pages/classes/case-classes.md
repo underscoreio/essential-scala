@@ -174,7 +174,7 @@ Recall that a `Cat` has a `String` colour and food. Define a case class to repre
 <div class="solution">
 Another simple finger exercise.
 
-~~~
+~~~ scala
 case class Cat(colour: String, food: String)
 ~~~
 </div>

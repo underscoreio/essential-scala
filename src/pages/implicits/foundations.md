@@ -3,9 +3,9 @@ layout: page
 title: Type Class Foundations
 ---
 
-Type classes in Scala involve the interaction of a number of components. In this section we're going to build them up from the beginning, to gain an understanding of how all the pieces hang together.
+Type classes in Scala involve the interaction of a number of components. To understand how they work, in this section we're going to build them up from the beginning.
 
-Let's motivate this with an example -- converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
+Let's start with an example -- converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
 
 The obvious implementation it to implement `toHtml` using a simple trait:
 
@@ -24,9 +24,24 @@ scala> Person("John", "john@example.com").toHtml
 res0: String = <span>John &lt;john@example.com&gt;</span>
 ~~~
 
-This solution has a number of drawbacks. First, we are restricted to having just one way of rendering a `Person`. If we want to list people on our company homepage, for example, it is unlikely we will want to list everybody's email addresses without obfuscation. Second, this pattern can only be applied to classes that we have written ourselves. If we want to render `java.util.Data` to HTML, for example, we will have to write some other form of library function.
+This solution has a number of drawbacks. First, we are restricted to having just one way of rendering a `Person`. If we want to list people on our company homepage, for example, it is unlikely we will want to list everybody's email addresses without obfuscation. For logged in users, however, we probably want the convenience of direct email links. Second, this pattern can only be applied to classes that we have written ourselves. If we want to render a `java.util.Date` to HTML, for example, we will have to write some other form of library function.
 
-We can overcome both of these problems by moving our HTML rendering to an adapter class:
+Polymorphism has failed us, so perhaps we should try pattern matching instead? We could write some like
+
+~~~ scala
+object HtmlWriter {
+  def write(in: Any): String =
+    in match {
+      case Person(name, email) => ...
+      case Date => ...
+      case _ => throw new Exception(s"Can't render ${in} to HTML")
+    }
+}
+~~~
+
+This implementation has its own issues. We have lost type safety because there is not useful supertype that covers just the elements we want to render. We can't have more than one implemnetation of rendering for a given type. We also have to modify this code whenever we want to render a new type.
+
+We can overcome all of these problems by moving our HTML rendering to an adapter class:
 
 ~~~ scala
 scala> trait HtmlWriter[T] {
@@ -73,7 +88,7 @@ res3: String = <span>John &lt;john at example.com&gt;</span>
 
 Much safer -- it'll take a spam bot more than a few microseconds to decypher that!
 
-This is the essence of the type class pattern. All the refinements we will see just make it easier to use.
+This is the essence of the type class pattern. All the refinements we will see in later sections just make it easier to use.
 
 ## Take Home Points
 
@@ -105,7 +120,7 @@ We have seen the basic pattern for implementing type classes, though we'll short
 
 ### Equality
 
-Scala provides two equality predicates: by value (`==`) and by reference (`eq`). Nonetheless, we sometimes need additional predicates. For instac, we could appear people by just email address if we were validating new user accounts in some web application.
+Scala provides two equality predicates: by value (`==`) and by reference (`eq`). Nonetheless, we sometimes need additional predicates. For instance, we could compare people by just email address if we were validating new user accounts in some web application.
 
 Implement a trait `Equal` of some type `A`, with a method `equals` that compares two values of type `A` and returns a `Boolean`.
 

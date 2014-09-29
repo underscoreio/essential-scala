@@ -19,9 +19,9 @@ When we mark a trait as `sealed` we *must* define all of its subtypes in the sam
 
 ~~~ scala
 scala> def missingCase(v: Visitor) =
-       |  v match {
-       |    case User(_, _, _) => "Got a user"
-       |  }
+          v match {
+            case User(_, _, _) => "Got a user"
+          }
 <console>:21: warning: match may not be exhaustive.
 It would fail on the following input: Anonymous(_, _)
                v match {

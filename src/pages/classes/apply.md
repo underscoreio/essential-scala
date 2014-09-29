@@ -25,8 +25,8 @@ For example, let's rename the `add` method in `Adder` to `apply`:
 
 ~~~ scala
 scala> class Adder(amount: Int) {
-     |   def apply(in: Int) = in + amount
-     | }
+         def apply(in: Int) = in + amount
+       }
 defined class Adder
 
 scala> val add3 = new Adder(3)

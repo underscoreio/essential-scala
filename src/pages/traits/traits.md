@@ -186,7 +186,7 @@ case class Lion(colour: String, maneSize: Int) extends Feline {
 case class Tiger(colour: String) extends Feline {
   val sound = "roar"
 }
-case class Pather(colour: String) extends Feilne {
+case class Panther(colour: String) extends Feline {
   val sound = "roar"
 }
 case class Cat(colour: String, food: String) extends Feline {

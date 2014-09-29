@@ -118,7 +118,7 @@ We can start by writing the skeleton suggested by the problem text.
 
 ~~~ scala
 object ChipShop {
-  def serve(cat: Cat): Boolean =
+  def willServe(cat: Cat): Boolean =
     cat match {
       case Cat(???, ???, ???) => ???
     }
@@ -129,7 +129,7 @@ As the return type is `Boolean` we know we need at least two cases, one for true
 
 ~~~ scala
 object ChipShop {
-  def serve(cat: Cat): Boolean =
+  def willServe(cat: Cat): Boolean =
     cat match {
       case Cat(_, "Chips") => true
       case Cat(_, _) => false
