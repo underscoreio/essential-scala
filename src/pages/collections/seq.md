@@ -468,7 +468,7 @@ Using this sample code, write implementations of the following methods:
    ~~~
    </div>
 
- - Accept an optional parameter `ascending` of type `Boolean`. Sort the directors by age
+ - Accept a parameter `ascending` of type `Boolean` that defaults to `true`. Sort the directors by age
    in the specified order:
 
    <div class="solution">
