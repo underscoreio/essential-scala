@@ -9,4 +9,4 @@ Our goal is to describe how to build programs using Scala, and we introduce Scal
 
 Except for a few exercises we don't rely on any external libraries. You should be able to complete all the problems inside with only a text editor and Scala's REPL, or an IDE such as the [Scala IDE for Eclipse](http://scala-ide.org/) or [IntelliJ IDEA](http://www.jetbrains.com/idea/).
 
-Core Scala was created by [Noel Welsh](http://noelwelsh.com) and [Dave Gurnell](http://davegurnell.com/) of [Underscore](http://underscoreconsulting.com). It was built using [Jekyll docs](https://github.com/untyped/jekyll-docs), plain text, and a deep and profound love of functional programming.
+Essential Scala was created by [Noel Welsh](http://noelwelsh.com) and [Dave Gurnell](http://davegurnell.com/) of [Underscore](http://underscoreconsulting.com). It was built using [Jekyll docs](https://github.com/untyped/jekyll-docs), plain text, and a deep and profound love of functional programming.
