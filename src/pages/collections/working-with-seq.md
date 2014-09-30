@@ -182,7 +182,7 @@ These exercises re-use the example code from the *Directorial Debut* exercise fr
 
 #### Nolan Films
 
-List the names of the films directed by Christopher Nolan.
+Create a list containing the names of the films directed by Christopher Nolan.
 
 <div class="solution">
 ~~~ scala
@@ -192,7 +192,7 @@ nolan.films.map(_.name)
 
 #### Cinephile
 
-List the names of all films by all directors.
+Create a list containing the names of all films by all directors.
 
 <div class="solution">
 ~~~ scala
