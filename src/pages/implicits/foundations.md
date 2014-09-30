@@ -122,7 +122,7 @@ We have seen the basic pattern for implementing type classes, though we'll short
 
 Scala provides two equality predicates: by value (`==`) and by reference (`eq`). Nonetheless, we sometimes need additional predicates. For instance, we could compare people by just email address if we were validating new user accounts in some web application.
 
-Implement a trait `Equal` of some type `A`, with a method `equals` that compares two values of type `A` and returns a `Boolean`.
+Implement a trait `Equal` of some type `A`, with a method `equal` that compares two values of type `A` and returns a `Boolean`.
 
 <div class="solution">
 ~~~ scala

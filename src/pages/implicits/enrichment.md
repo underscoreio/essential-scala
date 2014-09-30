@@ -57,9 +57,9 @@ To do this we keep the type class (`HtmlWriter`) and adapters (`PersonWriter`, `
 
 ~~~ scala
 scala> implicit class HtmlOps[T](data: T) {
-     |   def toHtml(implicit writer: HtmlWriter[T]) =
-     |     writer.write(data)
-     | }
+         def toHtml(implicit writer: HtmlWriter[T]) =
+           writer.write(data)
+       }
 defined class HtmlOps
 ~~~
 
@@ -108,13 +108,12 @@ When you have written your implicit class, package it in an `IntImplicits` trait
 
 <div class="solution">
 ~~~ scala
-object IntImplicits extends IntImplicits
-
 trait IntImplicits {
   implicit class IntOps(n: Int) {
     def yeah = for(_ <- 0 until n) println("Oh yeah!")
   }
 }
+object IntImplicits extends IntImplicits
 
 import IntImplicits._
 

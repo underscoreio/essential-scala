@@ -92,7 +92,7 @@ object PersonImplicitsExample {
 Implicit parameters make type classes more convenient to use. We can make an entire parameter list with the `implicit` keyword to make it an implicit parameter list.
 
 ~~~ scala
-def method(normalParam1: normalType, ...)(implicit implicitParam1: implicitType, ...)
+def method[A](normalParam1: NormalType, ...)(implicit implicitParam1: ImplicitType[A], ...)
 ~~~
 
 If we call a method and do not explicitly supply an explicit parameter, the compiler will search for an implicit value of the correct type and insert it as the parameter.
@@ -103,9 +103,10 @@ The Scala compiler prefers implicit values in the local scope to any other impli
 
 ~~~ scala
 object Implicits {
-  implicit val anImplicit = ...
+  implicit object anImplicit = ...
 }
 
+// Meanwhile ...
 trait ImplicitUse {
   import Implicits._
   ...
@@ -119,6 +120,8 @@ trait ImplicitUse {
 In the previous section we defined a trait `Equal` along with some implementations for `Person`.
 
 ~~~ scala
+case class Person(name: String, email: String)
+
 trait Equal[A] {
   def equal(v1: A, v2: A): Boolean
 }
