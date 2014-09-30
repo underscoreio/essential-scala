@@ -359,7 +359,7 @@ This is a straightforward algebraic data type.
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
-final case class Number(value: Int) extends Expression
+final case class Number(value: Double) extends Expression
 ~~~
 </div>
 
@@ -399,7 +399,7 @@ final case class Addition(left: Expression, right: Expression) extends Expressio
 final case class Subtraction(left: Expression, right: Expression) extends Expression
 final case class Division(left: Expression, right: Expression) extends Expression
 final case class SquareRoot(value: Expression) extends Expression
-final case class Number(value: Int) extends Expression
+final case class Number(value: Double) extends Expression
 ~~~
 </div>
 
@@ -418,9 +418,9 @@ final case class Failure(reason: String) extends Calculation
 Now change `eval` to return your result type, which I have called `Calculation` in my implementation. Here are some examples:
 
 ~~~ scala
-assert(Addition(SquareRoot(Number(-1)), Number(2)).eval ==
+assert(Addition(SquareRoot(Number(-1.0)), Number(2.0)).eval ==
        Failure("Square root of negative number"))
-assert(Addition(SquareRoot(Number(4)), Number(2)).eval == Success(4.0))
+assert(Addition(SquareRoot(Number(4.0)), Number(2.0)).eval == Success(4.0))
 ~~~
 
 <div class="solution">
@@ -478,7 +478,7 @@ final case class SquareRoot(value: Expression) extends Expression {
           Success(Math.sqrt(r1))
     }
 }
-final case class Number(value: Int) extends Expression {
+final case class Number(value: Double) extends Expression {
   def eval: Calculation =
     Success(value)
 }
