@@ -87,11 +87,13 @@ But if an `Int` is an object, what are the basic methematical operators such as 
 scala> 43 - 3 + 2
 res18: Int = 42
 
-scala> 43 .-(3).+(2)
+scala> 43.-(3).+(2)
 res20: Int = 42
 ~~~
 
-<small>Note the space after `43` in the second example, which prevents `43.` being interpreted as a `Double`.</small>
+<div class="callout callout-warning">
+Note that in Scala 2.10 and earlier you would have to write `(43).-(3).+(2)` to prevent `43.` being interpreted as a `Double`.
+</div>
 
 <div class="callout callout-info">
 #### Infix Operator Notation
