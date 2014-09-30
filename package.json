@@ -9,7 +9,7 @@
     "grunt-contrib-less": "~0.6.4",
     "grunt-bower-task": "~0.3.0"
   },
-  "name": "core-scala",
+  "name": "essential-scala",
   "description": "Tutorial for Scala.",
   "version": "0.0.0",
   "main": "dist/index.html",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@ungit:projects/core-scala"
+    "url": "git@ungit:projects/essential-scala"
   },
   "author": "Dave Gurnell and Noel Welsh"
 }

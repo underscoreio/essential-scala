@@ -10,9 +10,9 @@ Thumbs.db
 .rvmrc
 /bower_components/
 /dist/
-/core-scala/
-/core-scala.zip
+/essential-scala/
+/essential-scala.zip
 /node_modules/
 
-core-scala.sublime-workspace
+essential-scala.sublime-workspace
 
