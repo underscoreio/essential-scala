@@ -345,9 +345,9 @@ def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C]
 <div class="solution">
 ~~~ scala
 sealed trait Sum[+A, +B] {
-  def fold[C](error: A => C, success: B => C): C =
+  def fold[C](failure: A => C, success: B => C): C =
     this match {
-      case Failure(v) => error(v)
+      case Failure(v) => failure(v)
       case Success(v) => success(v)
     }
   def map[C](f: B => C): Sum[A, C] =
@@ -377,7 +377,14 @@ final case class SquareRoot(value: Expression) extends Expression
 final case class Number(value: Double) extends Expression
 ~~~
 
-Now implement a method `eval: Sum[String, Double]` on `Expression`. Use `flatMap` and `map` on `Sum` and introduce any utility methods you see fit to make the code more compact.
+Now implement a method `eval: Sum[String, Double]` on `Expression`. Use `flatMap` and `map` on `Sum` and introduce any utility methods you see fit to make the code more compact. Here are some test cases:
+
+~~~ scala
+assert(Addition(Number(1), Number(2)).eval == Success(3))
+assert(SquareRoot(Number(-1)).eval == Failure("Square root of negative number"))
+assert(Division(Number(4), Number(0)).eval == Failure("Division by zero"))
+assert(Division(Addition(Subtraction(Number(8), Number(6)), Number(2)), Number(2)).eval == Success(2.0))
+~~~
 
 <div class="solution">
 Here's my solution. I used a helper method `lift2` to "lift" a function into the result of two expressions. I hope you'll agree the code is both more compact and easier to read than our previous solution!
@@ -386,9 +393,14 @@ Here's my solution. I used a helper method `lift2` to "lift" a function into the
 sealed trait Expression {
   def eval: Sum[String, Double] =
     this match {
-      case Addition(l, r) => lift2(l, r, _ + _)
-      case Subtraction(l, r) => lift2(l, r, _ - _)
-      case Division(l, r) => lift2(l, r, _ / _)
+      case Addition(l, r) => lift2(l, r, (left, right) => Success(left + right))
+      case Subtraction(l, r) => lift2(l, r, (left, right) => Success(left - right))
+      case Division(l, r) => lift2(l, r, (left, right) =>
+        if(right == 0)
+          Failure("Division by zero")
+        else
+          Success(left / right)
+      )
       case SquareRoot(v) =>
         v.eval flatMap { value =>
           if(value < 0)
@@ -399,9 +411,11 @@ sealed trait Expression {
       case Number(v) => Success(v)
     }
 
-  def lift2(l: Expression, r: Expression, f: (Double, Double) => Double) =
+  def lift2(l: Expression, r: Expression, f: (Double, Double) => Sum[String, Double]) =
     l.eval flatMap { left =>
-      r.eval map { right => f(left, right) }
+      r.eval flatMap { right =>
+        f(left, right)
+      }
     }
 }
 final case class Addition(left: Expression, right: Expression) extends Expression
