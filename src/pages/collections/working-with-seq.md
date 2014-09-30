@@ -207,8 +207,18 @@ Find the date of the earliest McTiernan film.
 Tip: you can concisely find the minimum of two numbers `a` and `b` using `math.min(a, b)`.
 
 <div class="solution">
+There are a number of ways to do this. We can sort the list of films and then retrieve the smallest element.
+
 ~~~ scala
-mcTiernan.films.foldLeft(9999) { (current, film) =>
+McTiernan.fils.sortWith { (a, b) =>
+  a.yearOfRelease < b.yearOfRelease
+}.headOption
+~~~
+
+We can also do this by using a `fold`.
+
+~~~ scala
+mcTiernan.films.foldLeft(Int.MaxValue) { (current, film) =>
   math.min(current, film.yearOfRelease)
 }
 ~~~
@@ -220,9 +230,9 @@ Find all films sorted by descending IMDB rating:
 
 <div class="solution">
 ~~~ scala
-directors
-  .flatMap(director => director.films)
-  .sortWith((a, b) => a.imdbRating > b.imdbRating)
+directors.
+  flatMap(director => director.films).
+  sortWith((a, b) => a.imdbRating > b.imdbRating)
 ~~~
 </div>
 
