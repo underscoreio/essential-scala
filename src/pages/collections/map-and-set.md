@@ -139,7 +139,7 @@ res14: scala.collection.mutable.Map[java.lang.String,Int] = Map(x -> 20, w -> 30
 
 Note that, as with mutable sequences, `a(b) = c` is shorthand for `a.update(b, c)`. The `update` method does not return a value, but the map is mutated as a side-effect.
 
-There are many other methods for manipulating mutable maps. See the [Scaladoc](file://localhost/usr/local/Cellar/scala/2.9.1/doc/scala-devel-docs/api/scala/collection/mutable/Map.html) for `scala.collection.mutable.Map` for more information.
+There are many other methods for manipulating mutable maps. See the [Scaladoc](http://www.scala-lang.org/files/archive/api/current#scala.collection.mutable.Map) for `scala.collection.mutable.Map` for more information.
 
 ### Sorted maps
 
