@@ -16,30 +16,30 @@ To define valid recursive data we must define a **base case**, which is the case
 
 [^lazy-data]: We actually can define data in this manner if we delay the construction of the recursive case, like `final case class LazyList(head: Int, tail: () => LazyList)`. This uses a feature of Scala, functions, that we haven't seen yet. We can do some fairly mind-bending things with this construction, such as defining an infinite stream of ones with the declaration `val ones: LazyList = LazyList(1, () => ones)`. Since we only ever realise a finite amount of this list we can use it to implement certain types of data that would be difficult to implement in other ways. If you're interested in exploring this area further, what we have implemented in called a lazy list, and an "odd lazy list" in particular. The "even list", described in [How to add laziness to a strict language wihtout even being odd](http://www.cs.rice.edu/~taha/publications/conference/sml98.pdf), is a better implementation. Going further, is a rich literature on lazy datastructures and more mind melting theory under the name of "coinductive data".
 
-Here is a more useful recursive definition: an `IntList` is either the `Empty` list, or a `Cell`[^pair] containing an `Int` and an `IntList`. We can directly translate this to code using our familiar patterns:
+Here is a more useful recursive definition: an `IntList` is either the empty list `End`, or a `Pair`[^pair] containing an `Int` and an `IntList`. We can directly translate this to code using our familiar patterns:
 
 ~~~ scala
 sealed trait IntList
-final case object Empty extends IntList
-final case class Cell(head: Int, tail: IntList) extends IntList
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 
-[^pair]: The traditional name this element is a `Pair` or a `Cons` cell. We don't use the former because Scala already defines a datatype called Pair, and we don't use the later because it would require some explanation.
+[^pair]: The traditional name this element is a `Cons` cell. We don't use this name as it's a bit confusing if you don't know the story behind it.
 
-Here `Empty` is the base case. We construct the list containing `1`, `2`, and `3` as follows:
+Here `End` is the base case. We construct the list containing `1`, `2`, and `3` as follows:
 
 A linked list is another type of generic sequence, similar to an array. Unlike an array, however, a linked list is stored internally as a chain of pairs. For example, the sequence `1, 2, 3` would be represented as follows:
 
 <img src="../traits/linked-list.svg" alt="A linked list">
 
 ~~~ scala
-Cell(1, Cell(2, Cell(3, Empty)))
+Pair(1, Pair(2, Pair(3, End)))
 ~~~
 
 In this example we have four links in our chain. `d` represents an empty list, and `a`, `b`, and `c` are pairs built on top of it:
 
 ~~~ scala
-val d = Empty()
+val d = End()
 val c = Pair(3, d)
 val b = Pair(2, c)
 val a = Pair(1, b)
@@ -63,33 +63,33 @@ Let's add together all the elements of an `IntList`. We'll use pattern matching,
 Start with the tests and method declaration.
 
 ~~~ scala
-val example = Cell(1, Cell(2, Cell(3, Empty)))
+val example = Pair(1, Pair(2, Pair(3, End)))
 assert(sum(example) == 6)
 assert(sum(example.tail) == 5)
-assert(sum(Empty) == 0)
+assert(sum(End) == 0)
 
 def sum(list: IntList): Int = ???
 ~~~
 
-Note how the tests define `0` to be the sum of the elements of an `Empty` list. It is important that we define an appropriate base case for our method as we will build our final result of this base case.
+Note how the tests define `0` to be the sum of the elements of an `End` list. It is important that we define an appropriate base case for our method as we will build our final result of this base case.
 
 Now we apply our structural recursion pattern to fill out the body of the method.
 
 ~~~ scala
 def sum(list: IntList): Int =
   list match {
-    case Empty => ???
-    case Cell(hd, tl) => ???
+    case End => ???
+    case Pair(hd, tl) => ???
   }
 ~~~
 
-Finally we have to decide on the bodies of our cases. We have already decided that `0` is answer for `Empty`. For `Cell` we have two bits of information to guide us. We know we need to return an `Int` and we know that we need to make a recursive call on `tl`. Let's fill in what we have.
+Finally we have to decide on the bodies of our cases. We have already decided that `0` is answer for `End`. For `Pair` we have two bits of information to guide us. We know we need to return an `Int` and we know that we need to make a recursive call on `tl`. Let's fill in what we have.
 
 ~~~ scala
 def sum(list: IntList): Int =
   list match {
-    case Empty => 0
-    case Cell(hd, tl) => ??? sum(tl)
+    case End => 0
+    case Pair(hd, tl) => ??? sum(tl)
   }
 ~~~
 
@@ -98,8 +98,8 @@ The recursive call will return the sum of the tail of the list, by definition. T
 ~~~ scala
 def sum(list: IntList): Int =
   list match {
-    case Empty => 0
-    case Cell(hd, tl) => hd + sum(tl)
+    case End => 0
+    case Pair(hd, tl) => hd + sum(tl)
   }
 ~~~
 
@@ -165,8 +165,8 @@ import scala.annotation.tailrec
 scala> @tailrec
        def sum(list: IntList): Int =
          list match {
-           case Empty => 0
-           case Cell(hd, tl) => hd + sum(tl)
+           case End => 0
+           case Pair(hd, tl) => hd + sum(tl)
          }
 <console>:15: error: could not optimize @tailrec annotated method sum: it contains a recursive call not in tail position
          list match {
@@ -175,8 +175,8 @@ scala> @tailrec
 scala> @tailrec
        def sum(list: IntList, total: Int = 0): Int =
          list match {
-           case Empty => total
-           case Cell(hd, tl) => sum(tl, total + hd)
+           case End => total
+           case Pair(hd, tl) => sum(tl, total + hd)
          }
 sum: (list: IntList, total: Int)Int
 ~~~~
@@ -191,18 +191,20 @@ Using our definition of `IntList`
 
 ~~~ scala
 sealed trait IntList
-final case object Empty extends IntList
-final case class Cell(head: Int, tail: IntList) extends IntList
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 
 define a method `length` that returns the length of the list using pattern matching.
 
 <div class="solution">
+~~~ scala
 def length(list: IntList): Int =
   list match {
-    case Empty => 0
-    case Cell(hd, tl) => 1 + length(tl)
+    case End => 0
+    case Pair(hd, tl) => 1 + length(tl)
   }
+~~~
 </div>
 
 Now define `length` using polymorphism.
@@ -212,11 +214,11 @@ Now define `length` using polymorphism.
 sealed trait IntList {
   def length: Int
 }
-final case object Empty extends IntList {
+final case object End extends IntList {
   def length: Int =
     0
 }
-final case class Cell(head: Int, tail: IntList) extends IntList {
+final case class Pair(head: Int, tail: IntList) extends IntList {
   def length: Int =
     1 + tail.length
 }
@@ -229,18 +231,18 @@ Using polymorphism and pattern matching, define a method to compute the product 
 ~~~ scala
 def product(list: IntList): Int =
   list match {
-    case Empty => 1
-    case Cell(hd, tl) => hd * product(tl)
+    case End => 1
+    case Pair(hd, tl) => hd * product(tl)
   }
 
 sealed trait IntList {
   def product: Int
 }
-final case object Empty extends IntList {
+final case object End extends IntList {
   def product: Int =
     1
 }
-final case class Cell(head: Int, tail: IntList) extends IntList {
+final case class Pair(head: Int, tail: IntList) extends IntList {
   def product: Int =
     head * tail.product
 }
@@ -250,34 +252,34 @@ final case class Cell(head: Int, tail: IntList) extends IntList {
 Using both polymorphism and pattern matching, define a method to double the value of each element in an `IntList`, returning a new `IntList`. The following test cases should hold:
 
 ~~~ scala
-assert(Empty.double == Empty)
-assert(double(Empty) == Empty)
+assert(End.double == End)
+assert(double(End) == End)
 
-assert(Cell(1, Empty).double == Cell(2, Empty))
-assert(double(Cell(1, Empty)) == Cell(2, Empty))
+assert(Pair(1, End).double == Pair(2, End))
+assert(double(Pair(1, End)) == Pair(2, End))
 
-assert(Cell(2, Cell(1, Empty)).double == Cell(4, Cell(2, Empty)))
-assert(double(Cell(2, Cell(1, Empty))) == Cell(4, Cell(2, Empty)))
+assert(Pair(2, Pair(1, End)).double == Pair(4, Pair(2, End)))
+assert(double(Pair(2, Pair(1, End))) == Pair(4, Pair(2, End)))
 ~~~
 
 <div class="solution">
 ~~~ scala
 def double(list: IntList): IntList =
   list match {
-    case Empty => Empty
-    case Cell(hd, tl) => Cell(hd * 2, double(tl))
+    case End => End
+    case Pair(hd, tl) => Pair(hd * 2, double(tl))
   }
 
 sealed trait IntList {
   def double: IntList
 }
-final case object Empty extends IntList {
+final case object End extends IntList {
   def double: IntList =
-    Empty
+    End
 }
-final case class Cell(head: Int, tail: IntList) extends IntList {
+final case class Pair(head: Int, tail: IntList) extends IntList {
   def double: IntList =
-    Cell(head * 2, tail.double)
+    Pair(head * 2, tail.double)
 }
 ~~~
 </div>
@@ -421,6 +423,7 @@ Now change `eval` to return your result type, which I have called `Calculation` 
 assert(Addition(SquareRoot(Number(-1.0)), Number(2.0)).eval ==
        Failure("Square root of negative number"))
 assert(Addition(SquareRoot(Number(4.0)), Number(2.0)).eval == Success(4.0))
+assert(Division(Number(4), Number(0).eval == Failure("Division by zero"))
 ~~~
 
 <div class="solution">

@@ -37,8 +37,8 @@
         <text id="c:-Pair" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
             <tspan x="184.580065" y="160.736527">c: Pair</tspan>
         </text>
-        <text id="d:-Empty" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
-            <tspan x="236.031808" y="230.065868">d: Empty</tspan>
+        <text id="d:-End" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="236.031808" y="230.065868">d: End</tspan>
         </text>
         <text id="1" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
             <tspan x="15.6055649" y="92.8682635">1</tspan>

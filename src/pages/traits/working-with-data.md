@@ -353,22 +353,29 @@ object Calculator {
 ~~~
 </div>
 
-Now write a division method that fails if the divisor is 0. The following tests should pass.
+Now write a division method that fails if the divisor is 0. The following tests should pass. Note the behavior for the last test. This indicates "fail fast" behavior. If a calculation has already failed we keep that failure and don't process any more data even if, as is the case in the test, doing so would lead to another failure.
 
 ~~~ scala
 assert(Calculator./(Success(4), 2) == Success(2))
 assert(Calculator./(Success(4), 0) == Failure("Division by zero"))
+assert(Calculator./(Failure("Badness"), 0) == Failure("Badness"))
 ~~~
 
 <div class="solution">
+The important points here are:
+
+1. We have the same general pattern as before, matching on the `Calculation` *first* to implement our fail fast behavior.
+2. After matching on our `Calculation` we then check for division by zero.
+
 ~~~ scala
 def /(calc: Calculation, operand: Int): Calculation =
-  operand match {
-    case 0 => Failure("Division by zero")
-    case _ => calc match {
-           case Success(result) => Success(result / operand)
-           case Failure(reason) => Failure(reason)
-         }
+  calc match {
+    case Success(result) =>
+      operand match {
+        case 0 => Failure("Division by zero")
+        case _ => Success(result / operand)
+      }
+    case Failure(reason) => Failure(reason)
   }
 ~~~
 </div>

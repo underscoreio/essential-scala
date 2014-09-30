@@ -22,7 +22,7 @@ The last version of `fold` that we saw was
 def fold[A](list: IntList, f: (Int, A) => A, empty: A): A =
   list match {
     case Empty => empty
-    case Cell(hd, tl) => f(hd, fold(tl, f, empty))
+    case Pair(hd, tl) => f(hd, fold(tl, f, empty))
   }
 ~~~
 

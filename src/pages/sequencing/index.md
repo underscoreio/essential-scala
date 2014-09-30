@@ -13,17 +13,17 @@ sealed trait IntList {
   def product: Int
   def sum: Int
 }
-final case object Empty extends IntList {
+final case object End extends IntList {
   def double: IntList =
-    Empty
+    End
   def product: Int =
     1
   def sum: Int =
     0
 }
-final case class Cell(head: Int, tail: IntList) extends IntList {
+final case class Pair(head: Int, tail: IntList) extends IntList {
   def double: IntList =
-    Cell(head * 2, tail.double)
+    Pair(head * 2, tail.double)
   def product: Int =
     head * tail.product
   def sum: Int =

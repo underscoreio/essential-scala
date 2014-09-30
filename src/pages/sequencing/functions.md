@@ -10,20 +10,20 @@ Let's look at three methods we wrote that manipulate `IntList`. I have chosen th
 ~~~ scala
 def sum(list: IntList): Int =
   list match {
-    case Empty => 0
-    case Cell(hd, tl) => hd + sum(tl)
+    case End => 0
+    case Pair(hd, tl) => hd + sum(tl)
   }
 
 def length(list: IntList): Int =
   list match {
-    case Empty => 0
-    case Cell(hd, tl) => 1 + length(tl)
+    case End => 0
+    case Pair(hd, tl) => 1 + length(tl)
   }
 
 def product(list: IntList): Int =
   list match {
-    case Empty => 1
-    case Cell(hd, tl) => hd * product(tl)
+    case End => 1
+    case Pair(hd, tl) => hd * product(tl)
   }
 ~~~
 
@@ -32,20 +32,20 @@ All of these methods:
 - accept an `IntList` as a parameter;
 - return an `Int`;
 - use the same patterns;
-- return an `Int` for the `Empty` case;
-- have the same general shape for the `Cell` case: the head of the list is combined with the result of a recursive call.
+- return an `Int` for the `End` case;
+- have the same general shape for the `Pair` case: the head of the list is combined with the result of a recursive call.
 
 How can we remove this duplication? We want to write a method like
 
 ~~~ scala
-def abstraction(list: IntList, f: ???, empty: Int): Int =
+def abstraction(list: IntList, f: ???, end: Int): Int =
   list match {
-    case Empty => empty
-    case Cell(hd, tl) => f(hd, abstraction(tl, f, empty))
+    case End => end
+    case Pair(hd, tl) => f(hd, abstraction(tl, f, end))
   }
 ~~~
 
-I've used `f` to denote some kind of object that does the combination of the head and recursive call for the `Cell` case. At the moment we don't know how to write down the type of this value, or how to construct one. However, we can guess from the title of this section that what we want is a function!
+I've used `f` to denote some kind of object that does the combination of the head and recursive call for the `Pair` case. At the moment we don't know how to write down the type of this value, or how to construct one. However, we can guess from the title of this section that what we want is a function!
 
 A function is like a method: we can call it with parameters and it evaluates to a result. Unlike a method a function is value. We can pass a function to a method or to another function. We can return a function from a method, and so on.
 
@@ -203,10 +203,10 @@ res12: Counter = Counter(3)
 We started developing an abstraction over `sum`, `length`, and `product` which we sketched out as
 
 ~~~ scala
-def abstraction(list: IntList, f: ???, empty: Int): Int =
+def abstraction(list: IntList, f: ???, end: Int): Int =
   list match {
-    case Empty => empty
-    case Cell(hd, tl) => f(hd, abstraction(tl, f, empty))
+    case End => end
+    case Pair(hd, tl) => f(hd, abstraction(tl, f, end))
   }
 ~~~
 
@@ -214,10 +214,10 @@ Rename this function to `fold`, which is the name it is usually known as, and fi
 
 <div class="solution">
 ~~~ scala
-def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int =
+def fold(list: IntList, f: (Int, Int) => Int, end: Int): Int =
   list match {
-    case Empty => empty
-    case Cell(hd, tl) => f(hd, fold(tl, f, empty))
+    case End => end
+    case Pair(hd, tl) => f(hd, fold(tl, f, end))
   }
 ~~~
 </div>
@@ -242,17 +242,17 @@ Now implement `fold` using polymorphism and similarly reimplement the polymorphi
 <div class="solution">
 ~~~ scala
 sealed trait IntList {
-  def fold(f: (Int, Int) => Int, empty: Int): Int
+  def fold(f: (Int, Int) => Int, end: Int): Int
   def double: IntList
   def product: Int
   def sum: Int
   def length: Int
 }
-final case object Empty extends IntList {
-  def fold(f: (Int, Int) => Int, empty: Int) =
-    empty
+final case object End extends IntList {
+  def fold(f: (Int, Int) => Int, end: Int) =
+    end
   def double: IntList =
-    Empty
+    End
   def product: Int =
     fold(_ * _, 1)
   def sum: Int =
@@ -260,11 +260,11 @@ final case object Empty extends IntList {
   def length: Int =
     fold((hd, tl) => 1 + tl, 0)
 }
-final case class Cell(head: Int, tail: IntList) extends IntList {
-  def fold(f: (Int, Int) => Int, empty: Int) =
-    f(head, tail.fold(f, empty))
+final case class Pair(head: Int, tail: IntList) extends IntList {
+  def fold(f: (Int, Int) => Int, end: Int) =
+    f(head, tail.fold(f, end))
   def double: IntList =
-    Cell(head * 2, tail.double)
+    Pair(head * 2, tail.double)
   def product: Int =
     fold(_ * _, 1)
   def sum: Int =
@@ -291,14 +291,14 @@ The types tell us it won't work. `fold` returns an `Int` and `double` returns an
 ~~~ scala
 def double(list: IntList): IntList =
   list match {
-    case Empty => Empty
-    case Cell(hd, tl) => Cell(hd * 2, double(tl))
+    case End => End
+    case Pair(hd, tl) => Pair(hd * 2, double(tl))
   }
 
-def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int =
+def fold(list: IntList, f: (Int, Int) => Int, end: Int): Int =
   list match {
-    case Empty => empty
-    case Cell(hd, tl) => f(hd, fold(tl, f, empty))
+    case End => end
+    case Pair(hd, tl) => f(hd, fold(tl, f, end))
   }
 ~~~
 
@@ -311,25 +311,25 @@ Implement a generalised version of `fold` and rewrite `double` in terms of it.
 We want to generalise the return type of `fold`. Our starting point is
 
 ~~~ scala
-def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int
+def fold(list: IntList, f: (Int, Int) => Int, end: Int): Int
 ~~~
 
 Replacing the return type and tracing it back we arrive at
 
 ~~~ scala
-def fold[A](list: IntList, f: (Int, A) => A, empty: A): A
+def fold[A](list: IntList, f: (Int, A) => A, end: A): A
 ~~~
 
 where we've used a generic type on the method to capture the variable return type. With this we can implement `double`. When we try to do so we'll see that type inference fails, so we have to give it a bit of help.
 
 ~~~ scala
-def fold[A](list: IntList, f: (Int, A) => A, empty: A): A =
+def fold[A](list: IntList, f: (Int, A) => A, end: A): A =
   list match {
-    case Empty => empty
-    case Cell(hd, tl) => f(hd, fold(tl, f, empty))
+    case End => end
+    case Pair(hd, tl) => f(hd, fold(tl, f, end))
   }
 
 def double(list: IntList): IntList =
-  fold[IntList](list, (hd, tl) => Cell(hd * 2, tl), Empty)
+  fold[IntList](list, (hd, tl) => Pair(hd * 2, tl), End)
 ~~~
 </div>

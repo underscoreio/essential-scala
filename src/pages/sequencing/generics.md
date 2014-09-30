@@ -50,7 +50,7 @@ Generic types can be declared in a class or trait declaration in which case they
 
 ~~~ scala
 case class Name[A](...){ ... }
-trait TraitName[A](...){ ... }
+trait TraitName[A]{ ... }
 ~~~
 
 Alternatively they may be declared in a method declaration, in which case they are only visible within the method.
@@ -125,7 +125,7 @@ case class Success[A](result: A) extends Result[A]
 case class Failure[A](reason: String) extends Result[A]
 ~~~
 
-Notice that both `Success` and `Failure` introduce a type parameter `A` which is passed to `Result` when it is extended. `Success` also has a value of type `A`, but `Failure` only introduce `A` so it can pass it onward to `Result`. In a later section we'll introduce **variance**, giving us a cleaner way to ipmlement this, but for now this is the pattern we'll use.
+Notice that both `Success` and `Failure` introduce a type parameter `A` which is passed to `Result` when it is extended. `Success` also has a value of type `A`, but `Failure` only introduces `A` so it can pass it onward to `Result`. In a later section we'll introduce **variance**, giving us a cleaner way to implement this, but for now this is the pattern we'll use.
 
 <div class="callout callout-info">
 #### Invariant Generic Sum Type Pattern
@@ -148,8 +148,8 @@ Our `IntList` type was defined as
 
 ~~~ scala
 sealed trait IntList
-final case object Empty extends IntList
-final case class Cell(head: Int, tail: IntList) extends IntList
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 
 Change the name to `LinkedList` and make it generic in the type of data stored in the list.
@@ -161,7 +161,7 @@ This is an application of the generic sum type pattern.
 ~~~ scala
 sealed trait LinkedList[A]
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-final case class Empty[A]() extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
 ~~~
 </div>
 
@@ -182,15 +182,15 @@ final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
   def length: Int =
     1 + tail.length
 }
-final case class Empty[A]() extends LinkedList[A] {
+final case class End[A]() extends LinkedList[A] {
   def length: Int =
     0
 }
 
-val example = Pair(1, Pair(2, Pair(3, Empty())))
+val example = Pair(1, Pair(2, Pair(3, End())))
 assert(example.length == 3)
 assert(example.tail.length == 2)
-assert(Empty().length == 0)
+assert(End().length == 0)
 ~~~
 </div>
 
@@ -210,15 +210,15 @@ final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
     else
       tail.contains(item)
 }
-final case class Empty[A]() extends LinkedList[A] {
+final case class End[A]() extends LinkedList[A] {
   def contains(item: A): Boolean =
     false
 }
 
-val example = Pair(1, Pair(2, Pair(3, Empty())))
+val example = Pair(1, Pair(2, Pair(3, End())))
 assert(example.contains(3) == true)
 assert(example.contains(4) == false)
-assert(Empty().contains(0) == false)
+assert(End().contains(0) == false)
 ~~~
 </div>
 
@@ -233,7 +233,7 @@ throw new Exception("Bad things happened")
 <div class="solution">
 There are a few interesting things in this exercise. Possibly the easiest part is the use of the generic type as the return type of the `apply` method.
 
-Next up is the `Empty` case, which the hint suggested you through an `Exception` for. Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
+Next up is the `End` case, which the hint suggested you through an `Exception` for. Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
 
 Finally we get to the actual structural recursion, which is perhaps the trickiest part. The key insight is that if the index is zero, we're selecting the current element, otherwise we subtract one from the index and recurse. We can recursively define the integers in terms of addition by one. For example, 3 = 2 + 1 = 1 + 1 + 1. Here we are performing structural recursion on the list *and* on the integers.
 
@@ -248,12 +248,12 @@ final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
     else
       tail(index - 1)
 }
-final case class Empty[A]() extends LinkedList[A] {
+final case class End[A]() extends LinkedList[A] {
   def apply(index: Int): A =
     throw new Exception("Attempted to get element from empty list")
 }
 
-val example = Pair(1, Pair(2, Pair(3, Empty())))
+val example = Pair(1, Pair(2, Pair(3, End())))
 assert(example(0) == 1)
 assert(example(1) == 2)
 assert(example(2) == 3)
@@ -263,5 +263,46 @@ assert(try {
 } catch {
   case e: Exception => true
 })
+~~~
+</div>
+
+Throwing an exception isn't cool. Whenever we throw an exception we lose type safety as there is nothing in the type system that will remind us to deal with the error. It would be much better to return some kind of result that encodes we can succeed or failure. We introduced such a type in this very section.
+
+~~~ scala
+sealed trait Result[A]
+case class Success[A](result: A) extends Result[A]
+case class Failure[A](reason: String) extends Result[A]
+~~~
+
+Change `apply` so it returns a `Result`, with a failure case indicating what went wrong. Here are some test cases to help you:
+
+~~~ scala
+val example = Pair(1, Pair(2, Pair(3, End())))
+assert(example(0) == Success(1))
+assert(example(1) == Success(2))
+assert(example(2) == Success(3))
+assert(example(3) == Failure("Index out of bounds"))
+~~~
+
+<div class="solution">
+~~~ scala
+sealed trait Result[A]
+case class Success[A](result: A) extends Result[A]
+case class Failure[A](reason: String) extends Result[A]
+
+sealed trait LinkedList[A] {
+  def apply(index: Int): Result[A]
+}
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
+  def apply(index: Int): Result[A] =
+    if(index == 0)
+      Success(head)
+    else
+      tail(index - 1)
+}
+final case class End[A]() extends LinkedList[A] {
+  def apply(index: Int): Result[A] =
+    Failure("Index out of bounds")
+}
 ~~~
 </div>

@@ -5,11 +5,11 @@ sealed trait IntList {
   def sum: Int
   def length: Int
 }
-final case object Empty extends IntList {
+final case object End extends IntList {
   def fold(f: (Int, Int) => Int, empty: Int) =
     empty
   def double: IntList =
-    Empty
+    End
   def product: Int =
     fold(_ * _, 1)
   def sum: Int =
@@ -17,11 +17,11 @@ final case object Empty extends IntList {
   def length: Int =
     fold((hd, tl) => 1 + tl, 0)
 }
-final case class Cell(head: Int, tail: IntList) extends IntList {
+final case class Pair(head: Int, tail: IntList) extends IntList {
   def fold(f: (Int, Int) => Int, empty: Int) =
     f(head, tail.fold(f, empty))
   def double: IntList =
-    Cell(head * 2, tail.double)
+    Pair(head * 2, tail.double)
   def product: Int =
     fold(_ * _, 1)
   def sum: Int =
@@ -30,13 +30,13 @@ final case class Cell(head: Int, tail: IntList) extends IntList {
     fold((hd, tl) => 1 + tl, 0)
 }
 
-Cell(1, Cell(2, Cell(3, Empty)))
+Pair(1, Pair(2, Pair(3, End)))
 
 object TreeOps {
   def fold(list: IntList, f: (Int, Int) => Int, empty: Int): Int =
     list match {
-      case Empty => empty
-      case Cell(hd, tl) => f(hd, fold(tl, f, empty))
+      case End => empty
+      case Pair(hd, tl) => f(hd, fold(tl, f, empty))
     }
 
   def sum(list: IntList): Int =
@@ -50,27 +50,27 @@ object TreeOps {
 
   def double(list: IntList): IntList =
     list match {
-      case Empty => Empty
-      case Cell(hd, tl) => Cell(hd * 2, double(tl))
+      case End => End
+      case Pair(hd, tl) => Pair(hd * 2, double(tl))
     }
 }
 
-val example = Cell(1, Cell(2, Cell(3, Empty)))
-assert(Empty.sum == 0)
+val example = Pair(1, Pair(2, Pair(3, End)))
+assert(End.sum == 0)
 assert(example.sum == 6)
 assert(example.tail.sum == 5)
-assert(TreeOps.sum(Empty) == 0)
+assert(TreeOps.sum(End) == 0)
 assert(TreeOps.sum(example.tail) == 5)
-assert(TreeOps.sum(Empty) == 0)
+assert(TreeOps.sum(End) == 0)
 
-assert(Empty.double == Empty)
-assert(TreeOps.double(Empty) == Empty)
+assert(End.double == End)
+assert(TreeOps.double(End) == End)
 
-assert(Cell(1, Empty).double == Cell(2, Empty))
-assert(TreeOps.double(Cell(1, Empty)) == Cell(2, Empty))
+assert(Pair(1, End).double == Pair(2, End))
+assert(TreeOps.double(Pair(1, End)) == Pair(2, End))
 
-assert(Cell(2, Cell(1, Empty)).double == Cell(4, Cell(2, Empty)))
-assert(TreeOps.double(Cell(2, Cell(1, Empty))) == Cell(4, Cell(2, Empty)))
+assert(Pair(2, Pair(1, End)).double == Pair(4, Pair(2, End)))
+assert(TreeOps.double(Pair(2, Pair(1, End))) == Pair(4, Pair(2, End)))
 
 object GenericFold {
   sealed trait IntList {
@@ -80,11 +80,11 @@ object GenericFold {
     def sum: Int
     def length: Int
   }
-  final case object Empty extends IntList {
+  final case object End extends IntList {
     def fold[A](f: (Int, A) => A, empty: A): A =
       empty
     def double: IntList =
-      fold[IntList](((hd, tl) => Cell(hd * 2, tl)), Empty)
+      fold[IntList](((hd, tl) => Pair(hd * 2, tl)), End)
     def product: Int =
       fold[Int](_ * _, 1)
     def sum: Int =
@@ -92,11 +92,11 @@ object GenericFold {
     def length: Int =
       fold[Int]((hd, tl) => 1 + tl, 0)
   }
-  final case class Cell(head: Int, tail: IntList) extends IntList {
+  final case class Pair(head: Int, tail: IntList) extends IntList {
     def fold[A](f: (Int, A) => A, empty: A): A =
       f(head, tail.fold(f, empty))
     def double: IntList =
-      fold[IntList](((hd, tl) => Cell(hd * 2, tl)), Empty)
+      fold[IntList](((hd, tl) => Pair(hd * 2, tl)), End)
     def product: Int =
       fold[Int](_ * _, 1)
     def sum: Int =
@@ -107,10 +107,10 @@ object GenericFold {
 
   def fold[A](list: IntList, f: (Int, A) => A, empty: A): A =
     list match {
-      case Empty => empty
-      case Cell(hd, tl) => f(hd, fold(tl, f, empty))
+      case End => empty
+      case Pair(hd, tl) => f(hd, fold(tl, f, empty))
     }
 
   def double(list: IntList): IntList =
-    fold[IntList](list, (hd, tl) => Cell(hd * 2, tl), Empty)
+    fold[IntList](list, (hd, tl) => Pair(hd * 2, tl), End)
 }
