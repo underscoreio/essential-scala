@@ -20,7 +20,7 @@ In order to get started with Core Scala, you will need to have the following sof
 To start with, clone our template SBT project from Github:
 
 ~~~ scala
-bash:~$ git clone git://github.com/underscoreconsulting/core-scala-template.git myproject
+bash:~$ git clone git://github.com/underscoreconsulting/essential-scala-template.git myproject
 Cloning into myproject...
 
 bash:~$ cd myproject
@@ -41,7 +41,7 @@ Using /Users/me/.sbt/0.11.3 as sbt dir, -sbt-dir to override.
  # .... Lots of "Resolving" lines ....
 
 [info] Done updating.
-[info] Set current project to core-scala (in build file:/Users/me/myproject/)
+[info] Set current project to essential-scala (in build file:/Users/me/myproject/)
 [info] Updating {file:/Users/me/myproject/}default-2c3445...
 [info] Resolving org.scala-lang#scala-library;2.9.2 ...
 [info] Done updating.
