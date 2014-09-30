@@ -247,7 +247,7 @@ final case class Cell(head: Int, tail: IntList) extends IntList {
 ~~~
 </div>
 
-Using both polymorphism and pattern matching, define a method to double the value of element in an `IntList`, returning a new `IntList`. The following test cases should hold:
+Using both polymorphism and pattern matching, define a method to double the value of each element in an `IntList`, returning a new `IntList`. The following test cases should hold:
 
 ~~~ scala
 assert(Empty.double == Empty)
