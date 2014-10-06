@@ -196,9 +196,19 @@ final case class Cat(favouriteFood: String) extends Feline {
 }
 ~~~
 
-Now using pattern matching:
+Now using pattern matching. We actually have two choices when using pattern matching. We can implement our code in a single method on `Feline` or we can implement it in a method on another object. Let's see both.
 
 ~~~ scala
+sealed trait Feline {
+  def dinner: Food =
+    this match {
+      case Lion() => Antelope
+      case Tiger() => TigerFood
+      case Panther() => Licorice
+      case Cat(favouriteFood) => CatFood(favouriteFood)
+    }
+}
+
 object Diner {
   def dinner(feline: Feline): Food =
     feline match {
@@ -214,10 +224,15 @@ Note how we can directly apply the patterns, and the code almost falls out. This
 
 ## Choosing Which Pattern to Use
 
-We have two patterns for implementing structural recursion. Which should we use?
-The meaning of the two methods (polymorphism and pattern matching) is slightly different. When we implement a method using polymorphism, we implement it on the classes of interest (though our methods can also take other parameters). This means we can have one implementation of the method, and everything that method requires to work must be contained within the class and parameters we pass to the method. When we implement methods using pattern matching we can provide multiple implementations (multiple `Diner`s in the example above).
+We have three way of implementing structural recursion:
 
-The general rule is: if a method only depends on other fields and methods in a class it is a good candidate to use polymorphism. If the method depends on other data (for example, if we needed a `Cook` to make dinner) consider implementing is using pattern matching outside of the classes in question. If we want to have more than one implementation we should use pattern matching and implement it outside the classes.
+1. polymorphism;
+2. pattern matching in the base trait; and
+3. pattern matching in an external object (as in the `Diner` example above).
+
+Which should we use? The first two methods give the same result: a method defined on the classes of interest. We should use whichever is more convenient. This normally ends up being pattern matching on the base trait as it requires less code duplication. When we implement a method in the classes of interest everything we can have only one implementation of the method, and everything that method requires to work must be contained within the class and parameters we pass to the method. When we implement methods using pattern matching in an external object we can provide multiple implementations (multiple `Diner`s in the example above).
+
+The general rule is: if a method only depends on other fields and methods in a class it is a good candidate to be implemented inside the class. If the method depends on other data (for example, if we needed a `Cook` to make dinner) consider implementing is using pattern matching outside of the classes in question. If we want to have more than one implementation we should use pattern matching and implement it outside the classes.
 
 ## Object-Oriented vs Functional Extensibility
 
@@ -246,7 +261,7 @@ final case object Green extends TrafficLight
 final case object Yellow extends TrafficLight
 ~~~
 
-Using polymorphism and then using pattern matching implement a method called `next` which returns the next `TrafficLight` in the standard `Red` -> `Green` -> `Yellow` -> `Red` cycle. Which do you think is better for this application?
+Using polymorphism and then using pattern matching implement a method called `next` which returns the next `TrafficLight` in the standard `Red` -> `Green` -> `Yellow` -> `Red` cycle. Do you think it is better to implement this method inside or outside the class? If inside, would you use pattern matching or polymorphism? Why?
 
 <div class="solution">
 First with polymorphism:
@@ -285,7 +300,9 @@ final case object Green extends TrafficLight
 final case object Yellow extends TrafficLight
 ~~~
 
-In this case I think polymorphism is best, as `next` doesn't depend on any external data and we probably only one one implementation of it. Notice how I defined my pattern matching implementation on `TrafficLight`. This achieves the same thing as polymorphism (subtypes have a method `next`) while using pattern matching for the actual implementation. It's a neat implementation method that is something advantegeous to use.
+In this case I think implementing inside the class using pattern matching is best. `Next` doesn't depend on any external data and we probably only want one implementation of it. Pattern matching makes the structure of the state machine clearer than polymorphism.
+
+Ultimately there are no hard-and-fast rules, and we must consider our design decisions in the context of the larger program we are writing.
 </div>
 
 #### Calculation

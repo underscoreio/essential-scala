@@ -5,7 +5,7 @@ title: Sequencing Computations
 
 In this section we're going to look at two more language features, **generics** and **functions**, and see some abstractions we can build using these features: **functors**, and **monads**.
 
-Our starting point is code that we developed in the previous section. We developed `IntList`, a list of integers, and wrote like the following:
+Our starting point is code that we developed in the previous section. We developed `IntList`, a list of integers, and wrote code like the following:
 
 ~~~ scala
 sealed trait IntList {
