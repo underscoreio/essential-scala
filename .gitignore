@@ -15,4 +15,5 @@ Thumbs.db
 /node_modules/
 
 essential-scala.sublime-workspace
-
+core-scala.sublime-workspace
+essential-scala

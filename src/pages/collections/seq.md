@@ -245,7 +245,7 @@ scala> apply(1, 2, 3)
 res3: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
 ~~~
 
-We can write import statements anywhere in our code -- impoted identifiers are scoped lexically to the block where we use them:
+We can write import statements anywhere in our code -- imported identifiers are scoped lexically to the block where we use them:
 
 ~~~ scala
 // `empty` is unbound here
@@ -301,7 +301,7 @@ We can always use `Seq` and `List` in our code. Other collections can be brought
 
 ### Documentation
 
-Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the follo
+Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the following:
 
  - There is a synonym of `length` defined on `Seq` -- what is it called?
 
