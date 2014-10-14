@@ -16,6 +16,8 @@ res0: Seq[Int] = List(1, 2)
 
 The code is converted to a `withFilter` call, or if that doesn't exist to `filter`.
 
+Note that, unlike the normal `if` expression, an `if` clause in a generator does not have parentheses around the condition. So we write `if x > 0` not `if(x > 0)` in a for comprehension.
+
 ## Parallel Iteration
 
 Another common problem is to iterate over two or more collections in parallel. For example, say we have the sequences `Seq(1, 2, 3)` and `Seq(4, 5, 6)` and we want to add together elements with the same index yielding `Seq(5, 7 , 9)`. If we write
