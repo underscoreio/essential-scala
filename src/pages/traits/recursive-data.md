@@ -195,92 +195,71 @@ final case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 
-define a method `length` that returns the length of the list using pattern matching.
+define a method `length` that returns the length of the list. There is test data below you can use to check your solution. For this exercise it is best to use pattern matching in the base trait.
 
-<div class="solution">
 ~~~ scala
-def length(list: IntList): Int =
-  list match {
-    case End => 0
-    case Pair(hd, tl) => 1 + length(tl)
-  }
-~~~
-</div>
+val example = Pair(1, Pair(2, Pair(3, End)))
 
-Now define `length` using polymorphism.
+assert(example.length == 3)
+assert(example.tail.length == 2)
+assert(End.length == 0)
+~~~
 
 <div class="solution">
 ~~~ scala
 sealed trait IntList {
-  def length: Int
-}
-final case object End extends IntList {
   def length: Int =
-    0
+    this match {
+      case End => 0
+      case Pair(hd, tl) => 1 + tl.length
+    }
 }
-final case class Pair(head: Int, tail: IntList) extends IntList {
-  def length: Int =
-    1 + tail.length
-}
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntLIst) extends IntList
 ~~~
 </div>
 
-Using polymorphism and pattern matching, define a method to compute the product of the elements in an `IntList`.
+Define a method to compute the product of the elements in an `IntList`. Test cases are below.
+
+~~~ scala
+assert(example.product == 6)
+assert(example.tail.product == 6)
+assert(End.product == 1)
+~~~
 
 <div class="solution">
 ~~~ scala
-def product(list: IntList): Int =
-  list match {
-    case End => 1
-    case Pair(hd, tl) => hd * product(tl)
-  }
-
 sealed trait IntList {
-  def product: Int
-}
-final case object End extends IntList {
   def product: Int =
-    1
+    this match {
+      case End => 1
+      case Pair(hd, tl) => hd * tl.product
+    }
 }
-final case class Pair(head: Int, tail: IntList) extends IntList {
-  def product: Int =
-    head * tail.product
-}
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 </div>
 
-Using both polymorphism and pattern matching, define a method to double the value of each element in an `IntList`, returning a new `IntList`. The following test cases should hold:
+Define a method to double the value of each element in an `IntList`, returning a new `IntList`. The following test cases should hold:
 
 ~~~ scala
+assert(example.double == Pair(2, Pair(4, Pair(6, End))))
+assert(example.tail.double == Pair(4, Pair(6, End)))
 assert(End.double == End)
-assert(double(End) == End)
-
-assert(Pair(1, End).double == Pair(2, End))
-assert(double(Pair(1, End)) == Pair(2, End))
-
-assert(Pair(2, Pair(1, End)).double == Pair(4, Pair(2, End)))
-assert(double(Pair(2, Pair(1, End))) == Pair(4, Pair(2, End)))
 ~~~
 
 <div class="solution">
 ~~~ scala
-def double(list: IntList): IntList =
-  list match {
-    case End => End
-    case Pair(hd, tl) => Pair(hd * 2, double(tl))
-  }
-
 sealed trait IntList {
-  def double: IntList
-}
-final case object End extends IntList {
   def double: IntList =
-    End
+    this match {
+      case End => End
+      case Pair(hd, tl) => Pair(hd * 2, tl.double)
+    }
 }
-final case class Pair(head: Int, tail: IntList) extends IntList {
-  def double: IntList =
-    Pair(head * 2, tail.double)
-}
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 </div>
 
