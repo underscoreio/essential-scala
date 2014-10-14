@@ -83,11 +83,7 @@ def sum(list: IntList): Int =
   }
 ~~~
 
-<<<<<<< HEAD
 Finally we have to decide on the bodies of our cases. We have already decided that `0` is answer for `End`. For `Pair` we have two bits of information to guide us. We know we need to return an `Int` and we know that we need to make a recursive call on `tl`. Let's fill in what we have.
-=======
-Finally we have to decide on the bodies of our cases. We have already decided that `0` is the answer for `Empty`. For `Cell` we have two bits of information to guide us. We know we need to return an `Int` and we know that we need to make a recursive call on `tl`. Let's fill in what we have.
->>>>>>> refs/remotes/origin/corrections
 
 ~~~ scala
 def sum(list: IntList): Int =
