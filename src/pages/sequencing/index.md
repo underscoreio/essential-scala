@@ -9,26 +9,29 @@ Our starting point is code that we developed in the previous section. We develop
 
 ~~~ scala
 sealed trait IntList {
-  def double: IntList
-  def product: Int
-  def sum: Int
-}
-final case object End extends IntList {
+  def length: Int =
+    this match {
+      case End => 0
+      case Pair(hd, tl) => 1 + tl.length
+    }
   def double: IntList =
-    End
+    this match {
+      case End => End
+      case Pair(hd, tl) => Pair(hd * 2, tl.double)
+    }
   def product: Int =
-    1
+    this match {
+      case End => 1
+      case Pair(hd, tl) => hd * tl.product
+    }
   def sum: Int =
-    0
+    this match {
+      case End => 0
+      case Pair(hd, tl) => hd + tl.sum
+    }
 }
-final case class Pair(head: Int, tail: IntList) extends IntList {
-  def double: IntList =
-    Pair(head * 2, tail.double)
-  def product: Int =
-    head * tail.product
-  def sum: Int =
-    head + tail.sum
-}
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 
 There are two problems with this code. The first is that our list is restricted to storing `Int`s. The second problem is that here is a lot of repetition. The code has the same general structure, which is unsurprising given we're using our structural recursion pattern, and it would be nice to reduce the amount of duplication.

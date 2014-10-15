@@ -60,49 +60,6 @@ def name[A](...){ ... }
 ~~~
 </div>
 
-## Arrays
-
-*Arrays* are perhaps the best known compound data type. They represent fixed-length sequences of elements of the same type.
-
-Scala has a built-in `Array` type that has the same underlying representation as a Java array. `Array` takes a single type parameter that determines its element type, for example `Array[Int]` or `Array[String]`.
-
-The code below shows how to create an array, determine its length, and retrieve elements by index using its `apply` method. Notice how the return type of `apply` matches the type parameter on the array -- we always get out the type we put in:
-
-~~~ scala
-scala> val array = Array(1, 2, 3, 4 ,5)
-array: Array[Int] = Array(1, 2, 3, 4, 5)
-
-scala> array.length
-res0: Int = 5
-
-scala> array(2)
-res1: Int = 3
-
-scala> val array2 = Array("a", "b", "c")
-array2: Array[String] = Array(a, b, c)
-
-scala> array2(1)
-res2: String = b
-~~~
-
-All of the items in an array must be of the same type. If we try to mix types in the constructor, Scala infers the overall type of the array as the *least common supertype* of the arguments. For example:
-
-~~~ scala
-scala> val array3 = Array(1, true, 3.0)
-array3: Array[AnyVal] = Array(1, true, 3.0)
-
-scala> array3(2)
-res3: AnyVal = 3.0
-
-scala> val array4 = Array(123, "abc")
-array4: Array[Any] = Array(123, abc)
-
-scala> array4(1)
-res4: Any = abc
-~~~
-
-Again, the type of the elements retrieved from the array matches the type parameter on the array. `AnyVal` and `Any` aren't particularly useful types -- if we were using this code in a real application, we may have to use pattern matching to identify the type of data retrieved and we would lose type-safety.
-
 ## Generic Algebraic Data Types
 
 We described type parameters as analogous to method parameters, and this analogy continues when extending a trait that has type parameters. Extending a trait, as we do in a sum type, is the type level equivalent of calling a method and we must supply values for an type parameters of the trait we're extending.
@@ -167,58 +124,59 @@ final case class End[A]() extends LinkedList[A]
 
 #### Working With Generic Types
 
-There isn't much we can do with our `LinkedList` type. Remember that types define the available operations, and with a generic type like `A` there isn't a concrete type that defines any available operations. (Remember generic types are made concrete when a class is instantiated, which is too late to make use of the information.)
+There isn't much we can do with our `LinkedList` type. Remember that types define the available operations, and with a generic type like `A` there isn't a concrete type to define any available operations. (Remember generic types are made concrete when a class is instantiated, which is too late to make use of the information.)
 
-However, we can still do some useful things with our `LinkedList`! Implement `length`, returning the length of the `LinkedList`.
+However, we can still do some useful things with our `LinkedList`! Implement `length`, returning the length of the `LinkedList`. Some test cases are below.
+
+~~~ scala
+val example = Pair(1, Pair(2, Pair(3, End())))
+assert(example.length == 3)
+assert(example.tail.length == 2)
+assert(End().length == 0)
+~~~
 
 <div class="solution">
 This code is largely unchanged from the implementation of `length` on `IntList`.
 
 ~~~ scala
 sealed trait LinkedList[A] {
-  def length: Int
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
   def length: Int =
-    1 + tail.length
+    this match {
+      case Pair(hd, tl) => 1 + tl.length
+      case End() => 0
+    }
 }
-final case class End[A]() extends LinkedList[A] {
-  def length: Int =
-    0
-}
-
-val example = Pair(1, Pair(2, Pair(3, End())))
-assert(example.length == 3)
-assert(example.tail.length == 2)
-assert(End().length == 0)
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
 ~~~
 </div>
 
-On the JVM we can compare all values for equality. Implement a method `contains` that determines whether or not a given item is in the list.
+On the JVM we can compare all values for equality. Implement a method `contains` that determines whether or not a given item is in the list. Expected behaviour is below.
+
+~~~ scala
+assert(example.contains(3) == true)
+assert(example.contains(4) == false)
+assert(example.contains(5) == false)
+assert(End().contains(0) == false)
+~~~
 
 <div class="solution">
-This is another example of the standard structural recursion pattern. The important point is we take a parameter of type `A`.
+This is another example of the standard structural recursion pattern. The important point is `contains` takes a parameter of type `A`.
 
 ~~~ scala
 sealed trait LinkedList[A] {
-  def contains(item: A): Boolean
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
   def contains(item: A): Boolean =
-    if(head == item)
-      true
-    else
-      tail.contains(item)
+    this match {
+      case Pair(hd, tl) =>
+        if(hd == item)
+          true
+        else
+          tl.contains(item)
+      case End() => false
+    }
 }
-final case class End[A]() extends LinkedList[A] {
-  def contains(item: A): Boolean =
-    false
-}
-
-val example = Pair(1, Pair(2, Pair(3, End())))
-assert(example.contains(3) == true)
-assert(example.contains(4) == false)
-assert(End().contains(0) == false)
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
 ~~~
 </div>
 
@@ -230,30 +188,9 @@ Implement a method `apply` that returns the <em>n<sup>th</sup></em> item in the 
 throw new Exception("Bad things happened")
 ~~~
 
-<div class="solution">
-There are a few interesting things in this exercise. Possibly the easiest part is the use of the generic type as the return type of the `apply` method.
-
-Next up is the `End` case, which the hint suggested you through an `Exception` for. Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
-
-Finally we get to the actual structural recursion, which is perhaps the trickiest part. The key insight is that if the index is zero, we're selecting the current element, otherwise we subtract one from the index and recurse. We can recursively define the integers in terms of addition by one. For example, 3 = 2 + 1 = 1 + 1 + 1. Here we are performing structural recursion on the list *and* on the integers.
+Here are some test cases:
 
 ~~~ scala
-sealed trait LinkedList[A] {
-  def apply(index: Int): A
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
-  def apply(index: Int): A =
-    if(index == 0)
-      head
-    else
-      tail(index - 1)
-}
-final case class End[A]() extends LinkedList[A] {
-  def apply(index: Int): A =
-    throw new Exception("Attempted to get element from empty list")
-}
-
-val example = Pair(1, Pair(2, Pair(3, End())))
 assert(example(0) == 1)
 assert(example(1) == 2)
 assert(example(2) == 3)
@@ -263,6 +200,30 @@ assert(try {
 } catch {
   case e: Exception => true
 })
+~~~
+
+<div class="solution">
+There are a few interesting things in this exercise. Possibly the easiest part is the use of the generic type as the return type of the `apply` method.
+
+Next up is the `End` case, which the hint suggested you through an `Exception` for. Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
+
+Finally we get to the actual structural recursion, which is perhaps the trickiest part. The key insight is that if the index is zero, we're selecting the current element, otherwise we subtract one from the index and recurse. We can recursively define the integers in terms of addition by one. For example, 3 = 2 + 1 = 1 + 1 + 1. Here we are performing structural recursion on the list *and* on the integers.
+
+~~~ scala
+sealed trait LinkedList[A] {
+  def apply(index: Int): A =
+    this match {
+      case Pair(hd, tl) =>
+        if(index == 0)
+          hd
+        else
+          tl(index - 1)
+      case End() =>
+        throw new Exception("Attempted to get element from an Empty list")
+    }
+}
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
 ~~~
 </div>
 
@@ -277,7 +238,6 @@ case class Failure[A](reason: String) extends Result[A]
 Change `apply` so it returns a `Result`, with a failure case indicating what went wrong. Here are some test cases to help you:
 
 ~~~ scala
-val example = Pair(1, Pair(2, Pair(3, End())))
 assert(example(0) == Success(1))
 assert(example(1) == Success(2))
 assert(example(2) == Success(3))
@@ -291,18 +251,18 @@ case class Success[A](result: A) extends Result[A]
 case class Failure[A](reason: String) extends Result[A]
 
 sealed trait LinkedList[A] {
-  def apply(index: Int): Result[A]
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
   def apply(index: Int): Result[A] =
-    if(index == 0)
-      Success(head)
-    else
-      tail(index - 1)
+    this match {
+      case Pair(hd, tl) =>
+        if(index == 0)
+          Success(hd)
+        else
+          tl(index - 1)
+      case End() =>
+        Failure("Index out of bounds")
+    }
 }
-final case class End[A]() extends LinkedList[A] {
-  def apply(index: Int): Result[A] =
-    Failure("Index out of bounds")
-}
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
 ~~~
 </div>
