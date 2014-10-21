@@ -151,7 +151,6 @@ final case class End[A]() extends LinkedList[A]
 ~~~
 </div>
 
-<<<<<<< HEAD
 On the JVM we can compare all values for equality. Implement a method `contains` that determines whether or not a given item is in the list. Ensure your code works with the following test cases:
 
 ~~~ scala
@@ -159,15 +158,6 @@ val example = Pair(1, Pair(2, Pair(3, Empty())))
 assert(example.contains(3) == true)
 assert(example.contains(4) == false)
 assert(Empty().contains(0) == false)
-=======
-On the JVM we can compare all values for equality. Implement a method `contains` that determines whether or not a given item is in the list. Expected behaviour is below.
-
-~~~ scala
-assert(example.contains(3) == true)
-assert(example.contains(4) == false)
-assert(example.contains(5) == false)
-assert(End().contains(0) == false)
->>>>>>> 66cf1aff491d7fe20ee7635b6548b00706d80ca0
 ~~~
 
 <div class="solution">
@@ -185,11 +175,9 @@ sealed trait LinkedList[A] {
       case End() => false
     }
 }
-<<<<<<< HEAD
-=======
+
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
 final case class End[A]() extends LinkedList[A]
->>>>>>> 66cf1aff491d7fe20ee7635b6548b00706d80ca0
 ~~~
 </div>
 
@@ -201,7 +189,6 @@ Implement a method `apply` that returns the <em>n<sup>th</sup></em> item in the 
 throw new Exception("Bad things happened")
 ~~~
 
-<<<<<<< HEAD
 Ensure your solution works with the following test cases:
 
 ~~~ scala
@@ -239,20 +226,6 @@ final case class Empty[A]() extends LinkedList[A] {
   def apply(index: Int): A =
     throw new Exception("Attempted to get element from empty list")
 }
-=======
-Here are some test cases:
-
-~~~ scala
-assert(example(0) == 1)
-assert(example(1) == 2)
-assert(example(2) == 3)
-assert(try {
-  example(3)
-  false
-} catch {
-  case e: Exception => true
-})
->>>>>>> 66cf1aff491d7fe20ee7635b6548b00706d80ca0
 ~~~
 
 <div class="solution">
