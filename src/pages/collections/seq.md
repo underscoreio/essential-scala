@@ -245,7 +245,7 @@ scala> apply(1, 2, 3)
 res3: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
 ~~~
 
-We can write import statements anywhere in our code -- impoted identifiers are scoped lexically to the block where we use them:
+We can write import statements anywhere in our code -- imported identifiers are scoped lexically to the block where we use them:
 
 ~~~ scala
 // `empty` is unbound here
@@ -301,7 +301,7 @@ We can always use `Seq` and `List` in our code. Other collections can be brought
 
 ### Documentation
 
-Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the follo
+Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the following:
 
  - There is a synonym of `length` defined on `Seq` -- what is it called?
 
@@ -460,7 +460,7 @@ Using this sample code, write implementations of the following methods:
    `filter` and `contains` to calculate the intersection of the results:
 
    ~~~ scala
-   def (year: Int, numberOfFilms: Int): Seq[Director] = {
+   def directorBornBeforeWithBackCatalogOfSize(year: Int, numberOfFilms: Int): Seq[Director] = {
      val byAge   = directors.filter(_.yearOfBirth < year)
      val byFilms = directors.filter(_.films.length > numberOfFilms)
      byAge.filter(byFilms.contains)
@@ -468,7 +468,7 @@ Using this sample code, write implementations of the following methods:
    ~~~
    </div>
 
- - Accept an optional parameter `ascending` of type `Boolean`. Sort the directors by age
+ - Accept a parameter `ascending` of type `Boolean` that defaults to `true`. Sort the directors by age
    in the specified order:
 
    <div class="solution">
@@ -477,16 +477,16 @@ Using this sample code, write implementations of the following methods:
    ~~~ scala
    def directorsSortedByAge(ascending: Boolean = true) =
      if(ascending) {
-       directors.sortedWith((a, b) => a.yearOfBirth < b.yearOfBirth)
+       directors.sortWith((a, b) => a.yearOfBirth < b.yearOfBirth)
      } else {
-       directors.sortedWith((a, b) => a.yearOfBirth > b.yearOfBirth)
+       directors.sortWith((a, b) => a.yearOfBirth > b.yearOfBirth)
      }
    ~~~
 
    Because Scala is a functional language, we can also factor our code as follows:
 
    ~~~ scala
-   def directorsSortedByAge(ascending: Boolean = true) =
+   def directorsSortedByAge(ascending: Boolean = true) = {
      val comparator =
        if(ascending) {
          (a, b) => a.yearOfBirth < b.yearOfBirth
@@ -494,7 +494,7 @@ Using this sample code, write implementations of the following methods:
          (a, b) => a.yearOfBirth > b.yearOfBirth
        }
 
-     directors.sortedWith(comparator)
+     directors.sortWith(comparator)
    }
    ~~~
 
@@ -503,7 +503,7 @@ Using this sample code, write implementations of the following methods:
 
    ~~~ scala
    def directorsSortedByAge(ascending: Boolean = true) =
-     directors.sortedWith { (a, b) =>
+     directors.sortWith { (a, b) =>
        if(ascending) {
          a.yearOfBirth < b.yearOfBirth
        } else {
@@ -512,7 +512,7 @@ Using this sample code, write implementations of the following methods:
      }
    ~~~
 
-   Note the use of braces instead of parentheses on the call to `sortedWith` in the
+   Note the use of braces instead of parentheses on the call to `sortWith` in the
    last example. We can use this syntax on any method call of one argument to give
    it a control-structure-like look and feel.
    </div>

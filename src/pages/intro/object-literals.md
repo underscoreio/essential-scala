@@ -5,7 +5,7 @@ title: Object Literals
 
 So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own choosing using **object literals**.
 
-When we write an object literal we use a **declaration**, which a different kind of program to an expression. A declaration does not evaluate to a value. Instead is gives a name to a value. This name can then be used to refer to the value in other code.
+When we write an object literal we use a **declaration**, which is a different kind of program to an expression. A declaration does not evaluate to a value. Instead is gives a name to a value. This name can then be used to refer to the value in other code.
 
 We can declare an empty object as follows:
 
@@ -291,7 +291,7 @@ object Quentin {
 
 ### Square dance!
 
-Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *and calls `square`* as part of its result calculation.
+Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *calling `square`* as part of its result calculation.
 
 <div class="solution">
 Here is the solution. `cube(x)` calls `square(x)` and multiplies its value by `x` one more time. The return type of each method is inferred by the compiler as `Double`.
@@ -402,6 +402,9 @@ The full sequence of evaluation is as follows:
              1. Stores the value `3` in `b`
     1. Calls `argh.c`, which...
        1. Prints `"c"`
+       1. Evaluates `a`
+         1. Prints `"a"`
+         1. Returns `1` - Which we discard
        1. Evaluates `b + "c"`, which...
           1. Retrieves the value `3` from `b`
           1. Retrieves the value `"c"`
@@ -419,7 +422,7 @@ The full sequence of evaluation is as follows:
        concatentation, and yielding `"3c31"`
 </div>
 
-### Greetings, humans
+### Greetings, human
 
 Define an object called `person` that contains fields called `firstName` and `lastName`. Define a second object called `alien` containing a method called `greet` that takes your person as a parameter and returns a greeting using their `firstName`.
 
@@ -440,7 +443,7 @@ object alien {
 alien.greet(person)
 ~~~
 
-Notice the type on tpe `h` parameter of `greet`: `person.type`. This is one of the *singleton types* we were referring to earlier - it is specific to the object `person`, which prevents us using `greet` on any other object. This is very different from a type such as `Int` that is shared by all Scala integers.
+Notice the type on the `p` parameter of `greet`: `person.type`. This is one of the *singleton types* we were referring to earlier - it is specific to the object `person`, which prevents us using `greet` on any other object. This is very different from a type such as `Int` that is shared by all Scala integers.
 
 This imposes a significant limitation on our ability to write programs in Scala. We can only write methods that work with built-in types or single objects of our own creation. In order to build useful programs we need the ability to *define our own types* and create multiple values of each. We can do this using `classes`, which we will cover in the next section.
 </div>

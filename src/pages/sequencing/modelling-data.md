@@ -286,7 +286,7 @@ We saw the covariant generic sum type pattern, which allows us to avoid unnecess
 Sum types and product types are general concepts that allow us to model almost any kind of data structure. We have seen two methods of writing these types -- traits and generics -- when should we consider using each?
 
 <div class="solution">
-Ultimately the decision is up to us. Different teams will adopt different programming styles. However, we examine look at the properties of each approach to inform our choices:
+Ultimately the decision is up to us. Different teams will adopt different programming styles. However, we look at the properties of each approach to inform our choices:
 
 Inheritance-based approaches -- traits and classes -- allow us to create permanent data structures with specific types and names. We can name every field and method and implement use-case-specific code in each class. Inheritance is therefore better suited to modelling significant aspects of our programs that are re-used in many areas of our codebase.
 

@@ -164,7 +164,7 @@ One solution to this exercise is presented below. Remember that a lot of the imp
     - Making the class a `case class` is optional (although highly recommended).
 
  - There should ideally be two methods in `Draw`:
-    - One method should accepti a `Color` as a parameter and one a `Shape`.
+    - One method should accept a `Color` as a parameter and one a `Shape`.
     - The method names are unimportant.
     - Each method should perform a `match` on the supplied value and provide
       enough `cases` to cover all possible subtypes.
@@ -182,7 +182,7 @@ sealed trait Color {
   def green: Double
   def blue: Double
 
-  // We decided to define a "light" colour  as one with
+  // We decided to define a "light" colour as one with
   // an average RGB of more than 0.5:
   def isLight = (red + green + blue) / 3.0 > 0.5
   def isDark = !isLight

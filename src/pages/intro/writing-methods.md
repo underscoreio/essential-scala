@@ -7,7 +7,7 @@ In the previous section we saw the syntax of methods. One of our main goals in t
 
 To make the advice concrete we'll use this exercise from the previous section as an example:
 
-Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *and calls `square`* as part of its result calculation.
+Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *calling `square`* as part of its result calculation.
 
 ## Identify the Input and Output
 
@@ -29,7 +29,7 @@ assert(square(-2.0) == 4.0)
 
 ## Write the Declaration
 
-With types and test cases ready we can no write the method declaration. We haven't developed the body yet so use `???`, another nifty Scala feature, in its place.
+With types and test cases ready we can now write the method declaration. We haven't developed the body yet so use `???`, another nifty Scala feature, in its place.
 
 ~~~ scala
 def square(in: Double): Double =
@@ -48,11 +48,11 @@ We're now ready to write the body of our method. We will develop a number of tec
 
 #### Consider the Result Type
 
-The first technique is to look at the result type, in this case `Double`. How can we create `Double` values? We could write a literal, but that obviously won't be correct in this case. The other way we know to create a `Double` is to call a method on some boject, which brings us to the next technique.
+The first technique is to look at the result type, in this case `Double`. How can we create `Double` values? We could write a literal, but that obviously won't be correct in this case. The other way we know to create a `Double` is to call a method on some object, which brings us to the next technique.
 
 #### Consider the Input Type
 
-Our next technique is to look at type of input parameters to the method. In this case we have a `Double`. We have established we need to create `Double`, so what methods can we call to create `Double` from out input. There are many such methods, and here we have to use our domain knowledge to select `*` as the correct method to call.
+Our next technique is to look at the type of input parameters to the method. In this case we have a `Double`. We have established we need to create `Double`, so what methods can we call to create `Double` from out input. There are many such methods, and here we have to use our domain knowledge to select `*` as the correct method to call.
 
 Thus we can write our complete method as
 

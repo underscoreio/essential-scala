@@ -14,17 +14,19 @@ object Calculator {
       case Failure(reason) => Failure(reason)
     }
   def /(calc: Calculation, operand: Int): Calculation =
-    operand match {
-      case 0 => Failure("Division by zero")
-      case _ => calc match {
-             case Success(result) => Success(result / operand)
-             case Failure(reason) => Failure(reason)
-           }
+    calc match {
+      case Success(result) =>
+        operand match {
+          case 0 => Failure("Division by zero")
+          case _ => Success(result / operand)
+        }
+      case Failure(reason) => Failure(reason)
     }
-}
+  }
 
 assert(Calculator./(Success(4), 2) == Success(2))
 assert(Calculator.+(Success(1), 1) == Success(2))
 assert(Calculator.-(Success(1), 1) == Success(0))
 assert(Calculator.+(Failure("Badness"), 1) == Failure("Badness"))
 assert(Calculator./(Success(4), 0) == Failure("Division by zero"))
+assert(Calculator./(Failure("Badness"), 0) == Failure("Badness"))

@@ -3,7 +3,7 @@ layout: page
 title: Classes
 ---
 
-A class is a template for creating objects that have similar methods and fields. Importantly, in Scala a class also defines a type. Objects created from a class all share the same type. This helps us overcome the problem we had in the *Greetings, Humans* exercise in the last section.
+A class is a template for creating objects that have similar methods and fields. Importantly, in Scala a class also defines a type. Objects created from a class all share the same type. This helps us overcome the problem we had in the *Greetings, Human* exercise in the last section.
 
 ## Defining a Class
 
@@ -101,8 +101,8 @@ scala> class Person(val firstName: String, val lastName: String) {
        }
 defined class Person
 
-scala> new Person("Dave", "Gurnell").name
-res29: String = Dave Gurnell
+scala> new Person("Dave", "Gurnell").firstName
+res29: String = Dave
 ~~~
 
 <div class="alert alert-info">

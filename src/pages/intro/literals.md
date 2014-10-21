@@ -3,7 +3,7 @@ layout: page
 title: Literal Objects
 ---
 
-We have already some of Scala's basic types. In these section we're going to round out that knowledge by covering all of Scala's **literal expressions**. A literal expression represents a fixed value that stands "for itself". Here's an example:
+We have already covered some of Scala's basic types. In these section we're going to round out that knowledge by covering all Scala's **literal expressions**. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
 ~~~ scala
 scala> 42
@@ -87,7 +87,7 @@ res13: Null = null
 ~~~
 
 <div class="java-tip">
-  **Java tip:** Although `nulls` are common in Java code, they are considered very bad practice in Scala.
+  **Java tip:** Although `null`s are common in Java code, they are considered very bad practice in Scala.
 
   The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
 

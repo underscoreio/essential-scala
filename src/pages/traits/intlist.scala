@@ -1,62 +1,42 @@
 sealed trait IntList {
-  def double: IntList
-  def product: Int
-  def sum: Int
-}
-final case object Empty extends IntList {
+  def length: Int =
+    this match {
+      case End => 0
+      case Pair(hd, tl) => 1 + tl.length
+    }
   def double: IntList =
-    Empty
+    this match {
+      case End => End
+      case Pair(hd, tl) => Pair(hd * 2, tl.double)
+    }
   def product: Int =
-    1
+    this match {
+      case End => 1
+      case Pair(hd, tl) => hd * tl.product
+    }
   def sum: Int =
-    0
+    this match {
+      case End => 0
+      case Pair(hd, tl) => hd + tl.sum
+    }
 }
-final case class Cell(head: Int, tail: IntList) extends IntList {
-  def double: IntList =
-    Cell(head * 2, tail.double)
-  def product: Int =
-    head * tail.product
-  def sum: Int =
-    head + tail.sum
-}
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 
-Cell(1, Cell(2, Cell(3, Empty)))
+val example = Pair(1, Pair(2, Pair(3, End)))
 
+assert(example.length == 3)
+assert(example.tail.length == 2)
+assert(End.length == 0)
 
-def sum(list: IntList): Int =
-  list match {
-    case Empty => 0
-    case Cell(hd, tl) => hd + sum(tl)
-  }
+assert(example.product == 6)
+assert(example.tail.product == 6)
+assert(End.product == 1)
 
-def length(list: IntList): Int =
-  list match {
-    case Empty => 0
-    case Cell(hd, tl) => 1 + length(tl)
-  }
+assert(example.sum == 6)
+assert(example.tail.sum == 5)
+assert(End.sum == 0)
 
-def product(list: IntList): Int =
-  list match {
-    case Empty => 1
-    case Cell(hd, tl) => hd * product(tl)
-  }
-
-def double(list: IntList): IntList =
-  list match {
-    case Empty => Empty
-    case Cell(hd, tl) => Cell(hd * 2, double(tl))
-  }
-
-val example = Cell(1, Cell(2, Cell(3, Empty)))
-assert(sum(example) == 6)
-assert(sum(example.tail) == 5)
-assert(sum(Empty) == 0)
-
-assert(Empty.double == Empty)
-assert(double(Empty) == Empty)
-
-assert(Cell(1, Empty).double == Cell(2, Empty))
-assert(double(Cell(1, Empty)) == Cell(2, Empty))
-
-assert(Cell(2, Cell(1, Empty)).double == Cell(4, Cell(2, Empty)))
-assert(double(Cell(2, Cell(1, Empty))) == Cell(4, Cell(2, Empty)))
+assert(example.double == Pair(2, Pair(4, Pair(6, End))))
+assert(example.tail.double == Pair(4, Pair(6, End)))
+assert(End.double == End)

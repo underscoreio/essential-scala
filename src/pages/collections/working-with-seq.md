@@ -174,15 +174,13 @@ The goals of this exercise are for you to learn your way around the collections 
 When you have answered these questions look at the type table above to find the correct method to use. Done in this way the actual programming should be straightforward.
 
 
-## Exercises
-
 ### Heroes of the Silver Screen
 
 These exercises re-use the example code from the *Directorial Debut* exercise from the previous section:
 
 #### Nolan Films
 
-List the names of the films directed by Christopher Nolan.
+Create a list containing the names of the films directed by Christopher Nolan.
 
 <div class="solution">
 ~~~ scala
@@ -192,7 +190,7 @@ nolan.films.map(_.name)
 
 #### Cinephile
 
-List the names of all films by all directors.
+Create a list containing the names of all films by all directors.
 
 <div class="solution">
 ~~~ scala
@@ -207,8 +205,18 @@ Find the date of the earliest McTiernan film.
 Tip: you can concisely find the minimum of two numbers `a` and `b` using `math.min(a, b)`.
 
 <div class="solution">
+There are a number of ways to do this. We can sort the list of films and then retrieve the smallest element.
+
 ~~~ scala
-mcTiernan.films.foldLeft(9999) { (current, film) =>
+McTiernan.fils.sortWith { (a, b) =>
+  a.yearOfRelease < b.yearOfRelease
+}.headOption
+~~~
+
+We can also do this by using a `fold`.
+
+~~~ scala
+mcTiernan.films.foldLeft(Int.MaxValue) { (current, film) =>
   math.min(current, film.yearOfRelease)
 }
 ~~~
@@ -220,9 +228,9 @@ Find all films sorted by descending IMDB rating:
 
 <div class="solution">
 ~~~ scala
-directors
-  .flatMap(director => director.films)
-  .sortWith((a, b) => a.imdbRating > b.imdbRating)
+directors.
+  flatMap(director => director.films).
+  sortWith((a, b) => a.imdbRating > b.imdbRating)
 ~~~
 </div>
 

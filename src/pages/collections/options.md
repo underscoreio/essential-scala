@@ -3,7 +3,7 @@ layout: page
 title: Options
 ---
 
-We have seen `Options` in passing a number of times already -- they represent values that may or may not be present in our code. Options are an alternative to using `null` that provide us with a means of chaining computations together without risking `NullPointerExceptions`. We have previously produced code in the spirit of `Option` with our `DivisionResult` and `Maybe` types in previous chapters.
+We have seen `Option`s in passing a number of times already -- they represent values that may or may not be present in our code. Options are an alternative to using `null` that provide us with a means of chaining computations together without risking `NullPointerExceptions`. We have previously produced code in the spirit of `Option` with our `DivisionResult` and `Maybe` types in previous chapters.
 
 Let's look into Scala's built-in `Option` type in more detail.
 
@@ -251,7 +251,7 @@ We saw this code in the [Traits](/traits/) chapter when we wrote the `DivisionRe
 
 ~~~ scala
 def divide(numerator: Int, denominator: Int) =
-  if(denominator) None else Some(numerator / denominator)
+  if(denominator < 1) None else Some(numerator / denominator)
 ~~~
 </div>
 
