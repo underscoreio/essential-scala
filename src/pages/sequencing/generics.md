@@ -50,7 +50,7 @@ Generic types can be declared in a class or trait declaration in which case they
 
 ~~~ scala
 case class Name[A](...){ ... }
-trait TraitName[A](...){ ... }
+trait TraitName[A] { ... }
 ~~~
 
 Alternatively they may be declared in a method declaration, in which case they are only visible within the method.
@@ -194,7 +194,14 @@ assert(Empty().length == 0)
 ~~~
 </div>
 
-On the JVM we can compare all values for equality. Implement a method `contains` that determines whether or not a given item is in the list.
+On the JVM we can compare all values for equality. Implement a method `contains` that determines whether or not a given item is in the list. Ensure your code works with the following test cases:
+
+~~~ scala
+val example = Pair(1, Pair(2, Pair(3, Empty())))
+assert(example.contains(3) == true)
+assert(example.contains(4) == false)
+assert(Empty().contains(0) == false)
+~~~
 
 <div class="solution">
 This is another example of the standard structural recursion pattern. The important point is we take a parameter of type `A`.
@@ -214,11 +221,6 @@ final case class Empty[A]() extends LinkedList[A] {
   def contains(item: A): Boolean =
     false
 }
-
-val example = Pair(1, Pair(2, Pair(3, Empty())))
-assert(example.contains(3) == true)
-assert(example.contains(4) == false)
-assert(Empty().contains(0) == false)
 ~~~
 </div>
 
@@ -228,6 +230,21 @@ Implement a method `apply` that returns the <em>n<sup>th</sup></em> item in the 
 
 ~~~ scala
 throw new Exception("Bad things happened")
+~~~
+
+Ensure your solution works with the following test cases:
+
+~~~ scala
+val example = Pair(1, Pair(2, Pair(3, Empty())))
+assert(example(0) == 1)
+assert(example(1) == 2)
+assert(example(2) == 3)
+assert(try {
+  example(3)
+  false
+} catch {
+  case e: Exception => true
+})
 ~~~
 
 <div class="solution">
@@ -252,16 +269,5 @@ final case class Empty[A]() extends LinkedList[A] {
   def apply(index: Int): A =
     throw new Exception("Attempted to get element from empty list")
 }
-
-val example = Pair(1, Pair(2, Pair(3, Empty())))
-assert(example(0) == 1)
-assert(example(1) == 2)
-assert(example(2) == 3)
-assert(try {
-  example(3)
-  false
-} catch {
-  case e: Exception => true
-})
 ~~~
 </div>

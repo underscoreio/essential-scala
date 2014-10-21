@@ -283,7 +283,7 @@ When using `fold` in polymorphic implementations we have a lot of duplication; t
 In general `fold` makes a good interface for users *outside* the class, but not necessarily for use *inside* the class.
 </div>
 
-Why can't write `double` in terms of `fold`. Why not? Is it feasible we could if we made some change to `fold`?
+Why can't we write our `double` method in terms of `fold`. Why not? Is it feasible we could if we made some change to `fold`?
 
 <div class="solution">
 The types tell us it won't work. `fold` returns an `Int` and `double` returns an `IntList`. However the general structure of `double` is captured by `fold`. This is apparent if we look at them side-by-side:
