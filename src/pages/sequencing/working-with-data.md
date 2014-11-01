@@ -170,6 +170,42 @@ res2: Int = 3
 
 Multiple parameter lists have two relevant uses: they look nicer when defining functions inline and they assist with type inference.
 
+The former is the ability to write functions that look like code blocks. For example, if we define `fold` as
+
+~~~ scala
+def fold[B](end: B)(pair: (A, B) => B): B =
+  this match {
+    case End() => end
+    case Pair(hd, tl) => pair(hd, tl.fold(end, pair))
+  }
+~~~
+
+then we can call it as
+
+~~~ scala
+fold(0){ (total, elt) => total + elt }
+~~~
+
+which is a bit easier to read than
+
+~~~ scala
+fold(0, (total, elt) => total + elt)
+~~~
+
+More important is the use of multiple parameter lists to ease type inference. Scala's type inference algorithm cannot use a type inferred for one parameter for another parameter in the same list. For example, given `fold` with a signature like
+
+~~~ scala
+def fold[B](end: B, pair: (A, B) => B): B
+~~~
+
+if Scala infers `B` for `end` it cannot then use this inferred type for `pair`, so we must often write a type declaration on `pair`. However, Scala can use types inferred for one parameter list in another parameter *list*. So if we write `fold` as
+
+~~~ scala
+def fold[B](end: B)(pair: (A, B) => B): B
+~~~
+
+then inferring `B` from `end` (which is usually easy) allows `B` to be used when inferring the type `pair`. This means fewer type declarations and a smoother development process.
+
 ## Exercises
 
 #### Folding Maybe
