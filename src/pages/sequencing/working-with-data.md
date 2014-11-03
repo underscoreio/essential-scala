@@ -208,64 +208,6 @@ then inferring `B` from `end` (which is usually easy) allows `B` to be used when
 
 ## Exercises
 
-#### Folding Maybe
-
-In the last section we implemented a sum type for modelling optional data:
-
-~~~ scala
-sealed trait Maybe[+A]
-final case class Full[A](value: A) extends Maybe[A]
-final case object Empty extends Maybe[Nothing]
-~~~
-
-Implement fold for this type.
-
-<div class="solution">
-The code is very similar to the implementation for `LinkedList`. I choose polymorphism for my solution. I belive it's more idiomatic and it provides an example to contrast with the pattern matching solution for `LinkedList`.
-
-~~~ scala
-sealed trait Maybe[+A] {
-  def fold[B](full: A => B, empty: B): B
-}
-final case class Full[A](value: A) extends Maybe[A] {
-  def fold[B](full: A => B, empty: B): B =
-    full(value)
-}
-final case object Empty extends Maybe[Nothing] {
-  def fold[B](full: A => B, empty: B): B =
-    empty
-}
-~~~
-</div>
-
-#### Folding Sum
-
-In the previous section we implemented a generic sum type:
-
-~~~ scala
-sealed trait Sum[A, B]
-final case class Left[A, B](value: A) extends Sum[A, B]
-final case class Right[A, B](value: B) extends Sum[A, B]
-~~~
-
-Implement `fold` for `Sum`.
-
-<div class="solution">
-~~~ scala
-sealed trait Sum[A, B] {
-  def fold[C](left: A => C, right: B => C): C
-}
-final case class Left[A, B](value: A) extends Sum[A, B] {
-  def fold[C](left: A => C, right: B => C): C =
-    left(value)
-}
-final case class Right[A, B](value: B) extends Sum[A, B] {
-  def fold[C](left: A => C, right: B => C): C =
-    right(value)
-}
-~~~
-</div>
-
 
 #### Tree
 
@@ -276,7 +218,7 @@ A `Tree` of type `A` is a `Node` with a left and right `Tree` or a `Leaf` with a
 Implement this algebraic data type along with a fold method.
 
 <div class="solution">
-This is a tricker example than the previous two exercises as we have a recursive data type. Follow the patterns and you should be ok.
+This is another recursive data type just like list. Follow the patterns and you should be ok.
 
 ~~~ scala
 sealed trait Tree[A] {
@@ -302,7 +244,7 @@ val tree: Tree[String] =
             Node(Leaf("to"), Node(Leaf("recurse"), Leaf("divine")))))
 ~~~
 
-Remeber you can append `String`s using the `+` method.
+Remember you can append `String`s using the `+` method.
 
 <div class="solution">
 Note it is necessary to instantiate the generic type variable for `fold`. Type inference fails in this case.

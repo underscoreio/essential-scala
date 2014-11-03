@@ -3,11 +3,11 @@ layout: page
 title: Sequencing Computation
 ---
 
-We have now mastered generic data and folding over algebraic data types. For the final section of this chapter we will look as some other common patterns of computation that are 1) often more convenient to use than fold for algebraic data types and 2) can be implemented for certain types of data that do not support a fold. These methods are known as **map** and **flatMap**.
+We have now mastered generic data and folding over algebraic data types. Now we will look as some other common patterns of computation that are 1) often more convenient to use than fold for algebraic data types and 2) can be implemented for certain types of data that do not support a fold. These methods are known as **map** and **flatMap**.
 
 ## Map
 
-Imagine we have a list of `Int` user IDs, and a function to go from user ID to a `User` record. We want to get a list of user records for all the IDs in the list. Written as types we have `List[Int]` and a function `Int => User`, and we want to get a `List[User]`.
+Imagine we have a list of `Int` user IDs, and a function which, given a user ID, returns a `User` record. We want to get a list of user records for all the IDs in the list. Written as types we have `List[Int]` and a function `Int => User`, and we want to get a `List[User]`.
 
 Imagine we have an optional value representing a user record loaded from the database and a function that will load their most recent order. If we have a record we want to then lookup the user's most recent order. That is, we have a `Maybe[User]` and a function `User => Order`, and we want a `Maybe[Order]`.
 
@@ -18,17 +18,15 @@ What these all have in common is we have a type `F[A]` and a function `A => B`, 
 Let's implement `map` for `LinkedList`. We start by outlining the types:
 
 ~~~ scala
-sealed trait LinkedList[+A] {
-  def map[B](fn: A => B): LinkedList[B]
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
+sealed trait LinkedList[A] {
   def map[B](fn: A => B): LinkedList[B] =
-    ???
+    this match {
+      case Pair(hd, tl) => ???
+      case End() => ???
+    }
 }
-final case object Empty extends LinkedList[Nothing] {
-  def map[B](fn: A => B): LinkedList[B] =
-    ???
-}
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
 ~~~
 
 We know we can use the structural recursion pattern as we know that `fold` (which is just the structural recursion pattern abstracted) is the universal iterator for an algebraic data type. Thus:
@@ -36,7 +34,7 @@ We know we can use the structural recursion pattern as we know that `fold` (whic
 - For `Pair` we have to combine `head` and `tail` to return a `LinkedList[B]` (as the types tell us) and we also know we need to recurse on `tail`. We can write
 
   ~~~ scala
-  def map[B](fn: A => B): LinkedList[B] = {
+  case Pair(hd, tl) => {
     val newTail: LinkedList[B] = tail.map(fn)
     // Combine newTail and head to create LinkedList[B]
   }
@@ -45,29 +43,22 @@ We know we can use the structural recursion pattern as we know that `fold` (whic
   We can convert `head` to a `B` using `fn`, and then build a larger list from `newTail` and our `B` giving us the final solution
 
   ~~~ scala
-  def map[B](fn: A => B): LinkedList[B] =
-    Pair(fn(head), tail.map(fn))
+  case Pair(hd, tl) => Pair(fn(head), tail.map(fn))
   ~~~
 
-- For `Empty` we don't have any value of `A` to apply to the function. The only thing we can return is an `Empty`.
+- For `End` we don't have any value of `A` to apply to the function. The only thing we can return is an `End`.
 
 Therefore the complete solution is
 
 ~~~ scala
-sealed trait LinkedList[+A] {
-  def map[B](fn: A => B): LinkedList[B]
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
+sealed trait LinkedList[A] {
   def map[B](fn: A => B): LinkedList[B] =
-    Pair(fn(head), tail.map(fn))
-}
-final case object Empty extends LinkedList[Nothing] {
-  def map[B](fn: Nothing => B): LinkedList[B] =
-    Empty
+    this match {
+      case Pair(hd, tl) => Pair(fn(head), tail.map(fn))
+      case End() => End[B]()
+    }
 }
 ~~~
-
-The astute reader will note that for the `Empty` case I've changed the type of `fn` to `Nothing => B`. Using the covariant sum type pattern the `Empty` case doesn't have a generic type variable. We can get around the problem by giving `fn` type `Nothing => B` and, because functions are contravariant in their parameters, any function is acceptable as all types are supertypes of `Nothing`.
 
 
 ## FlatMap
@@ -78,38 +69,32 @@ Now imagine the following examples:
 
 - We have an optional value representing a user loaded from the database, and we want to lookup their most recent order -- another optional value. That is, we have `Maybe[User]` and `User => Maybe[Order]`, and we want `Maybe[Order]`.
 
+- We have a sum type holding an error message or an `Order`, and we want to email an invoice to the user. Emailing returns either an error message or a message ID. That is, we have `Sum[String, Order]` and a function `Order => Sum[String, Id]`, and we want `Sum[String, Id]`.
+
 What these all have in common is we have a type `F[A]` and a function `A => F[B]`, and we want a result `F[B]`. The method that performs this operation is called `flatMap`.
 
 Let's implement `flatMap` for `Maybe` (we need an append method to implement `flatMap` for `LinkedList`). We start by outlining the types:
 
 ~~~ scala
-sealed trait Maybe[+A] {
-  def flatMap[B](fn: A => Maybe[B]): Maybe[B]
+sealed trait Maybe[A] {
+  def flatMap[B](fn: A => Maybe[B]): Maybe[B] = ???
 }
-final case class Full[A](value: A) extends Maybe[A] {
-  def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-    ???
-}
-final case object Empty extends Maybe[Nothing] {
-  def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-    ???
-}
+final case class Full[A](value: A) extends Maybe[A]
+final case object Empty[A]() extends Maybe[A]
 ~~~
 
 We use the same pattern as before: it's a structural recursion and our types guide us in filling in the method bodies.
 
 ~~~ scala
-sealed trait Maybe[+A] {
-  def flatMap[B](fn: A => Maybe[B]): Maybe[B]
-}
-final case class Full[A](value: A) extends Maybe[A] {
+sealed trait Maybe[A] {
   def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-    fn(value)
+    this match {
+      case Full(v) => fn(v)
+      case Empty() => Empty[B]()
+    }
 }
-final case object Empty extends Maybe[Nothing] {
-  def flatMap[B](fn: Nothing => Maybe[B]): Maybe[B] =
-    Empty
-}
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
 ~~~
 
 ## Functors and Monads
@@ -191,22 +176,20 @@ Implement `map` for `Maybe`.
 
 <div class="solution">
 ~~~ scala
-sealed trait Maybe[+A] {
-  def flatMap[B](fn: A => Maybe[B]): Maybe[B]
-  def map[B](fn: A => B): Maybe[B]
-}
-final case class Full[A](value: A) extends Maybe[A] {
+sealed trait Maybe[A] {
   def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-    fn(value)
-  def map[B](fn: A => B): Maybe[B]
-    Full(fn(value))
-}
-final case object Empty extends Maybe[Nothing] {
-  def flatMap[B](fn: Nothing => Maybe[B]): Maybe[B] =
-    Empty
+    this match {
+      case Full(v) => fn(v)
+      case Empty() => Empty[B]()
+    }
   def map[B](fn: A => B): Maybe[B] =
-    Empty
+    this match {
+      case Full(v) => Full(fn(v))
+      case Empty() => Empty[B]()
+    }
 }
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
 ~~~
 </div>
 
@@ -214,19 +197,17 @@ For bonus points, implement `map` in terms of `flatMap`. Hint: you should just i
 
 <div class="solution">
 ~~~ scala
-sealed trait Maybe[+A] {
-  def flatMap[B](fn: A => Maybe[B]): Maybe[B]
-  def map[B](fn: A => B): Maybe[B] =
-    this.flatMap(a => Full(fn(a)))
-}
-final case class Full[A](value: A) extends Maybe[A] {
+sealed trait Maybe[A] {
   def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-    fn(value)
+    this match {
+      case Full(v) => fn(v)
+      case Empty() => Empty[B]()
+    }
+  def map[B](fn: A => B): Maybe[B] =
+    flatMap[B](v => Full(fn(v)))
 }
-final case object Empty extends Maybe[Nothing] {
-  def flatMap[B](fn: Nothing => Maybe[B]): Maybe[B] =
-    Empty
-}
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
 ~~~
 </div>
 

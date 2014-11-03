@@ -107,7 +107,7 @@ scala> (1, "a") match {
 res3: String = 1a
 ~~~
 
-Although pattern matching is the natural way to deconstruct a tuple, each class also has a compliment of fields named `_1`, `_2` and so on:
+Although pattern matching is the natural way to deconstruct a tuple, each class also has a complement of fields named `_1`, `_2` and so on:
 
 ~~~ scala
 scala> val x = (1, "b", true)
@@ -189,7 +189,15 @@ We generally want to write robust programs, and in Scala we try to utilise the t
 
 ### Exercise: Maybe that Was a Mistake
 
-Create a generic trait called `Maybe` of a generic type `A` with two subtypes, `Full` containing an `A`, and `Empty` containing no value.
+Create a generic trait called `Maybe` of a generic type `A` with two subtypes, `Full` containing an `A`, and `Empty` containing no value. Example usage:
+
+~~~ scala
+scala> val perhaps: Maybe[Int] = Empty[Int]
+perhaps: Maybe[Int] = Empty()
+
+scala> val perhaps: Maybe[Int] = Full(1)
+perhaps: Maybe[Int] = Full(1)
+~~~
 
 <div class="solution">
 We can apply our invariant generic sum type pattern and get
@@ -201,83 +209,9 @@ final case class Empty[A]() extends Maybe[A]
 ~~~
 </div>
 
-The invariant generic sum type pattern is a bit satisfying. Ideally we would like to write something like this:
-
-~~~ scala
-sealed trait Maybe[A]
-final case class Full[A](value: A) extends Maybe[A]
-final case object Empty extends Maybe[???]
-~~~
-
-However, objects can't have type parameters. In order to make `Empty` an object we need to provide a concrete type in the `extends Maybe` part of the definition. But what type parameter should we use? In the absence of a preference for a particular data type, we could use something like `Unit` or `Nothing`. However this leads to type errors:
-
-~~~ scala
-scala> :paste
-sealed trait Maybe[A]
-final case class Full[A](value: A) extends Maybe[A]
-final case object Empty extends Maybe[Nothing]
-^D
-
-defined trait Maybe
-defined class Full
-defined module Empty
-
-scala> val possible: Maybe[Int] = Empty
-<console>:9: error: type mismatch;
- found   : Empty.type
- required: Maybe[Int]
-       val possible: Maybe[Int] = Empty
-~~~
-
-The problem here is that `Empty` is a `Maybe[Nothing]` and a `Maybe[Nothing]` is not a `Maybe[Int]`. However, we now know how to overcome this problem: we can use a variance annotation, which we learned about in the last section. Covariance is the most natural variance in this case.
-
-In the Scala standard library, this abstraction is called `Option`, with cases `Some` and `None`.
-
-~~~ scala
-sealed trait Maybe[+A]
-final case class Full[A](value: A) extends Maybe[A]
-final case object Empty extends Maybe[Nothing]
-
-object division {
-  def apply(num: Int, den: Int) =
-    if(den == 0) Empty else Full(num / den)
-}
-~~~
-
-This pattern is the most commonly used one with generic sum types.
-
-<div class="callout callout-info">
-#### Covariant Generic Sum Type Pattern
-
-If `A` of type `T` is a `B` or `C`, and `C` is not generic, write
-
-~~~ scala
-sealed trait A[+T]
-final case class B[T](t: T) extends A[T]
-final case object C extends A[Nothing]
-~~~
-</div>
-
-## Type Bounds
-
-It is sometimes useful to constrain a generic type. We can do this with type bounds indicating that a generic type should be a sub- or super-type of some given types. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
-
-For example, the following type allows us to store a `Visitor` or any subtype:
-
-~~~ scala
-case class WebAnalytics[A <: Visitor](
-  visitor: A,
-  pageViews: Int,
-  searchTerms: List[String],
-  isOrganic: Boolean
-)
-~~~
-
 ## Take Home Points
 
 In this section we have used generics to model sum types, product types, and optional values using generics.
-
-We saw the covariant generic sum type pattern, which allows us to avoid unnecessary generic type parameters.
 
 ## Exercises
 
@@ -293,14 +227,56 @@ Inheritance-based approaches -- traits and classes -- allow us to create permane
 Generic data structures -- `Tuples`, `Options`, `Eithers`, and so on -- are extremely broad and general purpose. There are a wide range of predefined classes in the Scala standard library that we can use to quickly model relationships between data in our code. These classes are therefore better suited to quick, one-off pieces of data manipulation where defining our own types would introduce unnecessary verbosity to our codebase.
 </div>
 
-#### Covariance
+#### Folding Maybe
 
-Implement our `Sum` example using the covariant generic sum type pattern.
+In this section we implemented a sum type for modelling optional data:
+
+~~~ scala
+sealed trait Maybe[A]
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
+~~~
+
+Implement fold for this type.
+
+<div class="solution">
+The code is very similar to the implementation for `LinkedList`. I choose pattern matching in the base trait for my solution.
+
+~~~ scala
+sealed trait Maybe[A] {
+  def fold[B](full: A => B, empty: B): B =
+    this match {
+      case Full(v) => full(v)
+      case Empty() => empty
+    }
+}
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
+~~~
+</div>
+
+#### Folding Sum
+
+In this section we implemented a generic sum type:
+
+~~~ scala
+sealed trait Sum[A, B]
+final case class Left[A, B](value: A) extends Sum[A, B]
+final case class Right[A, B](value: B) extends Sum[A, B]
+~~~
+
+Implement `fold` for `Sum`.
 
 <div class="solution">
 ~~~ scala
-sealed trait Sum[+A, +B]
-final case class Left[A](value: A) extends Sum[A, Nothing]
-final case class Right[B](value: B) extends Sum[Nothing, B]
+sealed trait Sum[A, B] {
+  def fold[C](left: A => C, right: B => C): C =
+    this match {
+      case Left(a) => left(a)
+      case Right(b) => right(b)
+    }
+}
+final case class Left[A, B](value: A) extends Sum[A, B]
+final case class Right[A, B](value: B) extends Sum[A, B]
 ~~~
 </div>
