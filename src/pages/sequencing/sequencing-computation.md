@@ -99,7 +99,9 @@ final case class Empty[A]() extends Maybe[A]
 
 ## Functors and Monads
 
-A type like `F[A]` with a `map` method is called a *functor*. If a functor also has a `flatMap` method it is called a *monad*.
+A type like `F[A]` with a `map` method is called a *functor*. If a functor also has a `flatMap` method it is called a *monad*[^monads].
+
+[^monads:] There is a little bit more to being a monad. We usually require a constructor called `point` and there are some algebraic laws that our monad operations must obey. A quick search online will find more information on monads, or they are covered in more detail in our "Essential Scalaz" book.
 
 Although the most immediate applications of `map` and `flatMap` are in collection classes like lists, the bigger picture is sequencing computations. Imagine we have a number of computations that can fail. For instance
 
@@ -114,7 +116,7 @@ def mightFail3: Maybe[Int] =
   Empty // This one failed
 ~~~
 
-We want to sequence all these computations. If any one of them fails the whole computation fails. Otherwise we'll add up all the numbers we get. We can do this with `flatMap` as follows.
+We want to run these computations one after another. If any one of them fails the whole computation fails. Otherwise we'll add up all the numbers we get. We can do this with `flatMap` as follows.
 
 ~~~ scala
 mightFail1 flatMap { x =>
@@ -193,7 +195,7 @@ final case class Empty[A]() extends Maybe[A]
 ~~~
 </div>
 
-For bonus points, implement `map` in terms of `flatMap`. Hint: you should just implement `map` on the `Maybe` trait.
+For bonus points, implement `map` in terms of `flatMap`.
 
 <div class="solution">
 ~~~ scala
@@ -214,7 +216,7 @@ final case class Empty[A]() extends Maybe[A]
 
 ### Sequencing Computations
 
-Both our `LinkedList` and `Maybe` declare a class `Empty` so we're going to use Scala's builtin `List` class for this exercise. It has the same `map` we defined for `LinkedList`, and also a `flatMap` method.
+We're going to use Scala's builtin `List` class for this exercise as it has a `flatMap` method.
 
 Given this list
 
@@ -244,45 +246,35 @@ list.map(maybe => maybe flatMap { x => if(x % 2 == 0) Full(x) else Empty })
 ~~~
 </div>
 
-### A Calculator, Again
+### Sum
 
-We're going to return to the interpreter example we saw at the end of the last chapter. This time we're going to use the general abstractions we've created here, and our new knowledge of `map`, `flatMap`, and `fold`.
-
-We're going to represent calculations as `Sum[String, Double]`, where the `String` is an error message. Last time we saw `Sum` we had this definition:
+Recall our `Sum` type.
 
 ~~~ scala
 sealed trait Sum[A, B] {
-  def fold[C](left: A => C, right: B => C): C
-}
-final case class Left[A, B](value: A) extends Sum[A, B] {
   def fold[C](left: A => C, right: B => C): C =
-    left(value)
+    this match {
+      case Left(a) => left(a)
+      case Right(b) => right(b)
+    }
 }
-final case class Right[A, B](value: B) extends Sum[A, B] {
-  def fold[C](left: A => C, right: B => C): C =
-    right(value)
-}
+final case class Left[A, B](value: A) extends Sum[A, B]
+final case class Right[A, B](value: B) extends Sum[A, B]
 ~~~
 
-Make the following changes to `Sum`:
-
-- to prevent a name collision between the built-in `Either`, rename the `Left` and `Right` cases to `Failure` and `Success` respectively;
-- use the covariant generic sum type pattern;
-- reimplement `fold` using pattern matching.
+To prevent a name collision between the built-in `Either`, rename the `Left` and `Right` cases to `Failure` and `Success` respectively.
 
 <div class="solution">
-This should be familiar by now. When using covariant pattern it is simpler to implement `fold` using pattern matching. With the covariant pattern we no longer have both generic type parameters in the case classes. The method signature of `fold` mentions both type parameters; to write it using polymorphism we would have to change one of these parameters to `Nothing` in each case.
-
 ~~~ scala
-sealed trait Sum[+A, +B] {
+sealed trait Sum[A, B] {
   def fold[C](error: A => C, success: B => C): C =
     this match {
       case Failure(v) => error(v)
       case Success(v) => success(v)
     }
 }
-final case class Failure[A](value: A) extends Sum[A, Nothing]
-final case class Success[B](value: B) extends Sum[Nothing, B]
+final case class Failure[A, B](value: A) extends Sum[A, B]
+final case class Success[A, B](value: B) extends Sum[A, B]
 ~~~
 </div>
 
@@ -311,24 +303,14 @@ sealed trait Sum[+A, +B] {
 ~~~
 </div>
 
-Now implement `flatMap` using the same logic as `map`. The obvious implementation should lead to an error
-
-~~~ scala
-error: covariant type A occurs in contravariant position in type B => Sum[A,C] of value f
-~~~
-
-This takes some explaining. Remember that functions are contravariant in their input parameters and covariant in their result. In this case `A` appears in the result so it isn't in contravariant position in the function we pass to `flatMap`. However, `flatMap` is a method and methods are like functions in terms of contra- and covariance. So the function we pass to `flatMap` is in a contravariant position, and this leads to error message we see. The solution is introduce a new type called, say, `AA` along with a type bound `AA >: A`. That is, `flatMap` should have declaration
-
-~~~ scala
-def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C]
-~~~
+Now implement `flatMap` using the same logic as `map`.
 
 <div class="solution">
 ~~~ scala
-sealed trait Sum[+A, +B] {
-  def fold[C](failure: A => C, success: B => C): C =
+sealed trait Sum[A, B] {
+  def fold[C](error: A => C, success: B => C): C =
     this match {
-      case Failure(v) => failure(v)
+      case Failure(v) => error(v)
       case Success(v) => success(v)
     }
   def map[C](f: B => C): Sum[A, C] =
@@ -336,73 +318,13 @@ sealed trait Sum[+A, +B] {
       case Failure(v) => Failure(v)
       case Success(v) => Success(f(v))
     }
-  def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C] =
+  def flatMap[C](f: B => Sum[A, C]) =
     this match {
       case Failure(v) => Failure(v)
       case Success(v) => f(v)
     }
 }
-~~~
-</div>
-
-That was involved, but we've now seen an important pattern that you'll find throughout the Scala standard library.
-
-Now we're going to reimplement that calculator from last time. We have an abstract syntax tree defined via the following algebraic data type:
-
-~~~ scala
-sealed trait Expression
-final case class Addition(left: Expression, right: Expression) extends Expression
-final case class Subtraction(left: Expression, right: Expression) extends Expression
-final case class Division(left: Expression, right: Expression) extends Expression
-final case class SquareRoot(value: Expression) extends Expression
-final case class Number(value: Double) extends Expression
-~~~
-
-Now implement a method `eval: Sum[String, Double]` on `Expression`. Use `flatMap` and `map` on `Sum` and introduce any utility methods you see fit to make the code more compact. Here are some test cases:
-
-~~~ scala
-assert(Addition(Number(1), Number(2)).eval == Success(3))
-assert(SquareRoot(Number(-1)).eval == Failure("Square root of negative number"))
-assert(Division(Number(4), Number(0)).eval == Failure("Division by zero"))
-assert(Division(Addition(Subtraction(Number(8), Number(6)), Number(2)), Number(2)).eval == Success(2.0))
-~~~
-
-<div class="solution">
-Here's my solution. I used a helper method `lift2` to "lift" a function into the result of two expressions. I hope you'll agree the code is both more compact and easier to read than our previous solution!
-
-~~~ scala
-sealed trait Expression {
-  def eval: Sum[String, Double] =
-    this match {
-      case Addition(l, r) => lift2(l, r, (left, right) => Success(left + right))
-      case Subtraction(l, r) => lift2(l, r, (left, right) => Success(left - right))
-      case Division(l, r) => lift2(l, r, (left, right) =>
-        if(right == 0)
-          Failure("Division by zero")
-        else
-          Success(left / right)
-      )
-      case SquareRoot(v) =>
-        v.eval flatMap { value =>
-          if(value < 0)
-            Failure("Square root of negative number")
-          else
-            Success(Math.sqrt(value))
-        }
-      case Number(v) => Success(v)
-    }
-
-  def lift2(l: Expression, r: Expression, f: (Double, Double) => Sum[String, Double]) =
-    l.eval flatMap { left =>
-      r.eval flatMap { right =>
-        f(left, right)
-      }
-    }
-}
-final case class Addition(left: Expression, right: Expression) extends Expression
-final case class Subtraction(left: Expression, right: Expression) extends Expression
-final case class Division(left: Expression, right: Expression) extends Expression
-final case class SquareRoot(value: Expression) extends Expression
-final case class Number(value: Int) extends Expression
+final case class Failure[A, B](value: A) extends Sum[A, B]
+final case class Success[A, B](value: B) extends Sum[A, B]
 ~~~
 </div>

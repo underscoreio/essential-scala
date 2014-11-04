@@ -213,6 +213,8 @@ final case class Empty[A]() extends Maybe[A]
 
 In this section we have used generics to model sum types, product types, and optional values using generics.
 
+These abstractions are commonly used in Scala code and have implementations in the Scala standard library. The sum type is called `Either`, products are tuples, and optional values are modelled with `Option`.
+
 ## Exercises
 
 #### Generics versus Traits
