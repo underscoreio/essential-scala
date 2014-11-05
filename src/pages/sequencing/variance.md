@@ -42,6 +42,7 @@ scala> val possible: Maybe[Int] = Empty
 
 The problem here is that `Empty` is a `Maybe[Nothing]` and a `Maybe[Nothing]` is not a subtype of `Maybe[Int]`. To overcome this issue we need to introduce variance annotations.
 
+
 ## Invariance, Covariance, and Contravariance
 
 <div class="alert alert-warning">
@@ -115,7 +116,7 @@ scala> val perhaps: Maybe[Int] = Empty
 perhaps: Maybe[Int] = Empty
 ~~~
 
-This pattern is the most commonly used one with generic sum types.
+This pattern is the most commonly used one with generic sum types. We should only use covariant types where the container type is immutable. If the container allows mutation we should only use invariant types.
 
 <div class="callout callout-info">
 #### Covariant Generic Sum Type Pattern
@@ -156,14 +157,14 @@ Implement `flatMap` and verify you receive an error like
 
 ~~~ scala
 error: covariant type A occurs in contravariant position in type B => Sum[A,C] of value f
-  def flatMap[C](f: B => Sum[A, C]) =
+  def flatMap[C](f: B => Sum[A, C]): Sum[A, C] =
                  ^
 ~~~
 
 <div class="solution">
 ~~~ scala
 sealed trait Sum[+A, +B] {
-  def flatMap[C](f: B => Sum[A, C]) =
+  def flatMap[C](f: B => Sum[A, C]): Sum[A, C] =
     this match {
       case Failure(v) => Failure(v)
       case Success(v) => f(v)
@@ -174,10 +175,66 @@ final case class Success[B](value: B) extends Sum[Nothing, B]
 ~~~
 </div>
 
+What is going on here? Let's momentarily switch to a simpler example that illustrates the problem.
+
+~~~ scala
+case class Box[+A](value: A) {
+  def set(a: A): Box[A] = Box(a)
+}
+~~~
+
+which causes the error
+
+~~~ scala
+error: covariant type A occurs in contravariant position in type A of value a
+  def set(a: A): Box[A] = Box(a)
+          ^
+~~~
+
+Remember that functions, and hence methods, which are just like functions, are contravariant in their input parameters. In this case we have specified that `A` is covariant but in `set` we have a parameter of type `A` and the type rules requires `A` to be contravariant here. This is what the compiler means by a "contravariant position".
+
+The solution is introduce a new type that is a supertype of `A`. We can do this with the notation `[AA >: A]` like so:
+
+~~~ scala
+case class Box[+A](value: A) {
+  def set[AA >: A](a: AA): Box[AA] = Box(a)
+}
+~~~
+
+This successfully compiles.
+
+Back to `flatMap`, the function `f` is a parameter, and thus in a contravariant position. This means we accept *supertypes* of `f`. It is declared with type `B => Sum[A, C]` and thus as supertype is *covariant* in `B` and *contravariant* in `A` and `C`. `B` is declared as covariant, so that is fine. `C` is invariant, so that is fine as well. `A` on the other hand is covariant but in a contravariant position. Thus we have to apply the same solution we did for `Box` above.
+
+~~~ scala
+sealed trait Sum[+A, +B] {
+  def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C] =
+    this match {
+      case Failure(v) => Failure(v)
+      case Success(v) => f(v)
+    }
+}
+final case class Failure[A](value: A) extends Sum[A, Nothing]
+final case class Success[B](value: B) extends Sum[Nothing, B]
+~~~
+
+<div class="callout callout-info">
+#### Contravariant Position Pattern
+
+If `A` of a covariant type `T` and a method `f` of `A` complains that `T` is used in a contravariant position, introduce a type `TT >: T` in `f`.
+
+~~~ scala
+case class A[+T] {
+  def f[TT >: T](t: TT): A[TT]
+}
+~~~
+
+</div>
+
+
 
 ## Type Bounds
 
-It is sometimes useful to constrain a generic type. We can do this with type bounds indicating that a generic type should be a sub- or super-type of some given types. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
+We have see some type bounds above, in the contravariant position pattern. Type bounds extends to specify subtypes as well as supertypes. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
 
 For example, the following type allows us to store a `Visitor` or any subtype:
 
@@ -193,28 +250,45 @@ case class WebAnalytics[A <: Visitor](
 
 ## Exercises
 
-We're going to return to the interpreter example we saw at the end of the last chapter. This time we're going to use the general abstractions we've created here, and our new knowledge of `map`, `flatMap`, and `fold`.
+#### Covariance and Contravariance
 
-We're going to represent calculations as `Sum[String, Double]`, where the `String` is an error message. Last time we saw `Sum` we had this definition:
+Using the notation `A <: B` to indicate `A` is a subtype of `B` and assuming:
 
-Now implement `flatMap` using the same logic as `map`. The obvious implementation should lead to an error
+- `Siamese <: Cat <: Animal`; and
+- `Purr <: CatSound <: Sound`
 
-~~~ scala
-error: covariant type A occurs in contravariant position in type B => Sum[A,C] of value f
-~~~
-
-This takes some explaining. Remember that functions are contravariant in their input parameters and covariant in their result. In this case `A` appears in the result so it isn't in contravariant position in the function we pass to `flatMap`. However, `flatMap` is a method and methods are like functions in terms of contra- and covariance. So the function we pass to `flatMap` is in a contravariant position, and this leads to error message we see. The solution is introduce a new type called, say, `AA` along with a type bound `AA >: A`. That is, `flatMap` should have declaration
+if I have a method
 
 ~~~ scala
-def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C]
+def groom(groomer: Cat => CatSound): CatSound =
+  val oswald = Cat("Black", "Cat food")
+  groomer(oswald)
+}
 ~~~
+
+which of the following can I pass to `groom`?
+
+- A function of type `Animal => Purr`
+- A function of type `Siamese => Purr`
+- A function of type `Animal => Sound`
+
+<div class="solution">
+The only function that will work is the the function of type `Animal => Purr`. The `Siamese => Purr` function will not work because the Oswald is a not a Siamese cat. The `Animal => Sound` function will not work because we require the return type is a `CatSound`.
+</div>
+
+
+#### Calculator Again
+
+We're going to return to the interpreter example we saw at the end of the last chapter. This time we're going to use the general abstractions we've created in this chapter, and our new knowledge of `map`, `flatMap`, and `fold`.
+
+We're going to represent calculations as `Sum[String, Double]`, where the `String` is an error message. Extend `Sum` to have `map` and `fold` method.
 
 <div class="solution">
 ~~~ scala
 sealed trait Sum[+A, +B] {
-  def fold[C](failure: A => C, success: B => C): C =
+  def fold[C](error: A => C, success: B => C): C =
     this match {
-      case Failure(v) => failure(v)
+      case Failure(v) => error(v)
       case Success(v) => success(v)
     }
   def map[C](f: B => C): Sum[A, C] =
@@ -228,11 +302,12 @@ sealed trait Sum[+A, +B] {
       case Success(v) => f(v)
     }
 }
+final case class Failure[A](value: A) extends Sum[A, Nothing]
+final case class Success[B](value: B) extends Sum[Nothing, B]
 ~~~
 </div>
 
-That was involved, but we've now seen an important pattern that you'll find throughout the Scala standard library.
-Now we're going to reimplement that calculator from last time. We have an abstract syntax tree defined via the following algebraic data type:
+Now we're going to reimplement the calculator from last time. We have an abstract syntax tree defined via the following algebraic data type:
 
 ~~~ scala
 sealed trait Expression

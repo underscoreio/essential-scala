@@ -33,7 +33,7 @@ object Covariant {
         case Failure(v) => Failure(v)
         case Success(v) => Success(f(v))
       }
-    def flatMap[C](f: B => Sum[A, C]) =
+    def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C] =
       this match {
         case Failure(v) => Failure(v)
         case Success(v) => f(v)
