@@ -3,7 +3,37 @@ layout: page
 title: Type Class Foundations
 ---
 
-Type classes in Scala involve the interaction of a number of components. To understand how they work, in this section we're going to build them up from the beginning.
+Type classes in Scala involve the interaction of a number of components. To simplify the presentation we are going to start by looking at *using* type classes before we look at how to build them ourselves.
+
+## Ordering
+
+A simple example of a type class is the `Ordering` trait in Scala. Imagine we want to sort a `List` of `Int`s. There are many different ways to sort such a list. For example, we could sort from highest to lowest or lowest to highest. There is a method `sorted` on `List` that will sort a list, but to use it we must pass in an `Ordering` to give the particular ordering we want.
+
+Let's define some `Ordering`s and see them in action.
+
+~~~ scala
+scala> import scala.math.Ordering
+
+scala> val minOrdering = Ordering.fromLessThan[Int](_ < _)
+minOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$9@787f32b7
+
+scala> val maxOrdering = Ordering.fromLessThan[Int](_ > _)
+maxOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$9@4bf324f9
+
+scala> List(3, 4, 2).sorted(minOrdering)
+res9: List[Int] = List(2, 3, 4)
+
+scala> List(3, 4, 2).sorted(maxOrdering)
+res10: List[Int] = List(4, 3, 2)
+~~~
+
+Here we define two orderings: `minOrdering`, which sorts from lowest to highest, and `maxOrdering`, which sorts from highest to lowest. When we call `sorted` we pass the `Ordering` we want to use.
+
+
+
+# OLD MATERIAL HERE
+
+To understand how they work, in this section we're going to build them up from the beginning.
 
 Let's start with an example -- converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
 
