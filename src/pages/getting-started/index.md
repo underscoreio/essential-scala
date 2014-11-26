@@ -13,15 +13,15 @@ Scala IDE is a plugin that adds Scala language support to [Eclipse](http://eclip
 
 Go to [http://scala-ide.org]() now, click the **Get the Bundle** button, and follow the on-screen instructions to download Scala IDE for your operating system:
 
-![Scala IDE: Main website](scala-ide-website.png)
+![Scala IDE: Main website](src/pages/getting-started/scala-ide-website.png)
 
 Once you have downloaded and uncompressed the bundle you should find an application called **Eclipse**. Launch this. You will be asked to choose a folder for your *workspace*:
 
-![Scala IDE: Choose a workspace location](scala-ide-workspace-chooser.png)
+![Scala IDE: Choose a workspace location](src/pages/getting-started/scala-ide-workspace-chooser.png)
 
 Accept the default location and you will see an empty main Eclipse window:
 
-![Scala IDE: Empty workspace](scala-ide-empty-workspace.png)
+![Scala IDE: Empty workspace](src/pages/getting-started/scala-ide-empty-workspace.png)
 
 ## Creating your first Scala application
 
@@ -29,19 +29,19 @@ Your *Eclipse workspace* is two things: a folder containing files and settings, 
 
 Let's create a project for this course now. Select the **File menu** and choose **New > Scala Project**:
 
-![Scala IDE: Create a new Scala Project](scala-ide-new-project.png)
+![Scala IDE: Create a new Scala Project](src/pages/getting-started/scala-ide-new-project.png)
 
 Enter a **Project name** of `essential-scala` and click **Finish**. The tree view on the left of your workspace should now contain an empty project:
 
-![Scala IDE: Empty project](scala-ide-empty-project.png)
+![Scala IDE: Empty project](src/pages/getting-started/scala-ide-empty-project.png)
 
 A project is no good without code to run! Let's create our first simple Scala application - the obligatory *Hello World* app. Select the **File Menu** and choose **New > Scala Object**:
 
-![Scala IDE: New Scala Object](scala-ide-new-object.png)
+![Scala IDE: New Scala Object](src/pages/getting-started/scala-ide-new-object.png)
 
 **Name** your object `HelloWorld` and click **Finish**. A new file called `HelloWorld.scala` should appear in the tree view on the left of the main window. Eclipse should open the new file in the main editor ready for you to start coding:
 
-![Scala IDE: Single Scala File](scala-ide-single-file.png)
+![Scala IDE: Single Scala File](src/pages/getting-started/scala-ide-single-file.png)
 
 The content of the file should read as follows:
 
@@ -63,7 +63,7 @@ object HelloWorld {
 
 Select the **Run Menu** and choose **Run**. This should execute the code in your application, resulting in the words `Hello world!` appearing in the *Console* pane at the bottom of the window. Congratulations - you just ran your first Scala application!
 
-![Scala IDE: Hello World](scala-ide-hello-world.png)
+![Scala IDE: Hello World](src/pages/getting-started/scala-ide-hello-world.png)
 
 <div class="alert alert-info">
 **Java tip:** Developers with Java experience will notice the resemblance of the code above to the Java hello world app:
@@ -87,11 +87,11 @@ Fortunately, Scala IDE allows us to create special files called *Scala Worksheet
 
 Create your first Scala Worksheet by selecting the **File Menu** and choosing **New > Scala Worksheet**:
 
-![Scala IDE: New Scala Worksheet](scala-ide-new-worksheet.png)
+![Scala IDE: New Scala Worksheet](src/pages/getting-started/scala-ide-new-worksheet.png)
 
 Enter a **Worksheet name** of `FirstSteps` and click **Finish**. A new file called `FirstSteps.sc` should appear in the tree view on the left of the main window, and should open it in the main editor in the middle:
 
-![Scala IDE: Empty Scala Worksheet](scala-ide-empty-worksheet.png)
+![Scala IDE: Empty Scala Worksheet](src/pages/getting-started/scala-ide-empty-worksheet.png)
 
 Note that the object on the left contains a single line of Scala code:
 
