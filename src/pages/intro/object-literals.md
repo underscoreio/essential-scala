@@ -389,6 +389,7 @@ res1: String = 3c31
 
 The full sequence of evaluation is as follows:
 
+~~~
  1. We calculate the main sum at the end of the program, which...
     1. Loads `argh`, which...
        1. Calculates all the fields in `argh`, which...
@@ -420,6 +421,7 @@ The full sequence of evaluation is as follows:
        1. Returns `1`
     1. Evaluates the first `+`, determining that it actually refers to string
        concatentation, and yielding `"3c31"`
+~~~
 </div>
 
 ### Greetings, human
