@@ -1,7 +1,5 @@
----
-layout: page
-title: Getting Started
----
+# Getting Started
+
 
 Throughout this course we will be working with short examples of Scala code using the *Scala Worksheets* feature of the *[Scala IDE for Eclipse]*, or *Scala IDE* for short. You should install this before starting the course.
 

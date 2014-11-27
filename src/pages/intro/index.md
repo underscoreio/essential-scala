@@ -1,7 +1,4 @@
----
-layout: page
-title: Expressions, Types, and Values
----
+# Expressions, Types, and Values
 
 In this chapter we look at the fundamentals of Scala: **expressions, types, and values**. Understanding these concepts is necessary to build a mental model of how Scala programs work.
 

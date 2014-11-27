@@ -1,21 +1,17 @@
----
-layout: page
----
-
 # SBT
 
 SBT, or "Simple Build Tool", is the recommended build tool for Scala. It is similar to the Maven build tool, but allows you to write configuration files using Scala code as opposed to XML. SBT projects has the benefit of being significantly terser than their Maven equivalents.
 
 In this section we will show you the basics of setting up an SBT project. The intention is to give you a quick way of writing, compiling, and running Scala code. We won't go into the details of writing build configurations -- there is plenty of information for the budding SBT users online in the [SBT Wiki](https://github.com/harrah/xsbt/wiki) on Github and the [SBT community website](http://www.scala-sbt.org/).
 
-# Requirements
+## Requirements
 
 In order to get started with Core Scala, you will need to have the following softwar installed and configured:
 
  - a Java 6 or 7 compatible JVM;
  - a recent version of Git.
 
-# Getting started
+## Getting started
 
 To start with, clone our template SBT project from Github:
 
@@ -38,7 +34,7 @@ Using /Users/me/.sbt/0.11.3 as sbt dir, -sbt-dir to override.
 [info] Updating {file:/Users/me/myproject/project/}default-02b1d7...
 [info] Resolving org.scala-sbt#sbt_2.9.1;0.11.3 ...
 
- # .... Lots of "Resolving" lines ....
+ ### .... Lots of "Resolving" lines ....
 
 [info] Done updating.
 [info] Set current project to essential-scala (in build file:/Users/me/myproject/)
@@ -74,7 +70,7 @@ scala> :quit
 bash:~/myproject$
 ~~~
 
-# SBT: The Rebel Cut
+## SBT: The Rebel Cut
 
 Our template uses an [SBT Launcher script](https://github.com/paulp/sbt-extras/blob/master/sbt) written by Paul Phillips. The launcher, which helps you select and manage multiple versions of SBT and Scala from the bash command line, will become invaluable once you start working with different Scala projects that span multiple versions of Scala and SBT.
 

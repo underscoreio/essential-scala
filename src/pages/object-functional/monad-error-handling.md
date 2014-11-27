@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Monadic Error Handling
 
 In this section we're going to cover an extended example of monadic error handling. This will help consolidate several of the object-functional design patterns we've already seen, and provide a more indepth view of monads which we first encountered when discussing [../collections/index.md](collections).

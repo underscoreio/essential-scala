@@ -1,7 +1,5 @@
----
-layout: page
-title: Functional Programming
----
+# Functional Programming
+
 
 In section we pull together some of the main themes of the course so far:
 

@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Pattern Matching
 
 ### Custom Pattern Matching

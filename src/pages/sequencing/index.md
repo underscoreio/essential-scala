@@ -1,7 +1,4 @@
----
-layout: page
-title: Sequencing Computations
----
+# Sequencing Computations
 
 In this section we're going to look at two more language features, **generics** and **functions**, and see some abstractions we can build using these features: **functors**, and **monads**.
 
