@@ -242,9 +242,6 @@ module.exports = (grunt) ->
       #{metadata}
       #{pandocSources}
     """
-
-    grunt.log.error("Running: #{command}")
-
     pandoc = process.exec(command)
 
     pandoc.stdout.on 'data', (d) ->
