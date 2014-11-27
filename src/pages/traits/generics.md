@@ -90,7 +90,7 @@ Again, the type of the elements retrieved from the array matches the type parame
 
 A linked list is another type of generic sequence, similar to an array. Unlike an array, however, a linked list is stored internally as a chain of pairs. For example, the sequence `1, 2, 3` would be represented as follows:
 
-<img src="linked-list.svg" alt="A linked list">
+<img src="src/pages/traits/linked-list.svg" alt="A linked list">
 
 In this example we have four links in our chain. `d` represents an empty list, and `a`, `b`, and `c` are pairs built on top of it:
 
