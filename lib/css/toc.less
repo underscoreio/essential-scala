@@ -1,26 +1,20 @@
 // For HTML:
-nav {
-
-  float:left;
-
-  width:25%;
-
+nav.toc {
   .container {
-
     width:100%;
-
   }
 
-  toc {
+  h1 {
+    margin-top: @line-height-computed;
+  }
 
-    h1 {
-      margin-top: @line-height-computed;
+  .toc-contents {
+    @media (max-width: @screen-md-max) {
+      display: none;
     }
 
     ul {
       .list-unstyled();
-
-
 
       a { display: block; }
 
@@ -46,18 +40,14 @@ nav {
       }
     }
   }
-}
 
-article {
-
-  .container {
-    margin-left:25%;
+  .toc-toggle {
+    margin-top: @line-height-computed/2;
+    @media (min-width: @screen-lg-min) {
+      display: none;
+    }
   }
-
 }
-
-
-
 
 // For EPUB:
 ol.toc {

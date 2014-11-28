@@ -63,13 +63,22 @@ $endif$
 </div>
 </header>
 
-$if(toc)$
-<nav class="toc">
 <div class="container">
-<h1>Contents</h1>
-$toc$
+
+$if(toc)$
+<div class="row">
+<div class="col-lg-3">
+<nav class="toc">
+<div class="toc-contents">
+  <h1>Contents</h1>
+  $toc$
 </div>
+<p class="toc-toggle">
+  <a href="javascript:void 0" class="btn btn-default btn-block">Show table of contents</a>
+</p>
 </nav>
+</div>
+<div class="col-lg-9">
 $endif$
 
 $for(include-before)$
@@ -77,10 +86,15 @@ $include-before$
 $endfor$
 
 <article>
-<div class="container">
 $body$
-</div>
 </article>
+
+$if(toc)$
+</div>
+</div>
+$endif$
+
+</div>
 
 <footer>
   <div class="container">
