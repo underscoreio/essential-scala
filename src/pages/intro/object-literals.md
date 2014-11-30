@@ -1,7 +1,4 @@
----
-layout: page
-title: Object Literals
----
+## Object Literals
 
 So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own choosing using **object literals**.
 
@@ -49,7 +46,7 @@ where
 
 Let's see how to declare methods and fields.
 
-## Methods
+### Methods
 
 We interact with objects via methods so let's create an object with a method.
 
@@ -113,7 +110,7 @@ The return value of the method is determined by evaluating the body -- there is 
 </div>
 
 
-## Fields
+### Fields
 
 An object can also contain other objects, called **fields**. We introduce these using the keywords `val` or `var`, which look similar to `def`:
 
@@ -163,7 +160,7 @@ Using `val` defines an *immutable* field, meaning we cannot change the value bou
 **Always prefer `val` to `var`.** Scala programmers prefer to use immutable fields wherever possible. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` for most of this course and you should do the same in your Scala programming.
 
 
-## Methods versus fields
+### Methods versus fields
 
 You might wonder why we need fields when we can have methods of no arguments that seem to work the same. The difference is subtle -- a field gives a name to a value, whereas a method gives a name to a computation that produces a value.
 
@@ -221,7 +218,7 @@ Evaluating noArgMethod
 res12: Int = 42
 ~~~
 
-## Take home points
+### Take home points
 
 In this section we have created our own objects, given them methods and fields, and referenced them in expressions.
 
@@ -250,9 +247,9 @@ All of these are **declarations**, binding names to values. Declarations are dif
 
 We have also seen the difference between methods and fields -- fields refer to values stored within an object, whereas methods refer to computations that produce values.
 
-## Exercises
+### Exercises
 
-### Cat-o-matique
+#### Cat-o-matique
 
 The table below shows the names, colour, and favourite foods of three cats. Define an object for each cat. (For experienced programmers: we haven't covered classes yet.)
 
@@ -289,7 +286,7 @@ object Quentin {
 </div>
 
 
-### Square dance!
+#### Square dance!
 
 Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *calling `square`* as part of its result calculation.
 
@@ -304,7 +301,7 @@ object calc {
 ~~~
 </div>
 
-### Precise square dance!
+#### Precise square dance!
 
 Copy and paste `calc` from the previous exercise to create a `calc2` that is generalized to work with `Ints` as well as `Doubles`. If you have Java experience, this should be fairly straightforward. If not, read the solution below.
 
@@ -349,7 +346,7 @@ The fact that string concatenation and numeric addition share the same `+` metho
 </div>
 </div>
 
-### Order of evaluation
+#### Order of evaluation
 
 When entered on the REPL, what does the following program output, and what is the type and value of the final expression? Think carefully about the types, dependencies, and evaluation behaviour of each field and method.
 
@@ -424,7 +421,7 @@ The full sequence of evaluation is as follows:
 ~~~
 </div>
 
-### Greetings, human
+#### Greetings, human
 
 Define an object called `person` that contains fields called `firstName` and `lastName`. Define a second object called `alien` containing a method called `greet` that takes your person as a parameter and returns a greeting using their `firstName`.
 
@@ -450,7 +447,7 @@ Notice the type on the `p` parameter of `greet`: `person.type`. This is one of t
 This imposes a significant limitation on our ability to write programs in Scala. We can only write methods that work with built-in types or single objects of our own creation. In order to build useful programs we need the ability to *define our own types* and create multiple values of each. We can do this using `classes`, which we will cover in the next section.
 </div>
 
-### The value of methods
+#### The value of methods
 
 Are methods values? Are they expressions? Why might this be the case?
 

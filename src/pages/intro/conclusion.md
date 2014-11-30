@@ -1,7 +1,4 @@
----
-layout: page
-title: Conclusion
----
+## Conclusion
 
 We have had a very brief introduction to the fundamentals of Scala:
 

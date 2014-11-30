@@ -1,11 +1,8 @@
----
-layout: page
-title: Compound Expressions
----
+## Compound Expressions
 
 We have almost finished our basic introduction to Scala. In this section we are going to look at two special kinds of expressions, **conditionals** and **blocks**, we will need in more complicated programs.
 
-## Conditionals
+### Conditionals
 
 A conditional allows us to choose an expression to evaluate based on some condition. For example, we can choose a string based on some condition
 
@@ -49,7 +46,7 @@ Scala's `if` statement has the same syntax as Java's. One important difference i
 </div>
 
 
-## Blocks
+### Blocks
 
 Blocks are expressions that allow us to sequence computations together. They are written as a pair of braces containing sub-expressions separated by semicolons or newlines.
 
@@ -118,7 +115,7 @@ where
 - `expression` is an expression determining the type and value of the block expression.
 </div>
 
-## Take home points
+### Take home points
 
 Conditional expressions allow us to choose an expression to evaluate based on a `Boolean` condition. The syntax is
 
@@ -144,9 +141,9 @@ A block allows us to sequence expressions and declarations. It is commonly used 
 The type and value of a block is that of the last expression in the block.
 
 
-## Exercises
+### Exercises
 
-### A classic rivalry
+#### A classic rivalry
 
 What is the type and value of the following conditional?
 
@@ -162,7 +159,7 @@ if(1 > 2) "alien" else "predator"
   The value is determined at runtime. `2` is greater than `1` so the conditional evaluates to the value of the *else* expression.
 </div>
 
-### A less well known rivalry
+#### A less well known rivalry
 
 What about this conditional?
 
@@ -180,7 +177,7 @@ This is an important observation: types are determined at compile time, before t
 We'll learn more about `Any` in the following sections. Java programmers shouldn't confuse it with `Object` because it subsumes value types like `Int` and `Boolean` as well.
 </div>
 
-### An if without an else
+#### An if without an else
 
 What about this conditional?
 

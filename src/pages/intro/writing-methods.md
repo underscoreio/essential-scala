@@ -1,7 +1,4 @@
----
-layout: page
-title: Writing Methods
----
+## Writing Methods
 
 In the previous section we saw the syntax of methods. One of our main goals in this course is to go beyond syntax and give you a systematic method for constructing Scala programs. This is our first section dealing with such matters. In this section we're going to look at a systematic method for constructing methods. As you gain experience with Scala you can drop some of the steps of this method, but we **strongly** suggest you follow this method during the course.
 
@@ -9,13 +6,13 @@ To make the advice concrete we'll use this exercise from the previous section as
 
 Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *calling `square`* as part of its result calculation.
 
-## Identify the Input and Output
+### Identify the Input and Output
 
 Your first step is to identify the types of the input parameters, if any, and the result of the method.
 
 In many cases the exercises will tell you the types and you can just read them straight from the description. In the example above the input type is given as `Double`. The result type we can infer is also `Double`.
 
-## Prepare Test Cases
+### Prepare Test Cases
 
 Types alone don't tell all the story. There are many `Double` to `Double` functions, but few that implement squaring. Thus we should prepare some test cases that illustrate the expected behaviour of the method.
 
@@ -27,7 +24,7 @@ assert(square(3.0) == 9.0)
 assert(square(-2.0) == 4.0)
 ~~~
 
-## Write the Declaration
+### Write the Declaration
 
 With types and test cases ready we can now write the method declaration. We haven't developed the body yet so use `???`, another nifty Scala feature, in its place.
 
@@ -38,11 +35,11 @@ def square(in: Double): Double =
 
 This step should be mechanical.
 
-## Run the Code
+### Run the Code
 
 Run the code and check it compiles (and thus we haven't made any typos) but also that our tests fail. You may need to place the tests after the method declaration.
 
-## Write the Body
+### Write the Body
 
 We're now ready to write the body of our method. We will develop a number of techniques for this throughout the course. For now, we're going to look at two techniques.
 
@@ -61,7 +58,7 @@ def square(in: Double): Double =
   in * in
 ~~~
 
-## Run the Code, Again
+### Run the Code, Again
 
 Finally we should run the code again and check that the tests all pass in this case.
 

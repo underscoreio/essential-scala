@@ -1,17 +1,15 @@
----
-layout: page
-title: Interacting with Objects
----
+## Interacting with Objects
+
 
 In the previous section we saw the fundamental components of Scala programs: expressions, types, and values. We learned that **all values are objects**. In this section we will learn more about objects and how we can interact with them.
 
-## Objects
+### Objects
 
 An object is a grouping of data and operations on that data. For example, `2` is an object. The data is the integer 2, and the operations on that data are familiar operations like `+`, `-`, and so on.
 
 We have some special terminology for the data and operations of an object. The operations are known as *methods*. The data is stored in *fields*.
 
-## Method Calls
+### Method Calls
 
 We interact with objects by *calling* methods[^patterns]. We have already seen some examples of calling methods. For example, we have seen we can get the uppercase version of a `String` by calling its `toUpperCase` method:
 
@@ -69,7 +67,7 @@ You may wonder in what order are the various expression in a method call evaluat
 
 the expression `"Hello world!"` is evaluated first, then `2 + 3` (which requires evaluating `2` and then `3` first), then finally `"Hello world!".take(5)`.
 
-## Operators
+### Operators
 
 Because every value in Scala is an object, we can also call methods on primitive types such as `Int` and `Boolean`. This is in contrast to Java where `int` and `boolean` are not objects:
 
@@ -122,7 +120,7 @@ scala> (2 * 3) + (4 * 5)
 res1: Int = 26
 ~~~
 
-## Take home points
+### Take home points
 
 All Scala values are objects. We **interact with objects by calling methods** on them. If you come from a Java background note we can call methods on `Int` or any other primitive value.
 
@@ -142,9 +140,9 @@ anExpression methodName parameter
 
 As we will see, Scala's focus on programming with expressions allows us to write much shorter code than we can in Java. It also allows us to reason about code in a very intuitive way using values and types.
 
-## Exercises
+### Exercises
 
-### Operator Style
+#### Operator Style
 
 Rewrite in operator-style
 
@@ -172,7 +170,7 @@ Rewrite in method call style
 Note the need to wrap the `1` in brackets. If you fail to do this then `1.` will be interpreted as a `Double` and your result will have type `Double` not `Int`. A mildly subtle difference.
 </div>
 
-### Substitution
+#### Substitution
 
 What is the difference between the following expressions? What are the similarities?
 
