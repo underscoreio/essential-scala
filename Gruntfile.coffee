@@ -2,6 +2,8 @@
 
 path    = require 'path'
 process = require 'child_process'
+yaml    = require 'js-yaml'
+fs      = require 'fs'
 
 "use strict"
 
@@ -9,89 +11,66 @@ module.exports = (grunt) ->
   minify = grunt.option('minify') ? false
 
   grunt.loadNpmTasks "grunt-browserify"
+  grunt.loadNpmTasks "grunt-contrib-clean"
   grunt.loadNpmTasks "grunt-contrib-connect"
   grunt.loadNpmTasks "grunt-contrib-less"
   grunt.loadNpmTasks "grunt-contrib-watch"
-  grunt.loadNpmTasks "grunt-exec"
+  # grunt.loadNpmTasks "grunt-exec"
   grunt.loadNpmTasks "grunt-css-url-embed"
 
   joinLines = (lines) ->
     lines.split(/[ \r\n]+/).join(" ")
 
-  pandocSources = joinLines """
-    src/pages/index.md
-    src/pages/getting-started/index.md
-    src/pages/intro/index.md
-    src/pages/intro/objects.md
-    src/pages/intro/literals.md
-    src/pages/intro/object-literals.md
-    src/pages/intro/writing-methods.md
-    src/pages/intro/expressions.md
-    src/pages/intro/conclusion.md
-    src/pages/classes/index.md
-    src/pages/classes/classes.md
-    src/pages/classes/apply.md
-    src/pages/classes/companion-objects.md
-    src/pages/classes/case-classes.md
-    src/pages/classes/pattern-matching.md
-    src/pages/classes/conclusions.md
-    src/pages/traits/index.md
-    src/pages/traits/sealed-traits.md
-    src/pages/traits/modelling-data-with-traits.md
-    src/pages/traits/working-with-data.md
-    src/pages/traits/recursive-data.md
-    src/pages/traits/conclusions.md
-    src/pages/sequencing/index.md
-    src/pages/sequencing/generics.md
-    src/pages/sequencing/functions.md
-    src/pages/sequencing/working-with-data.md
-    src/pages/sequencing/modelling-data.md
-    src/pages/sequencing/sequencing-computation.md
-    src/pages/sequencing/variance.md
-    src/pages/sequencing/conclusions.md
-    src/pages/collections/index.md
-    src/pages/collections/seq.md
-    src/pages/collections/working-with-seq.md
-    src/pages/collections/for-comprehensions.md
-    src/pages/collections/options.md
-    src/pages/collections/meeting-monads.md
-    src/pages/collections/for-comprehensions-redux.md
-    src/pages/collections/map-and-set.md
-    src/pages/collections/ranges.md
-    src/pages/implicits/index.md
-    src/pages/implicits/foundations.md
-    src/pages/implicits/implicit-parameters.md
-    src/pages/implicits/type-classes.md
-    src/pages/implicits/enrichment.md
-    src/pages/implicits/using-type-classes.md
-    src/pages/implicits/conversions.md
-    src/pages/pattern-matching/index.md
-    src/pages/pattern-matching/extractors.md
-    src/pages/dsl/index.md
-    src/pages/dsl/operators.md
-    src/pages/dsl/control.md
-    src/pages/dsl/macros.md
-    src/pages/collections-redux/index.md
-    src/pages/collections-redux/seq-implementations.md
-    src/pages/collections-redux/arrays-and-strings.md
-    src/pages/collections-redux/iterators.md
-    src/pages/collections-redux/traversable.md
-    src/pages/collections-redux/java-interop.md
-    src/pages/collections-redux/mutable-seq.md
-  """
+  runCommand = (command, done, options = {}) ->
+    grunt.log.write("Running shell command: #{command}\n")
+
+    proc = process.exec(command, options)
+
+    proc.stdout.on 'data', (d) -> grunt.log.write(d)
+    proc.stderr.on 'data', (d) -> grunt.log.error(d)
+
+    proc.on 'error', (err) ->
+      grunt.log.error("Shell command failed with: #{err}")
+      done(false)
+
+    proc.on 'exit', (code) ->
+      if code == 0
+        grunt.log.write("Shell command exited with code 0")
+        done()
+      else
+        grunt.log.error("Shell command exited with code #{code}")
+        done(false)
+
+    return
+
+  meta = yaml.safeLoad(fs.readFileSync('./src/meta/metadata.yaml', 'utf8'))
+
+  unless typeof meta.filenameStem == "string"
+    grunt.fail.fatal("'filename' in metadata must be a string")
+
+  unless !meta.exercisesRepo || typeof meta.exercisesRepo == "string"
+    grunt.fail.fatal("'exercisesRepo' in metadata must be a string or null")
+
+  unless Array.isArray(meta.pages)
+    grunt.fail.fatal("'pages' in metadata must be an array of strings")
 
   grunt.initConfig
+    clean:
+      main:
+        src: "dist"
+
     less:
       main:
         options:
           paths: [
             "node_modules"
+            "lib/css"
             "src/css"
           ]
           compress: minify
           yuicompress: minify
         files:
-          "dist/temp/main.noembed.css" : "src/css/main.less"
+          "dist/temp/main.noembed.css" : "lib/css/main.less"
 
     cssUrlEmbed:
       main:
@@ -102,7 +81,7 @@ module.exports = (grunt) ->
 
     browserify:
       main:
-        src:  "src/js/main.coffee"
+        src:  "lib/js/main.coffee"
         dest: "dist/temp/main.js"
         cwd:  "."
         options:
@@ -120,7 +99,7 @@ module.exports = (grunt) ->
         livereload: true
       css:
         files: [
-          "src/css/**/*"
+          "lib/css/**/*"
         ]
         tasks: [
           "less"
@@ -129,7 +108,7 @@ module.exports = (grunt) ->
         ]
       js:
         files: [
-          "src/js/**/*"
+          "lib/js/**/*"
         ]
         tasks: [
           "browserify"
@@ -137,7 +116,7 @@ module.exports = (grunt) ->
         ]
       templates:
         files: [
-          "src/templates/**/*"
+          "lib/templates/**/*"
         ]
         tasks: [
           "pandoc:html"
@@ -163,20 +142,6 @@ module.exports = (grunt) ->
           "pandoc:epub"
         ]
 
-    exec:
-      exercises:
-        cmd: joinLines """
-               rm -rf essential-scala-code &&
-               echo 'TODO: checkout sample code from git' &&
-               mkdir essential-scala-code
-               zip -r essential-scala-code.zip essential-scala-code
-             """
-        cwd: "dist"
-      zip:
-        cmd: "zip essential-scala.zip essential-scala.pdf essential-scala.html essential-scala.epub essential-scala-code.zip"
-        cwd: "dist"
-
-
     connect:
       server:
         options:
@@ -186,38 +151,40 @@ module.exports = (grunt) ->
   grunt.renameTask "watch", "watchImpl"
 
   grunt.registerTask "pandoc", "Run pandoc", (target) ->
-    done = this.async()
-
     target ?= "html"
 
     switch target
       when "pdf"
-        output   = "--output=dist/essential-scala.pdf"
-        template = "--template=src/templates/template.tex"
+        output   = "--output=dist/#{meta.filenameStem}.pdf"
+        template = "--template=lib/templates/template.tex"
         filters  = joinLines """
-                     --filter=src/filters/pdf/callout.coffee
-                     --filter=src/filters/pdf/columns.coffee
+                     --filter=lib/filters/pdf/callout.coffee
+                     --filter=lib/filters/pdf/columns.coffee
                    """
+        extras   = ""
         metadata = "src/meta/pdf.yaml"
 
       when "html"
-        output   = "--output=dist/essential-scala.html"
-        template = "--template=src/templates/template.html"
+        output   = "--output=dist/#{meta.filenameStem}.html"
+        template = "--template=lib/templates/template.html"
         filters  = joinLines """
-                     --filter=src/filters/html/tables.coffee
+                     --filter=lib/filters/html/tables.coffee
                    """
+        extras   = ""
         metadata = "src/meta/html.yaml"
 
       when "epub"
-        output   = "--output=dist/essential-scala.epub"
+        output   = "--output=dist/#{meta.filenameStem}.epub"
         template = "--epub-stylesheet=dist/temp/main.css"
         filters  = ""
+        extras   = "--epub-cover-image=src/covers/epub-cover.png"
         metadata = "src/meta/epub.yaml"
 
       when "json"
-        output   = "--output=dist/essential-scala.json"
+        output   = "--output=dist/#{meta.filenameStem}.json"
         template = ""
         filters  = ""
+        extras   = ""
         metadata = ""
 
       else
@@ -237,34 +204,25 @@ module.exports = (grunt) ->
       --highlight-style tango
       --standalone
       --self-contained
+      #{extras}
       src/meta/metadata.yaml
-      --epub-cover-image=src/images/epub_cover.png
       #{metadata}
-      #{pandocSources}
+      #{meta.pages.join(" ")}
     """
-    pandoc = process.exec(command)
 
-    pandoc.stdout.on 'data', (d) ->
-      grunt.log.write(d)
+    runCommand(command, this.async())
+
+  grunt.registerTask "exercises", "Download and build exercises", (target) ->
+    unless meta.exercisesRepo
       return
 
-    pandoc.stderr.on 'data', (d) ->
-      grunt.log.error(d)
-      return
+    command = joinLines """
+      rm -rf #{meta.filenameStem}-code &&
+      git clone #{meta.exercisesRepo} &&
+      zip -r #{meta.filenameStem}-code.zip #{meta.filenameStem}-code
+    """
 
-    pandoc.on 'error', (err) ->
-      grunt.log.error("Failed with: #{err}")
-      done(false)
-
-    pandoc.on 'exit', (code) ->
-      if code == 0
-        grunt.verbose.subhead("pandoc exited with code 0")
-        done()
-      else
-        grunt.log.error("pandoc exited with code #{code}")
-        done(false)
-
-    return
+    runCommand(command, this.async(), { cwd: 'dist' })
 
   grunt.registerTask "json", [
     "pandoc:json"
@@ -296,12 +254,6 @@ module.exports = (grunt) ->
     "pandoc:epub"
   ]
 
-  grunt.registerTask "zip", [
-    "all"
-    "exec:exercises"
-    "exec:zip"
-  ]
-
   grunt.registerTask "serve", [
     "build"
     "connect:server"
@@ -316,5 +268,6 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask "default", [
-    "zip"
+    "all"
+    "exercises"
   ]
