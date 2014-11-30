@@ -1,4 +1,6 @@
-# Expressions, Types, and Values
+# Introduction
+
+## Expressions, Types, and Values
 
 In this chapter we look at the fundamentals of Scala: **expressions, types, and values**. Understanding these concepts is necessary to build a mental model of how Scala programs work.
 
@@ -20,7 +22,7 @@ res5: String = HELLO WORLD!
 
 Once again, the type of this program is `String`, but in this case it evaluates to `"HELLO WORLD!"`
 
-## Compile-time and Run-time
+### Compile-time and Run-time
 
 There are two distinct stages that a Scala program goes through: first it is *compiled*, and if it compiles successfully it can then be *run* or evaluated. We refer to the first stage as *compile-time* and the latter as *run-time*.
 
@@ -60,7 +62,7 @@ java.lang.ArithmeticException: / by zero
 The type of integers, `Int`, allows division so the program type checks. At run-time the program fails because there is no `Int` that can represent the result of the division.
 
 
-## Expressions, Types, and Values
+### Expressions, Types, and Values
 
 So what exactly are expressions, types, and values?
 
@@ -98,7 +100,7 @@ Types, which exist at compile-time, restrict us to writing programs that give a 
 Types necessarily do not contain all possible information about the values that conform to the type. We have already seen that the type system will not prevent us from dividing an `Int` by zero, which leads to a run-time error. We cannot get around this restriction but we will see that we can express many useful constraints in the type system, which improves the reliability of our programs. Using the type system well is one of the main themes of this book.
 
 
-## Take Home Points
+### Take Home Points
 
 We must build a mental model of Scala programs if we are to use Scala. Three fundamental components of this model are *expressions*, *types*, and *values*.
 
@@ -108,7 +110,8 @@ Expressions have types, which express some restrictions on programs. During *com
 
 Values exist in the computer's memory, and are what a running program manipulates. In Scala, all values are *objects*, the meaning of which we will discuss soon.
 
-## Exercises
+
+### Exercises
 
 Using the Scala console or worksheet, determine the type and value of the following expressions:
 
