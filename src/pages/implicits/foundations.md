@@ -93,24 +93,24 @@ We have seen the basic pattern for implementing type classes, though we'll short
 
 - We declare some interface for the functionality we want
 
-  ~~~ scala
-  trait HtmlWriter[A] {
-    def toHtml(in: A): String
-  }
-  ~~~
+~~~ scala
+trait HtmlWriter[A] {
+  def toHtml(in: A): String
+}
+~~~
 - We write adaptors for each concrete class we want to use and for each different situation we want to use it in
 
-  ~~~ scala
-  object PersonWriter extends HtmlWriter[Person] {
-    def write(person: Person) =
-      s"${person.name} <${person.email}>"
-  }
+~~~ scala
+object PersonWriter extends HtmlWriter[Person] {
+  def write(person: Person) =
+    s"${person.name} <${person.email}>"
+}
 
-  object ObfuscatedPersonWriter extends HtmlWriter[Person] {
-    def write(person: Person) =
-      s"${person.name} <${person.email.replaceAll("@", " at ")}>"
-  }
-  ~~~
+object ObfuscatedPersonWriter extends HtmlWriter[Person] {
+  def write(person: Person) =
+    s"${person.name} <${person.email.replaceAll("@", " at ")}>"
+}
+~~~
 - This allows us to implement the functionality for any type, and to provide different implementations for the same type.
 
 ### Exercises

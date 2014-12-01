@@ -27,67 +27,67 @@ What's more, the class and companion are pre-populated with some very useful fea
 
 1. **A field for each constructor argument** -- we don't even need to write `val` in our constructor definition, although there's no harm in doing so.
 
-   ~~~ scala
-   scala> res0.firstName
-   res2: String = Dave
-   ~~~
+~~~ scala
+scala> res0.firstName
+res2: String = Dave
+~~~
 
 2. **A default `toString` method** that prints a sensible constructor-like representation of the class (no more `@` signs and cryptic hex numbers):
 
-   ~~~ scala
-   scala> res0
-   res2: Person = Person("Dave","Gurnell")
-   ~~~
+~~~ scala
+scala> res0
+res2: Person = Person("Dave","Gurnell")
+~~~
 
 3. **Sensible `equals`, and `hashCode` methods** that operate on the field values in the object.
 
    This makes it easy to use case classes with collections like `Lists`, `Sets` and `Maps`. It also means we can compare objects on the basis of their contents rather than their reference identity:
 
-   ~~~ scala
-   scala> new Person("Noel", "Welsh").equals(new Person("Noel", "Welsh"))
-   res3: Boolean = true
+~~~ scala
+scala> new Person("Noel", "Welsh").equals(new Person("Noel", "Welsh"))
+res3: Boolean = true
 
-   scala> new Person("Noel", "Welsh") == new Person("Noel", "Welsh")
-   res4: Boolean = true
-   ~~~
+scala> new Person("Noel", "Welsh") == new Person("Noel", "Welsh")
+res4: Boolean = true
+~~~
 
    <div class="alert alert-info">
    **Java tip:** The two expressions above are equivalent. Scala's `==` operator is different from Java's -- it delegates to `equals` rather than comparing values on reference identity.
 
    Scala has an operator called `eq` with the same behaviour as Java's `==`. However, it is rarely used in application code:
 
-   ~~~ scala
-   scala> new Person("Noel", "Welsh") eq (new Person("Noel", "Welsh"))
-   res5: Boolean = false
+~~~ scala
+scala> new Person("Noel", "Welsh") eq (new Person("Noel", "Welsh"))
+res5: Boolean = false
 
-   scala> res0 eq res0
-   res6: Boolean = true
-   ~~~
+scala> res0 eq res0
+res6: Boolean = true
+~~~
    </div>
 
 4. **A `copy` method** that creates a new object with the same field values as the current one:
 
-   ~~~ scala
-   scala> res0.copy()
-   res7: Person = Person(Dave,Gurnell)
-   ~~~
+~~~ scala
+scala> res0.copy()
+res7: Person = Person(Dave,Gurnell)
+~~~
 
    Note that the `copy` method creates and returns a *new object* of the class rather than returning the current one:
 
-   ~~~ scala
-   scala> res0.copy() eq res0
-   res10: Boolean = false
-   ~~~
+~~~ scala
+scala> res0.copy() eq res0
+res10: Boolean = false
+~~~
 
    The `copy` method actually accepts optional parameters matching each of the constructor parameters. If a parameter is specified the new object uses that value instead of the existing value from the current object. This is ideal for use with keyword parameters to let us copy an object while changing the values of one or more fields:
 
-   ~~~ scala
-   scala> res0.copy(firstName = "Dave2")
-   res8: Person = Person(Dave2,Gurnell)
+~~~ scala
+scala> res0.copy(firstName = "Dave2")
+res8: Person = Person(Dave2,Gurnell)
 
-   scala> res0.copy(lastName = "Gurnell2")
-   res9: Person = Person(Dave,Gurnell2)
-   ~~~
+scala> res0.copy(lastName = "Gurnell2")
+res9: Person = Person(Dave,Gurnell2)
+~~~
 
 ### Features of a case class companion object
 
@@ -138,10 +138,10 @@ The differences between a case object and a regular singleton object are:
 
  - The `case object` keyword defines a class and an object, and makes the object an instance (actually the only instance) of the class:
 
-   ~~~ scala
-   class Citizen { /* ... */ }
-   object Citizen extends Citizen { /* ... */ }
-   ~~~
+~~~ scala
+class Citizen { /* ... */ }
+object Citizen extends Citizen { /* ... */ }
+~~~
 
  - With a case object we still get all of the functionality defined for case classes above.
 

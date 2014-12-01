@@ -32,23 +32,23 @@ Compilation is a process of checking that a program makes sense. There are two w
 
 1. It must be *syntactically correct*, meaning the parts of the program must be arranged according to the grammar of the language. An example English sentence that is not syntactically correct is "on cat mat sat the". An example syntactically incorrect Scala program is
 
-   ~~~ scala
-   scala> toUpperCase."Hello world!"
-   <console>:1: error: identifier expected but string literal found.
-           toUpperCase."Hello world!"
-                       ^
-   ~~~
+~~~ scala
+scala> toUpperCase."Hello world!"
+<console>:1: error: identifier expected but string literal found.
+       toUpperCase."Hello world!"
+                   ^
+~~~
 
 2. It must *type check*, meaning it must obey certain constraints on what a sensible program is. An example English sentence that is syntactically correct but fails to make sense is "the mat sat on the cat". A simple program that would fail to type check is trying to convert a number to uppercase.
 
-   ~~~ scala
-   scala> 2.toUpperCase
-   <console>:8: error: value toUpperCase is not a member of Int
-                 2.toUpperCase
-                   ^
-   ~~~
+~~~ scala
+scala> 2.toUpperCase
+<console>:8: error: value toUpperCase is not a member of Int
+             2.toUpperCase
+               ^
+~~~
 
-   The concept of upper and lowercase doesn't make sense for numbers, and the type system will catch this error.
+The concept of upper and lowercase doesn't make sense for numbers, and the type system will catch this error.
 
 If a program passes the checks at compile-time, it may then be run. This is the process of the computer performing the instructions in the program. All Scala programs evaluate to a value.
 

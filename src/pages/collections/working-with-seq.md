@@ -322,14 +322,14 @@ Once again we follow the same pattern. The types are:
 2. We want a `Seq[Int]`
 3. Constructing the operation we want to use requires a bit more thought. The hint is to use `contains`. We can keep a sequence of the unique elements we've seen so far, and use `contains` to test if the sequence contains the current element. If we have seen the element we don't add it, otherwise we do. In code
 
-   ~~~ scala
-   def insert(seq: Seq[Int], elt: Int): Seq[Int] = {
-     if(seq.contains(elt))
-       seq
-     else
-       elt +: seq
-   }
-   ~~~
+~~~ scala
+def insert(seq: Seq[Int], elt: Int): Seq[Int] = {
+ if(seq.contains(elt))
+   seq
+ else
+   elt +: seq
+}
+~~~
 
 We these three pieces we can solve the problem. Looking at the type table we see we want a `fold`. Once again we must find the identity element. In this case the empty sequence is what we want. Why so? Think about what the answer should be if we try to find the unique elements of the empty sequence.
 

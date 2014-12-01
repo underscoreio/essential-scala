@@ -73,10 +73,10 @@ We have a six-step process for writing methods in a systematic way.
 2. Write some test cases for the expected output of the method given example input. We can use the `assert` function to write down these cases.
 3. Write the method declaration using `???` for the body like so:
 
-   ~~~ scala
-   def name(parameter: type, ...): resultType =
-     ???
-   ~~~
+~~~ scala
+def name(parameter: type, ...): resultType =
+ ???
+~~~
 4. Run the code to check the test cases do in fact fail.
 5. Write the body of the method. We currently have two techniques to apply here:
    - consider the result type and how we can create an instance of it; and

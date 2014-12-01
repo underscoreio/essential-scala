@@ -440,10 +440,10 @@ Using this sample code, write implementations of the following methods:
    <div class="solution">
     We use `filter` because we are expecting more than one result:
 
-   ~~~ scala
-   def directorsWithBackCatalogOfSize(numberOfFilms: Int): Seq[Director] =
-     directors.filter(_.films.length > numberOfFilms)
-   ~~~
+~~~ scala
+def directorsWithBackCatalogOfSize(numberOfFilms: Int): Seq[Director] =
+ directors.filter(_.films.length > numberOfFilms)
+~~~
    </div>
 
  - Accept a parameter `year` of type `Int` -- find a director who was born
@@ -453,10 +453,10 @@ Using this sample code, write implementations of the following methods:
    We use `find` because we are expecting at most one result. This solution
    will return the first director found who matches the criteria of the search:
 
-   ~~~ scala
-   def directorBornBefore(year: Int): Option[Director] =
-     directors.find(_.yearOfBirth < year)
-   ~~~
+~~~ scala
+def directorBornBefore(year: Int): Option[Director] =
+ directors.find(_.yearOfBirth < year)
+~~~
 
    The `Option` type is discussed in more detail later this chapter.
    </div>
@@ -468,13 +468,13 @@ Using this sample code, write implementations of the following methods:
    This solution performs each part of the query separately and uses
    `filter` and `contains` to calculate the intersection of the results:
 
-   ~~~ scala
-   def directorBornBeforeWithBackCatalogOfSize(year: Int, numberOfFilms: Int): Seq[Director] = {
-     val byAge   = directors.filter(_.yearOfBirth < year)
-     val byFilms = directors.filter(_.films.length > numberOfFilms)
-     byAge.filter(byFilms.contains)
-   }
-   ~~~
+~~~ scala
+def directorBornBeforeWithBackCatalogOfSize(year: Int, numberOfFilms: Int): Seq[Director] = {
+ val byAge   = directors.filter(_.yearOfBirth < year)
+ val byFilms = directors.filter(_.films.length > numberOfFilms)
+ byAge.filter(byFilms.contains)
+}
+~~~
    </div>
 
  - Accept a parameter `ascending` of type `Boolean` that defaults to `true`. Sort the directors by age
@@ -483,43 +483,43 @@ Using this sample code, write implementations of the following methods:
    <div class="solution">
    Here is one solution. Note that sorting by ascending age is the same as sorting by descending year of birth:
 
-   ~~~ scala
-   def directorsSortedByAge(ascending: Boolean = true) =
-     if(ascending) {
-       directors.sortWith((a, b) => a.yearOfBirth < b.yearOfBirth)
-     } else {
-       directors.sortWith((a, b) => a.yearOfBirth > b.yearOfBirth)
-     }
-   ~~~
+~~~ scala
+def directorsSortedByAge(ascending: Boolean = true) =
+ if(ascending) {
+   directors.sortWith((a, b) => a.yearOfBirth < b.yearOfBirth)
+ } else {
+   directors.sortWith((a, b) => a.yearOfBirth > b.yearOfBirth)
+ }
+~~~
 
    Because Scala is a functional language, we can also factor our code as follows:
 
-   ~~~ scala
-   def directorsSortedByAge(ascending: Boolean = true) = {
-     val comparator =
-       if(ascending) {
-         (a, b) => a.yearOfBirth < b.yearOfBirth
-       } else {
-         (a, b) => a.yearOfBirth > b.yearOfBirth
-       }
-
-     directors.sortWith(comparator)
+~~~ scala
+def directorsSortedByAge(ascending: Boolean = true) = {
+ val comparator =
+   if(ascending) {
+     (a, b) => a.yearOfBirth < b.yearOfBirth
+   } else {
+     (a, b) => a.yearOfBirth > b.yearOfBirth
    }
-   ~~~
+
+ directors.sortWith(comparator)
+}
+~~~
 
    Here is a final refactoring that is slightly less efficient because it rechecks
    the value of `ascending` multiple times.
 
-   ~~~ scala
-   def directorsSortedByAge(ascending: Boolean = true) =
-     directors.sortWith { (a, b) =>
-       if(ascending) {
-         a.yearOfBirth < b.yearOfBirth
-       } else {
-         a.yearOfBirth > b.yearOfBirth
-       }
-     }
-   ~~~
+~~~ scala
+def directorsSortedByAge(ascending: Boolean = true) =
+ directors.sortWith { (a, b) =>
+   if(ascending) {
+     a.yearOfBirth < b.yearOfBirth
+   } else {
+     a.yearOfBirth > b.yearOfBirth
+   }
+ }
+~~~
 
    Note the use of braces instead of parentheses on the call to `sortWith` in the
    last example. We can use this syntax on any method call of one argument to give

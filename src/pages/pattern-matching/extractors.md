@@ -43,44 +43,46 @@ Lists and sequences can be captured in several ways:
 
  - The `List` and `Seq` companion objects act as patterns that match fixed-length sequences:
 
-   ~~~ scala
-   scala> List(1, 2, 3) match {
-        |    case List(a, b, c) => a + b + c
-        | }
-   res8: Int = 6
-   ~~~
+~~~ scala
+scala> List(1, 2, 3) match {
+    |    case List(a, b, c) => a + b + c
+    | }
+res8: Int = 6
+~~~
 
  - `Nil` matches the empty list:
 
+~~~ scala
    scala> Nil match {
         |   case List(a) => "length 1"
         |   case Nil => "length 0"
         | }
    res11: String = length 0
+~~~
 
  - There is also a singleton object `::` that matches the head and tail of a list:
 
-   ~~~ scala
+~~~ scala
    scala> List(1, 2, 3) match {
      |   case ::(head, tail) => s"head $head tail $tail"
      |   case Nil => "empty"
      | }
    res12: String = head 1 tail List(2, 3)
-   ~~~
+~~~
 
    This perhaps makes more sense when you realise that binary extractor patterns can also be written infix:
 
-   ~~~ scala
+~~~ scala
    scala> List(1, 2, 3) match {
      |   case head :: tail => s"head $head tail $tail"
      |   case Nil => "empty"
      | }
    res12: String = head 1 tail List(2, 3)
-   ~~~
+~~~
 
  - Combined use of `::`, `Nil`, and `_` allow us to match the first elements of any length of list:
 
-   ~~~ scala
+~~~ scala
    scala> List(1, 2, 3) match {
      |   case Nil => "length 0"
      |   case a :: Nil => s"length 1 starting $a"
@@ -88,7 +90,7 @@ Lists and sequences can be captured in several ways:
      |   case a :: b :: c :: _ => s"length 3+ starting $a $b $c"
      | }
    res0: String = length 3+ starting 1 2 3
-   ~~~
+~~~
 
 #### Creating custom fixed-length extractors
 

@@ -30,18 +30,18 @@ We know we can use the structural recursion pattern as we know that `fold` (whic
 
 - For `Pair` we have to combine `head` and `tail` to return a `LinkedList[B]` (as the types tell us) and we also know we need to recurse on `tail`. We can write
 
-  ~~~ scala
-  case Pair(hd, tl) => {
-    val newTail: LinkedList[B] = tail.map(fn)
-    // Combine newTail and head to create LinkedList[B]
-  }
-  ~~~
+~~~ scala
+case Pair(hd, tl) => {
+  val newTail: LinkedList[B] = tail.map(fn)
+  // Combine newTail and head to create LinkedList[B]
+}
+~~~
 
-  We can convert `head` to a `B` using `fn`, and then build a larger list from `newTail` and our `B` giving us the final solution
+We can convert `head` to a `B` using `fn`, and then build a larger list from `newTail` and our `B` giving us the final solution
 
-  ~~~ scala
-  case Pair(hd, tl) => Pair(fn(head), tail.map(fn))
-  ~~~
+~~~ scala
+case Pair(hd, tl) => Pair(fn(head), tail.map(fn))
+~~~
 
 - For `End` we don't have any value of `A` to apply to the function. The only thing we can return is an `End`.
 

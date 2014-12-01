@@ -134,9 +134,9 @@ Finally, update the code for `Draw.apply` to print the colour of the argument as
 
  - if the argument is a predefined colour, print that colour by name:
 
-   ~~~ scala
-   Draw(Circle(10, Yellow)) // returns "A yellow square of size 10cm"
-   ~~~
+~~~ scala
+Draw(Circle(10, Yellow)) // returns "A yellow square of size 10cm"
+~~~
 
  - if the argument is a custom colour rather than a predefined one,
    print the word "light" or "dark" instead.
