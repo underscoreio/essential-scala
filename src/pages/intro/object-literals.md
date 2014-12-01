@@ -253,14 +253,17 @@ We have also seen the difference between methods and fields -- fields refer to v
 
 The table below shows the names, colour, and favourite foods of three cats. Define an object for each cat. (For experienced programmers: we haven't covered classes yet.)
 
-|-----------+-----------------+-------|
++-----------+-----------------+-------+
 | Name      | Colour          | Food  |
-|-----------+-----------------+-------|
++===========+=================+=======+
 | Oswald    | Black           | Milk  |
++-----------+-----------------+-------+
 | Henderson | Ginger          | Chips |
++-----------+-----------------+-------+
 | Quentin   | Tabby and white | Curry |
-|=====================================|
-{: .table .table-bordered .table-responsive }
++-----------+-----------------+-------+
+
+
 
 <div class="solution">
 

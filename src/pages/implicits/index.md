@@ -4,13 +4,14 @@
 
 In the [section on traits](../traits/working-with-data.html) we compared object oriented and functional style in terms of extensibility, using this table.
 
-|--------+-------------------------+-------------------------|
++--------+-------------------------+-------------------------+
 |        | Add new method          | Add new data            |
-|--------+-------------------------+-------------------------|
++========+=========================+=========================+
 | **OO** | Change existing code    | Existing code unchanged |
++--------+-------------------------+-------------------------+
 | **FP** | Existing code unchanged | Change existing code    |
-|============================================================|
-{: .table .table-bordered .table-responsive }
++--------+-------------------------+-------------------------+
+
 
 Type classes give us a third implementation technique which is more flexible than either. A type class is like a trait, defining an interface. However, with type classes we can:
 

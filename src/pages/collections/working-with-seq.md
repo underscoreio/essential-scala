@@ -51,13 +51,17 @@ res14: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), Lis
 
 but we end up with a sequence of sequences. Let's look at the types in more detail to see what's gone wrong:
 
++--------+---------------+--------------------------+---------------------+
 | Method | We have       | We provide               | We get              |
-|--------+---------------+--------------------------+---------------------|
++========+===============+==========================+=====================+
 | `map`  | `Seq[A]`      | `A => B`                 | `Seq[B]`            |
++--------+---------------+--------------------------+---------------------+
 | `map`  | `Seq[String]` | `String => List[String]` | `Seq[List[String]]` |
++--------+---------------+--------------------------+---------------------+
 | `???`  | `Seq[A]`      | `A => Seq[B]`            | `Seq[B]`            |
-|=========================================================================|
-{: .table .table-bordered }
++--------+---------------+--------------------------+---------------------+
+
+
 
 What is the method `???` that we can use to collect a single flat sequence?
 
@@ -100,29 +104,33 @@ There are also two further wrinkles:
 
 Let's make another type table to see what we're looking for:
 
++--------+------------+-----------------------------+----------+
 | Method | We have    | We provide                  | We get   |
-|--------+------------+-----------------------------+----------|
++========+============+=============================+==========+
 | `???`  | `Seq[Int]` | `0` and `(Int, Int) => Int` | `Int`    |
-|==============================================================|
-{: .table .table-bordered }
++--------+------------+-----------------------------+----------+
+
 
 The methods that fit the bill are called folds, with two common cases `foldLeft` and `foldRight` correspond to the order the fold is applied. The job of these methods is to traverse a sequence and accumulate a result. The types are as follows:
 
++-------------+----------+-----------------------+----------+
 | Method      | We have  | We provide            | We get   |
-|-------------+----------+-----------------------+----------|
++=============+==========+=======================+==========+
 | `foldLeft`  | `Seq[A]` | `B` and `(B, A) => B` | `B`      |
++-------------+----------+-----------------------+----------+
 | `foldRight` | `Seq[A]` | `B` and `(A, B) => B` | `B`      |
-|===========================================================|
-{: .table .table-bordered }
++-------------+----------+-----------------------+----------+
+
 
 Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the following:
 
++-------------------------------------+--------------------------+--------------------------------+
 | Method                              | Operations               | Notes                          |
-|-------------------------------------+--------------------------+--------------------------------|
++=====================================+==========================+================================+
 | `Seq(1, 2, 3).foldLeft(0)(_ + _)`   | `(((0 + 1) + 2) + 3)`    | Evaluation starts on the left  |
++-------------------------------------+--------------------------+--------------------------------+
 | `Seq(1, 2, 3).foldRight(0)(_ + _)`  | `(1 + (2 + (3 + 0)))`    | Evaluation starts on the right |
-|=================================================================================================|
-{: .table .table-bordered }
++-------------------------------------+--------------------------+--------------------------------+
 
 As we know from studying algebraic data types, the fold methods are very flexible. We can write *any* transformation on a sequence in terms of fold.
 
@@ -130,11 +138,12 @@ As we know from studying algebraic data types, the fold methods are very flexibl
 
 There is one more traversal method that is commonly used: `foreach`. Unlike `map`, `flatMap` and the `fold`s, `foreach` does not return a useful result -- we use it purely for its side-effects. The type table is:
 
++-----------+----------+-------------+----------+
 | Method    | We have  | We provide  | We get   |
-|-----------+----------+-------------+----------|
++===========+==========+=============+==========+
 | `foreach` | `Seq[A]` | `A => Unit` | `Unit`   |
-|===============================================|
-{: .table .table-bordered }
++-----------+----------+-------------+----------+
+
 
 A great example using `foreach` is printing the elements of a sequence:
 
@@ -149,15 +158,21 @@ And a 3...
 
 We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `foreach`. It can be difficult to know which to use, but it turns out there is a simple way to decide: look at the types! The type table below gives the types for all the operations we've seen so far. To use it, start with the data you have (always a `Seq[A]` in the table below) and then look at the functions you have available and the result you want to obtain. The final column will tell you which method to use.
 
++----------+-----------------------+-----------+-------------+
 | We have  | We provide            | We want   | Method      |
-|----------+-----------------------+-----------+-------------|
++==========+=======================+===========+=============+
 | `Seq[A]` | `A => Unit`           | `Unit`    | `foreach`   |
++----------+-----------------------+-----------+-------------+
 | `Seq[A]` | `A => B`              | `Seq[B]`  | `map`       |
++----------+-----------------------+-----------+-------------+
 | `Seq[A]` | `A => Seq[B]`         | `Seq[B]`  | `flatMap`   |
++----------+-----------------------+-----------+-------------+
 | `Seq[A]` | `B` and `(B, A) => B` | `B`       | `foldLeft`  |
++----------+-----------------------+-----------+-------------+
 | `Seq[A]` | `B` and `(A, B) => B` | `B`       | `foldRight` |
-|============================================================|
-{: .table }
++----------+-----------------------+-----------+-------------+
+
+
 
 This type of analysis may see foreign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
 

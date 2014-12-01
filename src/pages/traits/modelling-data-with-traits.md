@@ -55,13 +55,15 @@ An algebraic data type is any data that uses the above two patterns. In the func
 
 We have looked at relationships along two dimensions: is-a/has-a, and and/or. We can draw up a little table and see we only have patterns for two of the four table cells.
 
-|-----------+--------------+----------|
++-----------+--------------+----------+
 |           | And          | Or       |
-|-----------+--------------+----------|
++===========+==============+==========+
 | **Is-a**  |              | Sum type |
++-----------+--------------+----------+
 | **Has-a** | Product type |          |
-|=====================================|
-{: .table .table-bordered .table-responsive }
++-----------+--------------+----------+
+
+
 
 What about the missing two patterns?
 

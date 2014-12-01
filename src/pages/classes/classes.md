@@ -245,14 +245,16 @@ We now have enough machinery to have some fun playing with classes.
 
 Recall the cats from a previous exercise:
 
-|-----------+-----------------+-------|
++-----------+-----------------+-------+
 | Name      | Colour          | Food  |
-|-----------+-----------------+-------|
++===========+=================+=======+
 | Oswald    | Black           | Milk  |
++-----------+-----------------+-------+
 | Henderson | Ginger          | Chips |
++-----------+-----------------+-------+
 | Quentin   | Tabby and white | Curry |
-|=====================================|
-{: .table .table-bordered .table-responsive }
++-----------+-----------------+-------+
+
 
 Define a class `Cat` and then create an object for each cat in the table above.
 

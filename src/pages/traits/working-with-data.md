@@ -235,13 +235,15 @@ The general rule is: if a method only depends on other fields and methods in a c
 
 There is a fundamental difference between the kind of extensibility that object-oriented style (polymorphism, assuming traits are not sealed) and functional style (pattern matching, with sealed traits) gives us. With OO style we can easily add new data, by extending a trait, but adding a new method requires us to change existing code. With functional style we can easily add a new method but adding new data requires us to modify existing code. In tabular form:
 
-|--------+-------------------------+-------------------------|
++--------+-------------------------+-------------------------+
 |        | Add new method          | Add new data            |
-|--------+-------------------------+-------------------------|
++========+=========================+=========================+
 | **OO** | Change existing code    | Existing code unchanged |
++--------+-------------------------+-------------------------+
 | **FP** | Existing code unchanged | Change existing code    |
-|============================================================|
-{: .table .table-bordered .table-responsive }
++--------+-------------------------+-------------------------+
+
+
 
 In Scala we have the flexibility to use both polymorphism and pattern matching, and we should use whichever is appropriate. However we generally prefer sealed traits as it gives us greater guarantees about our code's semantics, and we can use typeclasses, which we'll explore later, to get us OO-style extensibility.
 
