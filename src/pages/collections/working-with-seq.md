@@ -1,11 +1,9 @@
----
-layout: page
-title: Working with Sequences
----
+## Working with Sequences
+
 
 In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences -- how functional programming allows us to process every element of a sequence at once in a terse and declarative style.
 
-## Bulk Processing of Elements
+### Bulk Processing of Elements
 
 When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. In Java we have to do this using loops. Scala gives us a number of powerful options that allow us to solve many problems more elegantly.
 
@@ -163,7 +161,7 @@ We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `fo
 
 This type of analysis may see foreign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
 
-## Exercises
+### Exercises
 
 The goals of this exercise are for you to learn your way around the collections API, but more importantly to learn to use types to drive implementation. When approaching each exercise you should answer:
 
@@ -174,7 +172,7 @@ The goals of this exercise are for you to learn your way around the collections 
 When you have answered these questions look at the type table above to find the correct method to use. Done in this way the actual programming should be straightforward.
 
 
-### Heroes of the Silver Screen
+#### Heroes of the Silver Screen
 
 These exercises re-use the example code from the *Directorial Debut* exercise from the previous section:
 

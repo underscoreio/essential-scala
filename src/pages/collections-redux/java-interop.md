@@ -1,7 +1,4 @@
----
-layout: page
-title: Java Interoperation
----
+## Java Interoperation
 
 The prefered way to convert between Scala and Java collections is use the `JavaConverters` implicit conversions. We use it by importing `scala.collection.JavaConverters._` and then methods `asJava` and `asScala` become available on many of the collections.
 
@@ -45,6 +42,6 @@ scala> list
 res9: java.util.List[Int] = [5]
 ~~~
 
-## JavaConversions
+### JavaConversions
 
 The is another object, `scala.collection.JavaConversions`, that performs conversions with needing the calls to `asJava` or `asScala`. Many people find this confusing in large systems and thus it is not recommended.

@@ -1,11 +1,8 @@
----
-layout: page
-title: Using Type Classes
----
+## Using Type Classes
 
 We have seen how to define type classes. In this section we'll see some conveniences for using them: **context bounds** and the **implicitly** method.
 
-## Context Bounds
+### Context Bounds
 
 When we use type classes we often end up requiring implicit parameters that we pass onward to a type class handler. For example, using our `HtmlWriter` example we might want to define some kind of page template that accepts content rendered by a writer.
 
@@ -43,7 +40,7 @@ A context bound is an annotation on a generic type variable like so:
 It expands into a generic type parameter `[A]` along with an implicit parameter for a `Context[A]`.
 </div>
 
-## Implicitly
+### Implicitly
 
 Context bounds give us a short-hand syntax for declaring implicit parameters, but since we don't have an explicit name for the parameter we cannot use it in our methods. Normally we use context bounds when we don't need access to the implicit parameter, but rather just pass it on to some other method expecting an implicit. However if we do need access for some reason, we can use the `implicitly` method.
 

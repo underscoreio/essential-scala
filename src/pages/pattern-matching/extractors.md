@@ -1,19 +1,16 @@
----
-layout: page
-title: Custom Patterns
----
+## Custom Patterns
 
 In the last section we took an in-depth look at all of the types of pattern that are embedded into the pattern matching language. However, in that list we didn't see some of the patterns that we've been using in the course so far -- case class and sequence patterns were nowhere to be seen!
 
 There is a final aspect of pattern matching that we haven't covered that truly makes it a universal tool -- we can define our own custom **extractor** patterns using regular Scala code and use them along-side the built-in patterns in our `match` expressions.
 
-## Extractors
+### Extractors
 
 An extractor pattern looks like a function call of zero or more arguments: `foo(a, b, c)`, where each argument is itself an arbitrary pattern.
 
 Extractor patterns are defined by creating objects with a method called `unapply` or `unapplySeq`. We'll dive into the guts of these methods in a minute. For now let's look at some of the predefined extractor patterns from the Scala library:
 
-### Case class extractors
+#### Case class extractors
 
 The companion object of every `case class` is equipped with an extractor that creates a pattern of the same arity as the constructor. This makes it easy to capture fields in variables:
 
@@ -24,7 +21,7 @@ scala> Person("Dave", "Gurnell") match {
 res6: List[String] = List(Dave, Gurnell)
 ~~~
 
-### Regular expressions
+#### Regular expressions
 
 Scala's regular expression objects are outfitted with a pattern that binds each of the captured groups:
 
@@ -40,7 +37,7 @@ scala> "192.168.0.1" match {
 res7: List[String] = List(192, 168, 0, 1)
 ~~~
 
-### Lists and Sequences
+#### Lists and Sequences
 
 Lists and sequences can be captured in several ways:
 
@@ -93,7 +90,7 @@ Lists and sequences can be captured in several ways:
    res0: String = length 3+ starting 1 2 3
    ~~~
 
-### Creating custom fixed-length extractors
+#### Creating custom fixed-length extractors
 
 You can use any object as a fixed-length extractor pattern by giving it a method called `unapply` with a particular type signature:
 
@@ -143,7 +140,7 @@ scala> Person("Dave", "Gurnell") match {
 res10: String = Dave GURNELL
 ~~~
 
-### Creating custom variable-length extractors
+#### Creating custom variable-length extractors
 
 We can also create extractors that match arbitrary numbers of arguments by defining an `unapplySeq` method of the following form:
 
@@ -168,7 +165,7 @@ scala> "the quick brown fox" match {
 res0: String = 4 words: the quick brown fox
 ~~~
 
-### Wildcard sequence patterns
+#### Wildcard sequence patterns
 
 There is one final type of pattern that can only be used with variable-length extractors. The *wildcard sequence* pattern, written `_*`, matches zero or more arguments from a variable-length pattern and discards their values. For example:
 
@@ -193,9 +190,9 @@ scala> "the quick brown fox" match {
 res3: Seq[String] = WrappedArray("brown", "fox")
 ~~~
 
-## Exercises
+### Exercises
 
-### Titlecase extractor
+#### Titlecase extractor
 
 Write an extractor that converts any string to titlecase by uppercasing the first letter of every word. Tips:
 

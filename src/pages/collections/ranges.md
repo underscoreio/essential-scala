@@ -1,7 +1,4 @@
----
-layout: page
-title: Ranges
----
+## Ranges
 
 So far we've seen lots of ways to iterate over sequences but not much in the way of iterating over numbers. In Java and other languages it is common to write code like
 

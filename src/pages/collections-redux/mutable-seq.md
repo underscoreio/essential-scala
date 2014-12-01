@@ -1,7 +1,4 @@
----
-layout: page
-title: Mutable Sequences
----
+## Mutable Sequences
 
 None of the methods we have covered so far have any side-effects -- like the `copy` method on a case class, they return a new copy of the sequence.
 
@@ -70,7 +67,7 @@ res1: Seq[Int] = List(1, 2, 3)
 ~~~
 </div>
 
-## In summary
+### In summary
 
 Here is a type table of all the methods we have seen so far:
 
@@ -95,9 +92,9 @@ and the extras for mutable sequences:
 |===========================================================|
 {: .table .table-bordered .table-responsive }
 
-## Exercises
+### Exercises
 
-### Animals
+#### Animals
 
 Create a `Seq` containing the `String`s `"cat"`, `"dog"`, and `"penguin"`. Bind it to the name `animals`.
 

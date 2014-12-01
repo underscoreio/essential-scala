@@ -1,13 +1,10 @@
----
-layout: page
-title: Options
----
+## Options
 
 We have seen `Option`s in passing a number of times already -- they represent values that may or may not be present in our code. Options are an alternative to using `null` that provide us with a means of chaining computations together without risking `NullPointerExceptions`. We have previously produced code in the spirit of `Option` with our `DivisionResult` and `Maybe` types in previous chapters.
 
 Let's look into Scala's built-in `Option` type in more detail.
 
-## Option, Some, and None
+### Option, Some, and None
 
 `Option` is a generic sealed trait with two subtypes -- `Some` and `None`. Here is an abbreviated version of the code -- we will fill in more methods as we go on:
 
@@ -55,7 +52,7 @@ scala> readInt("abc")
 res8: Option[Int] = None
 ~~~
 
-## Extracting Values from Options
+### Extracting Values from Options
 
 There are several ways to safely extract the value in an option without the risk of throwing any exceptions:
 
@@ -78,7 +75,7 @@ res10: Int = 124
 
 **Alternative 3: `map` and `flatMap`** -- `Option` supports both of these methods, enabling us to chain off of the value within producing a new `Option`. This bears a more explanation -- let's look at it in a little more detail.
 
-## Options as Sequences
+### Options as Sequences
 
 One way of thinking about an `Option` is as a sequence of 0 or 1 elements. In fact, `Option` supports many of the sequence operations we have seen so far:
 
@@ -175,9 +172,9 @@ Once we get past the initial foreignness of using for comprehensions to "iterate
 
 [^option-length]: Note that `Option` doesn't actually have a `length` method -- this example is for illustrative purposes only.
 
-## Exercises
+### Exercises
 
-### Adding Things
+#### Adding Things
 
 Write a method `addOptions` that accepts two parameters of type `Option[Int]` and adds them together. Use a for comprehension to structure your code.
 
@@ -208,7 +205,7 @@ def addOptions2(opt1: Option[Int], opt2: Option[Int]) =
 ~~~
 </div>
 
-### Adding All of the Things
+#### Adding All of the Things
 
 Overload `addOptions` with another implementation that accepts three `Option[Int]` parameters and adds them all together.
 
@@ -242,7 +239,7 @@ def addOptions2(opt1: Option[Int], opt2: Option[Int], opt3: Option[Int]) =
 ~~~
 </div>
 
-### A(nother) Short Division Exercise
+#### A(nother) Short Division Exercise
 
 Write a method `divide` that accepts two `Int` parameters and divides one by the other. Use `Option` to avoid exceptions when the denominator is `0`.
 
@@ -270,7 +267,7 @@ def divideOptions(numerator: Option[Int], denominator: Option[Int]) =
 ~~~
 </div>
 
-### A Simple Calculator
+#### A Simple Calculator
 
 A final, longer exercise. Write a method called `calculator` that accepts three string parameters:
 

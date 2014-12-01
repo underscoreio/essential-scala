@@ -1,7 +1,4 @@
----
-layout: page
-title: Arrays and Strings
----
+## Arrays and Strings
 
 Arrays and strings in Scala correspond to Java's arrays and strings.
 
@@ -52,6 +49,6 @@ scala> sequence.getClass
 res10: java.lang.Class[_ <: Seq[Char]] = class scala.collection.immutable.WrappedString
 ~~~
 
-## Performance
+### Performance
 
 You might be worried about the performance of implicit conversions. The Ops conversions are normally optimised away. The Wrapped conversions can give a small performance hit which may be an issue in particularly performance sensitive code.

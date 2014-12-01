@@ -1,7 +1,4 @@
----
-layout: page
-title: Sequences
----
+## Sequences
 
 A **sequence** is a collection of items with a defined and stable order. Sequences are one of the most common data structures. In this section we're going to look at the basics of sequences: creating them, key methods on sequences, and the distinction between mutable and immutable sequences.
 
@@ -14,11 +11,11 @@ sequence: Seq[Int] = List(1, 2, 3)
 
 This immediately shows off a key feature of Scala's collections, the **separation between interface and implementation**. In the above, the value has type `Seq[Int]` but is implemented by a `List`.
 
-## Basic operations
+### Basic operations
 
 Sequences implement [many methods](http://docs.scala-lang.org/overviews/collections/seqs.html). Let's look at some of the most common.
 
-### Accessing elements
+#### Accessing elements
 
 We can access the elements of a sequence using its `apply` method, which accepts an `Int` index as a parameter. Indices start from `0`.
 
@@ -171,7 +168,7 @@ res11: Seq[Int] = List(5, 2, 3)
 ~~~
 {% endcomment %}
 
-## Lists
+### Lists
 
 The default implementation of `Seq` is a `List`, which is a classic [linked list](http://en.wikipedia.org/wiki/Linked_list) data structure similar to the one we developed in an earlier exercise. Some Scala libraries work specifically with `Lists` rather than using more generic types like `Seq`. For this reason we should familiarize ourselves with a couple of list-specific methods.
 
@@ -211,7 +208,7 @@ res3: List[Int] = List(1, 2, 3, 4, 5, 6)
 Lists have well known performance characteristics -- constant-time prepend and head/tail operations and linear-time append and search operations. Other immutable sequences are available in Scala with different [performance characteristics](http://www.scala-lang.org/docu/files/collections-api/collections_40.html) to match all situations. It is up to us as developers to decide whether we want to tie our code to a specific sequence type like `List` or refer to our sequences as `Seqs` to simplify swapping implementations.
 
 
-## Importing Collections and Other Libraries
+### Importing Collections and Other Libraries
 
 The `Seq` and `List` types are so ubiquitous in Scala that they are made automatically available at all times. Other collections like `Vector` and `Queue` have to be brought into scope manually.
 
@@ -264,7 +261,7 @@ def someMethod = {
 **Java tip:** Import statements are significantly more flexible in Scala than Java. The main differences are described nicely in the [Scala Wikibook](http://en.wikibooks.org/wiki/Scala/Import).
 </div>
 
-## Take Home Points
+### Take Home Points
 
 `Seq` is Scala's general sequence datatype. It has a number of general subtypes such as `List`, `Stack`, `Vector`, `Queue`, and `Array`, and specific subtypes such as `String`.
 
@@ -297,9 +294,9 @@ We have covered a variety of methods that operate on sequences. Here is a type t
 
 We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement. This has a number of features that aren't present in Java -- it can be used to import methods from objects, and be written anywhere in our code.
 
-## Exercises
+### Exercises
 
-### Documentation
+#### Documentation
 
 Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the following:
 
@@ -338,7 +335,7 @@ None.isEMpty        // returns true
 ~~~
 </div>
 
-### Animals
+#### Animals
 
 Create a `Seq` containing the `String`s `"cat"`, `"dog"`, and `"penguin"`. Bind it to the name `animals`.
 
@@ -373,7 +370,7 @@ You might expect a type error here, but Scala is capable of determining the leas
 In most real code appending an `Int` to a `Seq[String]` would be an error. In practice, the type annotations we place on methods and fields protect against this kind of type error, but be aware of this behaviour just in case.
 </div>
 
-### Intranet Movie Database
+#### Intranet Movie Database
 
 Let's revisit our films and directors example from the [Classes](/classes) chapter.
 

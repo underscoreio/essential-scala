@@ -1,11 +1,8 @@
----
-layout: page
-title: Maps and Sets
----
+## Maps and Sets
 
 Up to now we've spent all of our time working with sequences. In this section we'll go through the two other most common collection types: `Maps` and `Sets`.
 
-## Maps
+### Maps
 
 A `Map` is very much like its counterpart in Java - it is a collection that maps *keys* to *values*. The keys must form a set and in most cases are unordered. Here is how to create a basic map:
 
@@ -26,7 +23,7 @@ res1: (java.lang.String, Int) = (a,1)
 
 Let's look at the most common operations on a Map.
 
-### Accessing values using keys
+#### Accessing values using keys
 
 The raison d'etre of a map is to convert keys to values. There are two main methods for doing this: `apply` and `get`:
 
@@ -56,7 +53,7 @@ res6: Int = -1
 ~~~
 
 
-### Determining membership
+#### Determining membership
 
 The `contains` method determines whether a map contains a key:
 
@@ -65,7 +62,7 @@ scala> example.contains("a")
 res7: Boolean = true
 ~~~
 
-### Determining size
+#### Determining size
 
 Finding the size of a map is just as easy as finding the size of a sequence:
 
@@ -74,7 +71,7 @@ scala> example.size
 res8: Int = 3
 ~~~
 
-### Adding and removing elements
+#### Adding and removing elements
 
 As with `Seq`, the default implementation of `Map` is immutable. We add and remove elements by creating new maps as opposed to mutating existing ones.
 
@@ -106,7 +103,7 @@ Note that we still have to write the pair `"d" -> 4` in parentheses because `+` 
 
 There are many other methods for manipulating immutable maps. For example, the `++` and `--` methods return the union and intersection of their arguments. See the [Scaladoc](file://localhost/usr/local/Cellar/scala/2.9.1/doc/scala-devel-docs/api/scala/collection/Map.html) for `Map` for more information.
 
-### Mutable maps
+#### Mutable maps
 
 The `scala.collection.mutable` package contains several mutable implementations of `Map`:
 
@@ -141,7 +138,7 @@ Note that, as with mutable sequences, `a(b) = c` is shorthand for `a.update(b, c
 
 There are many other methods for manipulating mutable maps. See the [Scaladoc](http://www.scala-lang.org/files/archive/api/current#scala.collection.mutable.Map) for `scala.collection.mutable.Map` for more information.
 
-### Sorted maps
+#### Sorted maps
 
 The maps we have seen so far do not guarantee an ordering over their keys. For example, note that in this example, the order of keys in the resulting map is different from the order of addition operations:
 
@@ -163,7 +160,7 @@ res16: scala.collection.immutable.ListMap[java.lang.String,Int] =
 
 Scala's separation of interface and implementation means that the methods on ordered and unordered maps are almost identical, although their performance may vary. See [this useful page](http://docs.scala-lang.org/overviews/collections/performance-characteristics.html) for more information on the performance characteristics of the various types of collection.
 
-### map and flatMap
+#### map and flatMap
 
 Maps, like sequences, extend the `Traversable` trait, which means they inherit the standard `map` and `flatMap` methods. In fact, a `Map[A,B]` is a `Traversable[Tuple2[A,B]]`, which means that `map` and `flatMap` operate on instances of `Tuple2`.
 
@@ -222,7 +219,7 @@ res20: scala.collection.immutable.Iterable[java.lang.String] =
          List(1a=1, 2a=2, 3a=3, 1b=2, 2b=4, 3b=6, 1c=3, 2c=6, 3c=9)
 ~~~
 
-### In summary
+#### In summary
 
 Here is a type table of all the methods we have seen so far:
 
@@ -256,7 +253,7 @@ and the extras for mutable Sets:
 |===========================================================|
 {: .table }
 
-## Sets
+### Sets
 
 Sets are unordered collections that contain no duplicate elements. You can think of them as sequences without an order, or maps with keys and no values. Here is a type table of the most important methods:
 
@@ -285,9 +282,9 @@ and the extras for mutable Sets:
 |================================================|
 {: .table }
 
-## Exercises
+### Exercises
 
-### Favorites
+#### Favorites
 
 Copy and paste the following code into an editor:
 

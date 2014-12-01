@@ -1,7 +1,4 @@
----
-layout: page
-title: Type Classes
----
+## Type Classes
 
 We have now seen all the fundamental pieces of type classes. They are quite involved, so let's recap the steps needed to construct and use a type class.
 
@@ -44,7 +41,7 @@ object Interface {
 
 Now we have type classes down let's look in more detail at the implicit resolution rules and type class instance packaging.
 
-## Implicit Resolution Rules
+#### Implicit Resolution Rules
 
 Scala has three types of implicits -- implicit classes, implicit values, and implicit conversions -- of which we've only seen one. Each works in the same way -- the compiler detects a type error in our code, locates a matching implicit, and applies it to fix the error. This is a powerful mechanism, but we need to control it very carefully to prevent the compiler changing our code in ways we don't expect. For this reason, there is a strict set of **implicit resolution rules** that we can use to dictate the compiler's behaviour:
 
@@ -56,7 +53,7 @@ Scala has three types of implicits -- implicit classes, implicit values, and imp
 
 Note that the name of the implicit doesn't come into play in this process.
 
-### Implicit Scope
+#### Implicit Scope
 
 The *scope rule* of implicit resolution uses a special set of scoping rules that allow us to package implicits in useful ways. These rules, collectively referred to as **implicit scope**, form a search path that the compiler uses to locate implicits:
 
@@ -64,11 +61,11 @@ The *scope rule* of implicit resolution uses a special set of scoping rules that
 
  2. **Companion objects** -- If an implicit cannot be found locally, the compiler looks in the companion objects of types involved in the type error. Will see more of this rule in the next section.
 
-## Packaging Implicit Values
+### Packaging Implicit Values
 
 We are going to look at two methods for packaging our implicit value: in traits, and in companion objects.
 
-### Packaging in Traits
+#### Packaging in Traits
 
 We've seen we can package implicits in an object that we then import into the scope where we need the implicits. A more sophisticed way of packaging an implicit value is to define it inside a trait called `SomethingImplicits` and extend that trait to create a singleton of the same name:
 
@@ -188,7 +185,7 @@ HtmlUtil.htmlify(person) // uses HtmlImplicits.PersonWriter
 ~~~
 {% endcomment %}
 
-## Take Home Points
+### Take Home Points
 
 Like type enrichment, **type classes** are a general programming pattern. Type classes allow us to define a piece of functionality for a wide range of classes without modifying the source code for those classes.
 
@@ -200,7 +197,7 @@ We can package type class instances together in traits/singletons or separately 
 
 We can combine type classes with type enrichment to add new behaviour to existing types across a whole application.
 
-## Exercises
+### Exercises
 
 These exercises involve serializing Scala data to JSON, which is one of the classic use cases for type classes. The typical process for converting data to JSON in Scala involves two steps. First we convert our data types to an intermediate case class representation, then we serialize the intermediate representation to a string.
 
@@ -234,7 +231,7 @@ scala> res4.stringify
 res5: String = {"foo":"a","bar":"b","baz":"c"}
 ~~~
 
-### Convert X to JSON
+#### Convert X to JSON
 
 Let's create a type class for converting Scala data to JSON. Implement a `JsWriter` trait containing a single abstract method `write` that converts a value to a `JsValue`.
 

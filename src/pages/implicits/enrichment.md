@@ -1,7 +1,4 @@
----
-layout: page
-title: Type Enrichment
----
+## Type Enrichment
 
 Type enrichment, often referred to colloquially as *"pimping"*, allows us to **augment existing classes with extra functionality**. For example, suppose we have a method called `numberOfVowels`:
 
@@ -18,7 +15,7 @@ This is a method that we use all the time. It would be great if `numberOfVowels`
 
 Fortunately, Scala has a feature called called **implicit classes** that allow us to add new functionality to an existing class without editing its source code. This is a similar concept to *categories* in Objective C or *extension methods* in C#, but the implementation is different in each case.
 
-## Implicit Classes
+### Implicit Classes
 
 An class that adds our `numberOfVowels` method to `String`:
 
@@ -72,7 +69,7 @@ res5: String = <span>John &lt;john@example.com&gt;</span>
 
 This gives us many benefits. We can extend existing types to give them new functionality, use simple syntax to invoke the functionality, *and* choose our preferred implementation by controlling which implicits we have in scope.
 
-## Take Home Points
+### Take Home Points
 
 **Implicit classes** are a Scala language feature that allows us to define extra functionality on existing data types without using conventional inheritance.
 
@@ -84,9 +81,9 @@ The compiler uses a strict set of **implicit resolution rules** to determine whe
 
 We can control which implicits are available by **bringing then into scope** using `import` statements or inheritance. It is good practice to do this only when we need to, to make it easy to see which implicits are being used where.
 
-## Exercises
+### Exercises
 
-### Drinking the Kool Aid
+#### Drinking the Kool Aid
 
 Use your newfound powers to add a method `yeah` to `Int`, which prints `Oh yeah!` as many times as the `Int` on which it is called if the `Int` is positive, and is silent otherwise. Here's an example of usage:
 
@@ -129,7 +126,7 @@ We have used the parenthesis for of `for` here to keep the solution small. Writi
 The names `IntImplicits` and `IntOps` are quite vague -- we would probably name them something more specific in a production codebase. However, for this exercise they will suffice perfectly.
 </div>
 
-### Times
+#### Times
 
 Extend your previous example to give `Int` an extra method called `times` that accepts a function of type `Int => Unit` as an argument and executes it `n` times. Example usage:
 
@@ -158,7 +155,7 @@ trait IntImplicits {
 ~~~
 </div>
 
-### Multiple Parameter Lists
+#### Multiple Parameter Lists
 
 Add a method `fold` to `Int`. `fold` has two parameter lists. The first accepts a seed of type `A`. The second accepts a function from `(A, Int) => A`. The method folds over the integers from zero until the given number. Example usage:
 
@@ -185,7 +182,7 @@ trait IntImplicits {
 ~~~
 </div>
 
-### Prettier Conversion Syntax
+#### Prettier Conversion Syntax
 
 Let's improve our JSON syntax by combining type classes and type enrichment. Convert `JsUtil` to an `implicit class` with a `toJson` method. Sample usage:
 

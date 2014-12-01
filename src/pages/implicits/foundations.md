@@ -1,7 +1,4 @@
----
-layout: page
-title: Type Class Foundations
----
+## Type Class Foundations
 
 Type classes in Scala involve the interaction of a number of components. To understand how they work, in this section we're going to build them up from the beginning.
 
@@ -90,7 +87,7 @@ Much safer -- it'll take a spam bot more than a few microseconds to decypher tha
 
 This is the essence of the type class pattern. All the refinements we will see in later sections just make it easier to use.
 
-## Take Home Points
+### Take Home Points
 
 We have seen the basic pattern for implementing type classes, though we'll shortly see a number of features in Scala that make them easier to use.
 
@@ -116,9 +113,9 @@ We have seen the basic pattern for implementing type classes, though we'll short
   ~~~
 - This allows us to implement the functionality for any type, and to provide different implementations for the same type.
 
-## Exercises
+### Exercises
 
-### Equality
+#### Equality
 
 Scala provides two equality predicates: by value (`==`) and by reference (`eq`). Nonetheless, we sometimes need additional predicates. For instance, we could compare people by just email address if we were validating new user accounts in some web application.
 

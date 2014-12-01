@@ -1,6 +1,5 @@
 # Collections
 
-
 We hardly need to state how important collection classes are. The Collections API was one of the most significant additions to Java, and Scala's collections framework, completely revised and updated in 2.8, is an equally important addition to Scala.
 
 In this section we're going to look at three key datastructures in Scala's collection library: **sequences, options, and maps**.

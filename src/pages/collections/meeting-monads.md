@@ -1,11 +1,8 @@
----
-layout: page
-title: Monads
----
+## Monads
 
 We've seen that by implementing a few methods (`map`, `flatMap`, and optionally `filter` and `foreach`), we can use any class with a **for comprehension**. We've seen this abstraction before; it is called a **monad** and we know that goes way beyond iterating over sequences of elements.
 
-## What's in a Monad?
+### What's in a Monad?
 
 The concept of a monad is notoriously difficult to explain because it is so general. We can get a good intuitive understanding by comparing some of the types of monad that we will deal with on a regular basis.
 
@@ -58,9 +55,9 @@ The important point here is that, if we ignore the comments, **these three examp
 
 There are many other monads that can be used to simplify problems in different circumstances. You may come across some of them in your future use of Scala. In this course we will concentrate entirely on `Seq` and `Option`.
 
-## Exercises
+### Exercises
 
-### Adding All the Things ++
+#### Adding All the Things ++
 
 We've already seen how we can use a for comprehension to neatly add together three optional values. Let's extend this to other monads. Use the following definitions:
 

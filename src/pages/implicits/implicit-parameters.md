@@ -1,7 +1,4 @@
----
-layout: page
-title: Implicit Parameters
----
+## Implicit Parameters
 
 We've seen the basics of the type class pattern. Now let's look at how we can make it easier to use. Recall our starting point is a trait `HtmlWriter` which allows us to implement HTML rendering for classes without requiring access to their source code, and allows us to render the same class in different ways.
 
@@ -17,7 +14,7 @@ object PersonWriter extends HtmlWriter[Person] {
 
 This issue with this code is that we need manage a lot of `HtmlWriter` instances when we render any complex data. Most classes will only have a single instance of `HtmlWriter` but we still need to call the correct object for the class we're rendering. It would be nice it Scala would just pick the right instance for us whenever there is no ambiguity, and that's exactly what we can get Scala to do using **implicit parameters**.
 
-## Implicit Parameter Lists
+### Implicit Parameter Lists
 
 Here is an example of an implicit parameter list:
 
@@ -87,7 +84,7 @@ object PersonImplicitsExample {
 }
 ~~~
 
-## Take Home Points
+### Take Home Points
 
 Implicit parameters make type classes more convenient to use. We can make an entire parameter list with the `implicit` keyword to make it an implicit parameter list.
 
@@ -113,7 +110,7 @@ trait ImplicitUse {
 }
 ~~~
 
-## Exercises
+### Exercises
 
 #### Equality
 

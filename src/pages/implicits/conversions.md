@@ -1,7 +1,4 @@
----
-layout: page
-title: Implicit Conversions
----
+## Implicit Conversions
 
 So far we have seen two powerful programming patterns -- *type enrichment*, which we implemented using *implicit classes*, and *type classes*, which we implemented using *implicit values and parameter lists*.
 
@@ -19,7 +16,7 @@ We recommend using implicit classes and implicit values/arguments over implicit 
 You have been warned!
 </div>
 
-## Implicit conversions
+### Implicit conversions
 
 **Implicit conversions** are a more general form of implicit classes. We can tag any single-argument method with the `implicit` keyword to allow the compiler to perform automated conversions from one type to another:
 
@@ -41,7 +38,7 @@ res1: String = This is the best method ever!
 
 Implicit classes are actually just syntactic sugar for the combination of a regular class and an implicit conversion. With an implicit class we have to define a new type as a target for the conversion; with an implicit method we can convert from any type to any other type as long as an implicit is available in scope.
 
-## Designing with Implicit Conversions
+### Designing with Implicit Conversions
 
 The power of implicit conversions tends to cause problems for newer Scala developers. We can easily define very general type conversions that play strange games with the semantics of our programs:
 
@@ -68,9 +65,9 @@ Here are some tips for designing using implicits that will prevent situations li
 
  - Avoid creating implicit conversions that convert from one general type to another general type -- the more specific your types are, the less likely the implicit is to be applied incorrectly.
 
-## Exercises
+### Exercises
 
-### Implicit Class Conversion
+#### Implicit Class Conversion
 
 Any implicit class can be reimplemented as a class paired with an implicit method. Re-implement the `IntOps` class from the *type enrichment* section in this way. Verify that the class still works the same way as it did before.
 

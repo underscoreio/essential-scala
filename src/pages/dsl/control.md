@@ -1,7 +1,4 @@
----
-layout: page
-title: Custom Control Structures
----
+## Custom Control Structures
 
 Consider implementing logging. Often we'll have a log statement like `logger.debug(anExpensiveOperation())` which we only want to execute if debug logging is enabled. In Java, we'd have to write something like
 
@@ -13,7 +10,7 @@ if(logger.isDebugEnabled() {
 
 the reason being that we can't control the order of evaluation -- a function's arguments are always evaluted before the function is called. Scala allows us to delay evaluating a functions arguments, a feature known as call-by-name parameters.
 
-## Syntax
+### Syntax
 
 We declare a call by name parameter by specifying it's type as `=> Result`. That is, like a function but without a parameter list. For example, here's a simple logger implementation using call-by-name parameters
 
