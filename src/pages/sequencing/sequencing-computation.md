@@ -1,11 +1,8 @@
----
-layout: page
-title: Sequencing Computation
----
+## Sequencing Computation
 
 We have now mastered generic data and folding over algebraic data types. Now we will look as some other common patterns of computation that are 1) often more convenient to use than fold for algebraic data types and 2) can be implemented for certain types of data that do not support a fold. These methods are known as **map** and **flatMap**.
 
-## Map
+### Map
 
 Imagine we have a list of `Int` user IDs, and a function which, given a user ID, returns a `User` record. We want to get a list of user records for all the IDs in the list. Written as types we have `List[Int]` and a function `Int => User`, and we want to get a `List[User]`.
 
@@ -61,7 +58,7 @@ sealed trait LinkedList[A] {
 ~~~
 
 
-## FlatMap
+### FlatMap
 
 Now imagine the following examples:
 
@@ -97,7 +94,7 @@ final case class Full[A](value: A) extends Maybe[A]
 final case class Empty[A]() extends Maybe[A]
 ~~~
 
-## Functors and Monads
+### Functors and Monads
 
 A type like `F[A]` with a `map` method is called a *functor*. If a functor also has a `flatMap` method it is called a *monad*[^monads].
 
@@ -148,9 +145,9 @@ The general idea is a monad represents a value in some context. The context depe
 
 We use `map` when we want to transform the value within the context to a new value, while keeping the context the same. We use `flatMap` when we want to transform the value *and* possibly provide a new context.
 
-## Exercises
+### Exercises
 
-### Mapping Lists
+#### Mapping Lists
 
 Given the following list
 
@@ -172,7 +169,7 @@ list.map(_ / 3)
 ~~~
 </div>
 
-### Mapping Maybe
+#### Mapping Maybe
 
 Implement `map` for `Maybe`.
 
@@ -214,7 +211,7 @@ final case class Empty[A]() extends Maybe[A]
 </div>
 
 
-### Sequencing Computations
+#### Sequencing Computations
 
 We're going to use Scala's builtin `List` class for this exercise as it has a `flatMap` method.
 
@@ -246,7 +243,7 @@ list.map(maybe => maybe flatMap { x => if(x % 2 == 0) Full(x) else Empty })
 ~~~
 </div>
 
-### Sum
+#### Sum
 
 Recall our `Sum` type.
 

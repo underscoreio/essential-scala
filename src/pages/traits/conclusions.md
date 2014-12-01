@@ -1,7 +1,4 @@
----
-layout: page
-title: Conclusions
----
+## Conclusions
 
 In this section we have explored two extremely important patterns: **algebraic data types** and **structural recursion**. With the former we can mechanically define a large class of data types. With the latter we can mechanically write programs that process the former. These two tools are among the most commonly used in idiomatic functional code.
 

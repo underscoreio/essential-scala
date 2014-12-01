@@ -1,13 +1,10 @@
----
-layout: page
-title: Modelling Data with Traits
----
+## Modelling Data with Traits
 
 With (sealed) traits and (final) case classes we have seen some of the most important features in Scala and the ones you will use most often in day-to-day programming. In this section we're going to look at how we can directly translate a data model into Scala code using traits and classes. In particular we're going to look at **is-a** and **has-a** relationships, **logical ors** and **logical ands**, and their translation in Scala. The type of data we will be created are called **algebraic data types**.
 
 Our goal in this section is to see how to translate a data model into Scala code. In the next section we'll see patterns for code that uses algebraic data types.
 
-## The Has-a And Pattern
+### The Has-a And Pattern
 
 Our first pattern is to model data that contains other data. We might describe this as "`A` *has a* `B` *and* `C`". For example, a `Cat` has a colour and a favourite food; a `Visitor` has an id and a creation date; and so on.
 
@@ -50,11 +47,11 @@ final case class C() extends A
 ~~~
 </div>
 
-## Algebraic Data Types
+### Algebraic Data Types
 
 An algebraic data type is any data that uses the above two patterns. In the functional programming literature, data using the "has-a and" pattern is known as a *product type*, and the "is-a or" pattern is a *sum type*.
 
-## The Missing Patterns
+### The Missing Patterns
 
 We have looked at relationships along two dimensions: is-a/has-a, and and/or. We can draw up a little table and see we only have patterns for two of the four table cells.
 
@@ -100,13 +97,13 @@ final case class D(b: B) extends A
 final case class E(c: C) extends A
 ~~~
 
-## Take Home Points
+### Take Home Points
 
 We have seen that we can mechanically translate data using the "has-a and" and "is-a or" patterns (or, more succintly, the product and sum types) into Scala code. This type of data is known as an algebraic data type. Understanding these patterns is very important for writing idiomatic Scala code.
 
-## Exercises
+### Exercises
 
-### Stop on a Dime
+#### Stop on a Dime
 
 A traffic light is red, green, or yellow. Translate this description into Scala code.
 
@@ -123,7 +120,7 @@ final case object Yellow extends TrafficLight
 As there are fields or methods on the three cases, and thus there is no need to create than one instance of them, I used case objects instead of case classes.
 </div>
 
-### Calculator
+#### Calculator
 
 A calculation may succeed (with an `Int` result) or fail (with a `String` message). Implement this.
 
@@ -135,7 +132,7 @@ final case class Failure(reason: String) extends Calculation
 ~~~
 </div>
 
-### Water, Water, Everywhere
+#### Water, Water, Everywhere
 
 Bottled water has a size (an `Int`), a source (which is a well, spring, or tap), and a `Boolean` carbonated. Implement this in Scala.
 

@@ -1,7 +1,4 @@
----
-layout: page
-title: "This or That and Nothing Else: Sealed Traits"
----
+## This or That and Nothing Else: Sealed Traits
 
 In many cases we can enumerate all the possible classes that can extend a trait. For example, we previously modelled a website visitor as `Anonymous` or a logged in `User`. These two cases cover all the possibilities as one is the negation of the other. We can model this case with a **sealed trait**, which allows the compiler to provide extra checks for us.
 
@@ -63,7 +60,7 @@ final case class Name(...) extends TraitName {
 Remember subtypes must be defined in the same file as a sealed trait.
 </div>
 
-## Take home points
+### Take home points
 
 Sealed traits and final (case) classes allow us to control extensibility of types. **The majority of cases** should use the sealed trait / final case class pattern.
 
@@ -79,9 +76,9 @@ The main advantages of this pattern are:
 - we can control extension points of sealed traits and thus make stronger guarantees about the behaviour of subtypes.
 
 
-## Exercises
+### Exercises
 
-### Printing Shapes
+#### Printing Shapes
 
 Let's revisit the `Shapes` example from the previous section.
 
@@ -114,7 +111,7 @@ object Draw {
 ~~~
 </div>
 
-### The Color and the Shape
+#### The Color and the Shape
 
 Write a sealed trait `Color` to make our shapes more interesting.
 
@@ -287,7 +284,7 @@ Draw(Rectangle(3, 4, CustomColor(0.4, 0.4, 0.6)))
 
 </div>
 
-### A Short Division Exercise
+#### A Short Division Exercise
 
 Good Scala developers don't just use types to model data. Types are a great way to put artificial limitations in place to ensure we don't make mistakes in our programs. In this exercise we will see a simple (if contrived) example of this -- using types to prevent division by zero errors.
 
@@ -345,7 +342,7 @@ Finally, the match illustrates a case class pattern with the parentheses, and a 
 
 {% comment %}
 
-### Really Printing Shapes
+#### Really Printing Shapes
 
 We lied earlier...
 

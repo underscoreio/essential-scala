@@ -1,12 +1,9 @@
----
-layout: page
-title: Generic Folds for Generic Data
----
+## Generic Folds for Generic Data
 
 We've seen that when we define a class with generic data, we cannot implement very many methods on that class. The user supplies the generic type, and thus we must ask the user to supply functions that work with that type. Nonetheless, there are some common patterns for using generic data, which is what we explore in this section. We have already seen **fold** in the context of our `IntList`. Here we will explore fold in more detail, and learn the pattern for implementing fold for any algebraic data type.
 
 
-## Fold
+### Fold
 
 Last time we saw fold we were working with a list of integers. Let's generalise to a list of a generic type. We're already see all the tools we need. First our data definition, in this instance slightly modified to use the covariant sum type pattern.
 
@@ -95,7 +92,7 @@ def fold[B](end: B, pair: (A, B) => B): B =
   }
 ~~~
 
-## Working With Functions
+### Working With Functions
 
 There are a few tricks in Scala for working with functions and methods that accept functions (known as higher-order methods). Here we are going to look at:
 
@@ -103,7 +100,7 @@ There are a few tricks in Scala for working with functions and methods that acce
 2. converting methods to functions; and
 3. a way to write higher-order methods that assists type inference.
 
-### Placeholder syntax
+#### Placeholder syntax
 
 In very simple situations we can write inline functions using an extreme shorthand called **placeholder syntax**. It looks like this:
 
@@ -156,7 +153,7 @@ scala> Counter(2).adjust(MathStuff.add1)
 res12: Counter = Counter(3)
 ~~~
 
-### Multiple Parameter Lists
+#### Multiple Parameter Lists
 
 Methods in Scala can actually have multiple parameter lists. Such methods work just like normal methods, except we must bracket each parameter list separately.
 
@@ -206,7 +203,7 @@ def fold[B](end: B)(pair: (A, B) => B): B
 
 then inferring `B` from `end` (which is usually easy) allows `B` to be used when inferring the type `pair`. This means fewer type declarations and a smoother development process.
 
-## Exercises
+### Exercises
 
 
 #### Tree

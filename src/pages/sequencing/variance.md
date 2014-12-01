@@ -1,7 +1,5 @@
----
-layout: page
-title: Variance
----
+## Variance
+
 In this section we cover **variance annotations**, which allow us to control subclass relationships between types with type parameters. To motivate this, let's look again at our invariant generic sum type pattern.
 
 The invariant generic sum type pattern is a bit unsatisfying. Recall our `Maybe` type, which we defined as
@@ -43,7 +41,7 @@ scala> val possible: Maybe[Int] = Empty
 The problem here is that `Empty` is a `Maybe[Nothing]` and a `Maybe[Nothing]` is not a subtype of `Maybe[Int]`. To overcome this issue we need to introduce variance annotations.
 
 
-## Invariance, Covariance, and Contravariance
+### Invariance, Covariance, and Contravariance
 
 <div class="alert alert-warning">
 **Note:** Variance is one of the trickier aspects of Scala's type system. Although it is useful to be aware of its existence, we rarely have to use it in application code.
@@ -57,7 +55,7 @@ A type `Foo[+T]` is **covariant** in terms of `T`, meaning that `Foo[A]` is a su
 
 A type `Foo[-T]` is **contravariant** in terms of `T`, meaning that `Foo[A]` is a *subtype* of `Foo[B]` if `A` is a *supertype* of `B`. The only example of contravariance that I am aware of is function arguments.
 
-## Function Types
+### Function Types
 
 When we discussed function types we glossed over how exactly they are implemented. Scala has 23 built-in generic classes for functions of 0 to 22 arguments. Here's what they look like:
 
@@ -99,7 +97,7 @@ To understand variance, consider what functions can we safely pass to this `map`
  - A function expecting a subtype of `A` is not ok, because our value may in reality be a different subtype of `A`.
 
 
-## Covariant Sum Types
+### Covariant Sum Types
 
 Now we know about variance annotations we can solve our problem with `Maybe` by making it covariant.
 
@@ -133,7 +131,7 @@ This pattern extends to more than one type parameter. If a type parameter is not
 </div>
 
 
-## Contravariant Position
+### Contravariant Position
 
 There is another pattern we need to learn for covariant sum types, which involves the interaction of covariant type parameters and contravariant method and function parameters. To illustrate this issue let's develop a covariant `Sum`.
 
@@ -232,7 +230,7 @@ case class A[+T] {
 
 
 
-## Type Bounds
+### Type Bounds
 
 We have see some type bounds above, in the contravariant position pattern. Type bounds extends to specify subtypes as well as supertypes. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
 
@@ -248,7 +246,7 @@ case class WebAnalytics[A <: Visitor](
 ~~~
 
 
-## Exercises
+### Exercises
 
 #### Covariance and Contravariance
 

@@ -1,7 +1,4 @@
----
-layout: page
-title: Working With Data
----
+## Working With Data
 
 In the previous section we saw how to define algebraic data types using a combination of the sum (or) and product type (and) patterns. In this section we'll see a pattern for using algebraic data types, known as **structural recursion**. We'll actually see two variants of this pattern: one using **polymorphism** and one using **pattern matching**.
 
@@ -9,7 +6,7 @@ Structural recursion is the precise opposite of the process of building an algeb
 
 Just as we have two patterns for building algebraic data types, we will have two patterns for decomposing them using structural recursion. We will actually have two variants of each pattern, one using polymorphism, which is the typical object-oriented style, and one using pattern matching, which is typical functional style. We'll end this section with some rules for choosing which pattern to use.
 
-## Structural Recursion using Polymorphism
+### Structural Recursion using Polymorphism
 
 Polymorphic dispatch, or just polymorphism for short, is a fundamental object-oriented technique. If we define a method in a trait, and have different implementations in classes extending that trait, when we call that method the implementation on the actual concrete instance will be used. Here's a very simple example. We start with a simple definition using the familiar product type (or) pattern.
 
@@ -111,7 +108,7 @@ final case class C() extends A {
 </div>
 
 
-## Structural Recursion using Pattern Matching
+### Structural Recursion using Pattern Matching
 
 Structural recursion with pattern matching proceeds along the same lines as polymorphism. We simply have a case for every subtype, and each pattern matching case must extract the fields we're interested in.
 
@@ -146,7 +143,7 @@ def f(a: A): F =
 ~~~
 </div>
 
-## A Complete Example
+### A Complete Example
 
 Let's look at a complete example of the algebraic data type and structural recursion patterns, using our familiar `Feline` data type.
 
@@ -222,7 +219,7 @@ object Diner {
 
 Note how we can directly apply the patterns, and the code almost falls out. This is the main point we want to make with structural recursion: the code follows the shape of the data, and can be produced in an almost mechanical way.
 
-## Choosing Which Pattern to Use
+### Choosing Which Pattern to Use
 
 We have three way of implementing structural recursion:
 
@@ -234,7 +231,7 @@ Which should we use? The first two methods give the same result: a method define
 
 The general rule is: if a method only depends on other fields and methods in a class it is a good candidate to be implemented inside the class. If the method depends on other data (for example, if we needed a `Cook` to make dinner) consider implementing is using pattern matching outside of the classes in question. If we want to have more than one implementation we should use pattern matching and implement it outside the classes.
 
-## Object-Oriented vs Functional Extensibility
+### Object-Oriented vs Functional Extensibility
 
 There is a fundamental difference between the kind of extensibility that object-oriented style (polymorphism, assuming traits are not sealed) and functional style (pattern matching, with sealed traits) gives us. With OO style we can easily add new data, by extending a trait, but adding a new method requires us to change existing code. With functional style we can easily add a new method but adding new data requires us to modify existing code. In tabular form:
 
@@ -248,7 +245,7 @@ There is a fundamental difference between the kind of extensibility that object-
 
 In Scala we have the flexibility to use both polymorphism and pattern matching, and we should use whichever is appropriate. However we generally prefer sealed traits as it gives us greater guarantees about our code's semantics, and we can use typeclasses, which we'll explore later, to get us OO-style extensibility.
 
-## Exercises
+### Exercises
 
 #### Traffic Lights
 

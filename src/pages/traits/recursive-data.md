@@ -1,7 +1,4 @@
----
-layout: page
-title: Recursive Data
----
+## Recursive Data
 
 A particular use of algebraic data types that comes up very often is defining **recursive data**. This is data that is defined in terms of itself, and allows us to create data of potentially unbounded size (though any concrete instance will be finite).
 
@@ -103,7 +100,7 @@ def sum(list: IntList): Int =
   }
 ~~~
 
-## Understanding the Base Case and Recursive Case
+### Understanding the Base Case and Recursive Case
 
 Our patterns will carry us most of the way to a correct answer, but we still need to supply the method bodies for the base and recursive cases. There is some general guidance we can use:
 
@@ -133,7 +130,7 @@ When writing structurally recursive code on a recursive algebraic data type:
 - whenever we encounter a base case in the data we return the identity for the operation we are performing.
 </div>
 
-## Tail Recursion
+### Tail Recursion
 
 You may be concerned that recursive calls will consume excessive stack space. Scala can apply an optimisation, called **tail recursion**, to many recursive functions to stop them consuming stack space.
 
@@ -185,7 +182,7 @@ Any non-tail recursion function can be transformed into a tail recursive version
 
 In Scala we tend not to work directly with tail recursive functions as there is a rich collections library that covers the most common cases where tail recursion is used. Should you need to go beyond this, because you're implementing your own datatypes or are optimising code, it is useful to know about tail recursion.
 
-## Exercises
+### Exercises
 
 Using our definition of `IntList`
 
@@ -263,7 +260,7 @@ final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 </div>
 
-### The Forest of Trees
+#### The Forest of Trees
 
 A binary tree of integers can be defined as follows:
 
@@ -318,7 +315,7 @@ final case class Leaf(val elt: Int) extends Tree {
 ~~~
 </div>
 
-### A Calculator
+#### A Calculator
 
 We're now going to work on a larger problem to implement a simple interpreter for programs containing only numeric operations.
 

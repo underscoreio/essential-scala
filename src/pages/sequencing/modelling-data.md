@@ -1,11 +1,8 @@
----
-layout: page
-title: "Modelling Data with Generic Types"
----
+## Modelling Data with Generic Types
 
 In this section we'll see the additional power the generic types give us when modelling data. We see that with generic types we can implement **generic sum and product types**, and also model some other useful abstractions such as **optional values**.
 
-## Generic Product Types
+### Generic Product Types
 
 Let's look at using generics to model a *product type*. Consider a method that returns two values -- for example, an `Int` and a `String`, or a `Boolean` and a `Double`:
 
@@ -37,7 +34,7 @@ def booleanAndDouble: Pair[Boolean, Double] = // ...
 
 Generics provide a different approach to defining product types --  one that relies on aggregation as opposed to inheritance.
 
-### Exercise: Pairs
+#### Exercise: Pairs
 
 Implement the `Pair` class from above. It should store two values -- `one` and `two` -- and be generic in both arguments. Example usage:
 
@@ -120,7 +117,7 @@ scala> x._3
 res6: Boolean = true
 ~~~
 
-## Generic Sum Types
+### Generic Sum Types
 
 Now let's look at using generics to model a *sum type*. Again, we have previously implemented this using our algebraic data type pattern, factoring out the common aspects into a supertype. Generics allow us to abstract over this pattern, providing a, well, generic implementation.
 
@@ -145,7 +142,7 @@ def intOrString(input: Boolean): Sum[Int, String] =
 
 How do we implement `Sum`? We just have to use the patterns we've already seen, with the addition of generic types.
 
-### Exercise: Generic Sum Type
+#### Exercise: Generic Sum Type
 
 Implement a trait `Sum[A, B]` with two subtypes `Left` and `Right`. Create type parameters so that `Left` and `Right` can wrap up values of two different types.
 
@@ -181,13 +178,13 @@ Scala's standard library has the generic sum type `Either` for two cases, but it
 </div>
 
 
-## Generic Optional Values
+### Generic Optional Values
 
 Many expressions may sometimes produce a value and sometimes not. For example, when we look up an element in a hash table (associative array) by a key, there may not be a value there. If we're talking to a web service, that service may be down and not reply to us. If we're looking for a file, that file may have been deleted. There are a number of ways to model this situation of an optional value. We could throw an exception, or we could return `null` when a value is not available. The disadvantage of both these methods is they don't encode any information in the type system.
 
 We generally want to write robust programs, and in Scala we try to utilise the type system to encode properties we want our programs to maintain. One common property is "correctly handle errors". If we can encode an *optional value* in the type system, the compiler will force us to consider the case where a value is not available, thus increasing the robustness of our code.
 
-### Exercise: Maybe that Was a Mistake
+#### Exercise: Maybe that Was a Mistake
 
 Create a generic trait called `Maybe` of a generic type `A` with two subtypes, `Full` containing an `A`, and `Empty` containing no value. Example usage:
 
@@ -209,13 +206,13 @@ final case class Empty[A]() extends Maybe[A]
 ~~~
 </div>
 
-## Take Home Points
+### Take Home Points
 
 In this section we have used generics to model sum types, product types, and optional values using generics.
 
 These abstractions are commonly used in Scala code and have implementations in the Scala standard library. The sum type is called `Either`, products are tuples, and optional values are modelled with `Option`.
 
-## Exercises
+### Exercises
 
 #### Generics versus Traits
 

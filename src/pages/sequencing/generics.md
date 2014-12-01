@@ -1,11 +1,8 @@
----
-layout: page
-title: Generics
----
+## Generics
 
 Generic types allow us to **abstract over types**. There are useful for all sorts of data structures, but commonly encountered in collections so that's where we'll start.
 
-## Pandora's Box
+### Pandora's Box
 
 Let's start with a collection that is even simpler than our list -- a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
@@ -60,7 +57,7 @@ def name[A](...){ ... }
 ~~~
 </div>
 
-## Generic Algebraic Data Types
+### Generic Algebraic Data Types
 
 We described type parameters as analogous to method parameters, and this analogy continues when extending a trait that has type parameters. Extending a trait, as we do in a sum type, is the type level equivalent of calling a method and we must supply values for an type parameters of the trait we're extending.
 
@@ -97,7 +94,7 @@ final case class C[T]() extends A[T]
 </div>
 
 
-## Exercises
+### Exercises
 
 #### Generic List
 

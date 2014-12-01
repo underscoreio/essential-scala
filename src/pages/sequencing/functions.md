@@ -1,7 +1,4 @@
----
-layout: page
-title: Functions
----
+## Functions
 
 Functions allow us to **abstract over methods**, turning methods into values that we can pass around and manipulate within our programs.
 
@@ -67,7 +64,7 @@ As we have seen, types allow us to abstract across values. We've seen all sorts 
 
 Enter Scala's `Function` types.
 
-## Function Types
+### Function Types
 
 We write a function type like `(A, B) => C` where `A` and `B` are the types of the parameters and `C` is the result type. The same pattern generalises from function of no arguments to an arbitrary number of arguments.
 
@@ -95,7 +92,7 @@ A => B
 </div>
 
 
-## Function literals
+### Function literals
 
 Scala also gives us a **function literal syntax** specifically for creating new functions. Here are some example function literals:
 
@@ -143,7 +140,7 @@ where
 - the `expression` determines the result of the function.
 </div>
 
-## Exercises
+### Exercises
 
 #### A Better Abstraction
 
