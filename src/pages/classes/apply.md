@@ -1,7 +1,4 @@
----
-layout: page
-title: Objects as Functions
----
+## Objects as Functions
 
 In the final exercise of the previous section, we defined a class called `Adder`:
 
@@ -15,7 +12,7 @@ In the discussion we described an `Adder` as an object representing a computatio
 
 This is such a powerful concept that Scala has a fully blown set of language features for creating objects that behave like computations. These computational objects are called *functions*, and are the basis of **functional programming**.
 
-## The apply method
+### The apply method
 
 For now we are going to look at just one of Scala's features supporting functional programming -- **function application syntax**.
 
@@ -46,7 +43,7 @@ The method call `object.apply(parameter, ...)` can also be written as `object(pa
 
 </div>
 
-## Take home points
+### Take home points
 
 In this section we looked at **function application syntax**, which lets us "call" an object as if it is a function.
 
@@ -54,9 +51,9 @@ Function application syntax is available for any object defining an `apply` meth
 
 With function application syntax, we now have first class values that behave like computations. Unlike methods, objects can be passed around as data. This takes us one step closer towards true functional programming in Scala.
 
-## Exercises
+### Exercises
 
-### When is a Function not a Function?
+#### When is a Function not a Function?
 
 We'll get a chance to write some code at the end of the next section. For now we should think about an important theoretical question:
 

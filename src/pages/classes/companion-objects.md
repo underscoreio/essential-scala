@@ -1,7 +1,4 @@
----
-layout: page
-title: Companion Objects
----
+## Companion Objects
 
 Sometimes we want to create a method that logically belongs to a class but is independent of any particular object. In Java we would use a *static method* for this, but Scala has a simpler solution that we've seen already: singleton objects.
 
@@ -59,7 +56,7 @@ object Name {
 ~~~
 </div>
 
-## Take home points
+### Take home points
 
 **Companion objects** provide us with a means to associate functionality with a class without associating it with any instance of that class. They are commonly used to provide additional constructors.
 
@@ -69,9 +66,9 @@ Companion objects **replace Java's static methods**. They provide equivalent fun
 
 **A companion object must be defined in the same file as the associated class.** When typing on the REPL, the class and companion object must be entered in the same block of code using `:paste` mode.
 
-## Exercises
+### Exercises
 
-### Friendly Person Factory
+#### Friendly Person Factory
 
 Implement a companion object for `Person` containing an `apply` method that accepts a whole name as a single string rather than individual first and last names.
 
@@ -108,7 +105,7 @@ res7: String = John
 ~~~
 </div>
 
-### Extended Body of Work
+#### Extended Body of Work
 
 Write companion objects for `Director` and `Film` as follows:
 
@@ -197,7 +194,7 @@ object Film {
 
 </div>
 
-### Type or Value?
+#### Type or Value?
 
 The similarity in naming of classes and companion objects tends to cause confusion for new Scala developers. When reading a block of code it is important to know which parts refer to a class or *type* and which parts refer to a singleton object or *value*.
 

@@ -1,7 +1,4 @@
----
-layout: page
-title: Pattern Matching
----
+## Pattern Matching
 
 Until now we have interacted with objects by calling methods or accessing fields. With case classes we can interact in another way, via **pattern matching**.
 
@@ -59,7 +56,7 @@ Pattern matching is itself an expression and thus evaluates to a value -- the va
 [^compilation]: In reality patterns are compiled to a more efficient form than a sequence of tests, but the semantics are the same.
 
 
-## Pattern Syntax
+### Pattern Syntax
 
 Scala has an expressive syntax for writing patterns or guards. For case classes the pattern syntax matches the constructor syntax. Take the data
 
@@ -86,7 +83,7 @@ where `pat0` and `pat1` are patterns to match agains the `firstName` and `lastNa
 Note there is a lot more we can do with pattern matching, and pattern matching is actually extensible. We'll look at these features in a later section.
 
 
-## Take Home Points
+### Take Home Points
 
 Case classes allow a new form of interaction, called **pattern matching**. Pattern matching allows us to take apart a case class, and evaluate different expressions depending on what the case class contains.
 
@@ -107,9 +104,9 @@ A pattern can be one of
 3. a literal, matching the value the literal denotes; or
 4. a constructor-style pattern for a case class.
 
-## Exercises
+### Exercises
 
-### Feed the Cats
+#### Feed the Cats
 
 Define an object `ChipShop` with a method `willServe`. This method should accept a `Cat` and return true if the cat’s favourite food is chips, and false otherwise. Use pattern matching.
 
@@ -139,7 +136,7 @@ object ChipShop {
 </div>
 
 
-### Get Off My Lawn!
+#### Get Off My Lawn!
 
 In this exercise we're going to write a simulator of my Dad, the movie critic. It's quite simple: any movie directed by Clint Eastwood gets a rating 10.0, any movie directed by John McTiernan gets a 7.0, while any other movie gets a 3.0. Implement an object called `Dad` with a method `rate` which accepts a `Film` and returns a `Double`. Use pattern matching.
 

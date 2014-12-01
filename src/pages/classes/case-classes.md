@@ -1,7 +1,4 @@
----
-layout: page
-title: Case Classes
----
+## Case Classes
 
 **Case classes** are an exceptionally useful shorthand for defining a class, a companion object, and a lot of sensible defaults in one go. They are ideal for creating lightweight data-holding classes with the minimum of hassle.
 
@@ -26,7 +23,7 @@ res1: Person.type = Person
 
 What's more, the class and companion are pre-populated with some very useful features.
 
-## Features of a case class
+### Features of a case class
 
 1. **A field for each constructor argument** -- we don't even need to write `val` in our constructor definition, although there's no harm in doing so.
 
@@ -92,7 +89,7 @@ What's more, the class and companion are pre-populated with some very useful fea
    res9: Person = Person(Dave,Gurnell2)
    ~~~
 
-## Features of a case class companion object
+### Features of a case class companion object
 
 The companion object contains an `apply` method with the same arguments as the class constructor. Scala programmers tend to prefer the `apply` method over the constructor for the brevity of omitting `new`, which makes constructors much easier to read insides expressions:
 
@@ -125,7 +122,7 @@ where
 - the optional `declarationOrExpression`s are declarations or expressions.
 </div>
 
-## Case objects
+### Case objects
 
 A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a **case object**. A case object is defined just like a case class and has the same default methods as a case class.
 
@@ -148,7 +145,7 @@ The differences between a case object and a regular singleton object are:
 
  - With a case object we still get all of the functionality defined for case classes above.
 
-## Take Home Points
+### Take Home Points
 
 Case classes are the **bread and butter of Scala data types**. Use them, learn them, love them.
 
@@ -165,9 +162,9 @@ Case classes have numerous auto-generated methods and features that save typing.
 
 In Scala 2.10 and earlier we can define case classes containing 0 to 22 fields. In Scala 2.11 (June 2014 release) we gain the ability to define arbitrarily-sized case classes.
 
-## Exercises
+### Exercises
 
-### Case Cats
+#### Case Cats
 
 Recall that a `Cat` has a `String` colour and food. Define a case class to represent a `Cat`.
 
@@ -179,7 +176,7 @@ case class Cat(colour: String, food: String)
 ~~~
 </div>
 
-### Roger Ebert Said it Best...
+#### Roger Ebert Said it Best...
 
 > No good movie is too long and no bad movie is short enough.
 
@@ -232,7 +229,7 @@ object Film {
 Not only is this code significantly shorter, it also provides us with `equals` methods, `toString` methods, and pattern matching functionality that will set us up for later exercises.
 </div>
 
-### Case Class Counter
+#### Case Class Counter
 
 Reimplement `Counter` as a case class, using `copy` where appropriate. Additionally initialise `count` to a default value of `0`.
 
@@ -259,7 +256,7 @@ res11: Boolean = true
 ~~~
 </div>
 
-### Application, Application, Application
+#### Application, Application, Application
 
 What happens when we define a companion object for a case class? Let's see.
 

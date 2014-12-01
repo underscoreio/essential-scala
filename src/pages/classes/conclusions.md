@@ -1,7 +1,4 @@
----
-layout: page
-title: Conclusions
----
+## Conclusions
 
 In this section we've explored **classes**. We have seen that classes allow us to abstract over objects. That is, to define objects that share properties in common and have a common type.
 

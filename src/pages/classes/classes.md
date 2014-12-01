@@ -1,11 +1,8 @@
----
-layout: page
-title: Classes
----
+## Classes
 
 A class is a template for creating objects that have similar methods and fields. Importantly, in Scala a class also defines a type. Objects created from a class all share the same type. This helps us overcome the problem we had in the *Greetings, Human* exercise in the last section.
 
-## Defining a Class
+### Defining a Class
 
 Here is a declaration for a simple `Person` class:
 
@@ -70,7 +67,7 @@ res6: String = Greetings, Noel Welsh
 Scala classes are all subclasses of `java.lang.Object` and are, for the most part, usable from Java as well as Scala. The default printing behaviour of `Person` comes from the `toString` method defined in `java.lang.Object`.
 </div>
 
-## Constructors
+### Constructors
 
 As it stands our `Person` class is rather useless: we can create as many new objects as we want but they all have the same `firstName` and `lastName`. What if we want to give each person a different name?
 
@@ -139,7 +136,7 @@ where
 - the optional `declarationOrExpression`s are declarations or expressions.
 </div>
 
-## Default and Keyword Parameters
+### Default and Keyword Parameters
 
 All Scala methods and constructors support *keyword parameters* and *default parameter values*.
 
@@ -190,7 +187,7 @@ res12: String = Greetings, Mr Awesome Guy
 This is particularly useful when creating methods and constructors with large number of parameters.
 </div>
 
-## Scala's Type Hierarchy
+### Scala's Type Hierarchy
 
 Unlike Java, which separates primitive and object types, everything in Scala is an object. As a result, "primitive" value types like `Int` and `Boolean` form part of the same type hierarchy as classes and traits.
 
@@ -220,7 +217,7 @@ res3: String = null
 
 Although the types of `badness` and `res1` are `Nothing` and `Null` respectively, the types of `res2` and `res3` are still sensible. This is because `Int` is the least common supertype of `Int` and `Nothing`, and `String` is the least common supertype of `String` and `Null`.
 
-## Take Home Points
+### Take Home Points
 
 In this section we learned how to define **classes**, which allow us to create many objects with the same **type**. Thus, classes let us *abstract across objects* that have similar properties.
 
@@ -240,7 +237,7 @@ We also learned about **keyword parameters** and **default parameters**.
 
 Finally we learned about Scala's type hierarchy, including the overlap with Java's type hierarchy, the special types `Any`, `AnyRef`, `AnyVal`, `Nothing`, `Null`, and `Unit`, and the fact that Java and Scala classes both occupy the same subtree of the type hierarchy.
 
-## Exercises
+### Exercises
 
 We now have enough machinery to have some fun playing with classes.
 
@@ -273,7 +270,7 @@ val quentin = new Cat("Tabby and white", "Curry")
 </div>
 
 
-### Cats on the Prowl
+#### Cats on the Prowl
 
 Define an object `ChipShop` with a method `willServe`. This method should accept a `Cat` and return `true` if the cat's favourite food is chips, and false otherwise.
 
@@ -290,7 +287,7 @@ object ChipShop {
 </div>
 
 
-### Directorial Debut
+#### Directorial Debut
 
 Write two classes, `Director` and `Film`, with fields and methods as follows:
 
@@ -394,7 +391,7 @@ class Film(
 ~~~
 </div>
 
-### A Simple Counter
+#### A Simple Counter
 
 Implement a `Counter` class. The constructor should take an `Int`. The methods `inc` and `dec` should increment and decrement the counter respectively returning a new `Counter`. Here's an example of the usage:
 
@@ -420,7 +417,7 @@ Because `val` fields are immutable, we need to come up with some other way of pr
 </div>
 </div>
 
-### Counting Faster
+#### Counting Faster
 
 Augment the `Counter` from the previous exercise to allow the user can optionally pass an `Int` parameter to `inc` and `dec`. If the parameter is omitted it should default to `1`.
 
@@ -460,7 +457,7 @@ res15: Int = 21
 ~~~
 </div>
 
-### Additional Counting
+#### Additional Counting
 
 Here is a simple class called `Adder`.
 
