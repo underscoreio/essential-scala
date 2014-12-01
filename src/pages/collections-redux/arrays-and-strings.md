@@ -11,7 +11,8 @@ Yet all the familiar collection methods are available on them.
 
 ~~~ scala
 scala> "is it true?".map(elt => true)
-res1: scala.collection.immutable.IndexedSeq[Boolean] = Vector(true, true, true, true, true, true, true, true, true, true, true)
+res1: scala.collection.immutable.IndexedSeq[Boolean] = Vector(true, true, true, true, true, true,     ↩
+                                                                          true, true, true, true, true)
 
 scala> Array(1, 2, 3).map(_ * 2)
 res2: Array[Int] = Array(2, 4, 6)

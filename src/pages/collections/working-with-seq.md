@@ -46,7 +46,8 @@ Thus we could write:
 
 ~~~ scala
 scala> Seq("a", "wet", "dog").map(_.permutations.toList)
-res14: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), List(dog, dgo, odg, ogd, gdo, god))
+res14: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), List(dog, dgo, odg, ogd, ↩
+                                                                                             gdo, god))
 ~~~
 
 but we end up with a sequence of sequences. Let's look at the types in more detail to see what's gone wrong:

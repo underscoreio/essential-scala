@@ -52,7 +52,8 @@ This gives us a hint of the power of ranges. Since they are sequences we can com
 
 ~~~ scala
 scala> (1 until 10) ++ (20 until 30)
-res12: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29)
+res12: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 21, 22, 23, ↩
+                                                                                24, 25, 26, 27, 28, 29)
 ~~~
 
 Note that the result is a `Vector` not a `Range` but this doesn't matter. As they are both sequences we can use both them in a for comprehension without any code change!

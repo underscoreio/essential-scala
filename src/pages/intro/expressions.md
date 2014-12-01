@@ -52,12 +52,14 @@ Blocks are expressions that allow us to sequence computations together. They are
 
 ~~~ scala
 scala> { 1; 2; 3 }
-<console>:8: warning: a pure expression does nothing in statement position; you may be omitting necessary parentheses
+<console>:8: warning: a pure expression does nothing in statement position; you may be omitting       ↩
+                      necessary parentheses
               { 1; 2; 3 }
                 ^
-<console>:8: warning: a pure expression does nothing in statement position; you may be omitting necessary parentheses
+<console>:8: warning: a pure expression does nothing in statement position; you may be omitting       ↩
+                      necessary parentheses
               { 1; 2; 3 }
-
+                   ^
 res0: Int = 3
 ~~~
 

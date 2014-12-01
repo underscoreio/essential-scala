@@ -165,7 +165,8 @@ scala> @tailrec
            case End => 0
            case Pair(hd, tl) => hd + sum(tl)
          }
-<console>:15: error: could not optimize @tailrec annotated method sum: it contains a recursive call not in tail position
+<console>:15: error: could not optimize @tailrec annotated method sum: it contains a recursive call   ↩
+                                                                                   not in tail position
          list match {
          ^
 
