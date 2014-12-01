@@ -8,6 +8,7 @@ You'll need to install the grunt project dependencies the first time you check t
 
 ~~~
 brew install pandoc
+npm install -g coffee-script
 npm install -g grunt-cli
 npm install
 mkdir dist
