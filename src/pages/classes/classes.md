@@ -191,7 +191,7 @@ This is particularly useful when creating methods and constructors with large nu
 
 Unlike Java, which separates primitive and object types, everything in Scala is an object. As a result, "primitive" value types like `Int` and `Boolean` form part of the same type hierarchy as classes and traits.
 
-<img src="src/pages/classes/scala-type-hierarchy.svg" alt="Scala type hierarchy">
+<img src="src/pages/classes/scala-type-hierarchy.svg" alt="Scala type hierarchy" />
 
 Scala has a grand supertype called `Any`, under which there are two types, `AnyVal` and `AnyRef`. `AnyVal` is the supertype of all value types, which `AnyRef` is the supertype of all "reference types" or classes. All Scala and Java classes are subtypes of `AnyRef`[^value-classes].
 

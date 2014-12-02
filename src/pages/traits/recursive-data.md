@@ -27,7 +27,7 @@ Here `End` is the base case. We construct the list containing `1`, `2`, and `3` 
 
 A linked list is another type of generic sequence, similar to an array. Unlike an array, however, a linked list is stored internally as a chain of pairs. For example, the sequence `1, 2, 3` would be represented as follows:
 
-<img src="src/pages/traits/linked-list.svg" alt="A linked list">
+<img src="src/pages/traits/linked-list.svg" alt="A linked list" />
 
 ~~~ scala
 Pair(1, Pair(2, Pair(3, End)))

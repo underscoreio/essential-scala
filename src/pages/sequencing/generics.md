@@ -204,30 +204,6 @@ assert(try {
 <div class="solution">
 There are a few interesting things in this exercise. Possibly the easiest part is the use of the generic type as the return type of the `apply` method.
 
-Next up is the `Empty` case, which the hint suggested you through an `Exception` for. Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
-
-Finally we get to the actual structural recursion, which is perhaps the trickiest part. The key insight is that if the index is zero, we're selecting the current element, otherwise we subtract one from the index and recurse. We can recursively define the integers in terms of addition by one. For example, 3 = 2 + 1 = 1 + 1 + 1. Here we are performing structural recursion on the list *and* on the integers.
-
-~~~ scala
-sealed trait LinkedList[A] {
-  def apply(index: Int): A
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {
-  def apply(index: Int): A =
-    if(index == 0)
-      head
-    else
-      tail(index - 1)
-}
-final case class Empty[A]() extends LinkedList[A] {
-  def apply(index: Int): A =
-    throw new Exception("Attempted to get element from empty list")
-}
-~~~
-
-<div class="solution">
-There are a few interesting things in this exercise. Possibly the easiest part is the use of the generic type as the return type of the `apply` method.
-
 Next up is the `End` case, which the hint suggested you through an `Exception` for. Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
 
 Finally we get to the actual structural recursion, which is perhaps the trickiest part. The key insight is that if the index is zero, we're selecting the current element, otherwise we subtract one from the index and recurse. We can recursively define the integers in terms of addition by one. For example, 3 = 2 + 1 = 1 + 1 + 1. Here we are performing structural recursion on the list *and* on the integers.
