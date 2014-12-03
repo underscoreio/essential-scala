@@ -8,7 +8,7 @@ if(logger.isDebugEnabled() {
 }
 ~~~
 
-the reason being that we can't control the order of evaluation -- a function's arguments are always evaluted before the function is called. Scala allows us to delay evaluating a functions arguments, a feature known as call-by-name parameters.
+the reason being that we can't control the order of evaluation -- a function's arguments are always evaluated before the function is called. Scala allows us to delay evaluating a functions arguments, a feature known as call-by-name parameters.
 
 ### Syntax
 

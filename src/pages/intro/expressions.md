@@ -35,8 +35,8 @@ else
 where
 
 - `condition` is an expression with `Boolean` type;
-- `trueExpression` is the expression evaluated if `condition` evalutes to `true`; and
-- `falseExpression` is the expression evaluated if `condition` evalutes to `false`.
+- `trueExpression` is the expression evaluated if `condition` evaluates to `true`; and
+- `falseExpression` is the expression evaluated if `condition` evaluates to `false`.
 </div>
 
 
@@ -190,5 +190,5 @@ if(false) "hello"
 <div class="solution">
 The result type and value are `Any` and `()` respectively.
 
-All code being equal, conditionals without `else` expressions only evaluate to a value half of the time. Scala works around this by returning the `Unit` value if the `else` branch should be evaluted. We would usually only use these expressions for their side-effects.
+All code being equal, conditionals without `else` expressions only evaluate to a value half of the time. Scala works around this by returning the `Unit` value if the `else` branch should be evaluated. We would usually only use these expressions for their side-effects.
 </div>
