@@ -160,6 +160,7 @@ module.exports = (grunt) ->
         filters  = joinLines """
                      --filter=lib/filters/pdf/callout.coffee
                      --filter=lib/filters/pdf/columns.coffee
+                     --filter=lib/filters/pdf/solutions.coffee
                    """
         extras   = ""
         metadata = "src/meta/pdf.yaml"

@@ -71,4 +71,5 @@ pages:
   - src/pages/collections-redux/traversable.md
   - src/pages/collections-redux/java-interop.md
   - src/pages/collections-redux/mutable-seq.md
+  - src/pages/solutions.md
 ...
