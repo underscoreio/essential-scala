@@ -11,7 +11,7 @@ scala> object Test {}
 defined module Test
 ~~~
 
-This is not an expression -- it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
+This is not an expression---it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
 
 Once we have bound the name `Test` we can use it in simple expressions, where it evaluates to the object we have declared. The simplest expression is just the name on its own, which evaluates to the value itself:
 
@@ -21,7 +21,7 @@ res0: Test.type = Test$@1668bd43
 ~~~
 
 This expression is equivalent to writing a literal like `123` or `"abc"`.
-Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before -- it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
+Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before---it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
 
 Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions. It is more common, however, to put declarations such as declaring methods, fields, or even more objects.
 
@@ -106,7 +106,7 @@ Method parameters are optional, but if a method has parameters their type must b
 </div>
 
 <div class="java-tip">
-The return value of the method is determined by evaluating the body -- there is no need to write `return`.
+The return value of the method is determined by evaluating the body---there is no need to write `return`.
 </div>
 
 
@@ -162,7 +162,7 @@ Using `val` defines an *immutable* field, meaning we cannot change the value bou
 
 ### Methods versus fields
 
-You might wonder why we need fields when we can have methods of no arguments that seem to work the same. The difference is subtle -- a field gives a name to a value, whereas a method gives a name to a computation that produces a value.
+You might wonder why we need fields when we can have methods of no arguments that seem to work the same. The difference is subtle---a field gives a name to a value, whereas a method gives a name to a computation that produces a value.
 
 Here's an object that shows the difference:
 
@@ -196,7 +196,7 @@ res7: Test7.type = Test7$@b22e8c9
 
 When the object is first loaded, Scala runs through its definition and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
 
-**The body expression of a field is run only once** after which the final value is stored in the object. The expression is never evaluated again -- notice the lack of `println` output below.
+**The body expression of a field is run only once** after which the final value is stored in the object. The expression is never evaluated again---notice the lack of `println` output below.
 
 ~~~ scala
 scala> Test7.simpleField
@@ -206,7 +206,7 @@ scala> Test7.simpleField
 res9: Int = 42
 ~~~
 
-The body of a method, on the other hand, is evaluated again and again every time we call the method -- notice the repreated println output below.
+The body of a method, on the other hand, is evaluated again and again every time we call the method---notice the repreated println output below.
 
 ~~~ scala
 scala> Test7.noArgMethod
@@ -245,7 +245,7 @@ var name = valueExpression
 
 All of these are **declarations**, binding names to values. Declarations are different to expressions. They do not evaluate to a value and do not have a type.
 
-We have also seen the difference between methods and fields -- fields refer to values stored within an object, whereas methods refer to computations that produce values.
+We have also seen the difference between methods and fields---fields refer to values stored within an object, whereas methods refer to computations that produce values.
 
 ### Exercises
 

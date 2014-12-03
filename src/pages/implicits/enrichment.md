@@ -119,11 +119,11 @@ import IntImplicits._
 // Oh yeah!
 ~~~
 
-The solution uses a `for` comprehension and a range to iterate through the correct number of iterations. Remember that the range `0 until n` is the same as `0 to n-1` -- it contains all numbers from `0` inclusive to `n` exclusive.
+The solution uses a `for` comprehension and a range to iterate through the correct number of iterations. Remember that the range `0 until n` is the same as `0 to n-1`---it contains all numbers from `0` inclusive to `n` exclusive.
 
 We have used the parenthesis for of `for` here to keep the solution small. Writing the solution with braces is also fine. Note that we have omitted the `yield` keyword, resulting in a for comprehension that does not accumulate a value.
 
-The names `IntImplicits` and `IntOps` are quite vague -- we would probably name them something more specific in a production codebase. However, for this exercise they will suffice perfectly.
+The names `IntImplicits` and `IntOps` are quite vague---we would probably name them something more specific in a production codebase. However, for this exercise they will suffice perfectly.
 </div>
 
 #### Times

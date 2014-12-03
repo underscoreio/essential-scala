@@ -8,7 +8,7 @@ We can't define recursive data like[^lazy-data]
 final case class Broken(broken: Broken)
 ~~~
 
-as we could never actually create an instance of such a type -- the recursion never ends.
+as we could never actually create an instance of such a type---the recursion never ends.
 To define valid recursive data we must define a **base case**, which is the case that ends the recursion.
 
 [^lazy-data]: We actually can define data in this manner if we delay the construction of the recursive case, like `final case class LazyList(head: Int, tail: () => LazyList)`. This uses a feature of Scala, functions, that we haven't seen yet. We can do some fairly mind-bending things with this construction, such as defining an infinite stream of ones with the declaration `val ones: LazyList = LazyList(1, () => ones)`. Since we only ever realise a finite amount of this list we can use it to implement certain types of data that would be difficult to implement in other ways. If you're interested in exploring this area further, what we have implemented in called a lazy list, and an "odd lazy list" in particular. The "even list", described in [How to add laziness to a strict language wihtout even being odd](http://www.cs.rice.edu/~taha/publications/conference/sml98.pdf), is a better implementation. Going further, is a rich literature on lazy datastructures and more mind melting theory under the name of "coinductive data".
@@ -151,7 +151,7 @@ def notATailCall: Int =
   method1 + 2
 ~~~
 
-because `notATailCall` does not immediatley return -- it adds an number to the result of the call.
+because `notATailCall` does not immediatley return---it adds an number to the result of the call.
 
 A tail call can be optimised to not use stack space. Due to limitations in the JVM, Scala only optimises tail calls where the caller calls itself. Since tail recursion is an important property to maintain, we can use the `@tailrec` annotation to ask the compiler to check that methods we believe are tail recursion really are. Here we have two versions of `sum` annotated. One is tail recursive and one is not. You can see the compiler complains about the method that is not tail recursive.
 

@@ -28,7 +28,7 @@ object HtmlUtil {
 
 The `htmlify` method accepts two arguments: some `data` to convert to HTML and a `writer` to do the conversion. The `writer` is an implicit parameter.
 
-The `implicit` keyword applies to the *whole parameter list*, not just an individual parameter. This makes the parameter list optional -- when we call `HtmlUtil.htmlify` we can either specify the list as normal
+The `implicit` keyword applies to the *whole parameter list*, not just an individual parameter. This makes the parameter list optional---when we call `HtmlUtil.htmlify` we can either specify the list as normal
 
 ~~~ scala
 scala> HtmlUtil.htmlify(Person("John", "john@example.com"))(PersonWriter)
@@ -62,7 +62,7 @@ implicit object PersonWriter extends HtmlWriter[Person] {
 }
 ~~~
 
-When the compiler expands an implicit argument list, it searches for candidate values for each argument by type. In our `htmlify` method the exact type will be decided by the type parameter `T` -- if `T` is `Person`, for example, the compiler searches for a value of type `HtmlWriter[Person]`.
+When the compiler expands an implicit argument list, it searches for candidate values for each argument by type. In our `htmlify` method the exact type will be decided by the type parameter `T`---if `T` is `Person`, for example, the compiler searches for a value of type `HtmlWriter[Person]`.
 
 We'll look at the full implicit search rules in the next section. For now, we're going to use the simplest rule, which is that any implicits in the local scope take priority over other implicits. A simple way of packaging implicits is to declare them in an object
 

@@ -25,7 +25,7 @@ What's more, the class and companion are pre-populated with some very useful fea
 
 ### Features of a case class
 
-1. **A field for each constructor argument** -- we don't even need to write `val` in our constructor definition, although there's no harm in doing so.
+1. **A field for each constructor argument**---we don't even need to write `val` in our constructor definition, although there's no harm in doing so.
 
 ~~~ scala
 scala> res0.firstName
@@ -52,7 +52,7 @@ res4: Boolean = true
 ~~~
 
    <div class="alert alert-info">
-   **Java tip:** The two expressions above are equivalent. Scala's `==` operator is different from Java's -- it delegates to `equals` rather than comparing values on reference identity.
+   **Java tip:** The two expressions above are equivalent. Scala's `==` operator is different from Java's---it delegates to `equals` rather than comparing values on reference identity.
 
    Scala has an operator called `eq` with the same behaviour as Java's `==`. However, it is rarely used in application code:
 
@@ -242,7 +242,7 @@ case class Counter(val count: Int = 0) {
 }
 ~~~
 
-This is almost a trick exercise -- there are very few differences with the previous implementation However, notice the extra functionality we got for free:
+This is almost a trick exercise---there are very few differences with the previous implementation However, notice the extra functionality we got for free:
 
 ~~~ scala
 scala> Counter(0) // construct objects without `new`
@@ -278,7 +278,7 @@ object Person {
 }
 ~~~
 
-Even though we are defining a companion object for `Person`, Scala's case class code generator is still working as expected -- it adds the auto-generated companion methods to the object we have defined, which is why we need to place the class and companion in a single compilation unit.
+Even though we are defining a companion object for `Person`, Scala's case class code generator is still working as expected---it adds the auto-generated companion methods to the object we have defined, which is why we need to place the class and companion in a single compilation unit.
 
 This means we end up with a companion object with an overloaded `apply` method with two possible type signatures:
 

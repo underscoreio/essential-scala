@@ -9,7 +9,7 @@ In section we're going to focus on modelling missing values using the `Maybe` ty
 
 ## Making Null Optional
 
-If you remember, we implemented `Maybe` as a way of eliminating `nulls`. Looking at our code in a fresh light, we can see that it is a *sum type* with two cases -- `Full` and `Empty`:
+If you remember, we implemented `Maybe` as a way of eliminating `nulls`. Looking at our code in a fresh light, we can see that it is a *sum type* with two cases---`Full` and `Empty`:
 
 ~~~ scala
 sealed trait Maybe[A]
@@ -144,7 +144,7 @@ final case object Empty extends Maybe[Nothing] {
 
 ## Using Maybe
 
-As we have seen previously, our `Maybe` type provides a type-safe way to handle missing values. If we have a `Maybe` we *must* say how we're going to deal with missing values to get a value out. We have already seen how to do this with pattern matching -- we now have `fold` as another means to do the same thing.
+As we have seen previously, our `Maybe` type provides a type-safe way to handle missing values. If we have a `Maybe` we *must* say how we're going to deal with missing values to get a value out. We have already seen how to do this with pattern matching---we now have `fold` as another means to do the same thing.
 
 ~~~ scala
 scala> val full = Full(1)

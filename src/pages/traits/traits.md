@@ -102,7 +102,7 @@ case class Name(...) extends TraitName {
 
 Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
 
- - **A trait cannot have a constructor** -- we can't create objects directly from a trait. Instead we can use a trait to create a class, and then create objects from that class. We can base as many classes as we like on a trait.
+ - **A trait cannot have a constructor**---we can't create objects directly from a trait. Instead we can use a trait to create a class, and then create objects from that class. We can base as many classes as we like on a trait.
 
  - Traits can define **abstract methods** that have names and type signatures but no implementation. We saw this in the `Visitor` trait. We must specify the implementation when we create a class that extends the trait, but until that point we're free to leave definitions abstract.
 
@@ -259,7 +259,7 @@ case class Square(size: Double) extends Shape {
 
 ### Shaping up 2 (da streets)
 
-The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape` -- it's also a type of `Rectangle` where the width and height are the same.
+The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape`---it's also a type of `Rectangle` where the width and height are the same.
 
 Refactor the solution to the last exercise so that `Square` and `Rectangle` are subtypes of a common type `Rectangular`.
 

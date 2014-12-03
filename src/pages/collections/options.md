@@ -1,12 +1,12 @@
 ## Options
 
-We have seen `Option`s in passing a number of times already -- they represent values that may or may not be present in our code. Options are an alternative to using `null` that provide us with a means of chaining computations together without risking `NullPointerExceptions`. We have previously produced code in the spirit of `Option` with our `DivisionResult` and `Maybe` types in previous chapters.
+We have seen `Option`s in passing a number of times already---they represent values that may or may not be present in our code. Options are an alternative to using `null` that provide us with a means of chaining computations together without risking `NullPointerExceptions`. We have previously produced code in the spirit of `Option` with our `DivisionResult` and `Maybe` types in previous chapters.
 
 Let's look into Scala's built-in `Option` type in more detail.
 
 ### Option, Some, and None
 
-`Option` is a generic sealed trait with two subtypes -- `Some` and `None`. Here is an abbreviated version of the code -- we will fill in more methods as we go on:
+`Option` is a generic sealed trait with two subtypes---`Some` and `None`. Here is an abbreviated version of the code---we will fill in more methods as we go on:
 
 ~~~ scala
 sealed trait Option[+A] {
@@ -35,7 +35,7 @@ final case object None extends Option[Nothing] {
 }
 ~~~
 
-Here is a typical item of code for generating an option -- reading an integer from the user:
+Here is a typical item of code for generating an option---reading an integer from the user:
 
 ~~~ scala
 def readInt(str: String): Option[Int] =
@@ -56,14 +56,14 @@ res8: Option[Int] = None
 
 There are several ways to safely extract the value in an option without the risk of throwing any exceptions:
 
-**Alternative 1: the `getOrElse` method** -- useful if we want to fall back to a default value:
+**Alternative 1: the `getOrElse` method**---useful if we want to fall back to a default value:
 
 ~~~ scala
 scala> readInt("abc").getOrElse(0)
 res9: Int = 0
 ~~~
 
-**Alternative 2: pattern matching** -- `Some` and `None` both have associated patterns that we can use in a `match` expression:
+**Alternative 2: pattern matching**---`Some` and `None` both have associated patterns that we can use in a `match` expression:
 
 ~~~ scala
 scala> readInt("123") match {
@@ -73,7 +73,7 @@ scala> readInt("123") match {
 res10: Int = 124
 ~~~
 
-**Alternative 3: `map` and `flatMap`** -- `Option` supports both of these methods, enabling us to chain off of the value within producing a new `Option`. This bears a more explanation -- let's look at it in a little more detail.
+**Alternative 3: `map` and `flatMap`**---`Option` supports both of these methods, enabling us to chain off of the value within producing a new `Option`. This bears a more explanation---let's look at it in a little more detail.
 
 ### Options as Sequences
 
@@ -154,7 +154,7 @@ for {
 } yield a + b
 ~~~
 
-In this code snippet `a` and `b` are both `Ints` -- we can add them together directly using `+` in the `yield` block.
+In this code snippet `a` and `b` are both `Ints`---we can add them together directly using `+` in the `yield` block.
 
 Let's stop to think about this block of code for a moment. There are three ways of looking at it:
 
@@ -170,7 +170,7 @@ Let's stop to think about this block of code for a moment. There are three ways 
 
 Once we get past the initial foreignness of using for comprehensions to "iterate through" options, we find a useful control structure that frees us from excessive use of `map` and `flatMap`.
 
-[^option-length]: Note that `Option` doesn't actually have a `length` method -- this example is for illustrative purposes only.
+[^option-length]: Note that `Option` doesn't actually have a `length` method---this example is for illustrative purposes only.
 
 ### Exercises
 

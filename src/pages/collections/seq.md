@@ -100,7 +100,7 @@ scala> sequence.find(_ > 4)
 res6: Option[Int] = None
 ~~~
 
-The `Option` class here is Scala's built-in equivalent of our `Maybe` class from earlier. It has two subtypes -- `Some` and `None` -- representing the presence and absence of a value respectively.
+The `Option` class here is Scala's built-in equivalent of our `Maybe` class from earlier. It has two subtypes---`Some` and `None`---representing the presence and absence of a value respectively.
 
 The `filter` method is a variant of `find` that returns *all* the matching elements in the sequence:
 
@@ -155,7 +155,7 @@ scala> sequence ++ Seq(4, 5, 6)
 res10: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 ~~~
 
-Another of Scala's general syntax rules -- any method ending with a `:` character becomes **right associative** when written as an infix operator. This rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). We'll look at this in more detail in a moment.
+Another of Scala's general syntax rules---any method ending with a `:` character becomes **right associative** when written as an infix operator. This rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). We'll look at this in more detail in a moment.
 
 {% comment %}
 ### Updating elements
@@ -205,7 +205,7 @@ res3: List[Int] = List(1, 2, 3, 4, 5, 6)
 
 `::` and `:::` are specific to lists whereas `+:`, `:+` and `++` work on any type of sequence.
 
-Lists have well known performance characteristics -- constant-time prepend and head/tail operations and linear-time append and search operations. Other immutable sequences are available in Scala with different [performance characteristics](http://www.scala-lang.org/docu/files/collections-api/collections_40.html) to match all situations. It is up to us as developers to decide whether we want to tie our code to a specific sequence type like `List` or refer to our sequences as `Seqs` to simplify swapping implementations.
+Lists have well known performance characteristics---constant-time prepend and head/tail operations and linear-time append and search operations. Other immutable sequences are available in Scala with different [performance characteristics](http://www.scala-lang.org/docu/files/collections-api/collections_40.html) to match all situations. It is up to us as developers to decide whether we want to tie our code to a specific sequence type like `List` or refer to our sequences as `Seqs` to simplify swapping implementations.
 
 
 ### Importing Collections and Other Libraries
@@ -242,7 +242,7 @@ scala> apply(1, 2, 3)
 res3: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
 ~~~
 
-We can write import statements anywhere in our code -- imported identifiers are scoped lexically to the block where we use them:
+We can write import statements anywhere in our code---imported identifiers are scoped lexically to the block where we use them:
 
 ~~~ scala
 // `empty` is unbound here
@@ -304,7 +304,7 @@ We have covered a variety of methods that operate on sequences. Here is a type t
 | `updated`   | `Seq[A]`   | `Int` `A`           | `Seq[A]`    |
 {% endcomment %}
 
-We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement. This has a number of features that aren't present in Java -- it can be used to import methods from objects, and be written anywhere in our code.
+We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement. This has a number of features that aren't present in Java---it can be used to import methods from objects, and be written anywhere in our code.
 
 ### Exercises
 
@@ -312,7 +312,7 @@ We can always use `Seq` and `List` in our code. Other collections can be brought
 
 Discovering Scala's collection classes is all about knowing how to read the API documentation. Look up the `Seq` and `List` types now and answer the following:
 
- - There is a synonym of `length` defined on `Seq` -- what is it called?
+ - There is a synonym of `length` defined on `Seq`---what is it called?
 
  - There are two methods for retrieving the first item in a `List` --
    what are they called and how do they differ?
@@ -327,8 +327,8 @@ Discovering Scala's collection classes is all about knowing how to read the API 
 The synonym for `length` is `size`.
 
 The methods for retrieving the first element in a list are:
- - `head`       -- returns `A`, throwing an exception if the list is empty
- - `headOption` -- returns `Option[A]`, returning `None` if the list is empty
+ - `head`      ---returns `A`, throwing an exception if the list is empty
+ - `headOption`---returns `Option[A]`, returning `None` if the list is empty
 
 The `mkString` method allows us to quickly display a `Seq` as a `String`:
 
@@ -434,7 +434,7 @@ val directors = Seq(eastwood, mcTiernan, nolan, someGuy)
 
 Using this sample code, write implementations of the following methods:
 
- - Accept a parameter `numberOfFilms` of type `Int` -- find all directors
+ - Accept a parameter `numberOfFilms` of type `Int`---find all directors
    who have directed more than `numberOfFilms`:
 
    <div class="solution">
@@ -446,7 +446,7 @@ def directorsWithBackCatalogOfSize(numberOfFilms: Int): Seq[Director] =
 ~~~
    </div>
 
- - Accept a parameter `year` of type `Int` -- find a director who was born
+ - Accept a parameter `year` of type `Int`---find a director who was born
    before that year:
 
    <div class="solution">

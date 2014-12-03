@@ -103,7 +103,7 @@ res29: String = Dave
 ~~~
 
 <div class="alert alert-info">
-**Immutability tip:** `val` fields are *immutable* -- they are initialized once after which we cannot change their values. Scala also provides the `var` keyword for defining *mutable* fields.
+**Immutability tip:** `val` fields are *immutable*---they are initialized once after which we cannot change their values. Scala also provides the `var` keyword for defining *mutable* fields.
 
 Scala programmers tend to prefer to write immutability and side-effect-free code so we can reason about it using the substitution model. In this course we will concentrate almost exclusively on immutable `val` fields.
 </div>
@@ -410,7 +410,7 @@ class Counter(val count: Int) {
 }
 ~~~
 
-Aside from practicing with classes and objects, this exercise has a second goal -- to think about why `inc` and `dec` return a new `Counter`, rather than updating the same counter directly.
+Aside from practicing with classes and objects, this exercise has a second goal---to think about why `inc` and `dec` return a new `Counter`, rather than updating the same counter directly.
 
 Because `val` fields are immutable, we need to come up with some other way of propagating the new value of `count`. Methods that return new `Counter` objects give us a way of returning new state without the side-effects of assignment. They also permit *method chaining*, allowing us to write whole sequences of updates in a single expression
 
@@ -481,7 +481,7 @@ class Counter(val count: Int) {
 }
 ~~~
 
-This is an interesting pattern that will become more powerful as we learn more features of Scala. **We are using `Adders` to capture computations** and pass them to `Counter`. Remember from our earlier discussion that *methods are not expressions* -- they cannot be stored in fields or passed around as data. However, **`Adders` are both objects and computations**.
+This is an interesting pattern that will become more powerful as we learn more features of Scala. **We are using `Adders` to capture computations** and pass them to `Counter`. Remember from our earlier discussion that *methods are not expressions*---they cannot be stored in fields or passed around as data. However, **`Adders` are both objects and computations**.
 
 Using objects as computations is a common paradigm in object oriented programming languages. Consider, for example, the classic `ActionListener` from Java's Swing:
 

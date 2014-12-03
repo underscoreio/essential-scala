@@ -135,7 +135,7 @@ Notice it's the same pattern again, though slightly generalised from before!
 
 ## Calculus the Easy Way (Optional)
 
-You perhaps encountered differentiation in school. When we differentiate a function we create another function that calculates it's rate of change, called its derivative. In many cases we can do this symbolically, but we're going to do it the CS way -- numerically.
+You perhaps encountered differentiation in school. When we differentiate a function we create another function that calculates it's rate of change, called its derivative. In many cases we can do this symbolically, but we're going to do it the CS way---numerically.
 
 Implement a function `derivative` that takes a function `Double => Double` and returns the derivative (also `Double => Double`).
 

@@ -8,13 +8,13 @@ class Adder(amount: Int) {
 }
 ~~~
 
-In the discussion we described an `Adder` as an object representing a computation -- a bit like having a method that we can pass around as a value.
+In the discussion we described an `Adder` as an object representing a computation---a bit like having a method that we can pass around as a value.
 
 This is such a powerful concept that Scala has a fully blown set of language features for creating objects that behave like computations. These computational objects are called *functions*, and are the basis of **functional programming**.
 
 ### The apply method
 
-For now we are going to look at just one of Scala's features supporting functional programming -- **function application syntax**.
+For now we are going to look at just one of Scala's features supporting functional programming---**function application syntax**.
 
 In Scala, by convention, an object can be "called" like a function if it has a method called `apply`. Naming a method `apply` affords us a special shortened call syntax: `foo.apply(args)` becomes `foo(args)`.
 
@@ -62,7 +62,7 @@ How close does function application syntax get us to creating truly reusable obj
 <div class="solution">
 The main thing we're missing is **types**, which are the way we properly abstract across values.
 
-At the moment we can define a class called `Adder` to capture the idea of adding to a number, but that code isn't properly portable across codebases -- other developers need to know about our specific class to use it.
+At the moment we can define a class called `Adder` to capture the idea of adding to a number, but that code isn't properly portable across codebases---other developers need to know about our specific class to use it.
 
 We could define a library of common function types with names like `Handler`, `Callback`, `Adder`, `BinaryAdder`, and so on, but this quickly becomes impractical.
 

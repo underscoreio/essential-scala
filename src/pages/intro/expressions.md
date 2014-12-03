@@ -42,7 +42,7 @@ where
 
 
 <div class="java-tip">
-Scala's `if` statement has the same syntax as Java's. One important difference is that **Scala's conditional is an expression** -- it has a type and returns a value.
+Scala's `if` statement has the same syntax as Java's. One important difference is that **Scala's conditional is an expression**---it has a type and returns a value.
 </div>
 
 
@@ -172,7 +172,7 @@ if(1 > 2) "alien" else 2001
 <div class="solution">
 It's a value of type `Any` with value `2001`.
 
-This is similar to the previous exercise -- the difference is the type of the result. We saw earlier that the type is the *upper bound* of the positive and negative arms of the expression. `"alien"` and `2001` are completely different types - their closest common ancestor is `Any`, which is the grand supertype of all Scala types.
+This is similar to the previous exercise---the difference is the type of the result. We saw earlier that the type is the *upper bound* of the positive and negative arms of the expression. `"alien"` and `2001` are completely different types - their closest common ancestor is `Any`, which is the grand supertype of all Scala types.
 
 This is an important observation: types are determined at compile time, before the program is run. The compiler doesn't know which of `1` and `2` is greater before running the program, so it can only make a best guess at the type of the result of the conditional. `Any` is as close as it can get in this program, whereas in the previous exercise it can get all the way down to `String`.
 

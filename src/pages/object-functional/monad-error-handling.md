@@ -43,7 +43,7 @@ More insidious is the case in a concurrent program. Here we often delegate work 
 
 Now we've seen the justification for a different method of error handling, let's set out our desiderata:
 
-1. We want the type system to enforce error handling -- we must either explicitly propagate errors or handle them.
+1. We want the type system to enforce error handling---we must either explicitly propagate errors or handle them.
 2. We don't want the normal flow of the code to be obscured by error handling.
 3. We want useful information on error.
 4. We're prepared to learn a new concept to achieve this.
@@ -105,7 +105,7 @@ scala> result.getOrElse(0)
 res12: Int = 0
 ~~~
 
-This pattern is good, but we still don't have useful information on error -- `None` is not going to help us debug our programs. Our next step is to add this.
+This pattern is good, but we still don't have useful information on error---`None` is not going to help us debug our programs. Our next step is to add this.
 
 
 ## Try Either or Validation

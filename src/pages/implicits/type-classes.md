@@ -43,13 +43,13 @@ Now we have type classes down let's look in more detail at the implicit resoluti
 
 #### Implicit Resolution Rules
 
-Scala has three types of implicits -- implicit classes, implicit values, and implicit conversions -- of which we've only seen one. Each works in the same way -- the compiler detects a type error in our code, locates a matching implicit, and applies it to fix the error. This is a powerful mechanism, but we need to control it very carefully to prevent the compiler changing our code in ways we don't expect. For this reason, there is a strict set of **implicit resolution rules** that we can use to dictate the compiler's behaviour:
+Scala has three types of implicits---implicit classes, implicit values, and implicit conversions---of which we've only seen one. Each works in the same way---the compiler detects a type error in our code, locates a matching implicit, and applies it to fix the error. This is a powerful mechanism, but we need to control it very carefully to prevent the compiler changing our code in ways we don't expect. For this reason, there is a strict set of **implicit resolution rules** that we can use to dictate the compiler's behaviour:
 
- 1. **Explicits first rule** -- if the code already type checks, the compiler ignores implicits altogether;
- 2. **Marking rule** -- the compiler only uses definitions marked with the `implicit` keyword;
- 3. **Scope rule** -- the compiler only uses definitions that are *in scope* at the current location in the code (see below);
- 4. **Non-ambiguity rule** -- the compiler only applies an implicit if it is the only candidate available;
- 5. **One-at-a-time rule** -- the compiler never chains implicits together to fix type errors -- doing so would drastically increase compile times;
+ 1. **Explicits first rule**---if the code already type checks, the compiler ignores implicits altogether;
+ 2. **Marking rule**---the compiler only uses definitions marked with the `implicit` keyword;
+ 3. **Scope rule**---the compiler only uses definitions that are *in scope* at the current location in the code (see below);
+ 4. **Non-ambiguity rule**---the compiler only applies an implicit if it is the only candidate available;
+ 5. **One-at-a-time rule**---the compiler never chains implicits together to fix type errors---doing so would drastically increase compile times;
 
 Note that the name of the implicit doesn't come into play in this process.
 
@@ -57,9 +57,9 @@ Note that the name of the implicit doesn't come into play in this process.
 
 The *scope rule* of implicit resolution uses a special set of scoping rules that allow us to package implicits in useful ways. These rules, collectively referred to as **implicit scope**, form a search path that the compiler uses to locate implicits:
 
- 1. **Local scope** -- First look locally for any identifier that is tagged as `implicit`. This must be a single identifier (i.e. `a`, not `a.b`), and can be defined locally or in the surrounding class, object, or trait, or `imported` from elsewhere.
+ 1. **Local scope**---First look locally for any identifier that is tagged as `implicit`. This must be a single identifier (i.e. `a`, not `a.b`), and can be defined locally or in the surrounding class, object, or trait, or `imported` from elsewhere.
 
- 2. **Companion objects** -- If an implicit cannot be found locally, the compiler looks in the companion objects of types involved in the type error. Will see more of this rule in the next section.
+ 2. **Companion objects**---If an implicit cannot be found locally, the compiler looks in the companion objects of types involved in the type error. Will see more of this rule in the next section.
 
 ### Packaging Implicit Values
 
@@ -123,7 +123,7 @@ While this is a valid criticism of implicits, the solution is not to abandon the
  3. Only use implicits on specific types. Defining an implicit class on a general type like `Any` is more likely to cause problems than defining it on a specific type like `WebSiteVisitor`.
 </div>
 
-Let's redefine our adapters for `HtmlWriter` so we can bring them all into scope. Note that outside the Scala console implicit values are subject to the same packaging restrictions as implicit classes -- they have to be defined inside another class, object, or trait. We'll use the packaging convention we discussed above:
+Let's redefine our adapters for `HtmlWriter` so we can bring them all into scope. Note that outside the Scala console implicit values are subject to the same packaging restrictions as implicit classes---they have to be defined inside another class, object, or trait. We'll use the packaging convention we discussed above:
 
 ~~~ scala
 trait HtmlImplicits {
@@ -156,7 +156,7 @@ This version of the code has much lighter syntax requirements than its predecess
 
 We can package type classes in two ways: using the trait/singleton approach we introduced for implicit classes, or using the companion objects of the relevant types.
 
-Remember that one of the locations in implicit scope is *the companion objects of types involved in the type error*. This is particularly relevant to type class instances -- if the compiler is searching for a `HtmlWriter[Person]`, it will look in the companion objects of `HtmlWriter`, `Person`, and all of their superclasses:
+Remember that one of the locations in implicit scope is *the companion objects of types involved in the type error*. This is particularly relevant to type class instances---if the compiler is searching for a `HtmlWriter[Person]`, it will look in the companion objects of `HtmlWriter`, `Person`, and all of their superclasses:
 
 We can use this behaviour to implement type class instances in the companion objects of the main data types in our application, as opposed to packaging them all into one big trait. For example:
 
@@ -201,7 +201,7 @@ We can combine type classes with type enrichment to add new behaviour to existin
 
 These exercises involve serializing Scala data to JSON, which is one of the classic use cases for type classes. The typical process for converting data to JSON in Scala involves two steps. First we convert our data types to an intermediate case class representation, then we serialize the intermediate representation to a string.
 
-Here is a suitable case class representation of a subset of the JSON language. We have a `sealed trait JsValue` that defines a `stringify` method, and a set of subtypes for two of the main JSON data types -- objects and strings:
+Here is a suitable case class representation of a subset of the JSON language. We have a `sealed trait JsValue` that defines a `stringify` method, and a set of subtypes for two of the main JSON data types---objects and strings:
 
 ~~~ scala
 sealed trait JsValue {
@@ -302,7 +302,7 @@ implicit object UserWriter extends JsWriter[User] {
 ~~~
 </div>
 
-Given these two definitions we can implement a `JsWriter` for `Visitor` as follows. This uses a new type of pattern -- `a: B` -- which matches any value of type `B` and binds it to a variable `a`:
+Given these two definitions we can implement a `JsWriter` for `Visitor` as follows. This uses a new type of pattern---`a: B`---which matches any value of type `B` and binds it to a variable `a`:
 
 ~~~ scala
 implicit object VisitorWriter extends JsWriter[Visitor] {

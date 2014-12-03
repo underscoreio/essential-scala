@@ -123,7 +123,7 @@ Placeholder syntax, while wonderfully terse, can be confusing for large expressi
 
 ### Converting methods to functions
 
-Scala contains one final feature that is directly relevant to this section -- the ability to convert method calls to functions. This is closely related to placeholder syntax -- simply follow a method with an underscore:
+Scala contains one final feature that is directly relevant to this section---the ability to convert method calls to functions. This is closely related to placeholder syntax---simply follow a method with an underscore:
 
 ~~~ scala
 scala> object Sum {
@@ -141,7 +141,7 @@ scala> (Sum.sum _)
 res11: (Int, Int) => Int = <function2>
 ~~~
 
-In situations where Scala can infer that we need a function, we can even drop the underscore and simply write the method name -- the compiler will promote the method to a function automatically:
+In situations where Scala can infer that we need a function, we can even drop the underscore and simply write the method name---the compiler will promote the method to a function automatically:
 
 ~~~ scala
 scala> object MathStuff {

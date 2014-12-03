@@ -4,7 +4,7 @@ Generic types allow us to **abstract over types**. There are useful for all sort
 
 ### Pandora's Box
 
-Let's start with a collection that is even simpler than our list -- a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
+Let's start with a collection that is even simpler than our list---a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
 ~~~ scala
 scala> case class Box[A](value: A)

@@ -50,7 +50,7 @@ where
 - the patterns, or *guards*, `pattern1`, `pattern2`, and so on are checked against this value in order; and
 - the right-hand side expression (`expr1`, `expr2`, and so on) of the first pattern that matches is evaluated[^compilation].
 
-Pattern matching is itself an expression and thus evaluates to a value -- the value of the matched expression.
+Pattern matching is itself an expression and thus evaluates to a value---the value of the matched expression.
 </div>
 
 [^compilation]: In reality patterns are compiled to a more efficient form than a sequence of tests, but the semantics are the same.

@@ -4,7 +4,7 @@ In this section we'll see the additional power the generic types give us when mo
 
 ### Generic Product Types
 
-Let's look at using generics to model a *product type*. Consider a method that returns two values -- for example, an `Int` and a `String`, or a `Boolean` and a `Double`:
+Let's look at using generics to model a *product type*. Consider a method that returns two values---for example, an `Int` and a `String`, or a `Boolean` and a `Double`:
 
 ~~~ scala
 def intAndString: ??? = // ...
@@ -24,7 +24,7 @@ case class BooleanAndDouble(booleanValue: Boolean, doubleValue: Double)
 def booleanAndDouble: BooleanAndDouble = // ...
 ~~~
 
-The answer is to use generics to create a **product type** -- for example a `Pair` -- that contains the relevant data for *both* return types:
+The answer is to use generics to create a **product type**---for example a `Pair`---that contains the relevant data for *both* return types:
 
 ~~~ scala
 def intAndString: Pair[Int, String] = // ...
@@ -32,11 +32,11 @@ def intAndString: Pair[Int, String] = // ...
 def booleanAndDouble: Pair[Boolean, Double] = // ...
 ~~~
 
-Generics provide a different approach to defining product types --  one that relies on aggregation as opposed to inheritance.
+Generics provide a different approach to defining product types--- one that relies on aggregation as opposed to inheritance.
 
 #### Exercise: Pairs
 
-Implement the `Pair` class from above. It should store two values -- `one` and `two` -- and be generic in both arguments. Example usage:
+Implement the `Pair` class from above. It should store two values---`one` and `two`---and be generic in both arguments. Example usage:
 
 ~~~ scala
 scala> val pair = Pair[String, Int]("hi", 2)
@@ -216,14 +216,14 @@ These abstractions are commonly used in Scala code and have implementations in t
 
 #### Generics versus Traits
 
-Sum types and product types are general concepts that allow us to model almost any kind of data structure. We have seen two methods of writing these types -- traits and generics -- when should we consider using each?
+Sum types and product types are general concepts that allow us to model almost any kind of data structure. We have seen two methods of writing these types---traits and generics---when should we consider using each?
 
 <div class="solution">
 Ultimately the decision is up to us. Different teams will adopt different programming styles. However, we look at the properties of each approach to inform our choices:
 
-Inheritance-based approaches -- traits and classes -- allow us to create permanent data structures with specific types and names. We can name every field and method and implement use-case-specific code in each class. Inheritance is therefore better suited to modelling significant aspects of our programs that are re-used in many areas of our codebase.
+Inheritance-based approaches---traits and classes---allow us to create permanent data structures with specific types and names. We can name every field and method and implement use-case-specific code in each class. Inheritance is therefore better suited to modelling significant aspects of our programs that are re-used in many areas of our codebase.
 
-Generic data structures -- `Tuples`, `Options`, `Eithers`, and so on -- are extremely broad and general purpose. There are a wide range of predefined classes in the Scala standard library that we can use to quickly model relationships between data in our code. These classes are therefore better suited to quick, one-off pieces of data manipulation where defining our own types would introduce unnecessary verbosity to our codebase.
+Generic data structures---`Tuples`, `Options`, `Eithers`, and so on---are extremely broad and general purpose. There are a wide range of predefined classes in the Scala standard library that we can use to quickly model relationships between data in our code. These classes are therefore better suited to quick, one-off pieces of data manipulation where defining our own types would introduce unnecessary verbosity to our codebase.
 </div>
 
 #### Folding Maybe

@@ -115,7 +115,7 @@ Unit is an important concept in Scala. Many of Scala's syntactic constructs are 
 
 In this section we have seen **literal** expressions, which evaluate to basic data types. These basics types are mostly identical to Java, except for `Unit` which has no equivalent.
 
-We note that every literal expression has a **type**, and evaluates to a **value** -- something which is also true for more complex Scala expressions.
+We note that every literal expression has a **type**, and evaluates to a **value**---something which is also true for more complex Scala expressions.
 
 In the next section we will learn how to define our own object literals.
 
@@ -180,5 +180,5 @@ What is the type and value of the following literal? Try writing it on the REPL 
 ~~~
 
 <div class="solution">
-You should see an error message. Take the time to read and get used to the error messages in your development environment -- you'll see plenty more of them soon!
+You should see an error message. Take the time to read and get used to the error messages in your development environment---you'll see plenty more of them soon!
 </div>

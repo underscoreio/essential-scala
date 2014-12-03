@@ -9,7 +9,7 @@ We already know how to do simple aggregation in simple cases using fields. Here 
 
 ## Generic Types
 
-Generic types naturally arise in collections, so let's consider a really simple collection -- a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
+Generic types naturally arise in collections, so let's consider a really simple collection---a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
 ~~~ scala
 scala> case class Box[A](val value: A)
@@ -28,7 +28,7 @@ scala> res2.value
 res3: String = hi
 ~~~
 
-The syntax `[A]` is called a **type parameter** -- it binds a name to a type. Wherever `A` occurs in our class definition we will substitute in the same type. This works in the same way that binding a name to a value (using `val`) allows us to substitute in the value wherever the name occurs. The only difference is that we're operating on types rather than values.
+The syntax `[A]` is called a **type parameter**---it binds a name to a type. Wherever `A` occurs in our class definition we will substitute in the same type. This works in the same way that binding a name to a value (using `val`) allows us to substitute in the value wherever the name occurs. The only difference is that we're operating on types rather than values.
 
 We can also add type parameters to methods, which limits the scope of the parameter to the method declaration and body:
 
@@ -49,7 +49,7 @@ res11: Int = 1
 
 Scala has a built-in `Array` type that has the same underlying representation as a Java array. `Array` takes a single type parameter that determines its element type, for example `Array[Int]` or `Array[String]`.
 
-The code below shows how to create an array, determine its length, and retrieve elements by index using its `apply` method. Notice how the return type of `apply` matches the type parameter on the array -- we always get out the type we put in:
+The code below shows how to create an array, determine its length, and retrieve elements by index using its `apply` method. Notice how the return type of `apply` matches the type parameter on the array---we always get out the type we put in:
 
 ~~~ scala
 scala> val array = Array(1, 2, 3, 4 ,5)
@@ -84,7 +84,7 @@ scala> array4(1)
 res4: Any = abc
 ~~~
 
-Again, the type of the elements retrieved from the array matches the type parameter on the array. `AnyVal` and `Any` aren't particularly useful types -- if we were using this code in a real application, we may have to use pattern matching to identify the type of data retrieved.
+Again, the type of the elements retrieved from the array matches the type parameter on the array. `AnyVal` and `Any` aren't particularly useful types---if we were using this code in a real application, we may have to use pattern matching to identify the type of data retrieved.
 
 ## Linked Lists
 
@@ -118,7 +118,7 @@ To implement a `LinkedList` in Scala we need to combine our newfound knowledge o
 
  - a class `Pair[A]` with two fields, `head` and `tail`:
     - `head` is the item at this position in the list;
-    - `tail` is another `LinkedList[A]` -- either another `Pair` or an `Empty`;
+    - `tail` is another `LinkedList[A]`---either another `Pair` or an `Empty`;
  - a class `Empty[A]` with no fields.
 
 Start by writing the simplest trait and classes you can so that you can build a list. You should be able to use your implementation as follows:
@@ -153,7 +153,7 @@ Now we have our `LinkedList` class, let's give it some useful methods. Define th
  - a method `apply` that returns the <em>n<sup>th</sup></em> item in the list;
  - a method `contains` that determines whether or not an item is in the list.
 
-In each case, start by writing an abstract method definition in `LinkedList`. Think about the types of the arguments and the types of the results. Then implement the method for `Empty` -- it should be pretty easy to provide a default implementation for an empty list. Finally, implement the method on `Pair`. The implementation will be recursive and defined in terms of `head` and `tail`.
+In each case, start by writing an abstract method definition in `LinkedList`. Think about the types of the arguments and the types of the results. Then implement the method for `Empty`---it should be pretty easy to provide a default implementation for an empty list. Finally, implement the method on `Pair`. The implementation will be recursive and defined in terms of `head` and `tail`.
 
 **Hint:** If you need to signal an error in your code (there's one situation in which you will need to do this), consider throwing an exception. Here is an example:
 
@@ -162,7 +162,7 @@ throw new Exception("Bad things happened")
 ~~~
 
 <div class="solution">
-The hint about exceptions was for the implementation of `apply` in `Empty`. The list is empty -- there is no <em>n<sup>th</sup></em> element to return!
+The hint about exceptions was for the implementation of `apply` in `Empty`. The list is empty---there is no <em>n<sup>th</sup></em> element to return!
 
 Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
 

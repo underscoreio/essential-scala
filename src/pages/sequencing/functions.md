@@ -123,7 +123,7 @@ a function and it is normally inferred, but if we find ourselves need to do this
 (x: Int) => (x + 1): Int
 ~~~
 
-[^parens]: Note that we only can drop the parentheses around the argument list on single-argument functions -- we still have to write `() => foo` and `(a, b) => foo` on functions of other arities.
+[^parens]: Note that we only can drop the parentheses around the argument list on single-argument functions---we still have to write `() => foo` and `(a, b) => foo` on functions of other arities.
 
 <div class="callout callout-info">
 #### Function Literal Syntax
