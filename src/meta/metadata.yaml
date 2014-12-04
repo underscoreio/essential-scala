@@ -29,6 +29,7 @@ pages:
   - src/pages/classes/pattern-matching.md
   - src/pages/classes/conclusions.md
   - src/pages/traits/index.md
+  - src/pages/traits/traits.md
   - src/pages/traits/sealed-traits.md
   - src/pages/traits/modelling-data-with-traits.md
   - src/pages/traits/working-with-data.md
