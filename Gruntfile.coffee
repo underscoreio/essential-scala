@@ -184,7 +184,11 @@ module.exports = (grunt) ->
       when "json"
         output   = "--output=dist/#{meta.filenameStem}.json"
         template = ""
-        filters  = ""
+        filters  = joinLines """
+                     --filter=lib/filters/pdf/callout.coffee
+                     --filter=lib/filters/pdf/columns.coffee
+                     --filter=lib/filters/pdf/solutions.coffee
+                   """
         extras   = ""
         metadata = ""
 
