@@ -19,17 +19,15 @@ action = (type, value, format, meta) ->
         hash = crypto.createHash('md5').update(JSON.stringify(body)).digest("hex")
         uniqueHash = "#{hash}_#{solutions.length}"
         solutions.push({key:uniqueHash,value:body})
-        pandoc.RawBlock("latex", "\\hyperlink{#{uniqueHash}}{Click to see Solution}")
+        pandoc.RawBlock("latex", "\\ref{#{uniqueHash}}")
       else if classes && classes[0] == "solutions"
-        big = []
+        nodes = []
         for solution, i in solutions
-          little = [
-            pandoc.RawBlock("latex", "\\hypertarget{#{solution.key}}{Solution #{i}}")
+          nodes = nodes.concat [
+            pandoc.RawBlock("latex", "\\subsection{Solution #{i}} \\label{#{solution.key}}")
             solution.value...
           ]
-    ## console.error JSON.stringify(little, null, 2)
-          big = big.concat little
-        pandoc.Div([ "", [], [] ], big)
+        pandoc.Div([ "", [], [] ], nodes)
 
 
 pandoc.stdio(action)
