@@ -26,7 +26,6 @@ action = (type, value, format, meta) ->
           little = [
             pandoc.RawBlock("latex", "\\hypertarget{#{solution.key}}{Solution #{i}}")
             solution.value...
-            pandoc.RawBlock("latex", "\\pagebreak")
           ]
     ## console.error JSON.stringify(little, null, 2)
           big = big.concat little
