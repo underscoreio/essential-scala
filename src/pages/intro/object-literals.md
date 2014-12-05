@@ -1,6 +1,6 @@
 ## Object Literals
 
-So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own choosing using **object literals**.
+So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own design using **object literals**.
 
 When we write an object literal we use a **declaration**, which is a different kind of program to an expression. A declaration does not evaluate to a value. Instead is gives a name to a value. This name can then be used to refer to the value in other code.
 
@@ -8,12 +8,12 @@ We can declare an empty object as follows:
 
 ~~~ scala
 scala> object Test {}
-defined module Test
+defined object Test
 ~~~
 
-This is not an expression---it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined a **module**. We'll see what this means later.
+This is not an expression---it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined an object.
 
-Once we have bound the name `Test` we can use it in simple expressions, where it evaluates to the object we have declared. The simplest expression is just the name on its own, which evaluates to the value itself:
+Once we have bound the name `Test` we can use it in expressions, where it evaluates to the object we have declared. The simplest expression is just the name on its own, which evaluates to the value itself:
 
 ~~~ scala
 scala> Test

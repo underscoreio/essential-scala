@@ -59,7 +59,7 @@ scala> "hello".toUpperCase.toLowerCase
 res22: String = hello
 ~~~
 
-You may wonder in what order are the various expression in a method call evaluated? They are evaluated left-to-right, before the method is called. So in the expression
+In what order are the various expressions in a method call evaluated? Method parameters are evaluated left-to-right, before the method is called. So in the expression
 
 ~~~ scala
 "Hello world!".take(2 + 3)
@@ -69,7 +69,7 @@ the expression `"Hello world!"` is evaluated first, then `2 + 3` (which requires
 
 ### Operators
 
-Because every value in Scala is an object, we can also call methods on primitive types such as `Int` and `Boolean`. This is in contrast to Java where `int` and `boolean` are not objects:
+Because every value in Scala is an object we can also call methods on primitive types such as `Int` and `Boolean`. This is in contrast to Java where `int` and `boolean` are not objects:
 
 ~~~ scala
 scala> 123.toShort // this is how we define a `Short` in Scala
@@ -101,7 +101,7 @@ Any Scala expression written `a.b(c)` can also be written `a b c`.
 Note that `a b c d e` is equivalent to `a.b(c).d(e)`, not `a.b(c, d, e)`.
 </div>
 
-We can use infix operator notation with any method that takes one parameter, regardless of whether it has a symbolic or alphanumeric name:
+We can use **infix operator notation** with any method that takes one parameter, regardless of whether it has a symbolic or alphanumeric name:
 
 ~~~ scala
 scala> "the quick brown fox" split " "
@@ -118,6 +118,9 @@ res0: Int = 26
 
 scala> (2 * 3) + (4 * 5)
 res1: Int = 26
+
+scala> 2 * (3 + 4) * 5
+res2: Int = 70
 ~~~
 
 ### Take home points

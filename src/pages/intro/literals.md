@@ -1,7 +1,7 @@
 ## Literal Objects
 
 
-We have already covered some of Scala's basic types. In these section we're going to round out that knowledge by covering all Scala's **literal expressions**. A literal expression represents a fixed value that stands "for itself". Here's an example:
+We have already covered some of Scala's basic types. In this section we're going to round out that knowledge by covering all of Scala's **literal expressions**. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
 ~~~ scala
 scala> 42
@@ -12,7 +12,7 @@ This interaction at the REPL shows us that the literal `42` evaluates to the `In
 
 Don't confuse a literal with the value it evaluates to! The literal expression is the representation in the program text before the program is run, and the value is the representation in the computer's memory after the program has run.
 
-If you have prior programming experience, particularly Java experience, the literals in Scala should be familiar to you:
+If you have prior programming experience, particularly Java experience, the literals in Scala should be familiar to you.
 
 ### Numbers
 
@@ -56,9 +56,9 @@ res34: Char = a
 ~~~
 
 <div class="java-tip">
-  **Java tip:** Although they are written with initial capitals, Scala's `Int`, `Double`, `Float`, `Long`, `Short`, `Byte`, `Boolen` and `Char` refer to exactly the same things as `int`, `double`, `float`, `long`, `short`, `byte`, `boolean`, and `char` in Java.
+Although they are written with initial capitals, Scala's `Int`, `Double`, `Float`, `Long`, `Short`, `Byte`, `Boolen` and `Char` refer to exactly the same things as `int`, `double`, `float`, `long`, `short`, `byte`, `boolean`, and `char` in Java.
 
-  In Scala all of these types act like objects with methods and fields. However, once your code is compiled, a Scala `Int` is exactly the same as a Java `int`. This makes interoperability between the two languages a breeze.
+In Scala all of these types act like objects with methods and fields. However, once your code is compiled, a Scala `Int` is exactly the same as a Java `int`. This makes interoperability between the two languages a breeze.
 </div>
 
 ### Strings
@@ -85,11 +85,11 @@ res13: Null = null
 ~~~
 
 <div class="java-tip">
-  **Java tip:** Although `null`s are common in Java code, they are considered very bad practice in Scala.
+Although `null`s are common in Java code, they are considered very bad practice in Scala.
 
-  The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
+The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
 
-  Later we will see that Scala has the means to define optional values that *are* checked by the compiler. This removes the necessity of using `null`, making our programs much safer.
+Later we will see that Scala has the means to define optional values that *are* checked by the compiler. This removes the necessity of using `null`, making our programs much safer.
 </div>
 
 ### Unit

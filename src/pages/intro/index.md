@@ -11,7 +11,7 @@ scala> "Hello world!"
 res0: String = Hello world!
 ~~~
 
-There is a lot to say about this program. The program we wrote is called an *expression*. Our particular program is called a *literal expression* or literal for short. 
+There is a lot to say about this program. It consists of a single *expression*, and in particular a *literal expression* or literal for short. 
 
 Scala runs, or *evaluates*, our program. When we evaluate a program in the Scala console or worksheet we are told two pieces of information: the *type* of the program, and the *value* it evaluates to. In this case the type is `String` and the value is `"Hello world!"`.
 
@@ -26,7 +26,7 @@ res5: String = HELLO WORLD!
 
 This program extends our first example by adding a *method call*. Evaluation in Scala proceeds left to right. First the literal `"Hello world!"` is evaluated, as in the first example. Then the method `toUpperCase` is called on the result. This method transforms a string value to its upper case equivalent and returns this new string. This is the final value we see printed by the console.
 
-Once again, the type of this program is `String`, but in this case it evaluates to `"HELLO WORLD!"`
+Once again the type of this program is `String`, but in this case it evaluates to `"HELLO WORLD!"`
 
 
 ### Compile-time and Run-time
@@ -102,9 +102,11 @@ java.lang.ArithmeticException: / by zero
 
 We see that the expression `2 / 0` has type `Int` even though this expression fails when we evaluate it.
 
-Types, which exist at compile-time, restrict us to writing programs that give a consistent interpretation to values. We cannot claim that a particular 32-bits is at one point an `Int` and another a `Float`. When a program type checks, Scala guarantees that all values are used consistently and thus it does not need to record type information in a value's representation. This process of removing type information is called *type erasure*.
+Types, which exist at compile-time, restrict us to writing programs that give a consistent interpretation to values. We cannot claim that a particular 32-bits is at one point an `Int` and another a `Float`. When a program type checks, Scala guarantees that all values are used consistently and thus it does not need to record type information in a value's representation. This process of removing type information is called *type erasure*[^type-erasure].
 
-Types necessarily do not contain all possible information about the values that conform to the type. We have already seen that the type system will not prevent us from dividing an `Int` by zero, which leads to a run-time error. We will see that we can express many useful constraints in the type system, which improves the reliability of our programs. If we wanted to, we could implement our division operator that did express the possibility of error in the type system. Using the type system well is one of the main themes of this book.
+[^type-erasure]: This is not entirely true. Some type information is retained by the JVM, in the form of tags or wrappers on objects. This information is not sufficient, however, to reconstruct all the types in the program.
+
+Types necessarily do not contain all possible information about the values that conform to the type. If they did, type checking would be equivalent to running the program. We have already seen that the type system will not prevent us from dividing an `Int` by zero, which causes a run-time error. We will see that we can express many useful constraints in the type system, improving the reliability of our programs. We could implement a division operator that used the type system to express the possibility of error, if we decided this was important enough in our program. Using the type system well is one of the main themes of this book.
 
 
 ### Take Home Points
@@ -115,7 +117,7 @@ Expressions are the parts of a program that evaluate to a value. They are the ma
 
 Expressions have types, which express some restrictions on programs. During *compile-time* the types of our programs are checked. If they are inconsistent then compilation fails and we cannot evaluate, or run, our program.
 
-Values exist in the computer's memory, and are what a running program manipulates. In Scala, all values are *objects*, the meaning of which we will discuss soon.
+Values exist in the computer's memory, and are what a running program manipulates. All values in Scala are *objects*, the meaning of which we will discuss soon.
 
 
 ### Exercises
