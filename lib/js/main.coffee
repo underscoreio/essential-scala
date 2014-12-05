@@ -3,16 +3,12 @@ toc = require './toc'
 
 addToggle = (className, name, additionalClasses) ->
 
-  console.log("addToggle")
-
   toggleMaina = () ->
-    console.log("toggleMaina")
     toggleable = $(this)
 
     extraClasses =  additionalClasses ? additionalClasses : ''
 
     theToggling = (evt) ->
-      console.log("theToggling")
       toggleable.toggle()
       evt.preventDefault()
 

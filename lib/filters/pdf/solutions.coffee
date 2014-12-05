@@ -19,10 +19,18 @@ action = (type, value, format, meta) ->
         hash = crypto.createHash('md5').update(JSON.stringify(body)).digest("hex")
         uniqueHash = "#{hash}_#{solutions.length}"
         solutions.push({key:uniqueHash,value:body})
+        #
+        # This needs some text "Click to see solution"
+        # Also needs to be an anchor so we and build a return point from the
+        # solution
+        #
         pandoc.RawBlock("latex", "\\ref{#{uniqueHash}}")
       else if classes && classes[0] == "solutions"
         nodes = []
         for solution, i in solutions
+          #
+          # This needs "return to exercises"
+          #
           nodes = nodes.concat [
             pandoc.RawBlock("latex", "\\subsection{Solution #{i}} \\label{#{solution.key}}")
             solution.value...
