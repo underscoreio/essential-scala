@@ -14,6 +14,7 @@ exercisesRepo: null # "git@github.com:underscoreio/essential-scala-code.git"
 pages:
   - src/pages/index.md
   - src/pages/getting-started/index.md
+
   - src/pages/intro/index.md
   - src/pages/intro/objects.md
   - src/pages/intro/literals.md
@@ -21,6 +22,7 @@ pages:
   - src/pages/intro/writing-methods.md
   - src/pages/intro/expressions.md
   - src/pages/intro/conclusion.md
+  
   - src/pages/classes/index.md
   - src/pages/classes/classes.md
   - src/pages/classes/apply.md
@@ -28,6 +30,7 @@ pages:
   - src/pages/classes/case-classes.md
   - src/pages/classes/pattern-matching.md
   - src/pages/classes/conclusions.md
+
   - src/pages/traits/index.md
   - src/pages/traits/traits.md
   - src/pages/traits/sealed-traits.md
@@ -35,6 +38,7 @@ pages:
   - src/pages/traits/working-with-data.md
   - src/pages/traits/recursive-data.md
   - src/pages/traits/conclusions.md
+
   - src/pages/sequencing/index.md
   - src/pages/sequencing/generics.md
   - src/pages/sequencing/functions.md
@@ -43,6 +47,7 @@ pages:
   - src/pages/sequencing/sequencing-computation.md
   - src/pages/sequencing/variance.md
   - src/pages/sequencing/conclusions.md
+
   - src/pages/collections/index.md
   - src/pages/collections/seq.md
   - src/pages/collections/working-with-seq.md
@@ -52,6 +57,7 @@ pages:
   - src/pages/collections/for-comprehensions-redux.md
   - src/pages/collections/map-and-set.md
   - src/pages/collections/ranges.md
+
   - src/pages/implicits/index.md
   - src/pages/implicits/foundations.md
   - src/pages/implicits/implicit-parameters.md
@@ -59,12 +65,15 @@ pages:
   - src/pages/implicits/enrichment.md
   - src/pages/implicits/using-type-classes.md
   - src/pages/implicits/conversions.md
+
   - src/pages/pattern-matching/index.md
   - src/pages/pattern-matching/extractors.md
+  
   - src/pages/dsl/index.md
   - src/pages/dsl/operators.md
   - src/pages/dsl/control.md
   - src/pages/dsl/macros.md
+
   - src/pages/collections-redux/index.md
   - src/pages/collections-redux/seq-implementations.md
   - src/pages/collections-redux/arrays-and-strings.md
@@ -72,5 +81,6 @@ pages:
   - src/pages/collections-redux/traversable.md
   - src/pages/collections-redux/java-interop.md
   - src/pages/collections-redux/mutable-seq.md
+
   - src/pages/solutions.md
 ...

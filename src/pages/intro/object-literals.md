@@ -11,7 +11,7 @@ scala> object Test {}
 defined object Test
 ~~~
 
-This is not an expression---it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object). Notice that Scala tells us it has defined an object.
+This is not an expression---it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object).
 
 Once we have bound the name `Test` we can use it in expressions, where it evaluates to the object we have declared. The simplest expression is just the name on its own, which evaluates to the value itself:
 
@@ -54,7 +54,7 @@ We interact with objects via methods so let's create an object with a method.
 scala> object Test2 {
          def name: String = "Probably the best object ever"
        }
-defined module Test2
+defined object Test2
 ~~~
 
 Here we've create a method called `name`. We can call it in the usual way.
@@ -71,7 +71,7 @@ scala> object Test3 {
          def hello(name: String) =
            "Hello " + name
        }
-defined module Test3
+defined object Test3
 
 scala> Test3.hello("Noel")
 res7: String = Hello Noel
@@ -127,7 +127,7 @@ object Test4 {
 
 // Exiting paste mode, now interpreting.
 
-defined module Test4
+defined object Test4
 
 scala> Test4.hello("Dave")
 res8: String = Noel says hi to Dave
@@ -177,14 +177,14 @@ scala> object Test7 {
            42
          }
        }
-defined module Test7
+defined object Test7
 ~~~
 
 Here we have used a `println` expression to print something to the console, and a block expression (expressions surrounded by `{` and `}`) to group expressions. We'll see more about block expressions in the next section.
 
-Notice how the REPL says we've defined a module, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
+Notice how the REPL says we've defined a object, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
 
-`objects` and `classes` (which we'll see later) aren't loaded until they are referenced by other code. This is what prevents Scala loading the entire standard library into memory to run a simple `"Hello world!"` app.
+Objects and classes (which we'll see later) aren't loaded until they are referenced by other code. This is what prevents Scala loading the entire standard library into memory to run a simple `"Hello world!"` app.
 
 Let's force Scala to evaluate our object body by referencing `Test7` in an expression:
 
@@ -461,7 +461,7 @@ First let's deal with the equivalence between methods and expressions. As we kno
 scala> object calculator {
      |   def square(x: Int) = x * x
      | }
-defined module calculator
+defined object calculator
 
 scala> val someField = calculator.square
 <console>:8: error: missing arguments for method square in object calculator;
@@ -483,7 +483,7 @@ A method with no arguments looks like it behaves differently. However, this is a
 scala> object clock {
      |   def time = System.currentTimeMillis
      | }
-defined module clock
+defined object clock
 
 scala> val now = clock.time
 now: Long = 1395402828639

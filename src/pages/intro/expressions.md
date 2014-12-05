@@ -4,14 +4,14 @@ We have almost finished our basic introduction to Scala. In this section we are 
 
 ### Conditionals
 
-A conditional allows us to choose an expression to evaluate based on some condition. For example, we can choose a string based on some condition
+A conditional allows us to choose an expression to evaluate based on some condition. For example, we can choose a string based on which of two numbers is the smallest.
 
 ~~~
 scala> if(1 < 2) "Yes" else "No"
 res2: String = Yes
 ~~~
 
-The expression that is not selected does not get evaluated. This is apparent if we use an expression with a side-effect
+The expression that is not selected does not get evaluated. This is apparent if we use an expression with a side-effect.
 
 ~~~
 scala> if(1 < 2) println("Yes") else println("No")
@@ -63,12 +63,12 @@ scala> { 1; 2; 3 }
 res0: Int = 3
 ~~~
 
-<div class="alert alert-info">
-**Side effects tip:** As you can see, executing this code causes the REPL to raise a number of warnings and return the `Int` value `3`.
+<div class="callout callout-info">
+As you can see, executing this code causes the REPL to raise a number of warnings and return the `Int` value `3`.
 
 A block is a sequence of expressions or declarations surrounded by braces. A block is also an expression: it executes each of its sub-expressions in order and returns the value of the last expression.
 
-What's the point of this? Why execute `1` and `2` if we're going to throw their values away? This is a good question, and is the reason the Scala compiler raised those warnings above.
+Why execute `1` and `2` if we're going to throw their values away? This is a good question, and is the reason the Scala compiler raised those warnings above.
 </div>
 
 One reason to use a block is to use code that produces side-effects before calculating a final value:

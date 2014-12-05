@@ -4,7 +4,7 @@ In the previous section we saw the syntax of methods. One of our main goals in t
 
 To make the advice concrete we'll use this exercise from the previous section as an example:
 
-Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *calling `square`* as part of its result calculation.
+*Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input, calling `square` as part of its result calculation.*
 
 ### Identify the Input and Output
 
@@ -49,7 +49,7 @@ The first technique is to look at the result type, in this case `Double`. How ca
 
 #### Consider the Input Type
 
-Our next technique is to look at the type of input parameters to the method. In this case we have a `Double`. We have established we need to create `Double`, so what methods can we call to create `Double` from out input. There are many such methods, and here we have to use our domain knowledge to select `*` as the correct method to call.
+Our next technique is to look at the type of input parameters to the method. In this case we have a `Double`. We have established we need to create a `Double`, so what methods can we call to create a `Double` from our input? There are many such methods, and here we have to use our domain knowledge to select `*` as the correct method to call.
 
 Thus we can write our complete method as
 
