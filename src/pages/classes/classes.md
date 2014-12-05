@@ -1,6 +1,6 @@
 ## Classes
 
-A class is a template for creating objects that have similar methods and fields. Importantly, in Scala a class also defines a type. Objects created from a class all share the same type. This helps us overcome the problem we had in the *Greetings, Human* exercise in the last section.
+A class is a template for creating objects that have similar methods and fields. In Scala a class also defines a type, and objects created from a class all share the same type. This allows us to overcome the problem we had in the *Greetings, Human* exercise in the last chapter.
 
 ### Defining a Class
 
@@ -102,8 +102,8 @@ scala> new Person("Dave", "Gurnell").firstName
 res29: String = Dave
 ~~~
 
-<div class="alert alert-info">
-**Immutability tip:** `val` fields are *immutable*---they are initialized once after which we cannot change their values. Scala also provides the `var` keyword for defining *mutable* fields.
+<div class="callout callout-info">
+`val` fields are *immutable*---they are initialized once after which we cannot change their values. Scala also provides the `var` keyword for defining *mutable* fields.
 
 Scala programmers tend to prefer to write immutability and side-effect-free code so we can reason about it using the substitution model. In this course we will concentrate almost exclusively on immutable `val` fields.
 </div>
@@ -169,8 +169,8 @@ scala> greet(lastName = "Dave")
 res11: String = Greetings, Some Dave!
 ~~~
 
-<div class="alert alert-info">
-**Design tip:** *Keyword parameters are robust to changes in the number and order of parameters.* For example, if we add a `title` parameter to the `greet` method, the meaning of keywordless method calls changes but keyworded calls remain the same:
+<div class="callout callout-info">
+*Keyword parameters are robust to changes in the number and order of parameters.* For example, if we add a `title` parameter to the `greet` method, the meaning of keywordless method calls changes but keyworded calls remain the same:
 
 ~~~ scala
 scala> def greet(title: String = "Mr", firstName: String = "Some", lastName: String = "Guy") =

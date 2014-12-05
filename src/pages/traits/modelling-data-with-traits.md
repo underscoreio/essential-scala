@@ -1,6 +1,6 @@
 ## Modelling Data with Traits
 
-With (sealed) traits and (final) case classes we have seen some of the most important features in Scala and the ones you will use most often in day-to-day programming. In this section we're going to look at how we can directly translate a data model into Scala code using traits and classes. In particular we're going to look at **is-a** and **has-a** relationships, **logical ors** and **logical ands**, and their translation in Scala. The type of data we will be created are called **algebraic data types**.
+With (sealed) traits and (final) case classes we have seen some of the most important features in Scala and the ones you will use most often in day-to-day programming. In this section we're going to look at how we can directly translate a data model into Scala code using traits and classes. In particular we're going to look at **is-a** and **has-a** relationships, **logical or** and **logical and**, and their translation in Scala. The type of data we will create are called **algebraic data types**.
 
 Our goal in this section is to see how to translate a data model into Scala code. In the next section we'll see patterns for code that uses algebraic data types.
 
