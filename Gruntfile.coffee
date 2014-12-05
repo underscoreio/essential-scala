@@ -177,7 +177,9 @@ module.exports = (grunt) ->
       when "epub"
         output   = "--output=dist/#{meta.filenameStem}.epub"
         template = "--epub-stylesheet=dist/temp/main.css"
-        filters  = ""
+        filters  = joinLines """
+                     --filter=lib/filters/epub/solutions.coffee
+                   """
         extras   = "--epub-cover-image=src/covers/epub-cover.png"
         metadata = "src/meta/epub.yaml"
 
