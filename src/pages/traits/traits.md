@@ -1,16 +1,13 @@
----
-layout: page
-title: "This or That: Traits"
----
+## Traits
 
-**Traits** are templates for creating classes, in the same way that classes are templates for creating objects. Traits allow us to express that two or more classes can be considered the same, and thus both implement the same operations. In other words, traits allow us to express that multiple classes share a common super-type (outside of the `Any` super-type that all classes share).
+Traits are templates for creating classes, in the same way that classes are templates for creating objects. Traits allow us to express that two or more classes can be considered the same, and thus both implement the same operations. In other words, traits allow us to express that multiple classes share a common super-type (outside of the `Any` super-type that all classes share).
 
 <div class="java-tip">
 Traits are very much like Java 8's *interfaces* with *default methods*. If you have not used Java 8, you can think of traits as being like a cross between interfaces and *abstract classes*.
 </div>
 
 
-## An Example of Traits
+### An Example of Traits
 
 Let's start with an example of a trait. Imagine we're modelling visitors to a website. There are two types of visitor: those who have registered on our site and those who are anonymous. We can model this with two classes:
 
@@ -98,7 +95,7 @@ case class Name(...) extends TraitName {
 ~~~
 </div>
 
-## Traits Compared to Classes
+### Traits Compared to Classes
 
 Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
 
@@ -141,7 +138,7 @@ res16: Long = 8871
 
 [uniform access principle]: http://en.wikipedia.org/wiki/Uniform_access_principle
 
-## Take Home Points
+### Take Home Points
 
 Traits are a way of **abstracting over classes** that have similar properties, just like classes are a way of abstracting over objects.
 
@@ -161,9 +158,9 @@ case class Name(...) extends TraitName {
 }
 ~~~
 
-## Exercises
+### Exercises
 
-### Cats, and More Cats
+#### Cats, and More Cats
 
 Demand for Cat Simulator 1.0 is exploding! For v2 we're going to go beyond the domestic cat to model `Tiger`s, `Lion`s, and `Panther`s in additional to the `Cat`. Define a trait `Feline` and then define all the different species as subtypes of `Feline`. To make things interesting, define:
 
@@ -217,7 +214,7 @@ case class Panther(...) extends BigCat
 ~~~
 </div>
 
-### Shaping up with traits
+#### Shaping up with traits
 
 Define a trait called `Shape` and give it three abstract methods:
 
@@ -257,7 +254,7 @@ case class Square(size: Double) extends Shape {
 ~~~
 </div>
 
-### Shaping up 2 (da streets)
+#### Shaping up 2 (da streets)
 
 The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape`---it's also a type of `Rectangle` where the width and height are the same.
 

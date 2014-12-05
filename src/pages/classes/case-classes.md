@@ -51,8 +51,8 @@ scala> new Person("Noel", "Welsh") == new Person("Noel", "Welsh")
 res4: Boolean = true
 ~~~
 
-   <div class="alert alert-info">
-   **Java tip:** The two expressions above are equivalent. Scala's `==` operator is different from Java's---it delegates to `equals` rather than comparing values on reference identity.
+   <div class="callout callout-info">
+   The two expressions above are equivalent. Scala's `==` operator is different from Java's---it delegates to `equals` rather than comparing values on reference identity.
 
    Scala has an operator called `eq` with the same behaviour as Java's `==`. However, it is rarely used in application code:
 
@@ -91,7 +91,7 @@ res9: Person = Person(Dave,Gurnell2)
 
 ### Features of a case class companion object
 
-The companion object contains an `apply` method with the same arguments as the class constructor. Scala programmers tend to prefer the `apply` method over the constructor for the brevity of omitting `new`, which makes constructors much easier to read insides expressions:
+The companion object contains an `apply` method with the same arguments as the class constructor. Scala programmers tend to prefer the `apply` method over the constructor for the brevity of omitting `new`, which makes constructors much easier to read inside expressions:
 
 ~~~ scala
 scala> Person("Dave", "Gurnell") == Person("Noel", "Welsh")
@@ -160,7 +160,7 @@ case class Name(parameter: type, ...) {
 
 Case classes have numerous auto-generated methods and features that save typing. We can override this behaviour on a piece-by-piece basis by implementing the relevant methods ourselves.
 
-In Scala 2.10 and earlier we can define case classes containing 0 to 22 fields. In Scala 2.11 (June 2014 release) we gain the ability to define arbitrarily-sized case classes.
+In Scala 2.10 and earlier we can define case classes containing 0 to 22 fields. In Scala 2.11 we gain the ability to define arbitrarily-sized case classes.
 
 ### Exercises
 
@@ -184,7 +184,7 @@ The same can't always be said for code, but in this case we can get rid of a lot
 
 <div class="solution">
 
-Case classes provide our `copy` methods and our `apply` methods and remove the need to write `val` before each constructor argument. The final codebase looks like this:
+Case classes provide our `copy` methods and our `apply` methods and remove the need to write val` before each constructor argument. The final codebase looks like this:
 
 ~~~ scala
 case class Director(firstName: String, lastName: String, yearOfBirth: Int) {
@@ -235,13 +235,13 @@ Reimplement `Counter` as a case class, using `copy` where appropriate. Additiona
 
 <div class="solution">
 ~~~ scala
-case class Counter(val count: Int = 0) {
+case class Counter(count: Int = 0) {
   def dec = copy(count = count - 1)
   def inc = copy(count = count + 1)
   def adjust(adder: Adder) = copy(count = adder(count))
 }
 ~~~
-
+ 
 This is almost a trick exercise---there are very few differences with the previous implementation However, notice the extra functionality we got for free:
 
 ~~~ scala

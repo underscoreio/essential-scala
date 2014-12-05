@@ -72,7 +72,7 @@ Remember that if you provide a default implementation in a trait, you should ens
 Now we understand how polymorphism works, how do we use it with an algebraic data types? We've actually seen everything we need, but let's make it explicit and see the patterns.
 
 <div class="callout callout-info">
-#### The Has-a And Polymorphism Pattern
+#### The Product Type Polymorphism Pattern
 
 If `A` has a `b` (with type `B`) and a `c` (with type `C`), and we want to write a method `f` returning an `F`, simply write the method in the usual way.
 
@@ -88,7 +88,7 @@ In the body of the method we must use `b`, `c`, and any method parameters to con
 
 
 <div class="callout callout-info">
-#### The Is-a Or Polymorphism Pattern
+#### The Sum Type Polymorphism Pattern
 
 If `A` is a `B` or `C`, and we want to write a method `f` returning an `F`, define `f` as an abstract method on `A` and provide concrete implementations in `B` and `C`.
 
@@ -113,7 +113,7 @@ final case class C() extends A {
 Structural recursion with pattern matching proceeds along the same lines as polymorphism. We simply have a case for every subtype, and each pattern matching case must extract the fields we're interested in.
 
 <div class="callout callout-info">
-#### The Has-a And Pattern Matching Pattern
+#### The Product Type Pattern Matching Pattern
 
 If `A` has a `b` (with type `B`) and a `c` (with type `C`), and we want to write a method `f` that accepts an `A` and returns an `F`, write
 
@@ -130,7 +130,7 @@ In the body of the method we use `b` and `c` to construct the result of type `F`
 
 
 <div class="callout callout-info">
-#### The Is-a Or Pattern Matching Pattern
+#### The Sum Type Pattern Matching Pattern
 
 If `A` is a `B` or `C`, and we want to write a method `f` accepting an `A` and returning an `F`, define a pattern matching case for `B` and `C`.
 
