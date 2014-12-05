@@ -170,6 +170,7 @@ module.exports = (grunt) ->
         template = "--template=lib/templates/template.html"
         filters  = joinLines """
                      --filter=lib/filters/html/tables.coffee
+                     --filter=lib/filters/html/solutions.coffee
                    """
         extras   = ""
         metadata = "src/meta/html.yaml"
