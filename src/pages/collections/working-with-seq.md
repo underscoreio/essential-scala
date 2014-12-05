@@ -1,7 +1,6 @@
 ## Working with Sequences
 
-
-In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences---how functional programming allows us to process every element of a sequence at once in a terse and declarative style.
+In the [previous section](#seq) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences---how functional programming allows us to process every element of a sequence at once in a terse and declarative style.
 
 ### Bulk Processing of Elements
 

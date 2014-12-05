@@ -1,4 +1,4 @@
-## Sequences
+## Sequences {#seq}
 
 A **sequence** is a collection of items with a defined and stable order. Sequences are one of the most common data structures. In this section we're going to look at the basics of sequences: creating them, key methods on sequences, and the distinction between mutable and immutable sequences.
 
