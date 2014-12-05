@@ -1,5 +1,8 @@
 #!/usr/bin/env coffee
 
+# Moves the solutions to exercises out of the main body and into a separate chapter.
+# This filter modifies the native output from pandoc. See: http://johnmacfarlane.net/pandoc/scripting.html
+
 _      = require 'underscore'
 pandoc = require 'pandoc-filter'
 crypto = require 'crypto'

@@ -12,7 +12,7 @@ sealed trait Visitor {
 }
 ~~~
 
-When we mark a trait as `sealed` we *must* define all of its subtypes in the same file. This is a reasonable restriction in our `Visitor` example. Once the trait is sealed, the compiler knows the complete set of subtypes and will warn us if a pattern matching expression is missing a case:
+When we mark a trait as `sealed` we *must* define all of its subtypes in the same file. Once the trait is sealed, the compiler knows the complete set of subtypes and will warn us if a pattern matching expression is missing a case:
 
 ~~~ scala
 scala> def missingCase(v: Visitor) =
@@ -122,15 +122,13 @@ Write a sealed trait `Color` to make our shapes more interesting.
  - provide a means for people to tell whether any `Color` is
    "light" or "dark".
 
-<div class="alert alert-info">
-**Note:** A lot of this is left deliberately open to interpretation. The important thing is to practice working with traits, classes, and objects.
+A lot of this exercise is left deliberately open to interpretation. The important thing is to practice working with traits, classes, and objects.
 
 Decisions such as how to model colours and what is considered a light or dark colour can either be left up to you or discussed with other class members.
-</div>
 
 Edit the code for `Shape` and its subtypes to add a colour to each shape.
 
-Finally, update the code for `Draw.apply` to print the colour of the argument as well as its shape and dimensions (hint: you may want to deal with the colour in a helper method):
+Finally, update the code for `Draw.apply` to print the colour of the argument as well as its shape and dimensions:
 
  - if the argument is a predefined colour, print that colour by name:
 
@@ -141,6 +139,8 @@ Draw(Circle(10, Yellow)) // returns "A yellow square of size 10cm"
  - if the argument is a custom colour rather than a predefined one,
    print the word "light" or "dark" instead.
 
+You may want to deal with the colour in a helper method.
+   
 <div class="solution">
 One solution to this exercise is presented below. Remember that a lot of the implementation details are unimportant---the crucial aspects of a correct solution are:
 
@@ -340,7 +340,7 @@ The implementation of `divide.apply` is simple - we perform a test and return a 
 Finally, the match illustrates a case class pattern with the parentheses, and a case object pattern without.
 </div>
 
-{% comment %}
+<!--
 
 #### Really Printing Shapes
 
@@ -402,4 +402,4 @@ object Draw {
 }
 ~~~
 </div>
-{% endcomment %}
+-->
