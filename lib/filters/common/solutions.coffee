@@ -65,12 +65,13 @@ createFilter = ({ chapterHeading, solutionHeading, linkToSolution, linkToExercis
       when 'Link'
         [ body, [ href, unused ] ] = value
 
-        console.error("LINK #{JSON.stringify(href)} | #{JSON.stringify(unused)} | #{textOf(body)}")
+        # console.error("LINK #{JSON.stringify(href)} | #{JSON.stringify(unused)} | #{textOf(body)}")
 
+        return # don't rewrite the document here
       when 'Header'
         [ level, [ident, classes, kvs], body ] = value
 
-        console.error("HED#{level} #{JSON.stringify(ident)} | #{textOf(body)}")
+        # console.error("HEAD#{level} #{JSON.stringify(ident)} | #{textOf(body)}")
 
         # Record the last title we passed so we can name and number exercises.
         # Some exercises have multiple solutions, so reset that counter too.
