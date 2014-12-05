@@ -79,7 +79,7 @@ scala> 123.toByte // and this is how we define a `Byte`
 res2: Byte = 123
 ~~~
 
-But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes -- Scala methods can have symbolic names as well as alphanumeric ones!
+But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes---Scala methods can have symbolic names as well as alphanumeric ones!
 
 ~~~ scala
 scala> 43 - 3 + 2
@@ -110,7 +110,7 @@ res0: Array[String] = Array(the, quick, brown, fox)
 
 Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions instead of verbose method calls. There are also notations for **prefix**, **postfix**, **right-associative**, and **assignment-style operators**.
 
-A question poses itself -- what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
+A question poses itself---what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
 
 ~~~ scala
 scala> 2 * 3 + 4 * 5

@@ -60,7 +60,7 @@ trait Veteran extends Person {
 
 ## Trait Linearization
 
-Overriding can lead to interesting interactions if we have many traits that each override a particular method. Consider the following code -- what happens when we call `foo` on an instance of `Example`?
+Overriding can lead to interesting interactions if we have many traits that each override a particular method. Consider the following code---what happens when we call `foo` on an instance of `Example`?
 
 ~~~ scala
 trait Fooable { def foo: String }
@@ -81,7 +81,7 @@ res1: String = C
 
 Ambiguity between traits is resolved using **linearization**. They are effectively stacked on top of one another and any method call is resolved by searchin up the stack until a matching definition is found. In the example the search order imposed by linearization is `Example -> C -> B -> A -> AnyRef -> Any` (extending `AnyRef` is implicit when you don't explicitly `extend` anything else).
 
-Linearization enables us to come up with all sorts of byzantine designs where traits add pieces of behaviour to a few common methods. The simple rule of designing with linearization is: don't. **If you depend on the order in which traits are stacked, you are doing something wrong** -- it is a sure way to introduce bugs into your code.
+Linearization enables us to come up with all sorts of byzantine designs where traits add pieces of behaviour to a few common methods. The simple rule of designing with linearization is: don't. **If you depend on the order in which traits are stacked, you are doing something wrong**---it is a sure way to introduce bugs into your code.
 
 ## Take home points
 
@@ -93,7 +93,7 @@ Traits solve the method resolution problems of multiple inheritance by defining 
 
 Multiple inheritance is one way (but not the only way) of modelling a **this and that** relationship between types. In functional programming, this is called a **product type**.
 
-We can also model product types using *generics* -- we'll see these later.
+We can also model product types using *generics*---we'll see these later.
 
 ## Exercises
 

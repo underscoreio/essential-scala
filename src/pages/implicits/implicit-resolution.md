@@ -5,13 +5,13 @@ title: Implicit Resolution
 
 ## Implicit Resolution Rules
 
-Scala has three types of implicits -- implicit classes, implicit values, and implicit conversions. Each works in the same way -- the compiler detects a type error in our code, locates a matching implicit, and applies it to fix the error. This is a powerful mechanism, but we need to control it very carefully to prevent the compiler changing our code in ways we don't expect. For this reason, there is a strict set of **implicit resolution rules** that we can use to dictate the compiler's behaviour:
+Scala has three types of implicits---implicit classes, implicit values, and implicit conversions. Each works in the same way---the compiler detects a type error in our code, locates a matching implicit, and applies it to fix the error. This is a powerful mechanism, but we need to control it very carefully to prevent the compiler changing our code in ways we don't expect. For this reason, there is a strict set of **implicit resolution rules** that we can use to dictate the compiler's behaviour:
 
- 1. **Explicits first rule** -- if the code already type checks, the compiler ignores implicits altogether;
- 2. **Marking rule** -- the compiler only uses definitions marked with the `implicit` keyword;
- 3. **Scope rule** -- the compiler only uses definitions that are *in scope* at the current location in the code (see below);
- 4. **Non-ambiguity rule** -- the compiler only applies an implicit if it is the only candidate available;
- 5. **One-at-a-time rule** -- the compiler never chains implicits together to fix type errors -- doing so would drastically increase compile times;
+ 1. **Explicits first rule**---if the code already type checks, the compiler ignores implicits altogether;
+ 2. **Marking rule**---the compiler only uses definitions marked with the `implicit` keyword;
+ 3. **Scope rule**---the compiler only uses definitions that are *in scope* at the current location in the code (see below);
+ 4. **Non-ambiguity rule**---the compiler only applies an implicit if it is the only candidate available;
+ 5. **One-at-a-time rule**---the compiler never chains implicits together to fix type errors---doing so would drastically increase compile times;
 
 Note that the name of the implicit doesn't come into play in this process.
 
@@ -19,9 +19,9 @@ Note that the name of the implicit doesn't come into play in this process.
 
 The *scope rule* of implicit resolution uses a special set of scoping rules that allow us to package implicits in useful ways. These rules, collectively referred to as **implicit scope**, form a search path that the compiler uses to locate implicits:
 
- 1. **Local scope** -- First look locally for any identifier that is tagged as `implicit`. This must be a single identifier (i.e. `a`, not `a.b`), and can be defined locally or in the surrounding class, object, or trait, or `imported` from elsewhere.
+ 1. **Local scope**---First look locally for any identifier that is tagged as `implicit`. This must be a single identifier (i.e. `a`, not `a.b`), and can be defined locally or in the surrounding class, object, or trait, or `imported` from elsewhere.
 
- 2. **Companion objects** -- If an implicit cannot be found locally, the compiler looks in the companion objects of types involved in the type error. Will see more of this rule in the next section.
+ 2. **Companion objects**---If an implicit cannot be found locally, the compiler looks in the companion objects of types involved in the type error. Will see more of this rule in the next section.
 
 ## Packaging Implicit Values
 
@@ -83,7 +83,7 @@ While this is a valid criticism of implicits, the solution is not to abandon the
 
 The same resolution rules apply for implicit values as for implicit classes. If the compiler is unable to find suitable candidates for all parameters in the list, we get a compilation error.
 
-Let's redefine our adapters for `HtmlWriter` so we can bring them all into scope. Note that outside the REPL implicit values are subject to the same packaging restrictions as implicit classes -- they have to be defined inside another class, object, or trait. We'll use the packaging convention we discussed in the previous section:
+Let's redefine our adapters for `HtmlWriter` so we can bring them all into scope. Note that outside the REPL implicit values are subject to the same packaging restrictions as implicit classes---they have to be defined inside another class, object, or trait. We'll use the packaging convention we discussed in the previous section:
 
 ~~~ scala
 scala> :paste

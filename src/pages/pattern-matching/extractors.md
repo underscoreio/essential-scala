@@ -1,8 +1,8 @@
 ## Custom Patterns
 
-In the last section we took an in-depth look at all of the types of pattern that are embedded into the pattern matching language. However, in that list we didn't see some of the patterns that we've been using in the course so far -- case class and sequence patterns were nowhere to be seen!
+In the last section we took an in-depth look at all of the types of pattern that are embedded into the pattern matching language. However, in that list we didn't see some of the patterns that we've been using in the course so far---case class and sequence patterns were nowhere to be seen!
 
-There is a final aspect of pattern matching that we haven't covered that truly makes it a universal tool -- we can define our own custom **extractor** patterns using regular Scala code and use them along-side the built-in patterns in our `match` expressions.
+There is a final aspect of pattern matching that we haven't covered that truly makes it a universal tool---we can define our own custom **extractor** patterns using regular Scala code and use them along-side the built-in patterns in our `match` expressions.
 
 ### Extractors
 

@@ -314,7 +314,7 @@ final case class Success(result: Int) extends Calculation
 final case class Failure(reason: String) extends Calculation
 ~~~
 
-We're now going to write some methods that use a `Calculation` to perform a larger calculation. These methods will have a somewhat unusual shape -- this is a precursor to things we'll be exploring soon -- but if you follow the patterns you will be fine.
+We're now going to write some methods that use a `Calculation` to perform a larger calculation. These methods will have a somewhat unusual shape---this is a precursor to things we'll be exploring soon---but if you follow the patterns you will be fine.
 
 Create a `Calculator` object. On `Calculator` define methods `+` and `-` that accept a `Calculation` and an `Int`, and return a new `Calculation`. Here are some examples
 

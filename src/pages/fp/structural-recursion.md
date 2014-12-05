@@ -8,7 +8,7 @@ In the previous sections of the course two themes have come up again and again:
 - modelling data using traits and type classes; and
 - operating on data using pattern matching and higher-order functions like `map` and `fold`.
 
-You might have noticed that the way we define data and the way we use it follows a very regular pattern. This is no accident. The concept underlying this is called **structural recursion**. Structural recursion gives us a set of rules -- we could implement it as a program -- for constructing functions that always work correctly with a particular type of data known as **algebraic data types**.
+You might have noticed that the way we define data and the way we use it follows a very regular pattern. This is no accident. The concept underlying this is called **structural recursion**. Structural recursion gives us a set of rules---we could implement it as a program---for constructing functions that always work correctly with a particular type of data known as **algebraic data types**.
 
 ## Algebraic Data Types
 

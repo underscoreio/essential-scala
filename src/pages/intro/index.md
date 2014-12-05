@@ -1,17 +1,21 @@
-# Introduction
+# Expressions, Types, and Values
 
-## Expressions, Types, and Values
+In this chapter we look at the fundamental building blocks of Scala programs: **expressions**, **types**, and **values**. Understanding these concepts is necessary to build a mental model of how Scala programs work.
 
-In this chapter we look at the fundamentals of Scala: **expressions, types, and values**. Understanding these concepts is necessary to build a mental model of how Scala programs work.
+## Your First Program
 
-Let's get started. In the Scala console or worksheet enter `"Hello world!"` and press return (in the console) or save the worksheet. You should see an interaction similar to this:
+In the Scala console or worksheet enter `"Hello world!"` and press return (in the console) or save the worksheet. You should see an interaction similar to this:
 
 ~~~ scala
 scala> "Hello world!"
 res0: String = Hello world!
 ~~~
 
-There is a lot to say about this program. The program we wrote is called an *expression*. Scala runs, or *evaluates*, our program. When we evalute a program in the Scala console or worksheet we are told two pieces of information: the *type* of the program, and the *value* it evaluates to. In this case the type is `String` and the value is `"Hello world!"`.
+There is a lot to say about this program. The program we wrote is called an *expression*. Our particular program is called a *literal expression* or literal for short. 
+
+Scala runs, or *evaluates*, our program. When we evaluate a program in the Scala console or worksheet we are told two pieces of information: the *type* of the program, and the *value* it evaluates to. In this case the type is `String` and the value is `"Hello world!"`.
+
+Although the output value "Hello world!" looks the same as the program that created it, there is a difference between the two. The literal expression is the program text we entered, while what the console prints out is the result of evaluating that program.
 
 Let's look at a slightly more complex program
 
@@ -20,7 +24,10 @@ scala> "Hello world!".toUpperCase
 res5: String = HELLO WORLD!
 ~~~
 
+This program extends our first example by adding a *method call*. Evaluation in Scala proceeds left to right. First the literal `"Hello world!"` is evaluated, as in the first example. Then the method `toUpperCase` is called on the result. This method transforms a string value to its upper case equivalent and returns this new string. This is the final value we see printed by the console.
+
 Once again, the type of this program is `String`, but in this case it evaluates to `"HELLO WORLD!"`
+
 
 ### Compile-time and Run-time
 
@@ -50,7 +57,7 @@ scala> 2.toUpperCase
 
 The concept of upper and lowercase doesn't make sense for numbers, and the type system will catch this error.
 
-If a program passes the checks at compile-time, it may then be run. This is the process of the computer performing the instructions in the program. All Scala programs evaluate to a value.
+If a program passes the checks at compile-time it may then be run. This is the process of the computer performing the instructions in the program. 
 
 Even though a program successfully compiles it can still fail at run-time. In Scala dividing an integer by zero causes a run-time error.
 
@@ -66,9 +73,9 @@ The type of integers, `Int`, allows division so the program type checks. At run-
 
 So what exactly are expressions, types, and values?
 
-Expressions are part of a program's text -- what we type into a file, or the console or worksheet. They are the main component of a Scala program. We will see other components, namely *definitions* and *statements*, in due course. Expressions exist at compile-time.
+Expressions are part of a program's text---what we type into a file, or the console or worksheet. They are the main components of a Scala program. We will see other components, namely *definitions* and *statements*, in due course. Expressions exist at compile-time.
 
-The defining characteristic of an expression is that it evaluates to a value. A value is information stored in the computer's memory which exists at run-time. For example, the expression `2` evaluates to a particular sequence of bits in a particular location in the computer's memory. We compute with values. They are entities that our programs can pass around and manipulate. For example, to compute the minimum of two numbers we might write a program like
+The defining characteristic of an expression is that it evaluates to a value. A value is information stored in the computer's memory that exists at run-time. For example, the expression `2` evaluates to a particular sequence of bits in a particular location in the computer's memory. We compute with values. They are entities that our programs can pass around and manipulate. For example, to compute the minimum of two numbers we might write a program like
 
 ~~~ scala
 scala> 2.min(3)
@@ -81,7 +88,7 @@ In Scala all values are **objects**, which has a particular meaning we will see 
 
 Now let's turn to types. Types are restrictions on our programs that limit how we can manipulate objects. We have already seen two types, `String` and `Int`, and seen that we can perform different operations depending on the type.
 
-At this point the most important point about types is that **expressions have types but values do not**. We cannot inspect an arbitrary piece of the computer's memory and divine how to interpret it without knowing the program that created it. For example, in Scala the `Int` and `Float` types are both represented by 32-bits of memory. There are no tags or other indications that a given 32-bits should be interpreted as an `Int` or a `Float`.
+At this stage, the most important point about types is that **expressions have types but values do not**. We cannot inspect an arbitrary piece of the computer's memory and divine how to interpret it without knowing the program that created it. For example, in Scala the `Int` and `Float` types are both represented by 32-bits of memory. There are no tags or other indications that a given 32-bits should be interpreted as an `Int` or a `Float`.
 
 We can show that types exist at compile-time by asking the Scala console to tell us the type of an expression that causes a run-time error.
 
@@ -97,7 +104,7 @@ We see that the expression `2 / 0` has type `Int` even though this expression fa
 
 Types, which exist at compile-time, restrict us to writing programs that give a consistent interpretation to values. We cannot claim that a particular 32-bits is at one point an `Int` and another a `Float`. When a program type checks, Scala guarantees that all values are used consistently and thus it does not need to record type information in a value's representation. This process of removing type information is called *type erasure*.
 
-Types necessarily do not contain all possible information about the values that conform to the type. We have already seen that the type system will not prevent us from dividing an `Int` by zero, which leads to a run-time error. We cannot get around this restriction but we will see that we can express many useful constraints in the type system, which improves the reliability of our programs. Using the type system well is one of the main themes of this book.
+Types necessarily do not contain all possible information about the values that conform to the type. We have already seen that the type system will not prevent us from dividing an `Int` by zero, which leads to a run-time error. We will see that we can express many useful constraints in the type system, which improves the reliability of our programs. If we wanted to, we could implement our division operator that did express the possibility of error in the type system. Using the type system well is one of the main themes of this book.
 
 
 ### Take Home Points
@@ -136,7 +143,7 @@ Type is `Int` and value is `3`.
 ~~~
 
 <div class="solution">
-Type is `Int`, but this one doesn't evalute to a value -- it raises an exception instead, and a raised exception is not a value. How can we tell this? We can't continuing computing with the result of the expression. For example, we can't print it. Compare
+Type is `Int`, but this one doesn't evaluate to a value---it raises an exception instead, and a raised exception is not a value. How can we tell this? We can't continuing computing with the result of the expression. For example, we can't print it. Compare
 
 ~~~ scala
 scala> println("foo")

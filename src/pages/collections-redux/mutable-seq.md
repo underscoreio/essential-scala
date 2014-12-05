@@ -1,6 +1,6 @@
 ## Mutable Sequences
 
-None of the methods we have covered so far have any side-effects -- like the `copy` method on a case class, they return a new copy of the sequence.
+None of the methods we have covered so far have any side-effects---like the `copy` method on a case class, they return a new copy of the sequence.
 
 The default implementations are immutable throughout Scala's collections framework for the reasons we have discussed many times already.
 

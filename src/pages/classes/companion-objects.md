@@ -33,7 +33,7 @@ You can enter `:help` on the REPL to find out more.
 
 As we saw earlier, Scala has two namespaces: a space of *type names* and a space of *value names*. This separation allows us to name our class and companion object the same thing without conflict.
 
-It is important to note that **the companion object is not an instance of the class** -- it is a singleton object with its own type:
+It is important to note that **the companion object is not an instance of the class**---it is a singleton object with its own type:
 
 ~~~ scala
 scala> Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
@@ -205,7 +205,7 @@ val prestige: Film = bestFilmByChristopherNolan()
 ~~~
 
 <div class="solution">
-**Type!** -- this code is defining a value `prestige` of type `Film`.
+**Type!**---this code is defining a value `prestige` of type `Film`.
 </div>
 
 ~~~ scala
@@ -213,7 +213,7 @@ new Film("Last Action Hero", 1993, mcTiernan)
 ~~~
 
 <div class="solution">
-**Type!** -- this is a reference to the *constructor* of `Film`. The constructor is part of the *class* `Film`, which is a *type*.
+**Type!**---this is a reference to the *constructor* of `Film`. The constructor is part of the *class* `Film`, which is a *type*.
 </div>
 
 ~~~ scala
@@ -221,7 +221,7 @@ Film("Last Action Hero", 1993, mcTiernan)
 ~~~
 
 <div class="solution">
-**Value!** -- this is shorthand for:
+**Value!**---this is shorthand for:
 
 ~~~ scala
 Film.apply("Last Action Hero", 1993, mcTiernan)
@@ -235,7 +235,7 @@ Film.newer(highPlainsDrifter, thomasCrownAffair)
 ~~~
 
 <div class="solution">
-**Value!** -- `newer` is another method defined on the *singleton object* `Film`.
+**Value!**---`newer` is another method defined on the *singleton object* `Film`.
 </div>
 
 Finally a tough one...
@@ -245,7 +245,7 @@ Film.type
 ~~~
 
 <div class="solution">
-**Value!** -- This is tricky! You'd be forgiven for getting this one wrong.
+**Value!**---This is tricky! You'd be forgiven for getting this one wrong.
 
 `Film.type` refers to the type of the singleton object `Film`, so in this case `Film` is a reference to a value. However, the whole fragment of code is a type.
 </div>

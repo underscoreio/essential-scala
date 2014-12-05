@@ -2,7 +2,7 @@
 
 SBT, or "Simple Build Tool", is the recommended build tool for Scala. It is similar to the Maven build tool, but allows you to write configuration files using Scala code as opposed to XML. SBT projects has the benefit of being significantly terser than their Maven equivalents.
 
-In this section we will show you the basics of setting up an SBT project. The intention is to give you a quick way of writing, compiling, and running Scala code. We won't go into the details of writing build configurations -- there is plenty of information for the budding SBT users online in the [SBT Wiki](https://github.com/harrah/xsbt/wiki) on Github and the [SBT community website](http://www.scala-sbt.org/).
+In this section we will show you the basics of setting up an SBT project. The intention is to give you a quick way of writing, compiling, and running Scala code. We won't go into the details of writing build configurations---there is plenty of information for the budding SBT users online in the [SBT Wiki](https://github.com/harrah/xsbt/wiki) on Github and the [SBT community website](http://www.scala-sbt.org/).
 
 ## Requirements
 

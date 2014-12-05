@@ -115,7 +115,7 @@ This is a trick question. We can't write this method using the tools we have at 
 
 Type classes allows us to note that a number of otherwise unrelated types (in this case 'Option', 'Seq', and 'Try') share a common interface (in this case 'flatMap').
 
-Higher-kinded types allow us to abstract over a type constructor. The type `Option` is a type constructor: you supply a type to it, such as `Int`, to construct a concrete type (i.e. `Option[Int]`). This mirrors the way we supply a value (e.g. 2) to construct a concrete option (e.g. `Some(2)`). We know how to allow the type passed to the type constructor to vary -- we use a generic type. Higher-kinded types allow us to vary the type constructor as well.
+Higher-kinded types allow us to abstract over a type constructor. The type `Option` is a type constructor: you supply a type to it, such as `Int`, to construct a concrete type (i.e. `Option[Int]`). This mirrors the way we supply a value (e.g. 2) to construct a concrete option (e.g. `Some(2)`). We know how to allow the type passed to the type constructor to vary---we use a generic type. Higher-kinded types allow us to vary the type constructor as well.
 
 The complete code is below. It's a bit verbose, but you'll see it works for `Option[Int]` and an other monad you define a `Monad` instance for (I've only defined `Option` below). E.g.
 

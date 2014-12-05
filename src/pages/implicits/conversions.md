@@ -1,6 +1,6 @@
 ## Implicit Conversions
 
-So far we have seen two powerful programming patterns -- *type enrichment*, which we implemented using *implicit classes*, and *type classes*, which we implemented using *implicit values and parameter lists*.
+So far we have seen two powerful programming patterns---*type enrichment*, which we implemented using *implicit classes*, and *type classes*, which we implemented using *implicit values and parameter lists*.
 
 Scala has a third implicit mechanism called *implicit conversions* that we will cover here for completeness. Implicit conversions can be seen as a more general form of implicit classes, and can be used in a wider variety of contexts.
 
@@ -63,7 +63,7 @@ Here are some tips for designing using implicits that will prevent situations li
 
  - Package implicits clearly, and bring them into scope only where you need them. We recommend using the packaging guidelines introduced earlier this chapter.
 
- - Avoid creating implicit conversions that convert from one general type to another general type -- the more specific your types are, the less likely the implicit is to be applied incorrectly.
+ - Avoid creating implicit conversions that convert from one general type to another general type---the more specific your types are, the less likely the implicit is to be applied incorrectly.
 
 ### Exercises
 

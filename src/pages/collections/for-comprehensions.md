@@ -1,6 +1,6 @@
 ## For Comprehensions
 
-We've discussed the main collection transformation functions -- `map`, `flatMap`, `foldLeft`, `foldRight`, and `foreach` -- and seen that they provide a powerful way of working with collections. Then can become unwiedly to work with when dealing with many collections of many nested transformations. Fortunately Scala has special syntax for working with collections (in fact any class that implements `map` and `flatMap`) that makes complicated operations simpler to write. This syntax is known as a *for comprehension*.
+We've discussed the main collection transformation functions---`map`, `flatMap`, `foldLeft`, `foldRight`, and `foreach`---and seen that they provide a powerful way of working with collections. Then can become unwiedly to work with when dealing with many collections of many nested transformations. Fortunately Scala has special syntax for working with collections (in fact any class that implements `map` and `flatMap`) that makes complicated operations simpler to write. This syntax is known as a *for comprehension*.
 
 <div class="alert alert-warning">
 **Important note:** *for comprehensions* in Scala are very different to the C-style *for loops* in Java. There is no direct equivalent of either language's syntax in the other.
@@ -24,7 +24,7 @@ res1: Seq[Int] = List(2, 4, 6)
 
 We call the expression containing the `<-` a *generator*, with a *pattern* on the left hand side and a *generator expression* on the right. A for comprehension iterates over the elements in the generator, binding each element to the pattern and calling the `yield` expression. It combines the yielded results into a sequence of the same type as the original generator.
 
-In simple examples like this one we don't really see the power of for comprehensions -- direct use of `map` and `flatMap` are often more compact in the simplest case. Let's try a more complicated example instead. Say we want to double all the numbers in `Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))` and return a flattened sequence of the results. To do this with `map` and `flatMap` we must nest calls:
+In simple examples like this one we don't really see the power of for comprehensions---direct use of `map` and `flatMap` are often more compact in the simplest case. Let's try a more complicated example instead. Say we want to double all the numbers in `Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))` and return a flattened sequence of the results. To do this with `map` and `flatMap` we must nest calls:
 
 ~~~ scala
 scala> val data = Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))

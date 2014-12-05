@@ -22,7 +22,7 @@ for {
   b <- getSecondNumber // getSecondNumber returns Option[Int]
 } yield a + b
 
-// The final result is an Option[Int] -- the result of
+// The final result is an Option[Int]---the result of
 // applying `+` to `a` and `b` if both values are present
 ~~~
 
@@ -34,7 +34,7 @@ for {
   b <- getSecondNumbers // getSecondNumbers returns Seq[Int]
 } yield a + b
 
-// The final result is a Seq[Int] -- the results of
+// The final result is a Seq[Int]---the results of
 // applying `+` to all combinations of `a` and `b`
 ~~~
 
@@ -46,12 +46,12 @@ for {
   b <- getSecondNumber  // getSecondNumber returns Future[Int]
 } yield a + b
 
-// The final result is a Future[Int] -- a data structure
+// The final result is a Future[Int]---a data structure
 // that will eventually allow us to access the result of
 // applying `+` to `a` and `b`
 ~~~
 
-The important point here is that, if we ignore the comments, **these three examples look identical**. Monads allow us to forget about one part of the problem at hand -- optional values, multiple values, or asynchronously available values -- and focus on just the part we care about -- adding two numbers together.
+The important point here is that, if we ignore the comments, **these three examples look identical**. Monads allow us to forget about one part of the problem at hand---optional values, multiple values, or asynchronously available values---and focus on just the part we care about---adding two numbers together.
 
 There are many other monads that can be used to simplify problems in different circumstances. You may come across some of them in your future use of Scala. In this course we will concentrate entirely on `Seq` and `Option`.
 

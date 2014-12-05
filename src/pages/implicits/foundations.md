@@ -2,7 +2,7 @@
 
 Type classes in Scala involve the interaction of a number of components. To understand how they work, in this section we're going to build them up from the beginning.
 
-Let's start with an example -- converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
+Let's start with an example---converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
 
 The obvious implementation it to implement `toHtml` using a simple trait:
 
@@ -83,7 +83,7 @@ scala> ObfuscatedPersonWriter.write(Person("John", "john@example.com"))
 res3: String = John <john at example.com>
 ~~~
 
-Much safer -- it'll take a spam bot more than a few microseconds to decypher that!
+Much safer---it'll take a spam bot more than a few microseconds to decypher that!
 
 This is the essence of the type class pattern. All the refinements we will see in later sections just make it easier to use.
 

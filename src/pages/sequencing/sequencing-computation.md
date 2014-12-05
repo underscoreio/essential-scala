@@ -64,7 +64,7 @@ Now imagine the following examples:
 
 - We have a list of users and we want to get a list of all their orders. That is, we have `LinkedList[User]` and a function `User => LinkedList[Order]`, and we want `LinkedList[Order]`.
 
-- We have an optional value representing a user loaded from the database, and we want to lookup their most recent order -- another optional value. That is, we have `Maybe[User]` and `User => Maybe[Order]`, and we want `Maybe[Order]`.
+- We have an optional value representing a user loaded from the database, and we want to lookup their most recent order---another optional value. That is, we have `Maybe[User]` and `User => Maybe[Order]`, and we want `Maybe[Order]`.
 
 - We have a sum type holding an error message or an `Order`, and we want to email an invoice to the user. Emailing returns either an error message or a message ID. That is, we have `Sum[String, Order]` and a function `Order => Sum[String, Id]`, and we want `Sum[String, Id]`.
 

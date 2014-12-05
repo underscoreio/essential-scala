@@ -1,7 +1,7 @@
 ## Working with Sequences
 
 
-In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences -- how functional programming allows us to process every element of a sequence at once in a terse and declarative style.
+In the [previous section](seq.html) with looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences---how functional programming allows us to process every element of a sequence at once in a terse and declarative style.
 
 ### Bulk Processing of Elements
 
@@ -9,7 +9,7 @@ When working with sequences we often want to deal with the collection as a whole
 
 ### map
 
-Let's start with something simple -- suppose we want to double every element of a sequence. In Java we would do this using a `for` or a `while` loop. However, this requires writing several lines of looping machinery for only one line of actual doubling functionality.
+Let's start with something simple---suppose we want to double every element of a sequence. In Java we would do this using a `for` or a `while` loop. However, this requires writing several lines of looping machinery for only one line of actual doubling functionality.
 
 In Scala we can use the `map` method that exists on every sequence. `map` takes a function and applies it to every element, creating a sequence of the results. To double every element we can write:
 
@@ -137,7 +137,7 @@ As we know from studying algebraic data types, the fold methods are very flexibl
 
 ### foreach
 
-There is one more traversal method that is commonly used: `foreach`. Unlike `map`, `flatMap` and the `fold`s, `foreach` does not return a useful result -- we use it purely for its side-effects. The type table is:
+There is one more traversal method that is commonly used: `foreach`. Unlike `map`, `flatMap` and the `fold`s, `foreach` does not return a useful result---we use it purely for its side-effects. The type table is:
 
 +-----------+----------+-------------+----------+
 | Method    | We have  | We provide  | We get   |
@@ -251,7 +251,7 @@ directors.
 Now find the *average score* across all films:
 
 <div class="solution">
-We cache the list of films in a variable because we use it twice -- once to calculate the sum of the ratings and once to fetch the number of films:
+We cache the list of films in a variable because we use it twice---once to calculate the sum of the ratings and once to fetch the number of films:
 
 ~~~ scala
 val films = directors.flatMap(director => director.films)
@@ -265,7 +265,7 @@ films.foldLeft(0)((a, b) => a.imdbRating + b.imdbRating) / films.length
 Print the following for every film: `"Tonight only! FILM NAME by DIRECTOR!"`
 
 <div class="solution">
-Println is used for its side-effects so we don't need to accumulate a result -- we use `println` as a simple iterator:
+Println is used for its side-effects so we don't need to accumulate a result---we use `println` as a simple iterator:
 
 ~~~ scala
 directors.foreach { director =>
@@ -446,7 +446,7 @@ def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
 }
 ~~~
 
-At this point we can just follow the types. `result` must be initially assigned to the value of `zero` as that is the only `B` we have. The body of the function we pass to `foreach` must call `f` with `result` and `elt`. This returns a `B` which we must store somewhere -- the only place we have to store it is in `result`. So the final answer becomes
+At this point we can just follow the types. `result` must be initially assigned to the value of `zero` as that is the only `B` we have. The body of the function we pass to `foreach` must call `f` with `result` and `elt`. This returns a `B` which we must store somewhere---the only place we have to store it is in `result`. So the final answer becomes
 
 ~~~ scala
 def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {

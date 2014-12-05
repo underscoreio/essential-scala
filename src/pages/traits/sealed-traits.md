@@ -142,7 +142,7 @@ Draw(Circle(10, Yellow)) // returns "A yellow square of size 10cm"
    print the word "light" or "dark" instead.
 
 <div class="solution">
-One solution to this exercise is presented below. Remember that a lot of the implementation details are unimportant -- the crucial aspects of a correct solution are:
+One solution to this exercise is presented below. Remember that a lot of the implementation details are unimportant---the crucial aspects of a correct solution are:
 
  - There must be a `sealed trait Color`:
     - The trait should contain three `def` methods for the RGB values.
@@ -286,9 +286,9 @@ Draw(Rectangle(3, 4, CustomColor(0.4, 0.4, 0.6)))
 
 #### A Short Division Exercise
 
-Good Scala developers don't just use types to model data. Types are a great way to put artificial limitations in place to ensure we don't make mistakes in our programs. In this exercise we will see a simple (if contrived) example of this -- using types to prevent division by zero errors.
+Good Scala developers don't just use types to model data. Types are a great way to put artificial limitations in place to ensure we don't make mistakes in our programs. In this exercise we will see a simple (if contrived) example of this---using types to prevent division by zero errors.
 
-Dividing by zero is a tricky problem -- it can lead to exceptions. The JVM has us covered as far as floating point division is concerned but integer division is still a problem:
+Dividing by zero is a tricky problem---it can lead to exceptions. The JVM has us covered as far as floating point division is concerned but integer division is still a problem:
 
 ~~~ scala
 scala> 1.0 / 0.0
@@ -335,7 +335,7 @@ divide(1, 0) match {
 
 The result of `divide.apply` is a `DivisionResult`, which is a `sealed trait` with two subtypes. The subtype `Finite` is a `case class` encapsulting the result, but the subtype `Infinite` can simply be an object. We've used a `case object` for parity with `Finite`.
 
-The implementation of `divide.apply` is simple - we perform a test and return a result. Note that we haven't annotated the method with a result type -- Scala is capable of inferring the type `DivisionResult` as the least upper bound of `Infinite` and `Finite`.
+The implementation of `divide.apply` is simple - we perform a test and return a result. Note that we haven't annotated the method with a result type---Scala is capable of inferring the type `DivisionResult` as the least upper bound of `Infinite` and `Finite`.
 
 Finally, the match illustrates a case class pattern with the parentheses, and a case object pattern without.
 </div>
@@ -350,7 +350,7 @@ For the enthusiastic, modify your code from the previous exercise to actually pr
 
 Here are some useful tips:
 
- - `Circle` is hardest -- leave it for last;
+ - `Circle` is hardest---leave it for last;
 
  - you can print an asterisk character without moving to a new line using the code `print('*')`;
 
