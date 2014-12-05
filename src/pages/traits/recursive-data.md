@@ -25,15 +25,11 @@ final case class Pair(head: Int, tail: IntList) extends IntList
 
 Here `End` is the base case. We construct the list containing `1`, `2`, and `3` as follows:
 
-A linked list is another type of generic sequence, similar to an array. Unlike an array, however, a linked list is stored internally as a chain of pairs. For example, the sequence `1, 2, 3` would be represented as follows:
-
-<img src="src/pages/traits/linked-list.svg" alt="A linked list" />
-
 ~~~ scala
 Pair(1, Pair(2, Pair(3, End)))
 ~~~
 
-In this example we have four links in our chain. `d` represents an empty list, and `a`, `b`, and `c` are pairs built on top of it:
+This data structure is known as a singly-linked list. In this example we have four links in our chain. We can write this out in a longer form to better understand the structure of the list. Below, `d` represents an empty list, and `a`, `b`, and `c` are pairs built on top of it.
 
 ~~~ scala
 val d = End()
@@ -166,7 +162,7 @@ scala> @tailrec
            case Pair(hd, tl) => hd + sum(tl)
          }
 <console>:15: error: could not optimize @tailrec annotated method sum: it contains a recursive call   ↩
-                                                                                   not in tail position
+                     not in tail position
          list match {
          ^
 
