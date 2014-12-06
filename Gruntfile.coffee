@@ -162,7 +162,9 @@ module.exports = (grunt) ->
                      --filter=lib/filters/pdf/columns.coffee
                      --filter=lib/filters/pdf/solutions.coffee
                    """
-        extras   = ""
+        extras   = joinLines """
+                     --include-before-body=lib/templates/cover-notes.tex
+                   """
         metadata = "src/meta/pdf.yaml"
 
       when "html"
@@ -172,16 +174,23 @@ module.exports = (grunt) ->
                      --filter=lib/filters/html/tables.coffee
                      --filter=lib/filters/html/solutions.coffee
                    """
-        extras   = ""
+        extras   = joinLines """
+                     --toc-depth=2
+                     --include-before-body=lib/templates/cover-notes.html
+                   """
         metadata = "src/meta/html.yaml"
 
       when "epub"
         output   = "--output=dist/#{meta.filenameStem}.epub"
-        template = "--epub-stylesheet=dist/temp/main.css"
+        template = "--template=lib/templates/template.epub.html"
         filters  = joinLines """
                      --filter=lib/filters/epub/solutions.coffee
                    """
-        extras   = "--epub-cover-image=src/covers/epub-cover.png"
+        extras   = joinLines """
+                     --epub-stylesheet=dist/temp/main.css
+                     --epub-cover-image=src/covers/epub-cover.png
+                     --include-before-body=lib/templates/cover-notes.html
+                   """
         metadata = "src/meta/epub.yaml"
 
       when "json"

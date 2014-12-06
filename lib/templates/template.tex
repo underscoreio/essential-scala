@@ -308,38 +308,28 @@ $endif$
 
 % Include-before hook ---------------------------
 
-$for(include-before)$
-$include-before$
-
-$endfor$
+\vspace*{\fill}
 
 \begin{center}
-
-\vspace*{\fill}
 
 {\Large $title$}
 
 $date$
 
-\vspace{3em}
-
 Copyright 2014 $author$.
 
-Published by Underscore Consulting LLP, Brighton, UK.
-
-\vspace{3em}
-
-Copies of this, and related topics, can be found at \href{http://underscore.io}{http://underscore.io}.
-
-Team discounts, when available, may also be found at that address.
-
-\vspace{3em}
-
-Contact the author regarding this text at: \href{mailto:hello@underscore.io}{hello@underscore.io}.
-
-\vspace*{\fill}
+Published by \href{http://underscore.io}{Underscore Consulting LLP}, Brighton, UK.
 
 \end{center}
+
+\vspace{1em}
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+
+\vspace*{\fill}
 
 % Tables of contents, etc. ----------------------
 

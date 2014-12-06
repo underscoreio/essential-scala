@@ -25,7 +25,7 @@ addToggle = (className, name, additionalClasses) ->
 
 
 $ ->
-  toc.init('.toc-toggle', '.toc-contents')
+  toc.init('.toc-toggle', '.cover-notes,.toc-contents')
   addToggle('solution', 'Solution')
   return
 
