@@ -55,7 +55,9 @@ scala> 'a'
 res34: Char = a
 ~~~
 
-<div class="java-tip">
+<div class="callout callout-info">
+*Java tip*
+
 Although they are written with initial capitals, Scala's `Int`, `Double`, `Float`, `Long`, `Short`, `Byte`, `Boolen` and `Char` refer to exactly the same things as `int`, `double`, `float`, `long`, `short`, `byte`, `boolean`, and `char` in Java.
 
 In Scala all of these types act like objects with methods and fields. However, once your code is compiled, a Scala `Int` is exactly the same as a Java `int`. This makes interoperability between the two languages a breeze.
@@ -84,7 +86,9 @@ scala> null
 res13: Null = null
 ~~~
 
-<div class="java-tip">
+<div class="callout callout-info">
+*Java tip*
+
 Although `null`s are common in Java code, they are considered very bad practice in Scala.
 
 The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.

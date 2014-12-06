@@ -41,7 +41,9 @@ where
 
 
 
-<div class="java-tip">
+<div class="callout callout-info">
+*Java tip*
+
 Scala's `if` statement has the same syntax as Java's. One important difference is that **Scala's conditional is an expression**---it has a type and returns a value.
 </div>
 

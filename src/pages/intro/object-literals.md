@@ -105,7 +105,9 @@ where
 Method parameters are optional, but if a method has parameters their type must be given. Although the result type is optional it is good practice to define it as it serves as (machine checked!) documentation.
 </div>
 
-<div class="java-tip">
+<div class="callout callout-info">
+*Java tip*
+
 The return value of the method is determined by evaluating the body---there is no need to write `return`.
 </div>
 

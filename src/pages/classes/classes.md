@@ -63,7 +63,9 @@ scala> alien.greet(newNoel)
 res6: String = Greetings, Noel Welsh
 ~~~
 
-<div class="java-tip">
+<div class="callout callout-info">
+*Java tip*
+
 Scala classes are all subclasses of `java.lang.Object` and are, for the most part, usable from Java as well as Scala. The default printing behaviour of `Person` comes from the `toString` method defined in `java.lang.Object`.
 </div>
 
