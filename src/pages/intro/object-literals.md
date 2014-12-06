@@ -392,37 +392,37 @@ res1: String = 3c31
 The full sequence of evaluation is as follows:
 
 ~~~
- 1. We calculate the main sum at the end of the program, which...
-    1. Loads `argh`, which...
-       1. Calculates all the fields in `argh`, which...
-          1. Calculates `b`, which...
-             1. Prints `"b"`
-             1. Evaluates `a + 2`, which...
-                1. Calls `a`, which...
-                   1. Prints `"a"`
-                   1. Returns `1`
-                1. Returns `1 + 2`
-             1. Stores the value `3` in `b`
-    1. Calls `argh.c`, which...
-       1. Prints `"c"`
-       1. Evaluates `a`
-         1. Prints `"a"`
-         1. Returns `1` - Which we discard
-       1. Evaluates `b + "c"`, which...
-          1. Retrieves the value `3` from `b`
-          1. Retrieves the value `"c"`
-          1. Evaluates the `+`, determining that it actually refers to string
-             concatenation and converting `3` to `"3"`
-          1. Returns the `String` `"3c"`
-    1. Calls `argh.b`, which...
-       1. Retrieves the value `3` from `b`
-    1. Evaluates the first `+`, determining that it actually refers to string
-       concatentation, and yielding `"3c3"`
-    1. Calls `argh.a`, which...
-       1. Prints `"a"`
-       1. Returns `1`
-    1. Evaluates the first `+`, determining that it actually refers to string
-       concatentation, and yielding `"3c31"`
+- We calculate the main sum at the end of the program, which...
+  - Loads `argh`, which...
+    - Calculates all the fields in `argh`, which...
+      - Calculates `b`, which...
+        - Prints `"b"`
+        - Evaluates `a + 2`, which...
+          - Calls `a`, which...
+            - Prints `"a"`
+            - Returns `1`
+          - Returns `1 + 2`
+        - Stores the value `3` in `b`
+  - Calls `argh.c`, which...
+    - Prints `"c"`
+    - Evaluates `a`
+      - Prints `"a"`
+      - Returns `1` - Which we discard
+    - Evaluates `b + "c"`, which...
+      - Retrieves the value `3` from `b`
+        - Retrieves the value `"c"`
+        - Evaluates the `+`, determining that it actually refers to string
+          concatenation and converting `3` to `"3"`
+        - Returns the `String` `"3c"`
+  - Calls `argh.b`, which...
+    - Retrieves the value `3` from `b`
+  - Evaluates the first `+`, determining that it actually refers to string
+    concatentation, and yielding `"3c3"`
+  - Calls `argh.a`, which...
+    - Prints `"a"`
+    - Returns `1`
+  - Evaluates the first `+`, determining that it actually refers to string
+    concatentation, and yielding `"3c31"`
 ~~~
 </div>
 
