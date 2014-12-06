@@ -15,7 +15,7 @@ Go to [http://scala-ide.org]() now, click the **Get the Bundle** button, and fol
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-website.png" alt="Scala IDE: Main website">
+<img src="src/pages/getting-started/scala-ide-website.png" alt="Scala IDE: Main website" />
 </div>
 </div>
 
@@ -25,7 +25,7 @@ Once you have downloaded and uncompressed the bundle you should find an applicat
 
 <div class="row figure">
 <div class="col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3 text-center">
-<img src="src/pages/getting-started/scala-ide-workspace-chooser.png" alt="Scala IDE: Choose a workspace location">
+<img src="src/pages/getting-started/scala-ide-workspace-chooser.png" alt="Scala IDE: Choose a workspace location" />
 </div>
 </div>
 
@@ -35,7 +35,7 @@ Accept the default location and you will see an empty main Eclipse window:
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-empty-workspace.png" alt="Scala IDE: Empty workspace">
+<img src="src/pages/getting-started/scala-ide-empty-workspace.png" alt="Scala IDE: Empty workspace" />
 </div>
 </div>
 
@@ -49,7 +49,7 @@ Let's create a project for this course now. Select the **File menu** and choose 
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-new-project.png" alt="Scala IDE: Create a new Scala Project">
+<img src="src/pages/getting-started/scala-ide-new-project.png" alt="Scala IDE: Create a new Scala Project" />
 </div>
 </div>
 
@@ -59,7 +59,7 @@ Enter a **Project name** of `essential-scala` and click **Finish**. The tree vie
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-empty-project.png" alt="Scala IDE: Empty project">
+<img src="src/pages/getting-started/scala-ide-empty-project.png" alt="Scala IDE: Empty project" />
 </div>
 </div>
 
@@ -69,7 +69,7 @@ A project is no good without code to run! Let's create our first simple Scala ap
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-new-object.png" alt="Scala IDE: New Scala Object">
+<img src="src/pages/getting-started/scala-ide-new-object.png" alt="Scala IDE: New Scala Object" />
 </div>
 </div>
 
@@ -79,7 +79,7 @@ A project is no good without code to run! Let's create our first simple Scala ap
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-single-file.png" alt="Scala IDE: Single Scala File">
+<img src="src/pages/getting-started/scala-ide-single-file.png" alt="Scala IDE: Single Scala File" />
 </div>
 </div>
 
@@ -107,7 +107,7 @@ Select the **Run Menu** and choose **Run**. This should execute the code in your
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-hello-world.png" alt="Scala IDE: Hello World">
+<img src="src/pages/getting-started/scala-ide-hello-world.png" alt="Scala IDE: Hello World" />
 </div>
 </div>
 
@@ -137,7 +137,7 @@ Create your first Scala Worksheet by selecting the **File Menu** and choosing **
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-new-worksheet.png" alt="Scala IDE: New Scala Worksheet">
+<img src="src/pages/getting-started/scala-ide-new-worksheet.png" alt="Scala IDE: New Scala Worksheet" />
 </div>
 </div>
 
@@ -147,7 +147,7 @@ Enter a **Worksheet name** of `FirstSteps` and click **Finish**. A new file call
 
 <div class="row figure">
 <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-empty-worksheet.png" alt="Scala IDE: Empty Scala Worksheet">
+<img src="src/pages/getting-started/scala-ide-empty-worksheet.png" alt="Scala IDE: Empty Scala Worksheet" />
 </div>
 </div>
 

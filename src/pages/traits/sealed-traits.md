@@ -140,7 +140,7 @@ Draw(Circle(10, Yellow)) // returns "A yellow square of size 10cm"
    print the word "light" or "dark" instead.
 
 You may want to deal with the colour in a helper method.
-   
+
 <div class="solution">
 One solution to this exercise is presented below. Remember that a lot of the implementation details are unimportant---the crucial aspects of a correct solution are:
 
@@ -350,7 +350,7 @@ For the enthusiastic, modify your code from the previous exercise to actually pr
 
 Here are some useful tips:
 
- - `Circle` is hardest---leave it for last;
+ - `Circle` is hardest. Leave it for last;
 
  - you can print an asterisk character without moving to a new line using the code `print('*')`;
 
