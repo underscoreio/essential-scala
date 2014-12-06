@@ -157,7 +157,7 @@ res10: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 
 Another of Scala's general syntax rules---any method ending with a `:` character becomes **right associative** when written as an infix operator. This rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). We'll look at this in more detail in a moment.
 
-{% comment %}
+<!--
 ### Updating elements
 
 The `updated` method replaces the *nth* item in a sequence with a new value:
@@ -166,7 +166,7 @@ The `updated` method replaces the *nth* item in a sequence with a new value:
 scala> sequence.updated(0, 5)
 res11: Seq[Int] = List(5, 2, 3)
 ~~~
-{% endcomment %}
+-->
 
 ### Lists
 
@@ -300,9 +300,9 @@ We have covered a variety of methods that operate on sequences. Here is a type t
 +-------------+------------+---------------------+-------------+
 
 
-{% comment %}
+<!--
 | `updated`   | `Seq[A]`   | `Int` `A`           | `Seq[A]`    |
-{% endcomment %}
+-->
 
 We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement. This has a number of features that aren't present in Java---it can be used to import methods from objects, and be written anywhere in our code.
 

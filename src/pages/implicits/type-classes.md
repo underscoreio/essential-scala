@@ -171,7 +171,7 @@ object Person {
 }
 ~~~
 
-{% comment %}
+<!--
 The compiler searches for implicits in local scope *first* before it looks at companion objects. We can therefore override companion object implicits with explicit imports:
 
 ~~~ scala
@@ -183,7 +183,7 @@ import HtmlImplicits._
 
 HtmlUtil.htmlify(person) // uses HtmlImplicits.PersonWriter
 ~~~
-{% endcomment %}
+-->
 
 ### Take Home Points
 

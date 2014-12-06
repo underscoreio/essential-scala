@@ -22,8 +22,7 @@ scala> theAnswer
 res0: Int = 42
 ~~~
 
-{% comment %}
-
+<!--
 So, to define our `square` function we could write:
 
 ~~~ scala
@@ -50,8 +49,7 @@ aString: java.lang.String = this may be a string
 scala> aString
 res2: java.lang.String = this may be a string
 ~~~
-
-{% endcomment %}
+-->
 
 ## var
 
