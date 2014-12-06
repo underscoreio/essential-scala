@@ -13,12 +13,12 @@ scala> trait HtmlWriteable {
 defined trait HtmlWriteable
 
 scala> case class Person(name: String, email: String) extends HtmlWriteable {
-         def toHtml = s"$name <$email>"
+         def toHtml = s"$name ($email)"
        }
 defined class Person
 
 scala> Person("John", "john@example.com").toHtml
-res0: String = John <john@example.com>
+res0: String = John (john@example.com)
 ~~~
 
 This solution has a number of drawbacks. First, we are restricted to having just one way of rendering a `Person`. If we want to list people on our company homepage, for example, it is unlikely we will want to list everybody's email addresses without obfuscation. For logged in users, however, we probably want the convenience of direct email links. Second, this pattern can only be applied to classes that we have written ourselves. If we want to render a `java.util.Date` to HTML, for example, we will have to write some other form of library function.
@@ -47,12 +47,12 @@ scala> trait HtmlWriter[T] {
 defined trait HtmlWriter
 
 scala> object PersonWriter extends HtmlWriter[Person] {
-         def write(person: Person) = s"${person.name} <${person.email}>"
+         def write(person: Person) = s"${person.name} (${person.email})"
        }
 defined module PersonWriter
 
 scala> PersonWriter.write(Person("John", "john@example.com"))
-res1: String = <span>John &lt;john@example.com&gt;</span>
+res1: String = John (john@example.com)
 ~~~
 
 This is better. We can now define `HtmlWriter` functionality for other types, including types we have not written ourselves:
@@ -75,12 +75,12 @@ We can also write another `HtmlWriter` for writing `People` on our homepage:
 ~~~ scala
 scala> object ObfuscatedPersonWriter extends HtmlWriter[Person] {
          def write(person: Person) =
-           s"${person.name} <${person.email.replaceAll("@", " at ")}>"
+           s"${person.name} (${person.email.replaceAll("@", " at ")})"
        }
 defined module ObfuscatedPersonWriter
 
 scala> ObfuscatedPersonWriter.write(Person("John", "john@example.com"))
-res3: String = John <john at example.com>
+res3: String = John (john at example.com)
 ~~~
 
 Much safer---it'll take a spam bot more than a few microseconds to decypher that!
@@ -103,12 +103,12 @@ trait HtmlWriter[A] {
 ~~~ scala
 object PersonWriter extends HtmlWriter[Person] {
   def write(person: Person) =
-    s"${person.name} <${person.email}>"
+    s"${person.name} (${person.email})"
 }
 
 object ObfuscatedPersonWriter extends HtmlWriter[Person] {
   def write(person: Person) =
-    s"${person.name} <${person.email.replaceAll("@", " at ")}>"
+    s"${person.name} (${person.email.replaceAll("@", " at ")})"
 }
 ~~~
 - This allows us to implement the functionality for any type, and to provide different implementations for the same type.
