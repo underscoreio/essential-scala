@@ -40,7 +40,7 @@ case Pair(hd, tl) => {
 We can convert `head` to a `B` using `fn`, and then build a larger list from `newTail` and our `B` giving us the final solution
 
 ~~~ scala
-case Pair(hd, tl) => Pair(fn(head), tail.map(fn))
+case Pair(hd, tl) => Pair(fn(hd), tl.map(fn))
 ~~~
 
 - For `End` we don't have any value of `A` to apply to the function. The only thing we can return is an `End`.
@@ -51,7 +51,7 @@ Therefore the complete solution is
 sealed trait LinkedList[A] {
   def map[B](fn: A => B): LinkedList[B] =
     this match {
-      case Pair(hd, tl) => Pair(fn(head), tail.map(fn))
+      case Pair(hd, tl) => Pair(fn(hd), tl.map(fn))
       case End() => End[B]()
     }
 }
