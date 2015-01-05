@@ -387,7 +387,7 @@ class Film(
   val director: Director) {
 
   def directorsAge =
-    director.yearOfBirth - yearOfRelease
+    yearOfRelease - director.yearOfBirth
 
   def isDirectedBy(director: Director) =
     this.director == director

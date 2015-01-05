@@ -205,7 +205,7 @@ case class Film(
   director: Director) {
 
   def directorsAge =
-    director.yearOfBirth - yearOfRelease
+    yearOfRelease - director.yearOfBirth
 
   def isDirectedBy(director: Director) =
     this.director == director
@@ -241,7 +241,7 @@ case class Counter(count: Int = 0) {
   def adjust(adder: Adder) = copy(count = adder(count))
 }
 ~~~
- 
+
 This is almost a trick exercise---there are very few differences with the previous implementation However, notice the extra functionality we got for free:
 
 ~~~ scala
