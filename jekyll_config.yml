@@ -57,6 +57,7 @@ toc:
   - head: /implicits/index.html
     body:
      - /implicits/foundations.html
+     - /implicits/organising.html
      - /implicits/implicit-parameters.html
      - /implicits/type-classes.html
      - /implicits/enrichment.html
