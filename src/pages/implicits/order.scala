@@ -18,4 +18,3 @@ object OrderUnitsOrdering {
   implicit val unitsOrdering = Ordering.fromLessThan[Order]{ (x, y) =>
     x.units < y.units
   }
-}
