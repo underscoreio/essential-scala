@@ -14,25 +14,25 @@ There are four components of the type class pattern:
 - interfaces using implicit parameters; and
 - interfaces using enrichment and implicit parameters.
 
-We have already seen type class instances and talked briefly about implicit parameters. Now 'let's look the defining our own type class, and then we will look at the two interface styles.
+We have already seen type class instances and talked briefly about implicit parameters. Here we will look at defining our own type class, and in the following section we will look at the two interface styles.
+
+## Creating a Type Class
 
 Let's start with an example -- converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
 
 The obvious implementation it to implement `toHtml` using a simple trait:
 
 ~~~ scala
-scala> trait HtmlWriteable {
-         def toHtml: String
-       }
-defined trait HtmlWriteable
+trait HtmlWriteable {
+  def toHtml: String
+}
 
-scala> case class Person(name: String, email: String) extends HtmlWriteable {
-         def toHtml = s"<span>$name &lt;$email&gt;</span>"
-       }
-defined class Person
+case class Person(name: String, email: String) extends HtmlWriteable {
+  def toHtml = s"<span>$name &lt;$email&gt;</span>"
+}
 
-scala> Person("John", "john@example.com").toHtml
-res0: String = <span>John &lt;john@example.com&gt;</span>
+Person("John", "john@example.com").toHtml
+// res: String = <span>John &lt;john@example.com&gt;</span>
 ~~~
 
 This solution has a number of drawbacks. First, we are restricted to having just one way of rendering a `Person`. If we want to list people on our company homepage, for example, it is unlikely we will want to list everybody's email addresses without obfuscation. For logged in users, however, we probably want the convenience of direct email links. Second, this pattern can only be applied to classes that we have written ourselves. If we want to render a `java.util.Date` to HTML, for example, we will have to write some other form of library function.
@@ -55,51 +55,58 @@ This implementation has its own issues. We have lost type safety because there i
 We can overcome all of these problems by moving our HTML rendering to an adapter class:
 
 ~~~ scala
-scala> trait HtmlWriter[T] {
-         def write(in: T): String
-       }
-defined trait HtmlWriter
+trait HtmlWriter[A] {
+  def write(in: A): String
+}
 
-scala> object PersonWriter extends HtmlWriter[Person] {
-         def write(person: Person) = s"<span>${person.name} &lt;${person.email}&gt;</span>"
-       }
-defined module PersonWriter
+object PersonWriter extends HtmlWriter[Person] {
+  def write(person: Person) = s"<span>${person.name} &lt;${person.email}&gt;</span>"
+}
 
-scala> PersonWriter.write(Person("John", "john@example.com"))
-res1: String = <span>John &lt;john@example.com&gt;</span>
+PersonWriter.write(Person("John", "john@example.com"))
+// res: String = <span>John &lt;john@example.com&gt;</span>
 ~~~
 
 This is better. We can now define `HtmlWriter` functionality for other types, including types we have not written ourselves:
 
 ~~~ scala
-scala> import java.util.Date
 import java.util.Date
 
-scala> object DateWriter extends HtmlWriter[Date] {
-         def write(in: Date) = s"<span>${in.toString}</span>"
-       }
-defined module DateWriter
+object DateWriter extends HtmlWriter[Date] {
+  def write(in: Date) = s"<span>${in.toString}</span>"
+}
 
-scala> DateWriter.write(new Date)
-res2: String = <span>Sat Apr 05 16:01:58 BST 2014</span>
+DateWriter.write(new Date)
+// res: String = <span>Sat Apr 05 16:01:58 BST 2014</span>
 ~~~
 
 We can also write another `HtmlWriter` for writing `People` on our homepage:
 
 ~~~ scala
-scala> object ObfuscatedPersonWriter extends HtmlWriter[Person] {
-         def write(person: Person) =
-           s"<span>${person.name} &lt;${person.email.replaceAll("@", " at ")}&gt;</span>"
-       }
-defined module ObfuscatedPersonWriter
+object ObfuscatedPersonWriter extends HtmlWriter[Person] {
+  def write(person: Person) =
+    s"<span>${person.name} &lt;${person.email.replaceAll("@", " at ")}&gt;</span>"
+}
 
-scala> ObfuscatedPersonWriter.write(Person("John", "john@example.com"))
-res3: String = <span>John &lt;john at example.com&gt;</span>
+ObfuscatedPersonWriter.write(Person("John", "john@example.com"))
+// res: String = <span>John &lt;john at example.com&gt;</span>
 ~~~
 
 Much safer -- it'll take a spam bot more than a few microseconds to decypher that!
 
-This is the essence of the type class pattern. All the refinements we will see in later sections just make it easier to use.
+You might recognise `PersonWriter`, `DateWriter`, and `ObfuscatedPersonWriter` as following the type class instance pattern (though we haven't made them implicit values at this point). The `HtmlWriter` trait is the type class.
+
+<div class="callout callout-info">
+#### Type Class Pattern
+
+A type class is a trait with at least one type variable. The type variables specify the concrete types the instances are defined for. Methods in the trait usually use the type variables.
+
+~~~ scala
+trait ExampleTypeClass[A] {
+  def doSomething(in: A): Foo
+}
+~~~
+</div>
 
 ## Take Home Points
 
@@ -112,7 +119,7 @@ We have seen the basic pattern for implementing type classes, though we'll short
     def toHtml(in: A): String
   }
   ~~~
-- We write adaptors for each concrete class we want to use and for each different situation we want to use it in
+- We write type class instances for each concrete class we want to use and for each different situation we want to use it in
 
   ~~~ scala
   object PersonWriter extends HtmlWriter[Person] {
