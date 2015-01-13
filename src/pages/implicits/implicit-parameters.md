@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Implicit Parameters
+title: Implicit Parameter and Interfaces
 ---
 
 We've seen the basics of the type class pattern. Now let's look at how we can make it easier to use. Recall our starting point is a trait `HtmlWriter` which allows us to implement HTML rendering for classes without requiring access to their source code, and allows us to render the same class in different ways.
 
 ~~~ scala
-trait HtmlWriter[T] {
-  def write(in: T): String
+trait HtmlWriter[A] {
+  def write(in: A): String
 }
 
 object PersonWriter extends HtmlWriter[Person] {
@@ -15,7 +15,7 @@ object PersonWriter extends HtmlWriter[Person] {
 }
 ~~~
 
-This issue with this code is that we need manage a lot of `HtmlWriter` instances when we render any complex data. Most classes will only have a single instance of `HtmlWriter` but we still need to call the correct object for the class we're rendering. It would be nice it Scala would just pick the right instance for us whenever there is no ambiguity, and that's exactly what we can get Scala to do using **implicit parameters**.
+This issue with this code is that we need manage a lot of `HtmlWriter` instances when we render any complex data. We have already seen that we can manage this complexity using implicit values and have mentioned **implicit parameters** in passing. In this section we go in depth on implicit parameters.
 
 ## Implicit Parameter Lists
 
@@ -23,7 +23,7 @@ Here is an example of an implicit parameter list:
 
 ~~~ scala
 object HtmlUtil {
-  def htmlify[T](data: T)(implicit writer: HtmlWriter[T]): String = {
+  def htmlify[A](data: A)(implicit writer: HtmlWriter[A]): String = {
     writer.write(data)
   }
 }
@@ -38,7 +38,7 @@ scala> HtmlUtil.htmlify(Person("John", "john@example.com"))(PersonWriter)
 res2: String = <span>John &lt;john@example.com&gt;</span>
 ~~~
 
-or we can omit implicit parameters. The compiler searches for **implicit values** of the correct type it can use to fill in the missing arguments. For example we can declare an implicit value like so:
+or we can omit implicit parameters. If we omit implicit parameters, the compiler searches for implicit values of the correct type it can use to fill in the missing arguments. We have already learned about implicit values, but let's see a quick example to refresh our memory. First we define an implicit value.
 
 ~~~ scala
 implicit object ApproximationWriter extends HtmlWriter[Int] {
@@ -54,38 +54,9 @@ scala> HtmlUtil.htmlify(2)
 res4: String = It's definitely less than 10
 ~~~
 
-## Implicit Values
+## Interfaces Using Implicit Parameters
 
-We can tag any `val`, `var`, `object` or zero-argument `def` with the `implicit` keyword, making it a potential candidate for an implicit parameter:
-
-~~~ scala
-implicit object PersonWriter extends HtmlWriter[Person] {
-  def write(person: Person) =
-    s"<span>${person.name} &lt;${person.email}&gt;</span>"
-}
-~~~
-
-When the compiler expands an implicit argument list, it searches for candidate values for each argument by type. In our `htmlify` method the exact type will be decided by the type parameter `T` -- if `T` is `Person`, for example, the compiler searches for a value of type `HtmlWriter[Person]`.
-
-We'll look at the full implicit search rules in the next section. For now, we're going to use the simplest rule, which is that any implicits in the local scope take priority over other implicits. A simple way of packaging implicits is to declare them in an object
-
-~~~ scala
-object PersonImplicits {
-  implicit object PersonWriter extends HtmlWriter[Person] {
-    def write(person: Person) =
-      s"<span>${person.name} &lt;${person.email}&gt;</span>"
-  }
-}
-~~~
-
-We can then import this object into the scope where we'd like the implicits available.
-
-~~~ scala
-object PersonImplicitsExample {
-  import PersonImplicits._ // Import everything from PersonImplicits
-  HtmlUtil.htmlify(Person("Noel", "noel@underscoreconsulting.com")) // Implicits used here
-}
-~~~
+A complete use of the type class pattern requires an interface using implicit parameters. We've seen two examples already: the `sorted` method using `Ordering`, and the `htmlify` method above. The best interface depends on the problem being solved, but there is a pattern that occurs frequently enough that it is worth explaining here.
 
 ## Take Home Points
 
