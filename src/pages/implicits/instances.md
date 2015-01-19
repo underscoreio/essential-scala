@@ -1,13 +1,15 @@
 ---
 layout: page
-title: Type Class Foundations
+title: Type Class Instances
 ---
 
 Type classes in Scala involve the interaction of a number of components. To simplify the presentation we are going to start by looking at *using* type classes before we look at how to *build them ourselves*.
 
 ## Ordering
 
-A simple example of a type class is the `Ordering` trait in Scala. Imagine we want to sort a `List` of `Int`s. There are many different ways to sort such a list. For example, we could sort from highest to lowest, or we could sort from lowest to highest. There is a method `sorted` on `List` that will sort a list, but to use it we must pass in an `Ordering` to give the particular ordering we want.
+A simple example of a type class is the [`Ordering`](http://www.scala-lang.org/api/current/#scala.math.Ordering) trait. For a type `A`, an `Ordering[A]` defines a comparison method `compare` that compares two instances of `A` by some ordering. To construct an `Ordering` we can use the convenience method `fromLessThan` defined the companion object.
+
+Imagine we want to sort a `List` of `Int`s. There are many different ways to sort such a list. For example, we could sort from highest to lowest, or we could sort from lowest to highest. There is a method `sorted` on `List` that will sort a list, but to use it we must pass in an `Ordering` to give the particular ordering we want.
 
 Let's define some `Ordering`s and see them in action.
 
@@ -29,12 +31,12 @@ res10: List[Int] = List(4, 3, 2)
 
 Here we define two orderings: `minOrdering`, which sorts from lowest to highest, and `maxOrdering`, which sorts from highest to lowest. When we call `sorted` we pass the `Ordering` we want to use. These implementations of a type class are called **type class instances**.
 
-**This is the basic usage pattern for type classes.** Everything else we will see just provides extra convenience.
+The type class pattern separates the implementation of functionality (the type class instance, an `Ordering[A]` in our example) from the type the functionality is provided for (the `A` in an `Ordering[A]`). *This is the basic pattern for type classes.* Everything else we will see just provides extra convenience.
 
 
 ## Implicit Values
 
-It can be inconvenient to continually pass the type class instance to a method when we want to repeatedly use the same instance. Scala provides a convenience, called **implicit values**, that allows us to get the compiler to pass a type class instance to a method for us. Here's an example of use:
+It can be inconvenient to continually pass the type class instance to a method when we want to repeatedly use the same instance. Scala provides a convenience, called an **implicit value**, that allows us to get the compiler to pass the type class instance for us. Here's an example of use:
 
 ~~~ scala
 scala> implicit val ordering = Ordering.fromLessThan[Int](_ < _)
@@ -48,7 +50,7 @@ res2: List[Int] = List(1, 5, 7)
 
 Note we didn't supply an ordering to `sorted`. Instead, the compiler provides it for us.
 
-We have to tell the compiler which values it is allowed pass to methods for us. We do this by annotating a value with `implicit`, as in the declaration `implicit val order = ...`. The method must also indicate that it accepts implicit values. If you look at the [documentation for the `sorted` method on `List`](http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.List) you see that the single parameter is declared `implicit`. We'll talk more about implicit parameter lists in a bit. For now we just need to know that we can get the compiler to supply implicit values to parameters that are themselves marked implicit.
+We have to tell the compiler which values it is allowed pass to methods for us. We do this by annotating a value with `implicit`, as in the declaration `implicit val ordering = ...`. The method must also indicate that it accepts implicit values. If you look at the [documentation for the `sorted` method on `List`](http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.List) you see that the single parameter is declared `implicit`. We'll talk more about implicit parameter lists in a bit. For now we just need to know that we can get the compiler to supply implicit values to parameters that are themselves marked implicit.
 
 ### Declaring Implicit Values
 
@@ -57,8 +59,11 @@ We can tag any `val`, `var`, `object` or zero-argument `def` with the `implicit`
 ~~~ scala
 implicit val exampleOne = ...
 implicit var exampleTwo = ...
-implicit def exampleThree = ...
+implicit object exampleThree = ...
+implicit def exampleFour = ...
 ~~~
+
+An implicit value must be declared within a surrounding object, class, or trait.
 
 ### Implicit Value Ambiguity
 
@@ -88,10 +93,10 @@ In this section we've seen the basics for using type classes. In Scala, a type c
 - create implementations of that trait, called type class instances; and
 - typically we mark the type class instances as implicit values.
 
-Marking values as implicit tells the compiler it can supply them to a parameter to a method call if none is explicitly given. For the compiler to supply a value:
+Marking values as implicit tells the compiler it can supply them as a parameter to a method call if none is explicitly given. For the compiler to supply a value:
 
-1. the parameter must be marked implicit;
-2. there must be an implicit value available of the same type of the parameter; and
+1. the parameter must be marked implicit in the method declaration;
+2. there must be an implicit value available of the same type as the parameter; and
 3. there must be only one such implicit value available.
 
 ## Exercises

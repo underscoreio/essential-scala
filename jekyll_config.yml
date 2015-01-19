@@ -56,7 +56,7 @@ toc:
 
   - head: /implicits/index.html
     body:
-     - /implicits/foundations.html
+     - /implicits/instances.html
      - /implicits/organising.html
      - /implicits/creating.html
      - /implicits/implicit-parameters.html

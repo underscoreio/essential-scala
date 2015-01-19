@@ -3,15 +3,15 @@ layout: page
 title: Organising Type Class Instances
 ---
 
-In section we'll look at where the compiler searches for type class instances (implicit values), known as the **implicit scope**, and we'll discuss how to organise type class instances to make their use more convenient.
+In section we'll learn about the places the compiler searches for type class instances (implicit values), known as the **implicit scope**, and we'll discuss how to organise type class instances to make their use more convenient.
 
 ## Implicit Scope
 
-When the compiler tries to find an implicit value to supply as an implicit parameter, it searches within the implicit scope. The implicit scope is composed of several parts, and there are rules that prioritise some parts over others. 
+When the compiler tries to find an implicit value to supply as an implicit parameter it searches within the implicit scope. The implicit scope is composed of several parts, and there are rules that prioritise some parts over others. 
 
 The first part of the implicit scope is the normal scope where other identifiers are found. This includes identifiers declared in the local scope, within any enclosing class, object, or trait, or `import`ed from elsewhere. An eligible implicit value must be a single identifier (i.e. `a`, not `a.b`). This is referred to as the **local scope**.
 
-The implicit scope also includes the companion objects of types involved in the method call with the implicit parameter. Let's look at the `sorted` for example. The signature for `sorted`, defined on `List[A]`, is
+The implicit scope also includes the companion objects of types involved in the method call with the implicit parameter. Let's look at `sorted` for example. The signature for `sorted`, defined on `List[A]`, is
 
 ~~~ scala
 sorted[B >: A](implicit ord: math.Ordering[B]): List[A]
@@ -23,7 +23,7 @@ The compiler will look in the following places for `Ordering` instances:
 - the companion object of `Ordering`; and
 - the companion object of the type `B`, which is the type of elements in the list or any superclass.
 
-The practical upshot is we can define type class instances in the companion object of our types (the type `A` in this example) and they be found by the compiler without the user having to import them explicitly.
+The practical upshot is we can define type class instances in the companion object of our types (the type `A` in this example) and they will be found by the compiler without the user having to import them explicitly.
 
 In the previous section we defined an `Ordering` for a `Rational` type we created. Let's see how we can use the companion object to make this `Ordering` easier to use.
 
@@ -111,7 +111,7 @@ If we look in the [companion object for `Ordering`](http://www.scala-lang.org/ap
 
 To understand this we need to learn about the priority rules for selecting implicits. An ambiguity error is only raised if there are multiple type class instances with the same priority. Otherwise the highest priority implicit is selected.
 
-The [full priority rules](http://eed3si9n.com/implicit-parameter-precedence-again) are rather complex, but that complexity has little impact in most cases. The practical implication of the priority rules is that the local scope takes precedence over instances found in companion objects. This means that implicits that the programmer explicitly pulls into scope, by importing or defining them in the local scope, will be used in preference to any found in companion objects.
+The [full priority rules](http://eed3si9n.com/implicit-parameter-precedence-again) are rather complex, but that complexity has little impact in most cases. The practical implication is that the local scope takes precedence over instances found in companion objects. This means that implicits that the programmer explicitly pulls into scope, by importing or defining them in the local scope, will be used in preference.
 
 Let's see this in practice, by defining an `Ordering` for `Rational` within the local scope.
 
@@ -174,7 +174,7 @@ object RationalGreaterThanOrdering {
 }
 ~~~
 
-In use, the user would `import RationalLessThanOrdeing._` or `import RationalGreaterThanOrdering._` as appropriate.
+In use the user would `import RationalLessThanOrdering._` or `import RationalGreaterThanOrdering._` as appropriate.
 
 ## Take Home Points
 
