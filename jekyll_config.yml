@@ -60,10 +60,10 @@ toc:
      - /implicits/organising.html
      - /implicits/creating.html
      - /implicits/implicit-parameters.html
-     - /implicits/type-classes.html
      - /implicits/enrichment.html
      - /implicits/using-type-classes.html
      - /implicits/conversions.html
+     - /implicits/json.html
 
   - head: /pattern-matching/index.html
     body:

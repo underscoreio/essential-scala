@@ -56,7 +56,46 @@ res4: String = It's definitely less than 10
 
 ## Interfaces Using Implicit Parameters
 
-A complete use of the type class pattern requires an interface using implicit parameters. We've seen two examples already: the `sorted` method using `Ordering`, and the `htmlify` method above. The best interface depends on the problem being solved, but there is a pattern that occurs frequently enough that it is worth explaining here.
+A complete use of the type class pattern requires an interface using implicit parameters, along with implicit type class instances. We've seen two examples already: the `sorted` method using `Ordering`, and the `htmlify` method above. The best interface depends on the problem being solved, but there is a pattern that occurs frequently enough that it is worth explaining here.
+
+In many case the interface defined by the type class is the same interface we want to use. This is the case for `HtmlWriter` -- the only method of interest is `write`. We could write something like
+
+~~~ scala
+object HtmlWriter {
+  def write[A](in: A)(implicit writer: HtmlWriter[A]): String =
+    writer.write(in)
+}
+~~~
+
+We can avoid this indirection (which becomes more painful to write as our interfaces become larger) with the following construction:
+
+~~~ scala
+object HtmlWriter {
+  def apply[A](implicit writer: HtmlWriter[A]): HtmlWriter[A] =
+    writer
+}
+~~~
+
+In use it looks like
+
+~~~ scala
+HtmlWriter[Person].write(Person("Noel", "noel@example.org"))
+~~~
+
+The idea is to simply select a type class instance by type (done by the no-argument `apply` method) and then directly call the methods defined on that instance.
+
+<div class="callout callout-info">
+#### Type Class Interface Pattern
+
+If the desired interface to a type class `TypeClass` is exactly the methods defined on the type class trait, define an interface on the companion object using a no-argument `apply` method like
+
+~~~ scala
+object TypeClass {
+  def apply[A](implicit instance: TypeClass[A]): TypeClass[A] =
+    instance
+}
+~~~
+</div>
 
 ## Take Home Points
 
@@ -68,19 +107,12 @@ def method[A](normalParam1: NormalType, ...)(implicit implicitParam1: ImplicitTy
 
 If we call a method and do not explicitly supply an explicit parameter, the compiler will search for an implicit value of the correct type and insert it as the parameter.
 
-An implicit value is one declared with the `implicit` keyword. Although we can declare implicits directly in the console, in real Scala code they must be declared in a trait, class, or object.
-
-The Scala compiler prefers implicit values in the local scope to any other implicit values. One simple way to package implicits is to declare them in an object and then import that object into the scope where it is needed.
+Using implicit parameters we can make more convenient interfaces using type class instances. If the desired interface to a type class is exactly the methods defined on the type class we can create a convenient interface using the pattern
 
 ~~~ scala
-object Implicits {
-  implicit object anImplicit = ...
-}
-
-// Meanwhile ...
-trait ImplicitUse {
-  import Implicits._
-  ...
+object TypeClass {
+  def apply[A](implicit instance: TypeClass[A]): TypeClass[A] =
+    instance
 }
 ~~~
 
@@ -108,7 +140,11 @@ object NameEmailEqual extends Equal[Person] {
 }
 ~~~
 
-Implement an object called `Eq` with an `apply` method. This method should accept two explicit parameters of type `A` and an implicit `Equal[A]`. It should perform the equality checking using the provided `Equal`.
+Implement an object called `Eq` with an `apply` method. This method should accept two explicit parameters of type `A` and an implicit `Equal[A]`. It should perform the equality checking using the provided `Equal`. With appropriate implicits in scope, the following code should work
+
+~~~ scala
+Eq(Person("Noel", "noel@example.com"), Person("Noel", "noel@example.com"))
+~~~
 
 <div class="solution">
 ~~~ scala
@@ -151,4 +187,24 @@ object Examples {
 ~~~
 </div>
 
-Hopefully you'll agree that adding the extra machinary has made our type class more pleasant to use.
+Now implement an interface on the companion object for `Equal` using the no-argument apply method pattern. The following code should work.
+
+~~~
+import NameAndEmailImplicit._
+Equal[Person].equal(Person("Noel", "noel@example.com"), Person("Noel", "noel@example.com"))
+~~~
+
+Which interface style do you prefer?
+
+<div class="solution">
+The following code is what we're looking for:
+
+~~~ scala
+object Equal {
+  def apply[A](implicit instance: Equal[A]): Equal[A] =
+    instance
+}
+~~~
+
+In this case the `Eq` interface is slightly easier to use, as it requires less typing. For most complicated interfaces, with more than a single method, the companion object pattern would be preferred. In the next section we'll see how we can make interfaces that appear to be methods defined on the objects of interest.
+</div>

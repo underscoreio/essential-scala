@@ -1,26 +1,27 @@
 ---
 layout: page
-title: Type Enrichment
+title: Enriched Interfaces
 ---
 
-Type enrichment, often referred to colloquially as *"pimping"*, allows us to **augment existing classes with extra functionality**. For example, suppose we have a method called `numberOfVowels`:
+A second type of type class interface, called **type enrichment**[^pimping] allow us to create
+ interfaces that act as if they were methods defined on the classes of interest. For example, suppose we have a method called `numberOfVowels`:
 
 ~~~ scala
-scala> def numberOfVowels(str: String) =
-     |   str.filter(Seq('a', 'e', 'i', 'o', 'u').contains(_)).length
-numberOfVowels: (str: String)Int
+def numberOfVowels(str: String) =
+  str.filter(Seq('a', 'e', 'i', 'o', 'u').contains(_)).length
 
-scala> numberOfVowels("the quick brown fox")
-res0: Int = 5
+numberOfVowels("the quick brown fox")
+// res: Int = 5
 ~~~
 
-This is a method that we use all the time. It would be great if `numberOfVowels` was a built-in method of `String` so we could write `string.numberOfVowels`, but unfortunately that is not the case. We don't have access to the source code for `String`, so there is no way we can directly add the method ourselves.
+[^pimping]: Type enrichment is sometimes referred to as pimping, but we will not use that term.
 
-Fortunately, Scala has a feature called called **implicit classes** that allow us to add new functionality to an existing class without editing its source code. This is a similar concept to *categories* in Objective C or *extension methods* in C#, but the implementation is different in each case.
+
+This is a method that we use all the time. It would be great if `numberOfVowels` was a built-in method of `String` so we could write `"a string".numberOfVowels`, but of course we can't change the source code for `String`. Scala has a feature called called **implicit classes** that allow us to add new functionality to an existing class without editing its source code. This is a similar concept to *categories* in Objective C or *extension methods* in C#, but the implementation is different in each case.
 
 ## Implicit Classes
 
-An class that adds our `numberOfVowels` method to `String`:
+Let's build up implicit classes piece by piece. We can wrap `String` in a class that adds our `numberOfVowels`:
 
 ~~~ scala
 class ExtraStringMethods(str: String) {
@@ -40,49 +41,45 @@ new ExtraStringMethods("the quick brown fox").numberOfVowels
 Writing `new ExtraStringMethods` every time we want to use `numberOfVowels` is unwieldy. However, if we tag our class with the `implicit` keyword, we give Scala the ability to insert the constructor call automatically into our code:
 
 ~~~ scala
-scala> implicit class ExtraStringMethods(str: String) { /* ... */ }
-defined class ExtraStringMethods
+implicit class ExtraStringMethods(str: String) { /* ... */ }
 
-scala> "the quick brown fox".numberOfVowels
-res1: Int = 5
+"the quick brown fox".numberOfVowels
+// res: Int = 5
 ~~~
 
-When the compiler process our call to `numberOfVowels`, it interprets it as a type error because there is no such method in `String`. Rather than give up, the compiler attempts to fix the error using implicits. It finds `ExtraStringMethods`, which is an implicit class that is capable of transforming our `String` into something with a `numberOfVowels` method. The compiler inserts an invisible constructor call, and our code type checks correctly.
+When the compiler process our call to `numberOfVowels`, it interprets it as a type error because there is no such method in `String`. Rather than give up, the compiler attempts to fix the error searching for an implicit class that provides the method and can be constructed from a `String`. It finds `ExtraStringMethods`. The compiler then inserts an invisible constructor call, and our code type checks correctly.
+
+Implicit classes follow the same scoping rules as implicit values. Like implicit values, they must be defined within an enclosing object, class, or trait (except when writing Scala at the console).
+
+There is one additional restriction for implicit classes: only a single implicit class with be used to resolve a type error. The compiler will not look to construct a chain of implicit classes to access the desired method. 
 
 ## Combining Type Classes and Type Enrichment
 
-Type classes allow us to define adapter-style patterns that implement fixed behaviour for any type we specify. Type enrichment allows us to add functionality to existing classes without changing their definitions. We can combine the two techniques to add standard functionality to a range of classes.
-
-To do this we keep the type class (`HtmlWriter`) and adapters (`PersonWriter`, `DateWriter` and so on) from our type class example, but replace our `HtmlUtils` singleton with an implicit generic class. For example:
+Implicit classes can be used on their own but we most often combine them with type classes to create a more natural style of interface. We keep the type class (`HtmlWriter`) and adapters (`PersonWriter`, `DateWriter` and so on) from our type class example, and add an implicit class with methods that themselves take implicit parameters. For example:
 
 ~~~ scala
-scala> implicit class HtmlOps[T](data: T) {
-         def toHtml(implicit writer: HtmlWriter[T]) =
-           writer.write(data)
-       }
-defined class HtmlOps
+implicit class HtmlOps[T](data: T) {
+  def toHtml(implicit writer: HtmlWriter[T]) =
+    writer.write(data)
+}
 ~~~
 
 This allows us to invoke our type-class pattern on any type for which we have an adapter *as if it were a built-in feature of the class*:
 
 ~~~ scala
-scala> Person("John", "john@example.com").toHtml
-res5: String = <span>John &lt;john@example.com&gt;</span>
+Person("John", "john@example.com").toHtml
+// res: String = <span>John &lt;john@example.com&gt;</span>
 ~~~
 
 This gives us many benefits. We can extend existing types to give them new functionality, use simple syntax to invoke the functionality, *and* choose our preferred implementation by controlling which implicits we have in scope.
 
 ## Take Home Points
 
-**Implicit classes** are a Scala language feature that allows us to define extra functionality on existing data types without using conventional inheritance.
-
-This is a programming pattern called **type enrichment** or, more colloquially, *type "pimping"*.
+**Implicit classes** are a Scala language feature that allows us to define extra functionality on existing data types without using conventional inheritance. This is a programming pattern called **type enrichment**. 
 
 The Scala compiler uses implicit classes to **fix type errors in our code**. When it encounters us accessing a method or field that doesn't exist, it looks through the available implicits to find some code it can insert to fix the error.
 
-The compiler uses a strict set of **implicit resolution rules** to determine whether/which implicits can be used to fix a type error.
-
-We can control which implicits are available by **bringing then into scope** using `import` statements or inheritance. It is good practice to do this only when we need to, to make it easy to see which implicits are being used where.
+The rules for implicit classes are the same as for implicit values, with the additional restriction that only a single implicit class will be used to fix a type error.
 
 ## Exercises
 
@@ -104,16 +101,15 @@ scala> -1.yeah
 
 ~~~
 
-When you have written your implicit class, package it in an `IntImplicits` trait/singleton as discussed above.
+When you have written your implicit class, package it in an `IntImplicits` object.
 
 <div class="solution">
 ~~~ scala
-trait IntImplicits {
+object IntImplicits {
   implicit class IntOps(n: Int) {
-    def yeah = for(_ <- 0 until n) println("Oh yeah!")
+    def yeah = for{ _ <- 0 until n } println("Oh yeah!")
   }
 }
-object IntImplicits extends IntImplicits
 
 import IntImplicits._
 
@@ -124,9 +120,7 @@ import IntImplicits._
 
 The solution uses a `for` comprehension and a range to iterate through the correct number of iterations. Remember that the range `0 until n` is the same as `0 to n-1` -- it contains all numbers from `0` inclusive to `n` exclusive.
 
-We have used the parenthesis for of `for` here to keep the solution small. Writing the solution with braces is also fine. Note that we have omitted the `yield` keyword, resulting in a for comprehension that does not accumulate a value.
-
-The names `IntImplicits` and `IntOps` are quite vague -- we would probably name them something more specific in a production codebase. However, for this exercise they will suffice perfectly.
+The names `IntImplicits` and `IntOps` are quite vague -- we would probably name them something more specific in a production codebase. However, for this exercise they will suffice.
 </div>
 
 ### Times
@@ -144,9 +138,7 @@ For bonus points, re-implement `yeah` in terms of `times`.
 
 <div class="solution">
 ~~~ scala
-object IntImplicits extends IntImplicits
-
-trait IntImplicits {
+object IntImplicits {
   implicit class IntOps(n: Int) {
     def yeah =
       times(_ => println("Oh yeah!"))
@@ -158,84 +150,50 @@ trait IntImplicits {
 ~~~
 </div>
 
-### Multiple Parameter Lists
+### Easy Equality
 
-Add a method `fold` to `Int`. `fold` has two parameter lists. The first accepts a seed of type `A`. The second accepts a function from `(A, Int) => A`. The method folds over the integers from zero until the given number. Example usage:
+Recall our `Equal` type class from a previous section. 
+
+~~~
+trait Equal[A] {
+  def equal(v1: A, v2: A): Boolean
+}
+~~~
+
+Implement an enrichment so we can use this type class via ` triple equal (`===`) method. For example, if the correct implicits are in scope the following should work.
 
 ~~~ scala
-scala> 4.fold(0)(_ + _)
-res10: Int = 6
-
-scala> 5.fold[Seq[Int]](Seq())(_ :+ _)
-res2: Seq[Int] = List(0, 1, 2, 3, 4)
+"abcd".===("ABCD") // Assumes case-insensitive equality implicit
 ~~~
 
 <div class="solution">
+We just need to define an implicit class, which I have here placed in the companion object of `Equal`.
+
 ~~~ scala
-object IntImplicits extends IntImplicits
+trait Equal[A] {
+  def equal(v1: A, v2: A): Boolean
+}
+object Equal {
+  def apply[A](implicit instance: Equal[A]): Equal[A] =
+    instance
 
-trait IntImplicits {
-  implicit class IntOps(n: Int) {
-    // Code from previous exercises...
-
-    def fold[A](seed: A)(func: (A, Int) => A) =
-      (0 until n).foldLeft(seed)(func)
+  implicit class ToEqual[A](in: A) {
+    def ===(other: A)(implicit equal: Equal[A]): Boolean =
+      equal.equal(in, other)
   }
 }
 ~~~
-</div>
 
-### Prettier Conversion Syntax
-
-Let's improve our JSON syntax by combining type classes and type enrichment. Convert `JsUtil` to an `implicit class` with a `toJson` method. Sample usage:
+Here is an example of use.
 
 ~~~ scala
-Anonymous("001", new Date).toJson
-~~~
-
-<div class="solution">
-~~~ scala
-implicit class JsUtil[A](value: A) {
-  def toJson(implicit writer: JsWriter[A]) =
-    writer write value
-}
-~~~
-
-In the previous exercise we only defined `JsWriters` for our main case classes. With this convenient syntax, it makes sense for us to have an complete set of `JsWriters` for all the serializable types in our codebase, including `Strings` and `Dates`:
-
-~~~ scala
-implicit object StringWriter extends JsWriter[String] {
-  def write(value: String) = JsString(value)
+implicit val caseInsensitiveEquals = new Equal[String] {
+  def equal(s1: String, s2: String) =
+    s1.toLowerCase == s2.toLowerCase
 }
 
-implicit object DateWriter extends JsWriter[Date] {
-  def write(value: Date) = JsString(value.toString)
-}
-~~~
+import Equal._
 
-With these definitions we can simplify our existing `JsWriters` for `Anonymous`, `User`, and `Visitor`:
-
-~~~ scala
-implicit object AnonymousWriter extends JsWriter[Anonymous] {
-  def write(value: Anonymous) = JsObject(Map(
-    "id"        -> value.id.toJson,
-    "createdAt" -> value.createdAt.toJson
-  ))
-}
-
-implicit object UserWriter extends JsWriter[User] {
-  def write(value: User) = JsObject(Map(
-    "id"        -> value.id.toJson,
-    "email"     -> value.email.toJson,
-    "createdAt" -> value.createdAt.toJson
-  ))
-}
-
-implicit object VisitorWriter extends JsWriter[Visitor] {
-  def write(value: Visitor) = value match {
-    case anon: Anonymous => anon.toJson
-    case user: User      => user.toJson
-  }
-}
+"foo".===("FOO")
 ~~~
 </div>

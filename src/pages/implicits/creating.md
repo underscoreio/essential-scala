@@ -20,7 +20,7 @@ We have already seen type class instances and talked briefly about implicit para
 
 Let's start with an example -- converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
 
-The obvious implementation it to implement `toHtml` using a simple trait:
+The obvious implementation it to implement `toHtml` using a simple trait we `extend` wherever we want this functionality:
 
 ~~~ scala
 trait HtmlWriteable {
@@ -94,7 +94,7 @@ ObfuscatedPersonWriter.write(Person("John", "john@example.com"))
 
 Much safer -- it'll take a spam bot more than a few microseconds to decypher that!
 
-You might recognise `PersonWriter`, `DateWriter`, and `ObfuscatedPersonWriter` as following the type class instance pattern (though we haven't made them implicit values at this point). The `HtmlWriter` trait is the type class.
+You might recognise `PersonWriter`, `DateWriter`, and `ObfuscatedPersonWriter` as following the type class instance pattern (though we haven't made them implicit values at this point). The `HtmlWriter` trait, which the instances implement, is the type class itself.
 
 <div class="callout callout-info">
 #### Type Class Pattern
@@ -108,9 +108,11 @@ trait ExampleTypeClass[A] {
 ~~~
 </div>
 
+The next step is to introduce implicit parameters, so we can use type classes with less boilerplate.
+
 ## Take Home Points
 
-We have seen the basic pattern for implementing type classes, though we'll shortly see a number of features in Scala that make them easier to use.
+We have seen the basic pattern for implementing type classes.
 
 - We declare some interface for the functionality we want
 
@@ -140,7 +142,7 @@ We have seen the basic pattern for implementing type classes, though we'll short
 
 Scala provides two equality predicates: by value (`==`) and by reference (`eq`). Nonetheless, we sometimes need additional predicates. For instance, we could compare people by just email address if we were validating new user accounts in some web application.
 
-Implement a trait `Equal` of some type `A`, with a method `equal` that compares two values of type `A` and returns a `Boolean`.
+Implement a trait `Equal` of some type `A`, with a method `equal` that compares two values of type `A` and returns a `Boolean`. `Equal` is a type class.
 
 <div class="solution">
 ~~~ scala
