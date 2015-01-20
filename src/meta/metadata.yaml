@@ -60,12 +60,14 @@ pages:
   - src/pages/collections/ranges.md
 
   - src/pages/implicits/index.md
-  - src/pages/implicits/foundations.md
+  - src/pages/implicits/instances.md
+  - src/pages/implicits/organising.md
+  - src/pages/implicits/creating.md
   - src/pages/implicits/implicit-parameters.md
-  - src/pages/implicits/type-classes.md
   - src/pages/implicits/enrichment.md
   - src/pages/implicits/using-type-classes.md
   - src/pages/implicits/conversions.md
+  - src/pages/implicits/json.md
 
   - src/pages/pattern-matching/index.md
   - src/pages/pattern-matching/extractors.md

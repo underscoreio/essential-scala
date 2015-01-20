@@ -3,8 +3,12 @@ case class Person(name: String, email: String)
 trait HtmlWriter[T] {
   def write(in: T): String
 }
+object HtmlWriter {
+  def apply[A](implicit writer: HtmlWriter[A]): HtmlWriter[A] =
+    writer
+}
 
-object PersonWriter extends HtmlWriter[Person] {
+implicit object PersonWriter extends HtmlWriter[Person] {
   def write(person: Person) = s"<span>${person.name} &lt;${person.email}&gt;</span>"
 }
 
@@ -20,3 +24,4 @@ implicit object ApproximationWriter extends HtmlWriter[Int] {
 }
 
 HtmlUtil.htmlify(2)
+HtmlWriter[Person].write(Person("Noel", "noel@example.org"))

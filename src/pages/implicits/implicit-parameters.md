@@ -1,10 +1,10 @@
-## Implicit Parameters
+## Implicit Parameter and Interfaces
 
 We've seen the basics of the type class pattern. Now let's look at how we can make it easier to use. Recall our starting point is a trait `HtmlWriter` which allows us to implement HTML rendering for classes without requiring access to their source code, and allows us to render the same class in different ways.
 
 ~~~ scala
-trait HtmlWriter[T] {
-  def write(in: T): String
+trait HtmlWriter[A] {
+  def write(in: A): String
 }
 
 object PersonWriter extends HtmlWriter[Person] {
@@ -12,7 +12,7 @@ object PersonWriter extends HtmlWriter[Person] {
 }
 ~~~
 
-This issue with this code is that we need manage a lot of `HtmlWriter` instances when we render any complex data. Most classes will only have a single instance of `HtmlWriter` but we still need to call the correct object for the class we're rendering. It would be nice it Scala would just pick the right instance for us whenever there is no ambiguity, and that's exactly what we can get Scala to do using **implicit parameters**.
+This issue with this code is that we need manage a lot of `HtmlWriter` instances when we render any complex data. We have already seen that we can manage this complexity using implicit values and have mentioned **implicit parameters** in passing. In this section we go in depth on implicit parameters.
 
 ### Implicit Parameter Lists
 
@@ -20,7 +20,7 @@ Here is an example of an implicit parameter list:
 
 ~~~ scala
 object HtmlUtil {
-  def htmlify[T](data: T)(implicit writer: HtmlWriter[T]): String = {
+  def htmlify[A](data: A)(implicit writer: HtmlWriter[A]): String = {
     writer.write(data)
   }
 }
@@ -35,7 +35,7 @@ scala> HtmlUtil.htmlify(Person("John", "john@example.com"))(PersonWriter)
 res2: String = <span>John &lt;john@example.com&gt;</span>
 ~~~
 
-or we can omit implicit parameters. The compiler searches for **implicit values** of the correct type it can use to fill in the missing arguments. For example we can declare an implicit value like so:
+or we can omit implicit parameters. If we omit implicit parameters, the compiler searches for implicit values of the correct type it can use to fill in the missing arguments. We have already learned about implicit values, but let's see a quick example to refresh our memory. First we define an implicit value.
 
 ~~~ scala
 implicit object ApproximationWriter extends HtmlWriter[Int] {
@@ -51,38 +51,48 @@ scala> HtmlUtil.htmlify(2)
 res4: String = It's definitely less than 10
 ~~~
 
-## Implicit Values
+## Interfaces Using Implicit Parameters
 
-We can tag any `val`, `var`, `object` or zero-argument `def` with the `implicit` keyword, making it a potential candidate for an implicit parameter:
+A complete use of the type class pattern requires an interface using implicit parameters, along with implicit type class instances. We've seen two examples already: the `sorted` method using `Ordering`, and the `htmlify` method above. The best interface depends on the problem being solved, but there is a pattern that occurs frequently enough that it is worth explaining here.
+
+In many case the interface defined by the type class is the same interface we want to use. This is the case for `HtmlWriter` -- the only method of interest is `write`. We could write something like
 
 ~~~ scala
-implicit object PersonWriter extends HtmlWriter[Person] {
-  def write(person: Person) =
-    s"<span>${person.name} &lt;${person.email}&gt;</span>"
+object HtmlWriter {
+  def write[A](in: A)(implicit writer: HtmlWriter[A]): String =
+    writer.write(in)
 }
 ~~~
 
-When the compiler expands an implicit argument list, it searches for candidate values for each argument by type. In our `htmlify` method the exact type will be decided by the type parameter `T`---if `T` is `Person`, for example, the compiler searches for a value of type `HtmlWriter[Person]`.
-
-We'll look at the full implicit search rules in the next section. For now, we're going to use the simplest rule, which is that any implicits in the local scope take priority over other implicits. A simple way of packaging implicits is to declare them in an object
+We can avoid this indirection (which becomes more painful to write as our interfaces become larger) with the following construction:
 
 ~~~ scala
-object PersonImplicits {
-  implicit object PersonWriter extends HtmlWriter[Person] {
-    def write(person: Person) =
-      s"<span>${person.name} &lt;${person.email}&gt;</span>"
-  }
+object HtmlWriter {
+  def apply[A](implicit writer: HtmlWriter[A]): HtmlWriter[A] =
+    writer
 }
 ~~~
 
-We can then import this object into the scope where we'd like the implicits available.
+In use it looks like
 
 ~~~ scala
-object PersonImplicitsExample {
-  import PersonImplicits._ // Import everything from PersonImplicits
-  HtmlUtil.htmlify(Person("Noel", "noel@underscoreconsulting.com")) // Implicits used here
+HtmlWriter[Person].write(Person("Noel", "noel@example.org"))
+~~~
+
+The idea is to simply select a type class instance by type (done by the no-argument `apply` method) and then directly call the methods defined on that instance.
+
+<div class="callout callout-info">
+#### Type Class Interface Pattern
+
+If the desired interface to a type class `TypeClass` is exactly the methods defined on the type class trait, define an interface on the companion object using a no-argument `apply` method like
+
+~~~ scala
+object TypeClass {
+  def apply[A](implicit instance: TypeClass[A]): TypeClass[A] =
+    instance
 }
 ~~~
+</div>
 
 ### Take Home Points
 
@@ -94,19 +104,12 @@ def method[A](normalParam1: NormalType, ...)(implicit implicitParam1: ImplicitTy
 
 If we call a method and do not explicitly supply an explicit parameter, the compiler will search for an implicit value of the correct type and insert it as the parameter.
 
-An implicit value is one declared with the `implicit` keyword. Although we can declare implicits directly in the console, in real Scala code they must be declared in a trait, class, or object.
-
-The Scala compiler prefers implicit values in the local scope to any other implicit values. One simple way to package implicits is to declare them in an object and then import that object into the scope where it is needed.
+Using implicit parameters we can make more convenient interfaces using type class instances. If the desired interface to a type class is exactly the methods defined on the type class we can create a convenient interface using the pattern
 
 ~~~ scala
-object Implicits {
-  implicit object anImplicit = ...
-}
-
-// Meanwhile ...
-trait ImplicitUse {
-  import Implicits._
-  ...
+object TypeClass {
+  def apply[A](implicit instance: TypeClass[A]): TypeClass[A] =
+    instance
 }
 ~~~
 
@@ -134,7 +137,11 @@ object NameEmailEqual extends Equal[Person] {
 }
 ~~~
 
-Implement an object called `Eq` with an `apply` method. This method should accept two explicit parameters of type `A` and an implicit `Equal[A]`. It should perform the equality checking using the provided `Equal`.
+Implement an object called `Eq` with an `apply` method. This method should accept two explicit parameters of type `A` and an implicit `Equal[A]`. It should perform the equality checking using the provided `Equal`. With appropriate implicits in scope, the following code should work
+
+~~~ scala
+Eq(Person("Noel", "noel@example.com"), Person("Noel", "noel@example.com"))
+~~~
 
 <div class="solution">
 ~~~ scala
@@ -177,4 +184,24 @@ object Examples {
 ~~~
 </div>
 
-Hopefully you'll agree that adding the extra machinary has made our type class more pleasant to use.
+Now implement an interface on the companion object for `Equal` using the no-argument apply method pattern. The following code should work.
+
+~~~
+import NameAndEmailImplicit._
+Equal[Person].equal(Person("Noel", "noel@example.com"), Person("Noel", "noel@example.com"))
+~~~
+
+Which interface style do you prefer?
+
+<div class="solution">
+The following code is what we're looking for:
+
+~~~ scala
+object Equal {
+  def apply[A](implicit instance: Equal[A]): Equal[A] =
+    instance
+}
+~~~
+
+In this case the `Eq` interface is slightly easier to use, as it requires less typing. For most complicated interfaces, with more than a single method, the companion object pattern would be preferred. In the next section we'll see how we can make interfaces that appear to be methods defined on the objects of interest.
+</div>
