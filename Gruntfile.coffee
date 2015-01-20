@@ -272,7 +272,7 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask "serve", [
-    "build"
+    "html"
     "connect:server"
     "watchImpl"
   ]
