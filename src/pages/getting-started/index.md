@@ -39,13 +39,13 @@ res1: Int = 6
 
 When we press Enter, the console responds with three things:
 
- - an *identifier* `res0`;
+ - an *identifier* `res1`;
  - a *type* `Int`;
  - a *value* `6`.
 
 As we will see in the next chapter, every expression in Scala has a *type* and a *value*. The type is determined at compile time and the value is determined by executing the expression. Both of these are reported here.
 
-The identifier `res0` is a convenience provided by the console to allow us to refer to the result of the expression in future expressions. For example, we can multiply our result by two as folllows:
+The identifier `res1` is a convenience provided by the console to allow us to refer to the result of the expression in future expressions. For example, we can multiply our result by two as folllows:
 
 ~~~ scala
 scala> res1 * 2
@@ -63,7 +63,7 @@ Here, the output `"Hello world!"` is from our `println` statement---the expressi
 
 ### Entering Multi-Line Expressions
 
-We can split long expressions across multiple lines quite simply. If we press enter before the end of an expression, the console will print an `|` character to indicate that we can continue on the next line:
+We can split long expressions across multiple lines quite simply. If we press enter before the end of an expression, the console will print a `|` character to indicate that we can continue on the next line:
 
 ~~~ scala
 scala> for(i <- 1 to 3) {
@@ -89,6 +89,14 @@ x + y
 x: Int = 1
 y: Int = 2
 res6: Int = 3
+~~~
+
+If we have Scala code in a file, we can use `:paste` to paste the contents of the file into the console. This is much more convenient than re-entering expressions in the console. For example, with a file named `example.txt` containing `1 + 2 + 3` we can use `:paste` like so:
+
+~~~ scala
+scala> :paste example.scala
+Pasting file example.scala...
+res0: Int = 6
 ~~~
 
 ### Printing the Type of an Expression
