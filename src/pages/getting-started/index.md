@@ -1,87 +1,152 @@
 # Getting Started
 
+Throughout this book we will be working with short examples of Scala code. There are two recommended ways of doing this:
 
-Throughout this course we will be working with short examples of Scala code using the *Scala Worksheets* feature of the *[Scala IDE for Eclipse]*, or *Scala IDE* for short. You should install this before starting the course.
+ 1. Using the *Scala console* (better for people who like command lines)
 
-[Scala IDE for Eclipse]: http://scala-ide.org
+ 2. Using *Worksheets* feature of *Scala IDE* (better for people who like IDEs)
 
-## Setting up Scala IDE
+We'll walk through the setup for each process here.
 
-Scala IDE is a plugin that adds Scala language support to [Eclipse](http://eclipse.org). A complete version of Scala IDE with Eclipse is also available as a standalone bundle from [http://scala-ide.org](). This is the easiest way to install the software so we recommend you install the standalone bundle for this course.
+## Setting up the Scala Console
 
-Go to [http://scala-ide.org]() now, click the **Get the Bundle** button, and follow the on-screen instructions to download Scala IDE for your operating system:
+Follow the instructions on [http://scala-lang.org](http://scala-lang.org) to set Scala up on your computer. Once Scala is installed, you should be able to run an interactive console by typing `scala` at your command line prompt. Here's an example from OS X:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-website.png}}
+~~~ bash
+dave@Jade ~> scala
+Welcome to Scala version 2.11.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.7.0_45).
+Type in expressions to have them evaluated.
+Type :help for more information.
 
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-website.png" alt="Scala IDE: Main website" />
-</div>
-</div>
+scala>
+~~~
+
+You can enter individual expressions at the `scala>` prompt and press *Enter* to compile and execute them:
+
+~~~ scala
+scala> "Hello world!"
+res0: String = Hello world!
+~~~
+
+### Entering Single-Line Expressions
+
+Let's try entering a simple expression:
+
+~~~ scala
+scala> 1 + 2 + 3
+res1: Int = 6
+~~~
+
+When we press Enter, the console responds with three things:
+
+ - an *identifier* `res1`;
+ - a *type* `Int`;
+ - a *value* `6`.
+
+As we will see in the next chapter, every expression in Scala has a *type* and a *value*. The type is determined at compile time and the value is determined by executing the expression. Both of these are reported here.
+
+The identifier `res1` is a convenience provided by the console to allow us to refer to the result of the expression in future expressions. For example, we can multiply our result by two as folllows:
+
+~~~ scala
+scala> res1 * 2
+res2: Int = 12
+~~~
+
+If we enter an expression that doesn't yield a useful value, the console won't print anything in response:
+
+~~~ scala
+scala> println("Hello world!")
+Hello world!
+~~~
+
+Here, the output `"Hello world!"` is from our `println` statement---the expression we entered doesn't actually return a value. The console doesn't provide output similar to the output we saw above.
+
+### Entering Multi-Line Expressions
+
+We can split long expressions across multiple lines quite simply. If we press enter before the end of an expression, the console will print a `|` character to indicate that we can continue on the next line:
+
+~~~ scala
+scala> for(i <- 1 to 3) {
+     |   println(i)
+     | }
+1
+2
+3
+~~~
+
+Sometimes we want to enter multiple expressions at once. In these cases we can use the `:paste` command. We simply type `:paste`, press Enter, and write (or copy-and-paste) our code. When we're done we press `Ctrl+D` to compile and execute the code as normal. The console prints output for every expression in one big block at the end of the input:
+
+~~~ scala
+scala> :paste
+// Entering paste mode (ctrl-D to finish)
+
+val x = 1
+val y = 2
+x + y
+
+// Exiting paste mode, now interpreting.
+
+x: Int = 1
+y: Int = 2
+res6: Int = 3
+~~~
+
+If we have Scala code in a file, we can use `:paste` to paste the contents of the file into the console. This is much more convenient than re-entering expressions in the console. For example, with a file named `example.txt` containing `1 + 2 + 3` we can use `:paste` like so:
+
+~~~ scala
+scala> :paste example.scala
+Pasting file example.scala...
+res0: Int = 6
+~~~
+
+### Printing the Type of an Expression
+
+One final tip for using the console. Occasionally we want to know the *type* of an expression without actually running it. To do this we can use the `:type` command:
+
+~~~ scala
+scala> :type println("Hello world!")
+Unit
+~~~
+
+Notice that the console doesn't execute our `println` statement in this expression. It simply compiles it and prints out its type, which in this case is something called `Unit`.
+
+`Unit` is Scala's equivalent of `void` from Java and C. Read Chapter 1 to find out more.
+
+## Setting up Scala IDE Worksheets
+
+*Scala IDE* is a plugin that adds Scala language support to [Eclipse](http://eclipse.org). A complete version of Scala IDE with Eclipse is also available as a standalone bundle from [http://scala-ide.org](). This is the easiest way to install the software so we recommend you install the standalone bundle for this course.
+
+Go to [http://scala-ide.org](http://scala-ide.org) now, click the **Get the Bundle** button, and follow the on-screen instructions to download Scala IDE for your operating system:
+
+![Scala IDE: Main website](src/pages/getting-started/scala-ide-website.png)
 
 Once you have downloaded and uncompressed the bundle you should find an application called **Eclipse**. Launch this. You will be asked to choose a folder for your *workspace*:
 
-\makebox[\linewidth]{\includegraphics[width=0.5\textwidth]{src/pages/getting-started/scala-ide-workspace-chooser.png}}
-
-<div class="row figure">
-<div class="col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3 text-center">
-<img src="src/pages/getting-started/scala-ide-workspace-chooser.png" alt="Scala IDE: Choose a workspace location" />
-</div>
-</div>
+![Scala IDE: Choose a workspace location](src/pages/getting-started/scala-ide-workspace-chooser.png)
 
 Accept the default location and you will see an empty main Eclipse window:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-empty-workspace.png}}
+![Scala IDE: Empty workspace](src/pages/getting-started/scala-ide-empty-workspace.png)
 
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-empty-workspace.png" alt="Scala IDE: Empty workspace" />
-</div>
-</div>
-
-## Creating your first Scala application
+## Creating your first Scala worksheet
 
 Your *Eclipse workspace* is two things: a folder containing files and settings, and a main window where you will be doing most of your Scala programming. In your workspace you can find *projects* for each Scala application you work on.
 
-Let's create a project for this course now. Select the **File menu** and choose **New > Scala Project**:
+Let's create a project for the book exercises now. Select the **File menu** and choose **New > Scala Project**:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-new-project.png}}
-
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-new-project.png" alt="Scala IDE: Create a new Scala Project" />
-</div>
-</div>
+![Scala IDE: Create a new Scala project](src/pages/getting-started/scala-ide-new-project.png)
 
 Enter a **Project name** of `essential-scala` and click **Finish**. The tree view on the left of your workspace should now contain an empty project:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-empty-project.png}}
-
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-empty-project.png" alt="Scala IDE: Empty project" />
-</div>
-</div>
+![Scala IDE: Empty project](src/pages/getting-started/scala-ide-empty-project.png)
 
 A project is no good without code to run! Let's create our first simple Scala application - the obligatory *Hello World* app. Select the **File Menu** and choose **New > Scala Object**:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-new-object.png}}
-
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-new-object.png" alt="Scala IDE: New Scala Object" />
-</div>
-</div>
+![Scala IDE: Create a Scala object](src/pages/getting-started/scala-ide-new-object.png)
 
 **Name** your object `HelloWorld` and click **Finish**. A new file called `HelloWorld.scala` should appear in the tree view on the left of the main window. Eclipse should open the new file in the main editor ready for you to start coding:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-single-file.png}}
-
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-single-file.png" alt="Scala IDE: Single Scala File" />
-</div>
-</div>
+![Scala IDE: Single Scala file](src/pages/getting-started/scala-ide-single-file.png)
 
 The content of the file should read as follows:
 
@@ -103,13 +168,7 @@ object HelloWorld {
 
 Select the **Run Menu** and choose **Run**. This should execute the code in your application, resulting in the words `Hello world!` appearing in the *Console* pane at the bottom of the window. Congratulations - you just ran your first Scala application!
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-hello-world.png}}
-
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-hello-world.png" alt="Scala IDE: Hello World" />
-</div>
-</div>
+![Scala IDE: Hello World](src/pages/getting-started/scala-ide-hello-world.png)
 
 <div class="alert alert-info">
 **Java tip:** Developers with Java experience will notice the resemblance of the code above to the Java hello world app:
@@ -133,23 +192,11 @@ Fortunately, Scala IDE allows us to create special files called *Scala Worksheet
 
 Create your first Scala Worksheet by selecting the **File Menu** and choosing **New > Scala Worksheet**:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-new-worksheet.png}}
-
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-new-worksheet.png" alt="Scala IDE: New Scala Worksheet" />
-</div>
-</div>
+![Scala IDE: New Scala worksheet](src/pages/getting-started/scala-ide-new-worksheet.png)
 
 Enter a **Worksheet name** of `FirstSteps` and click **Finish**. A new file called `FirstSteps.sc` should appear in the tree view on the left of the main window, and should open it in the main editor in the middle:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/getting-started/scala-ide-empty-worksheet.png}}
-
-<div class="row figure">
-<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-<img src="src/pages/getting-started/scala-ide-empty-worksheet.png" alt="Scala IDE: Empty Scala Worksheet" />
-</div>
-</div>
+![Scala IDE: Empty Scala worksheet](src/pages/getting-started/scala-ide-empty-worksheet.png)
 
 Note that the object on the left contains a single line of Scala code:
 
@@ -190,5 +237,7 @@ object FirstSteps {
   println("The ultimate answer is " + 42)     //> The ultimate answer is 42
 }
 ~~~
+
+![Scala IDE: Completed Scala worksheet](src/pages/getting-started/scala-ide-completed-worksheet.png)
 
 We'll dive into what all of the text on the right means as we proceed with the course ahead. For now you're all set to start honing your Scala skills!
