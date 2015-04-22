@@ -1,6 +1,6 @@
 ## Compound Expressions
 
-We have almost finished our basic introduction to Scala. In this section we are going to look at two special kinds of expressions, **conditionals** and **blocks**, we will need in more complicated programs.
+We have almost finished our basic introduction to Scala. In this section we are going to look at two special kinds of expressions, *conditionals* and *blocks*, we will need in more complicated programs.
 
 ### Conditionals
 
@@ -42,9 +42,9 @@ where
 
 
 <div class="callout callout-info">
-*Java tip*
+**Java tip**
 
-Scala's `if` statement has the same syntax as Java's. One important difference is that **Scala's conditional is an expression**---it has a type and returns a value.
+Scala's `if` statement has the same syntax as Java's. One important difference is that *Scala's conditional is an expression*---it has a type and returns a value.
 </div>
 
 
@@ -66,7 +66,7 @@ res0: Int = 3
 ~~~
 
 <div class="callout callout-info">
-As you can see, executing this code causes the REPL to raise a number of warnings and return the `Int` value `3`.
+As you can see, executing this code causes the console to raise a number of warnings and return the `Int` value `3`.
 
 A block is a sequence of expressions or declarations surrounded by braces. A block is also an expression: it executes each of its sub-expressions in order and returns the value of the last expression.
 

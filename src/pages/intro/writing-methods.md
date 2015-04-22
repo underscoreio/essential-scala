@@ -1,6 +1,6 @@
 ## Writing Methods
 
-In the previous section we saw the syntax of methods. One of our main goals in this course is to go beyond syntax and give you a systematic method for constructing Scala programs. This is our first section dealing with such matters. In this section we're going to look at a systematic method for constructing methods. As you gain experience with Scala you can drop some of the steps of this method, but we **strongly** suggest you follow this method during the course.
+In the previous section we saw the syntax of methods. One of our main goals in this course is to go beyond syntax and give you systematic methods for constructing Scala programs. This is our first section dealing with such matters. In this section we're going to look at a systematic method for constructing methods. As you gain experience with Scala you can drop some of the steps of this method, but we *strongly* suggest you follow this method during the course.
 
 To make the advice concrete we'll use this exercise from the previous section as an example:
 
@@ -33,11 +33,11 @@ def square(in: Double): Double =
   ???
 ~~~
 
-This step should be mechanical.
+This step should be mechanical given the information gathered in the previous steps.
 
 ### Run the Code
 
-Run the code and check it compiles (and thus we haven't made any typos) but also that our tests fail. You may need to place the tests after the method declaration.
+Run the code and check it compiles (and thus we haven't made any typos) and also that our tests fail (and thus are testing something). You may need to place the tests after the method declaration.
 
 ### Write the Body
 
@@ -51,7 +51,7 @@ The first technique is to look at the result type, in this case `Double`. How ca
 
 Our next technique is to look at the type of input parameters to the method. In this case we have a `Double`. We have established we need to create a `Double`, so what methods can we call to create a `Double` from our input? There are many such methods, and here we have to use our domain knowledge to select `*` as the correct method to call.
 
-Thus we can write our complete method as
+We can now write our complete method as
 
 ~~~ scala
 def square(in: Double): Double =

@@ -1,7 +1,7 @@
 ## Interacting with Objects
 
 
-In the previous section we saw the fundamental components of Scala programs: expressions, types, and values. We learned that **all values are objects**. In this section we will learn more about objects and how we can interact with them.
+In the previous section we saw the fundamental components of Scala programs: expressions, types, and values. We learned that *all values are objects*. In this section we will learn more about objects and how we can interact with them.
 
 ### Objects
 
@@ -11,14 +11,14 @@ We have some special terminology for the data and operations of an object. The o
 
 ### Method Calls
 
-We interact with objects by *calling* methods[^patterns]. We have already seen some examples of calling methods. For example, we have seen we can get the uppercase version of a `String` by calling its `toUpperCase` method:
+We interact with objects by *calling* methods[^patterns]. We have already seen some examples of calling methods. For example, we have seen we can get the uppercase version of a `String` by calling its `toUpperCase` method.
 
 ~~~ scala
 scala> "hello".toUpperCase
 res21: String = HELLO
 ~~~
 
-Some methods accept *parameters* or *arguments*, which control how the method works.
+Some methods accept *parameters* or *arguments*, which control how the method works. The `take` method, for example, takes characters from a `String`. We must pass a parameter to `take` to specify how many characters we want.
 
 ~~~ scala
 scala> "abcdef".take(3)
@@ -101,14 +101,14 @@ Any Scala expression written `a.b(c)` can also be written `a b c`.
 Note that `a b c d e` is equivalent to `a.b(c).d(e)`, not `a.b(c, d, e)`.
 </div>
 
-We can use **infix operator notation** with any method that takes one parameter, regardless of whether it has a symbolic or alphanumeric name:
+We can use *infix operator notation* with any method that takes one parameter, regardless of whether it has a symbolic or alphanumeric name:
 
 ~~~ scala
 scala> "the quick brown fox" split " "
 res0: Array[String] = Array(the, quick, brown, fox)
 ~~~
 
-Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions instead of verbose method calls. There are also notations for **prefix**, **postfix**, **right-associative**, and **assignment-style operators**.
+Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions instead of verbose method calls. There are also notations for *prefix*, *postfix*, *right-associative*, and *assignment-style operators*, but there are much less common than infix notation.
 
 A question poses itself---what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
 
@@ -125,7 +125,7 @@ res2: Int = 70
 
 ### Take home points
 
-All Scala values are objects. We **interact with objects by calling methods** on them. If you come from a Java background note we can call methods on `Int` or any other primitive value.
+All Scala values are objects. We *interact with objects by calling methods* on them. If you come from a Java background note we can call methods on `Int` or any other primitive value.
 
 The syntax for a method call is
 
@@ -139,7 +139,7 @@ or
 anExpression methodName parameter
 ~~~
 
-**Scala has very few operators - almost everything is a method call.** We use syntactic conventions like infix operator notation to keep our code simple and readable, but we can always fall back to standard method notation where it makes sense.
+*Scala has very few operators - almost everything is a method call.* We use syntactic conventions like infix operator notation to keep our code simple and readable, but we can always fall back to standard method notation where it makes sense.
 
 As we will see, Scala's focus on programming with expressions allows us to write much shorter code than we can in Java. It also allows us to reason about code in a very intuitive way using values and types.
 
@@ -167,10 +167,8 @@ Rewrite in method call style
 
 <div class="solution">
 ~~~ scala
-(1).+(2).+(3)
+1.+(2).+(3)
 ~~~
-
-Note the need to wrap the `1` in brackets. If you fail to do this then `1.` will be interpreted as a `Double` and your result will have type `Double` not `Int`. A mildly subtle difference.
 </div>
 
 #### Substitution
@@ -184,12 +182,14 @@ What is the difference between the following expressions? What are the similarit
 ~~~
 
 <div class="solution">
-The expressions have the same result type and return value. However, they arrive at their results in different ways.
+The expressions have the same result type and return value. However, they arrive at their results in different ways. The first computes its result through a series of additions, while the later is simply a literal.
 
-As neither expression has any side-effects, they are interchangeable from a user's point of view. Anywhere you can write `1 + 2 + 3` you can also write `6`. This is known as the **substitution model of evaluation**, although you may remember the principle from simplifying algebraic formulae at school.
+As neither expression has any side-effects, they are interchangeable from a user's point of view. Anywhere you can write `1 + 2 + 3` you can also write `6`, and vice versa, without changing the meaning of any program. This is known as *substitution* and you may remember the principle from simplifying algebraic formulae at school.
 
-As programmers we must develop a mental model of how our code operates. In the absence of side-effects, the substitution model always works. If we know the types and values of each component of an expression, we know the type and value of the expression as a whole. In functional programming we aim to avoid side-effects for this reason: it makes our programs easy to reason about without having to look beyond the current block of code.
+As programmers we must develop a mental model of how our code operates. The *substitution model of evaluation* is a particuarly simple model that says anywhere we see an expression we may substitute its result. In the absence of side-effects, the substitution model always works[^side-effects]. If we know the types and values of each component of an expression, we know the type and value of the expression as a whole. In functional programming we aim to avoid side-effects for this reason: it makes our programs easier to understand.
 </div>
+
+[^side-effects]: What exactly is a side-effect? One workable definition is anything that causes substitution to yield an incorrect result. Does substitution *always* work, in the absence of side-effects? To truly have a correct model of Scala we must define the order in which we apply substitutions. There are a number of possible orders. (For example, we perform substitution left-to-right, or right-to-left? Do we substitute as soon as possible or delay until we need a value?) Most of the time order of substitution doesn't matter, but there are cases where it does. Scala always applies substitution from left-to-right and at the earliest possible time.
 
 [precedence rules]: http://stackoverflow.com/questions/2922347/operator-precedence-in-scala
 

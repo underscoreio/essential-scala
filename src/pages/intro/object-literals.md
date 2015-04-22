@@ -1,8 +1,8 @@
 ## Object Literals
 
-So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own design using **object literals**.
+So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own design using *object literals*.
 
-When we write an object literal we use a **declaration**, which is a different kind of program to an expression. A declaration does not evaluate to a value. Instead is gives a name to a value. This name can then be used to refer to the value in other code.
+When we write an object literal we use a *declaration*, which is a different kind of program to an expression. A declaration does not evaluate to a value. Instead is gives a name to a value. This name can then be used to refer to the value in other code.
 
 We can declare an empty object as follows:
 
@@ -21,7 +21,7 @@ res0: Test.type = Test$@1668bd43
 ~~~
 
 This expression is equivalent to writing a literal like `123` or `"abc"`.
-Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before---it's a new type, created just for our object, called a **singleton type**. We cannot create other values of this type.
+Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before---it's a new type, created just for our object, called a *singleton type*. We cannot create other values of this type.
 
 Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions. It is more common, however, to put declarations such as declaring methods, fields, or even more objects.
 
@@ -106,7 +106,7 @@ Method parameters are optional, but if a method has parameters their type must b
 </div>
 
 <div class="callout callout-info">
-*Java tip*
+**Java tip**
 
 The return value of the method is determined by evaluating the body---there is no need to write `return`.
 </div>
@@ -114,7 +114,7 @@ The return value of the method is determined by evaluating the body---there is n
 
 ### Fields
 
-An object can also contain other objects, called **fields**. We introduce these using the keywords `val` or `var`, which look similar to `def`:
+An object can also contain other objects, called *fields*. We introduce these using the keywords `val` or `var`, which look similar to `def`:
 
 ~~~ scala
 scala> :paste
@@ -159,7 +159,7 @@ where
 
 Using `val` defines an *immutable* field, meaning we cannot change the value bound to the name. A `var` field is *mutable*, allowing us to change the bound value.
 
-**Always prefer `val` to `var`.** Scala programmers prefer to use immutable fields wherever possible. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` for most of this course and you should do the same in your Scala programming.
+*Always prefer `val` to `var`.* Scala programmers prefer to use immutable fields wherever possible, as this maintains substitution. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` for most of this course and you should do the same in your Scala programming.
 
 
 ### Methods versus fields
@@ -184,7 +184,7 @@ defined object Test7
 
 Here we have used a `println` expression to print something to the console, and a block expression (expressions surrounded by `{` and `}`) to group expressions. We'll see more about block expressions in the next section.
 
-Notice how the REPL says we've defined a object, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
+Notice how the console says we've defined a object, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
 
 Objects and classes (which we'll see later) aren't loaded until they are referenced by other code. This is what prevents Scala loading the entire standard library into memory to run a simple `"Hello world!"` app.
 
@@ -196,9 +196,9 @@ Evaluating simpleField
 res7: Test7.type = Test7$@b22e8c9
 ~~~
 
-When the object is first loaded, Scala runs through its definition and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
+When the object is first loaded, Scala runs through its definitions and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
 
-**The body expression of a field is run only once** after which the final value is stored in the object. The expression is never evaluated again---notice the lack of `println` output below.
+*The body expression of a field is run only once* after which the final value is stored in the object. The expression is never evaluated again---notice the lack of `println` output below.
 
 ~~~ scala
 scala> Test7.simpleField
@@ -208,7 +208,7 @@ scala> Test7.simpleField
 res9: Int = 42
 ~~~
 
-The body of a method, on the other hand, is evaluated again and again every time we call the method---notice the repreated println output below.
+The body of a method, on the other hand, is evaluated every time we call the method---notice the repreated println output below.
 
 ~~~ scala
 scala> Test7.noArgMethod
@@ -245,7 +245,7 @@ val name = valueExpression
 var name = valueExpression
 ~~~
 
-All of these are **declarations**, binding names to values. Declarations are different to expressions. They do not evaluate to a value and do not have a type.
+All of these are *declarations*, binding names to values. Declarations are different to expressions. They do not evaluate to a value and do not have a type.
 
 We have also seen the difference between methods and fields---fields refer to values stored within an object, whereas methods refer to computations that produce values.
 
@@ -345,7 +345,9 @@ val x: Int = calc.square(2).toInt // toInt rounds down
 ~~~
 
 <div class="alert alert-info">
-**Java tip:** To maintain similar behaviour to Java, Scala also automatically converts any object to a `String` where required. This is to make it easy to write things like `println("a" + 1)`, which Scala automatically rewrites as `println("a" + 1.toString)`.
+**Java tip**
+
+To maintain similar behaviour to Java, Scala also automatically converts any object to a `String` where required. This is to make it easy to write things like `println("a" + 1)`, which Scala automatically rewrites as `println("a" + 1.toString)`.
 
 The fact that string concatenation and numeric addition share the same `+` method can sometimes cause unexpected bugs, so watch out!
 </div>
@@ -353,7 +355,7 @@ The fact that string concatenation and numeric addition share the same `+` metho
 
 #### Order of evaluation
 
-When entered on the REPL, what does the following program output, and what is the type and value of the final expression? Think carefully about the types, dependencies, and evaluation behaviour of each field and method.
+When entered on the console, what does the following program output, and what is the type and value of the final expression? Think carefully about the types, dependencies, and evaluation behaviour of each field and method.
 
 ~~~ scala
 object argh {
@@ -424,6 +426,8 @@ The full sequence of evaluation is as follows:
   - Evaluates the first `+`, determining that it actually refers to string
     concatentation, and yielding `"3c31"`
 ~~~
+
+Whew! That's a lot for such a simple piece of code.
 </div>
 
 #### Greetings, human
@@ -447,7 +451,7 @@ object alien {
 alien.greet(person)
 ~~~
 
-Notice the type on the `p` parameter of `greet`: `person.type`. This is one of the *singleton types* we were referring to earlier - it is specific to the object `person`, which prevents us using `greet` on any other object. This is very different from a type such as `Int` that is shared by all Scala integers.
+Notice the type on the `p` parameter of `greet`: `person.type`. This is one of the *singleton types* we were referring to earlier. In this case it is specific to the object `person`, which prevents us using `greet` on any other object. This is very different from a type such as `Int` that is shared by all Scala integers.
 
 This imposes a significant limitation on our ability to write programs in Scala. We can only write methods that work with built-in types or single objects of our own creation. In order to build useful programs we need the ability to *define our own types* and create multiple values of each. We can do this using `classes`, which we will cover in the next section.
 </div>
@@ -457,7 +461,7 @@ This imposes a significant limitation on our ability to write programs in Scala.
 Are methods values? Are they expressions? Why might this be the case?
 
 <div class="solution">
-First let's deal with the equivalence between methods and expressions. As we know, expressions are computations that produce values. A simple test of whether something is an expression is to see if we can assign it to a field.
+First let's deal with the equivalence between methods and expressions. As we know, expressions are program fragments that produce values. A simple test of whether something is an expression is to see if we can assign it to a field.
 
 ~~~ scala
 scala> object calculator {
@@ -472,7 +476,7 @@ follow this method with `_' if you want to treat it as a partially applied funct
                                   ^
 ~~~
 
-Although we don't understand this error message fully yet (we shall learn about "partially applied functions" later), it does show us that `square` **is not an expression**. However, a *call* to `square` *does* yield a value:
+Although we don't understand this error message fully yet (we shall learn about "partially applied functions" later), it does show us that `square` *is not an expression*. However, a *call* to `square` *does* yield a value:
 
 ~~~ scala
 scala> val someField = calculator.square(2)
@@ -502,5 +506,5 @@ As we saw above, references to fields and calls to argumentless methods look ide
 
 [uap1]: http://en.wikipedia.org/wiki/Uniform_access_principle
 
-So, in summary, **calls to methods are expressions** but **methods themselves are not expressions**. In addition to methods, Scala also has a concept called **functions**, which are objects that can be invoked like methods. As we know objects are values, so functions are also values and can be treated as data. As you may have guessed, functions are a critical part of *functional programming*, which is one of Scala's major strengths. We will learn about functions and functional programming in a bit.
+So, in summary, *calls to methods are expressions* but *methods themselves are not expressions*. In addition to methods, Scala also has a concept called *functions*, which are objects that can be invoked like methods. As we know objects are values, so functions are also values and can be treated as data. As you may have guessed, functions are a critical part of *functional programming*, which is one of Scala's major strengths. We will learn about functions and functional programming in a bit.
 </div>

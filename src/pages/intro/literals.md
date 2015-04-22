@@ -1,7 +1,6 @@
 ## Literal Objects
 
-
-We have already covered some of Scala's basic types. In this section we're going to round out that knowledge by covering all of Scala's **literal expressions**. A literal expression represents a fixed value that stands "for itself". Here's an example:
+We have already covered some of Scala's basic types. In this section we're going to round out that knowledge by covering all of Scala's *literal expressions*. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
 ~~~ scala
 scala> 42
@@ -56,7 +55,7 @@ res34: Char = a
 ~~~
 
 <div class="callout callout-info">
-*Java tip*
+**Java tip**
 
 Although they are written with initial capitals, Scala's `Int`, `Double`, `Float`, `Long`, `Short`, `Byte`, `Boolen` and `Char` refer to exactly the same things as `int`, `double`, `float`, `long`, `short`, `byte`, `boolean`, and `char` in Java.
 
@@ -87,7 +86,7 @@ res13: Null = null
 ~~~
 
 <div class="callout callout-info">
-*Java tip*
+**Java tip**
 
 Although `null`s are common in Java code, they are considered very bad practice in Scala.
 
@@ -98,7 +97,7 @@ Later we will see that Scala has the means to define optional values that *are* 
 
 ### Unit
 
-Unit, written `()`, is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The REPL doesn't print unit but we can ask for the type of an expression to see that unit is in fact the result of some expressions.
+Unit, written `()`, is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The console doesn't print unit but we can ask for the type of an expression to see that unit is in fact the result of some expressions.
 
 ~~~ scala
 scala> ()
@@ -117,9 +116,9 @@ Unit is an important concept in Scala. Many of Scala's syntactic constructs are 
 
 ### Take home points
 
-In this section we have seen **literal** expressions, which evaluate to basic data types. These basics types are mostly identical to Java, except for `Unit` which has no equivalent.
+In this section we have seen *literal* expressions, which evaluate to basic data types. These basics types are mostly identical to Java, except for `Unit` which has no equivalent.
 
-We note that every literal expression has a **type**, and evaluates to a **value**---something which is also true for more complex Scala expressions.
+We note that every literal expression has a *type*, and evaluates to a *value*---something which is also true for more complex Scala expressions.
 
 In the next section we will learn how to define our own object literals.
 
