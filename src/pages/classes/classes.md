@@ -73,7 +73,7 @@ Scala classes are all subclasses of `java.lang.Object` and are, for the most par
 
 As it stands our `Person` class is rather useless: we can create as many new objects as we want but they all have the same `firstName` and `lastName`. What if we want to give each person a different name?
 
-The solution is to introduce a **constructor**, which allows us to pass parameters to new objects as we create them:
+The solution is to introduce a *constructor*, which allows us to pass parameters to new objects as we create them:
 
 ~~~ scala
 scala> class Person(first: String, last: String) {
@@ -90,7 +90,7 @@ scala> dave.name
 res29: String = Dave Gurnell
 ~~~
 
-The constructor parameters `first` and `last` are can only be used within the body of the class. We must declare a field or method using `val` or `def` to access data from outside the object.
+The constructor parameters `first` and `last` can only be used within the body of the class. We must declare a field or method using `val` or `def` to access data from outside the object.
 
 Constructor arguments and fields are often redundant. Fortunately, Scala provides us a useful short-hand way of declaring both in one go. We can prefix constructor parameters with the `val` keyword to have Scala define fields for them automatically:
 
@@ -142,17 +142,17 @@ where
 
 All Scala methods and constructors support *keyword parameters* and *default parameter values*.
 
-When we call a method or constructor, we can **use parameter names as keywords** to specify the parameters in an arbitrary order:
+When we call a method or constructor, we can *use parameter names as keywords* to specify the parameters in an arbitrary order:
 
 ~~~ scala
-scala> new Person(lastName = "Last", firstName="First")
+scala> new Person(lastName = "Last", firstName = "First")
 res10: Person = Person(First,Last)
 ~~~
 
-This comes in doubly useful when used in combination with **default parameter values**, defined like this:
+This comes in doubly useful when used in combination with *default parameter values*, defined like this:
 
 ~~~ scala
-scala> def greet(firstName: String = "Some", lastName: String = "Guy") =
+scala> def greet(firstName: String = "Some", lastName: String = "Body") =
          "Greetings, " + firstName + " " + lastName + "!"
 greet: (firstName: String, lastName: String)String
 ~~~
@@ -161,7 +161,7 @@ If a parameter has a default value we can omit it in the method call:
 
 ~~~ scala
 scala> greet("Awesome")
-res12: String = Greetings, Awesome Guy
+res12: String = Greetings, Awesome Body
 ~~~
 
 Combining keywords with default parameter values let us skip earlier parameters and just provide values for later ones:
@@ -175,18 +175,18 @@ res11: String = Greetings, Some Dave!
 *Keyword parameters are robust to changes in the number and order of parameters.* For example, if we add a `title` parameter to the `greet` method, the meaning of keywordless method calls changes but keyworded calls remain the same:
 
 ~~~ scala
-scala> def greet(title: String = "Mr", firstName: String = "Some", lastName: String = "Guy") =
+scala> def greet(title: String = "Citizen", firstName: String = "Some", lastName: String = "Body") =
          "Greetings, " + title + " " + firstName + " " + lastName + "!"
 greet: (firstName: String, lastName: String)String
 
 scala> greet("Awesome") // this is now incorrect
-res12: String = Greetings, Awesome Some Guy
+res12: String = Greetings, Awesome Some Body
 
 scala> greet(firstName = "Awesome") // this is still correct
-res12: String = Greetings, Mr Awesome Guy
+res12: String = Greetings, Citizen Awesome Body
 ~~~
 
-This is particularly useful when creating methods and constructors with large number of parameters.
+This is particularly useful when creating methods and constructors with a large number of parameters.
 </div>
 
 ### Scala's Type Hierarchy
@@ -228,9 +228,9 @@ Although the types of `badness` and `res1` are `Nothing` and `Null` respectively
 
 ### Take Home Points
 
-In this section we learned how to define **classes**, which allow us to create many objects with the same **type**. Thus, classes let us *abstract across objects* that have similar properties.
+In this section we learned how to define *classes*, which allow us to create many objects with the same *type*. Thus, classes let us *abstract across objects* that have similar properties.
 
-The properties of the objects of a class take the form of **fields** and **methods**. Fields are pre-computed values stored within the object and methods are computations we can call.
+The properties of the objects of a class take the form of *fields* and *methods*. Fields are pre-computed values stored within the object and methods are computations we can call.
 
 The syntax for declaring classes is
 
@@ -242,7 +242,7 @@ class Name(parameter: type, ...) {
 
 We create objects from a class by calling the constructor using the keyword `new`.
 
-We also learned about **keyword parameters** and **default parameters**.
+We also learned about *keyword parameters* and *default parameters*.
 
 Finally we learned about Scala's type hierarchy, including the overlap with Java's type hierarchy, the special types `Any`, `AnyRef`, `AnyVal`, `Nothing`, `Null`, and `Unit`, and the fact that Java and Scala classes both occupy the same subtree of the type hierarchy.
 
@@ -268,7 +268,7 @@ Recall the cats from a previous exercise:
 Define a class `Cat` and then create an object for each cat in the table above.
 
 <div class="solution">
-This is another finger exercise to get you used to the syntax of defining classes.
+This is a finger exercise to get you used to the syntax of defining classes.
 
 ~~~ scala
 class Cat(val colour: String, val food: String)
@@ -325,7 +325,7 @@ Copy-and-paste the following demo data into your code and adjust your constructo
 val eastwood          = new Director("Clint", "Eastwood", 1930)
 val mcTiernan         = new Director("John", "McTiernan", 1951)
 val nolan             = new Director("Christopher", "Nolan", 1970)
-val someGuy           = new Director("Just", "Some Guy", 1990)
+val someBody          = new Director("Just", "Some Body", 1990)
 
 val memento           = new Film("Memento", 2000, 8.5, nolan)
 val darkKnight        = new Film("Dark Knight", 2008, 9.0, nolan)
@@ -424,7 +424,9 @@ Aside from practicing with classes and objects, this exercise has a second goal-
 Because `val` fields are immutable, we need to come up with some other way of propagating the new value of `count`. Methods that return new `Counter` objects give us a way of returning new state without the side-effects of assignment. They also permit *method chaining*, allowing us to write whole sequences of updates in a single expression
 
 <div class="alert alert-info">
-**Performance tip:** The use-case `new Counter(10).inc.dec.inc.inc.count` actually creates 5 instances of `Counter` before returning its final `Int` value. You may be concerned about the extra memory and CPU overhead for such a simple calculation, but don't be. Modern execution environments like the JVM render the extra overhead of this style of programming negligable in all but the most performance critical code.
+**Performance tip**
+
+The use-case `new Counter(10).inc.dec.inc.inc.count` actually creates 5 instances of `Counter` before returning its final `Int` value. You may be concerned about the extra memory and CPU overhead for such a simple calculation, but don't be. Modern execution environments like the JVM render the extra overhead of this style of programming negligable in all but the most performance critical code.
 </div>
 </div>
 
@@ -490,7 +492,7 @@ class Counter(val count: Int) {
 }
 ~~~
 
-This is an interesting pattern that will become more powerful as we learn more features of Scala. **We are using `Adders` to capture computations** and pass them to `Counter`. Remember from our earlier discussion that *methods are not expressions*---they cannot be stored in fields or passed around as data. However, **`Adders` are both objects and computations**.
+This is an interesting pattern that will become more powerful as we learn more features of Scala. *We are using `Adders` to capture computations* and pass them to `Counter`. Remember from our earlier discussion that *methods are not expressions*---they cannot be stored in fields or passed around as data. However, *`Adders` are both objects and computations*.
 
 Using objects as computations is a common paradigm in object oriented programming languages. Consider, for example, the classic `ActionListener` from Java's Swing:
 
@@ -502,5 +504,5 @@ public class MyActionListener implements ActionListener {
 }
 ~~~
 
-The disadvantage of objects like `Adders` and `ActionListeners` is that they are limited to use in one particular circumstance. Scala includes a much more general concept called *functions* that allow us to represent any kind of computation as an object. We will be introduced to functions gradually throughout this chapter.
+The disadvantage of objects like `Adders` and `ActionListeners` is that they are limited to use in one particular circumstance. Scala includes a much more general concept called *functions* that allow us to represent any kind of computation as an object. We will be introduced to some of the concepts behind functions in this chapter.
 </div>

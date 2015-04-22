@@ -1,6 +1,6 @@
 ## Pattern Matching
 
-Until now we have interacted with objects by calling methods or accessing fields. With case classes we can interact in another way, via **pattern matching**.
+Until now we have interacted with objects by calling methods or accessing fields. With case classes we can interact in another way, via *pattern matching*.
 
 Pattern matching is like an extended `if` expression that allows us to evaluate an expression depending on the "shape" of the data. Recall the `Person` case class we've seen in previous examples:
 
@@ -20,6 +20,8 @@ object Stormtrooper {
     }
 }
 ~~~
+
+Notice the syntax for a pattern (`Person("Luke", "Skywalker")`) matches the syntax for constructing the object the pattern matches (`Person("Luke", "Skywalker")`).
 
 Here it is in use:
 
@@ -70,7 +72,7 @@ A pattern to match against the `Person` type is written
 Person(pat0, pat1)
 ~~~
 
-where `pat0` and `pat1` are patterns to match agains the `firstName` and `lastName` respectively. There are four possible patterns we could use in place of `pat0` or `pat1`:
+where `pat0` and `pat1` are patterns to match against the `firstName` and `lastName` respectively. There are four possible patterns we could use in place of `pat0` or `pat1`:
 
 1. A name, which matches any value at that position and binds it to the given name. For example, the pattern `Person(first, last)` binds the name `first` to the value `"Noel"`, and the name `last` to the value `"Welsh"`.
 
@@ -85,7 +87,7 @@ Note there is a lot more we can do with pattern matching, and pattern matching i
 
 ### Take Home Points
 
-Case classes allow a new form of interaction, called **pattern matching**. Pattern matching allows us to take apart a case class, and evaluate different expressions depending on what the case class contains.
+Case classes allow a new form of interaction, called *pattern matching*. Pattern matching allows us to take apart a case class, and evaluate different expressions depending on what the case class contains.
 
 The syntax for pattern matching is
 

@@ -2,7 +2,7 @@
 
 Sometimes we want to create a method that logically belongs to a class but is independent of any particular object. In Java we would use a *static method* for this, but Scala has a simpler solution that we've seen already: singleton objects.
 
-One common use case is auxiliary constructors. Although Scala does have syntax that lets us define multiple constructors for a class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the **companion object** of the class. For example:
+One common use case is auxiliary constructors. Although Scala does have syntax that lets us define multiple constructors for a class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the *companion object* of the class. For example:
 
 ~~~ scala
 scala> :paste
@@ -26,14 +26,16 @@ res2: Long = 3661
 ~~~
 
 <div class="alert alert-info">
-**REPL tip:** Note our use of the `:paste` command in the transcript above. Companion objects must be defined in the same compilation unit as the classes they support. In a normal codebase this simply means defining the class and object in the same file, but on the REPL we have to enter then in one command using `:paste`.
+**Console tip**
+
+Note our use of the `:paste` command in the transcript above. Companion objects must be defined in the same compilation unit as the classes they support. In a normal codebase this simply means defining the class and object in the same file, but on the REPL we have to enter then in one command using `:paste`.
 
 You can enter `:help` on the REPL to find out more.
 </div>
 
 As we saw earlier, Scala has two namespaces: a space of *type names* and a space of *value names*. This separation allows us to name our class and companion object the same thing without conflict.
 
-It is important to note that **the companion object is not an instance of the class**---it is a singleton object with its own type:
+It is important to note that *the companion object is not an instance of the class*---it is a singleton object with its own type:
 
 ~~~ scala
 scala> Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
@@ -58,13 +60,13 @@ object Name {
 
 ### Take home points
 
-**Companion objects** provide us with a means to associate functionality with a class without associating it with any instance of that class. They are commonly used to provide additional constructors.
+*Companion objects* provide us with a means to associate functionality with a class without associating it with any instance of that class. They are commonly used to provide additional constructors.
 
-Companion objects **replace Java's static methods**. They provide equivalent functionality and are more flexible.
+Companion objects *replace Java's static methods*. They provide equivalent functionality and are more flexible.
 
-**A companion object has the same name as its associated class.** This doesn't cause a naming conflict because Scala has two namespaces: the namespace of values and the namespace of types.
+*A companion object has the same name as its associated class.* This doesn't cause a naming conflict because Scala has two namespaces: the namespace of values and the namespace of types.
 
-**A companion object must be defined in the same file as the associated class.** When typing on the REPL, the class and companion object must be entered in the same block of code using `:paste` mode.
+*A companion object must be defined in the same file as the associated class.* When typing on the REPL, the class and companion object must be entered in the same block of code using `:paste` mode.
 
 ### Exercises
 
@@ -213,7 +215,7 @@ new Film("Last Action Hero", 1993, mcTiernan)
 ~~~
 
 <div class="solution">
-**Type!**---this is a reference to the *constructor* of `Film`. The constructor is part of the *class* `Film`, which is a *type*.
+*Type!*---this is a reference to the *constructor* of `Film`. The constructor is part of the *class* `Film`, which is a *type*.
 </div>
 
 ~~~ scala
@@ -221,7 +223,7 @@ Film("Last Action Hero", 1993, mcTiernan)
 ~~~
 
 <div class="solution">
-**Value!**---this is shorthand for:
+*Value!*---this is shorthand for:
 
 ~~~ scala
 Film.apply("Last Action Hero", 1993, mcTiernan)
@@ -235,7 +237,7 @@ Film.newer(highPlainsDrifter, thomasCrownAffair)
 ~~~
 
 <div class="solution">
-**Value!**---`newer` is another method defined on the *singleton object* `Film`.
+*Value!*---`newer` is another method defined on the *singleton object* `Film`.
 </div>
 
 Finally a tough one...
@@ -245,7 +247,7 @@ Film.type
 ~~~
 
 <div class="solution">
-**Value!**---This is tricky! You'd be forgiven for getting this one wrong.
+*Value!*---This is tricky! You'd be forgiven for getting this one wrong.
 
 `Film.type` refers to the type of the singleton object `Film`, so in this case `Film` is a reference to a value. However, the whole fragment of code is a type.
 </div>

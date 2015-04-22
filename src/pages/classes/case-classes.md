@@ -1,6 +1,6 @@
 ## Case Classes
 
-**Case classes** are an exceptionally useful shorthand for defining a class, a companion object, and a lot of sensible defaults in one go. They are ideal for creating lightweight data-holding classes with the minimum of hassle.
+*Case classes* are an exceptionally useful shorthand for defining a class, a companion object, and a lot of sensible defaults in one go. They are ideal for creating lightweight data-holding classes with the minimum of hassle.
 
 Case classes are created simply by prepending a class definition with the keyword `case`:
 
@@ -11,7 +11,7 @@ scala> case class Person(firstName: String, lastName: String) {
 defined class Person
 ~~~
 
-Whenever we declare a case class, Scala automatically generates a **class and companion object**:
+Whenever we declare a case class, Scala automatically generates a *class and companion object*:
 
 ~~~ scala
 scala> new Person("Dave", "Gurnell") // we have a class
@@ -25,21 +25,21 @@ What's more, the class and companion are pre-populated with some very useful fea
 
 ### Features of a case class
 
-1. **A field for each constructor argument**---we don't even need to write `val` in our constructor definition, although there's no harm in doing so.
+1. *A field for each constructor argument*---we don't even need to write `val` in our constructor definition, although there's no harm in doing so.
 
 ~~~ scala
 scala> res0.firstName
 res2: String = Dave
 ~~~
 
-2. **A default `toString` method** that prints a sensible constructor-like representation of the class (no more `@` signs and cryptic hex numbers):
+2. *A default `toString` method* that prints a sensible constructor-like representation of the class (no more `@` signs and cryptic hex numbers):
 
 ~~~ scala
 scala> res0
 res2: Person = Person("Dave","Gurnell")
 ~~~
 
-3. **Sensible `equals`, and `hashCode` methods** that operate on the field values in the object.
+3. *Sensible `equals`, and `hashCode` methods* that operate on the field values in the object.
 
    This makes it easy to use case classes with collections like `Lists`, `Sets` and `Maps`. It also means we can compare objects on the basis of their contents rather than their reference identity:
 
@@ -65,7 +65,7 @@ res6: Boolean = true
 ~~~
    </div>
 
-4. **A `copy` method** that creates a new object with the same field values as the current one:
+4. *A `copy` method* that creates a new object with the same field values as the current one:
 
 ~~~ scala
 scala> res0.copy()
@@ -101,7 +101,7 @@ scala> Person("Dave", "Gurnell") == Person("Dave", "Gurnell")
 res8: Boolean = true
 ~~~
 
-Finally, the companion object also contains code to implement an **extractor pattern** for use in *pattern matching*. We'll see this later this chapter.
+Finally, the companion object also contains code to implement an *extractor pattern* for use in *pattern matching*. We'll see this later this chapter.
 
 <div class="callout callout-info">
 #### Case Class Declaration Syntax
@@ -124,7 +124,7 @@ where
 
 ### Case objects
 
-A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a **case object**. A case object is defined just like a case class and has the same default methods as a case class.
+A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a *case object*. A case object is defined just like a case class and has the same default methods as a case class.
 
 ~~~ scala
 case object Citizen {
@@ -147,7 +147,7 @@ object Citizen extends Citizen { /* ... */ }
 
 ### Take Home Points
 
-Case classes are the **bread and butter of Scala data types**. Use them, learn them, love them.
+Case classes are the *bread and butter of Scala data types*. Use them, learn them, love them.
 
 The syntax for declaring a case class is the same as for declaring a class, but with `case` appended
 
