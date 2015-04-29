@@ -1,6 +1,6 @@
 ## This or That and Nothing Else: Sealed Traits
 
-In many cases we can enumerate all the possible classes that can extend a trait. For example, we previously modelled a website visitor as `Anonymous` or a logged in `User`. These two cases cover all the possibilities as one is the negation of the other. We can model this case with a **sealed trait**, which allows the compiler to provide extra checks for us.
+In many cases we can enumerate all the possible classes that can extend a trait. For example, we previously modelled a website visitor as `Anonymous` or a logged in `User`. These two cases cover all the possibilities as one is the negation of the other. We can model this case with a *sealed trait*, which allows the compiler to provide extra checks for us.
 
 We create a sealed trait by simply writing `sealed` in front of our trait declaration:
 
@@ -62,7 +62,7 @@ Remember subtypes must be defined in the same file as a sealed trait.
 
 ### Take home points
 
-Sealed traits and final (case) classes allow us to control extensibility of types. **The majority of cases** should use the sealed trait / final case class pattern.
+Sealed traits and final (case) classes allow us to control extensibility of types. *The majority of cases* should use the sealed trait / final case class pattern.
 
 ~~~ scala
 sealed trait TraitName { ... }

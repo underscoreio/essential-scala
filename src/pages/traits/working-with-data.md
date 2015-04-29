@@ -1,8 +1,8 @@
 ## Working With Data
 
-In the previous section we saw how to define algebraic data types using a combination of the sum (or) and product type (and) patterns. In this section we'll see a pattern for using algebraic data types, known as **structural recursion**. We'll actually see two variants of this pattern: one using **polymorphism** and one using **pattern matching**.
+In the previous section we saw how to define algebraic data types using a combination of the sum (or) and product type (and) patterns. In this section we'll see a pattern for using algebraic data types, known as *structural recursion*. We'll actually see two variants of this pattern: one using *polymorphism* and one using *pattern matching*.
 
-Structural recursion is the precise opposite of the process of building an algebraic data type. If `A` has a `B` and `C` (the product-type pattern), to construct an `A` we must have a `B` and a `C`. The sum- and product-type patterns tell us how to combine data to make bigger data. Structural recursion says that if we have an `A` as defined before, we must break it into its constituent `B` and `C` that we then combine in some way to get closer to our desired answer. Structural recursion is essentially the process of breaking down data into smaller pieces.
+Structural recursion is the precise opposite of the process of building an algebraic data type. If `A` has a `B` and `C` (the product-type pattern), to construct an `A` we must have a `B` and a `C`. The sum and product type patterns tell us how to combine data to make bigger data. Structural recursion says that if we have an `A` as defined before, we must break it into its constituent `B` and `C` that we then combine in some way to get closer to our desired answer. Structural recursion is essentially the process of breaking down data into smaller pieces.
 
 Just as we have two patterns for building algebraic data types, we will have two patterns for decomposing them using structural recursion. We will actually have two variants of each pattern, one using polymorphism, which is the typical object-oriented style, and one using pattern matching, which is typical functional style. We'll end this section with some rules for choosing which pattern to use.
 
@@ -83,7 +83,6 @@ case class A(b: B, c: C) {
 ~~~
 
 In the body of the method we must use `b`, `c`, and any method parameters to construct the result of type `F`.
-
 </div>
 
 
@@ -125,7 +124,6 @@ def f(a: A): F =
 ~~~
 
 In the body of the method we use `b` and `c` to construct the result of type `F`.
-
 </div>
 
 
@@ -157,7 +155,7 @@ final case class Panther() extends Feline
 final case class Cat(favouriteFood: String) extends Feline
 ~~~
 
-Now let's implement a method using both polymorphism and pattern matching. Our method, `dinner`, will return the appropriate food for the feline in question. For a `Cat` their dinner is their `favouriteFood`. For `Lion`s it is antelope, for `Tiger`s it is tiger food, and for `Panther`s it is licorice.
+Now let's implement a method using both polymorphism and pattern matching. Our method, `dinner`, will return the appropriate food for the feline in question. For a `Cat` their dinner is their `favouriteFood`. For `Lions` it is antelope, for `Tigers` it is tiger food, and for `Panthers` it is licorice.
 
 We could represent food as a `String`, but we can do better and represent it with a type. This avoids, for example, spelling mistakes in our code. So let's define our `Food` type using the now familiar patterns.
 
@@ -217,7 +215,7 @@ object Diner {
 }
 ~~~
 
-Note how we can directly apply the patterns, and the code almost falls out. This is the main point we want to make with structural recursion: the code follows the shape of the data, and can be produced in an almost mechanical way.
+Note how we can directly apply the patterns, and the code falls out. This is the main point we want to make with structural recursion: the code follows the shape of the data, and can be produced in an almost mechanical way.
 
 ### Choosing Which Pattern to Use
 
@@ -227,13 +225,23 @@ We have three way of implementing structural recursion:
 2. pattern matching in the base trait; and
 3. pattern matching in an external object (as in the `Diner` example above).
 
-Which should we use? The first two methods give the same result: a method defined on the classes of interest. We should use whichever is more convenient. This normally ends up being pattern matching on the base trait as it requires less code duplication. When we implement a method in the classes of interest everything we can have only one implementation of the method, and everything that method requires to work must be contained within the class and parameters we pass to the method. When we implement methods using pattern matching in an external object we can provide multiple implementations (multiple `Diner`s in the example above).
+Which should we use? The first two methods give the same result: a method defined on the classes of interest. We should use whichever is more convenient. This normally ends up being pattern matching on the base trait as it requires less code duplication.
+
+When we implement a method in the classes of interest we can have only one implementation of the method, and everything that method requires to work must be contained within the class and parameters we pass to the method. When we implement methods using pattern matching in an external object we can provide multiple implementations, one per object (multiple `Diner`s in the example above).
 
 The general rule is: if a method only depends on other fields and methods in a class it is a good candidate to be implemented inside the class. If the method depends on other data (for example, if we needed a `Cook` to make dinner) consider implementing is using pattern matching outside of the classes in question. If we want to have more than one implementation we should use pattern matching and implement it outside the classes.
 
 ### Object-Oriented vs Functional Extensibility
 
-There is a fundamental difference between the kind of extensibility that object-oriented style (polymorphism, assuming traits are not sealed) and functional style (pattern matching, with sealed traits) gives us. With OO style we can easily add new data, by extending a trait, but adding a new method requires us to change existing code. With functional style we can easily add a new method but adding new data requires us to modify existing code. In tabular form:
+In classic functional programming style we have no objects, only data without methods and functions. This style of programming makes extensive use of pattern matching. We can mimic it in Scala using the algebraic data type pattern and pattern matching in methods defined on external objects.
+
+Classic object oriented style uses polymorphism and allow open extension of classes. In Scala terms this means no sealed traits.
+
+What are the tradeoffs we make in the two different styles?
+
+One advantage of functional style is it allows the compiler to help us more. By sealing traits we are telling the compiler it knows all the possible subtypes of that trait. It can then tell us if we miss out a case in our pattern matching. This is especially useful if we add or remove subtypes later in development. We could argue we get the same benefit from object-oriented style, as we must implement all methods defined on the base trait in any subtypes. This is true, but in practice classes with a large number of methods are very difficult to maintain and we'll inevitably end up factoring some of the code into different classes -- essentially duplicating the functional style.
+
+This doesn't mean functional style is to be preferred in all cases. There is a fundamental difference between the kind of extensibility that object-oriented style and functional style gives us. With OO style we can easily add new data, by extending a trait, but adding a new method requires us to change existing code. With functional style we can easily add a new method but adding new data requires us to modify existing code. In tabular form:
 
 +--------+-------------------------+-------------------------+
 |        | Add new method          | Add new data            |
@@ -242,7 +250,6 @@ There is a fundamental difference between the kind of extensibility that object-
 +--------+-------------------------+-------------------------+
 | **FP** | Existing code unchanged | Change existing code    |
 +--------+-------------------------+-------------------------+
-
 
 
 In Scala we have the flexibility to use both polymorphism and pattern matching, and we should use whichever is appropriate. However we generally prefer sealed traits as it gives us greater guarantees about our code's semantics, and we can use typeclasses, which we'll explore later, to get us OO-style extensibility.

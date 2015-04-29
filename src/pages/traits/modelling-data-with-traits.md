@@ -1,17 +1,17 @@
 ## Modelling Data with Traits
 
-With (sealed) traits and (final) case classes we have seen some of the most important features in Scala and the ones you will use most often in day-to-day programming. In this section we're going to look at how we can directly translate a data model into Scala code using traits and classes. In particular we're going to look at **is-a** and **has-a** relationships, **logical or** and **logical and**, and their translation in Scala. The type of data we will create are called **algebraic data types**.
+In this section we're going to shift our focus from language features to programming patterns. We're going to look at modelling data and learn a process for expressing in Scala any data model defined in terms of *logical ors and ands*. Using the terminology of object-oriented programming, we will express *is-a* and *has-a* relationships. In the terminology of functional programming we are learning about *sum* and *product types*, which are together called *algebraic data types*.
 
 Our goal in this section is to see how to translate a data model into Scala code. In the next section we'll see patterns for code that uses algebraic data types.
 
-### The Has-a And Pattern
+### The Product Type Pattern
 
 Our first pattern is to model data that contains other data. We might describe this as "`A` *has a* `B` *and* `C`". For example, a `Cat` has a colour and a favourite food; a `Visitor` has an id and a creation date; and so on.
 
 The way we write this is to use a case class. We've already done this many times in exercises; now we're formalising the pattern.
 
 <div class="callout callout-info">
-#### Has-a And Pattern
+#### Product Type Pattern
 
 If `A` has a `b` (with type `B`) and a `c` (with type `C`) write
 
@@ -29,14 +29,14 @@ trait A {
 ~~~
 </div>
 
-## The Is-a Or Pattern
+## The Sum Type Pattern
 
 Our next pattern is to model data that is two or more distinct cases. We might describe this as "`A` *is a* `B` *or* `C`". For example, a `Feline` is a `Cat`, `Lion`, or `Tiger`; a `Visitor` is an `Anonymous` or `User`; and so on.
 
 We write this using the sealed trait / final case class pattern.
 
 <div class="callout callout-info">
-#### Is-a Or Pattern
+#### Sum Type Pattern
 
 If `A` is a `B` or `C` write
 

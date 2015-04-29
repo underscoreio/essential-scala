@@ -3,7 +3,7 @@
 Traits are templates for creating classes, in the same way that classes are templates for creating objects. Traits allow us to express that two or more classes can be considered the same, and thus both implement the same operations. In other words, traits allow us to express that multiple classes share a common super-type (outside of the `Any` super-type that all classes share).
 
 <div class="callout callout-info">
-*Java tip*
+**Java tip**
 
 Traits are very much like Java 8's *interfaces* with *default methods*. If you have not used Java 8, you can think of traits as being like a cross between interfaces and *abstract classes*.
 </div>
@@ -101,9 +101,9 @@ case class Name(...) extends TraitName {
 
 Like a class, a trait is a named set of field and method definitions. However, it differs from a class in a few important ways:
 
- - **A trait cannot have a constructor**---we can't create objects directly from a trait. Instead we can use a trait to create a class, and then create objects from that class. We can base as many classes as we like on a trait.
+ - *A trait cannot have a constructor*---we can't create objects directly from a trait. Instead we can use a trait to create a class, and then create objects from that class. We can base as many classes as we like on a trait.
 
- - Traits can define **abstract methods** that have names and type signatures but no implementation. We saw this in the `Visitor` trait. We must specify the implementation when we create a class that extends the trait, but until that point we're free to leave definitions abstract.
+ - Traits can define *abstract methods* that have names and type signatures but no implementation. We saw this in the `Visitor` trait. We must specify the implementation when we create a class that extends the trait, but until that point we're free to leave definitions abstract.
 
 Let's return to the `Visitor` trait to further explore abstract definitions. Recall the definition of `Visitor` is
 
@@ -142,7 +142,7 @@ res16: Long = 8871
 
 ### Take Home Points
 
-Traits are a way of **abstracting over classes** that have similar properties, just like classes are a way of abstracting over objects.
+Traits are a way of *abstracting over classes* that have similar properties, just like classes are a way of abstracting over objects.
 
 Using a traits has two parts. Declaring the trait
 

@@ -1,6 +1,6 @@
 ## Recursive Data
 
-A particular use of algebraic data types that comes up very often is defining **recursive data**. This is data that is defined in terms of itself, and allows us to create data of potentially unbounded size (though any concrete instance will be finite).
+A particular use of algebraic data types that comes up very often is defining *recursive data*. This is data that is defined in terms of itself, and allows us to create data of potentially unbounded size (though any concrete instance will be finite).
 
 We can't define recursive data like[^lazy-data]
 
@@ -9,9 +9,9 @@ final case class Broken(broken: Broken)
 ~~~
 
 as we could never actually create an instance of such a type---the recursion never ends.
-To define valid recursive data we must define a **base case**, which is the case that ends the recursion.
+To define valid recursive data we must define a *base case*, which is the case that ends the recursion.
 
-[^lazy-data]: We actually can define data in this manner if we delay the construction of the recursive case, like `final case class LazyList(head: Int, tail: () => LazyList)`. This uses a feature of Scala, functions, that we haven't seen yet. We can do some fairly mind-bending things with this construction, such as defining an infinite stream of ones with the declaration `val ones: LazyList = LazyList(1, () => ones)`. Since we only ever realise a finite amount of this list we can use it to implement certain types of data that would be difficult to implement in other ways. If you're interested in exploring this area further, what we have implemented in called a lazy list, and an "odd lazy list" in particular. The "even list", described in [How to add laziness to a strict language wihtout even being odd](http://www.cs.rice.edu/~taha/publications/conference/sml98.pdf), is a better implementation. Going further, is a rich literature on lazy datastructures and more mind melting theory under the name of "coinductive data".
+[^lazy-data]: We actually can define data in this manner if we delay the construction of the recursive case, like `final case class LazyList(head: Int, tail: () => LazyList)`. This uses a feature of Scala, functions, that we haven't seen yet. We can do some fairly mind-bending things with this construction, such as defining an infinite stream of ones with the declaration `val ones: LazyList = LazyList(1, () => ones)`. Since we only ever realise a finite amount of this list we can use it to implement certain types of data that would be difficult to implement in other ways. If you're interested in exploring this area further, what we have implemented in called a lazy list, and an "odd lazy list" in particular. The "even list", described in [How to add laziness to a strict language wihtout even being odd](http://www.cs.rice.edu/~taha/publications/conference/sml98.pdf), is a better implementation. If you wish to explore further, there is a rich literature on lazy datastructures and more mind melting theory under the name of "coinductive data".
 
 Here is a more useful recursive definition: an `IntList` is either the empty list `End`, or a `Pair`[^pair] containing an `Int` and an `IntList`. We can directly translate this to code using our familiar patterns:
 
@@ -100,10 +100,9 @@ def sum(list: IntList): Int =
 
 Our patterns will carry us most of the way to a correct answer, but we still need to supply the method bodies for the base and recursive cases. There is some general guidance we can use:
 
-- For the base case we should generally return the *identity* for the function we're trying to compute. The identity is an element that doesn't change the result. E.g. 0 is the identity for addition, because `a + 0 == a` for any `a`. If we were calculating the product
-of elements the identity would be 1 as `a * 1 == a` for all `a`.
+- For the base case we should generally return the *identity* for the function we're trying to compute. The identity is an element that doesn't change the result. E.g. 0 is the identity for addition, because `a + 0 == a` for any `a`. If we were calculating the product of elements the identity would be 1 as `a * 1 == a` for all `a`.
 
-- For the recursive case, assume the recursion will return the correct result and work out what you need to add to get the correct answer. We saw this for `sum`, where we assume the recursive call will give us the correct result for the tail of the list and when then just add on the head.
+- For the recursive case, assume the recursion will return the correct result and work out what you need to add to get the correct answer. We saw this for `sum`, where we assume the recursive call will give us the correct result for the tail of the list and we then just add on the head.
 
 <div class="callout callout-info">
 #### Recursive Algebraic Data Types Pattern
@@ -128,7 +127,7 @@ When writing structurally recursive code on a recursive algebraic data type:
 
 ### Tail Recursion
 
-You may be concerned that recursive calls will consume excessive stack space. Scala can apply an optimisation, called **tail recursion**, to many recursive functions to stop them consuming stack space.
+You may be concerned that recursive calls will consume excessive stack space. Scala can apply an optimisation, called *tail recursion*, to many recursive functions to stop them consuming stack space.
 
 A tail call is a method call where the caller immediately returns the value. So this is a tail call
 
