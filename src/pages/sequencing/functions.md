@@ -1,6 +1,6 @@
 ## Functions
 
-Functions allow us to **abstract over methods**, turning methods into values that we can pass around and manipulate within our programs.
+Functions allow us to *abstract over methods*, turning methods into values that we can pass around and manipulate within our programs.
 
 Let's look at three methods we wrote that manipulate `IntList`.
 
@@ -49,13 +49,12 @@ A function is like a method: we can call it with parameters and it evaluates to 
 Much earlier in this course we introduced the `apply` method, which lets us treat objects as functions in a syntactic sense:
 
 ~~~ scala
-scala> object add1 {
-         def apply(in: Int) = in + 1
-       }
-defined module add1
+object add1 {
+  def apply(in: Int) = in + 1
+}
 
-scala> add1(2)
-res2: Int = 3
+add1(2)
+// res: Int = 3
 ~~~
 
 This is a big step towards doing real functional programming in Scala but we're missing one important component: *types*.
@@ -66,7 +65,7 @@ Enter Scala's `Function` types.
 
 ### Function Types
 
-We write a function type like `(A, B) => C` where `A` and `B` are the types of the parameters and `C` is the result type. The same pattern generalises from function of no arguments to an arbitrary number of arguments.
+We write a function type like `(A, B) => C` where `A` and `B` are the types of the parameters and `C` is the result type. The same pattern generalises from functions of no arguments to an arbitrary number of arguments.
 
 In our example above we want `f` to be a function that accepts two `Int`s as parameters and returns an `Int`. Thus we can write it as `(Int, Int) => Int`.
 
@@ -94,30 +93,30 @@ A => B
 
 ### Function literals
 
-Scala also gives us a **function literal syntax** specifically for creating new functions. Here are some example function literals:
+Scala also gives us a *function literal syntax* specifically for creating new functions. Here are some example function literals:
 
 ~~~ scala
-scala> val sayHi = () => "Hi!"
-sayHi: () => String = <function0>
+val sayHi = () => "Hi!"
+// sayHi: () => String = <function0>
 
-scala> sayHi()
-res1: String = Hi!
+sayHi()
+// res: String = Hi!
 
-scala> val add1 = (x: Int) => x + 1
-add1: Int => Int = <function1>
+val add1 = (x: Int) => x + 1
+// add1: Int => Int = <function1>
 
-scala> add1(10)
-res2: Int = 11
+add1(10)
+// res: Int = 11
 
-scala> val sum = (x: Int, y:Int) => x + y
-sum: (Int, Int) => Int = <function2>
+val sum = (x: Int, y:Int) => x + y
+// sum: (Int, Int) => Int = <function2>
 
-scala> sum(10, 20)
-res3: Int = 30
+sum(10, 20)
+// res: Int = 30
 ~~~
 
-In code where we know the argument types, we can sometimes **drop the type annotations** and allow Scala to infer them[^parens]. There is no syntax for declaring the result type of
-a function and it is normally inferred, but if we find ourselves need to do this we can put a type on the function's body expression:
+In code where we know the argument types, we can sometimes *drop the type annotations* and allow Scala to infer them[^parens]. There is no syntax for declaring the result type of
+a function and it is normally inferred, but if we find ourselves needing to do this we can put a type on the function's body expression:
 
 ~~~ scala
 (x: Int) => (x + 1): Int
@@ -188,15 +187,15 @@ final case class Pair(head: Int, tail: IntList) extends IntList
 ~~~
 </div>
 
-Is `fold` more convenient to use in pattern matching or polymorpic situations? What does this tell us about the best use of `fold`?
+Is it more convenient to rewrite methods in terms of `fold` if they were implemented using pattern matching or polymorphic? What does this tell us about the best use of `fold`?
 
 <div class="solution">
-When using `fold` in polymorphic implementations we have a lot of duplication; the polymorphic implementations without `fold` were simpler to write. The polymorpic implementations benefited from `fold` as we remove the duplication in the pattern matching.
+When using `fold` in polymorphic implementations we have a lot of duplication; the polymorphic implementations without `fold` were simpler to write. The pattern matching implementations benefited from `fold` as we remove the duplication in the pattern matching.
 
 In general `fold` makes a good interface for users *outside* the class, but not necessarily for use *inside* the class.
 </div>
 
-Why can't we write our `double` method in terms of `fold`. Why not? Is it feasible we could if we made some change to `fold`?
+Why can't we write our `double` method in terms of `fold`? Is it feasible we could if we made some change to `fold`?
 
 <div class="solution">
 The types tell us it won't work. `fold` returns an `Int` and `double` returns an `IntList`. However the general structure of `double` is captured by `fold`. This is apparent if we look at them side-by-side:
@@ -233,7 +232,7 @@ Replacing the return type and tracing it back we arrive at
 def fold[A](list: IntList, f: (Int, A) => A, end: A): A
 ~~~
 
-where we've used a generic type on the method to capture the variable return type. With this we can implement `double`. When we try to do so we'll see that type inference fails, so we have to give it a bit of help.
+where we've used a generic type on the method to capture the changing return type. With this we can implement `double`. When we try to do so we'll see that type inference fails, so we have to give it a bit of help.
 
 ~~~ scala
 sealed trait IntList {

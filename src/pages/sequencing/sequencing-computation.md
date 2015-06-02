@@ -1,6 +1,6 @@
 ## Sequencing Computation
 
-We have now mastered generic data and folding over algebraic data types. Now we will look as some other common patterns of computation that are 1) often more convenient to use than fold for algebraic data types and 2) can be implemented for certain types of data that do not support a fold. These methods are known as **map** and **flatMap**.
+We have now mastered generic data and folding over algebraic data types. Now we will look as some other common patterns of computation that are 1) often more convenient to use than fold for algebraic data types and 2) can be implemented for certain types of data that do not support a fold. These methods are known as *map* and *flatMap*.
 
 ### Map
 
@@ -12,7 +12,7 @@ Imagine we have a sum type representing an error message or a completed order. I
 
 What these all have in common is we have a type `F[A]` and a function `A => B`, and we want a result `F[B]`. The method that performs this operation is called `map`.
 
-Let's implement `map` for `LinkedList`. We start by outlining the types:
+Let's implement `map` for `LinkedList`. We start by outlining the types and adding the general structural recursion skeleton:
 
 ~~~ scala
 sealed trait LinkedList[A] {
@@ -57,6 +57,7 @@ sealed trait LinkedList[A] {
 }
 ~~~
 
+Notice how using the types and patterns guided us to a solution.
 
 ### FlatMap
 
@@ -98,7 +99,7 @@ final case class Empty[A]() extends Maybe[A]
 
 A type like `F[A]` with a `map` method is called a *functor*. If a functor also has a `flatMap` method it is called a *monad*[^monads].
 
-[^monads:] There is a little bit more to being a monad. We usually require a constructor called `point` and there are some algebraic laws that our monad operations must obey. A quick search online will find more information on monads, or they are covered in more detail in our "Essential Scalaz" book.
+[^monads:] There is a little bit more to being a functor or monad.  For a monad we require a constructor, typically called `point`, and there are some algebraic laws that our `map` and `flatMap` operations must obey. A quick search online will find more information on monads, or they are covered in more detail in our "Advanced Scala" book.
 
 Although the most immediate applications of `map` and `flatMap` are in collection classes like lists, the bigger picture is sequencing computations. Imagine we have a number of computations that can fail. For instance
 
@@ -143,7 +144,7 @@ The general idea is a monad represents a value in some context. The context depe
 - an sum of values, which might represent a error message and a value we're computing with; and
 - a list of values.
 
-We use `map` when we want to transform the value within the context to a new value, while keeping the context the same. We use `flatMap` when we want to transform the value *and* possibly provide a new context.
+We use `map` when we want to transform the value within the context to a new value, while keeping the context the same. We use `flatMap` when we want to transform the value *and* provide a new context.
 
 ### Exercises
 

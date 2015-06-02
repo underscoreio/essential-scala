@@ -1,11 +1,11 @@
 ## Generic Folds for Generic Data
 
-We've seen that when we define a class with generic data, we cannot implement very many methods on that class. The user supplies the generic type, and thus we must ask the user to supply functions that work with that type. Nonetheless, there are some common patterns for using generic data, which is what we explore in this section. We have already seen **fold** in the context of our `IntList`. Here we will explore fold in more detail, and learn the pattern for implementing fold for any algebraic data type.
+We've seen that when we define a class with generic data, we cannot implement very many methods on that class. The user supplies the generic type, and thus we must ask the user to supply functions that work with that type. Nonetheless, there are some common patterns for using generic data, which is what we explore in this section. We have already seen *fold* in the context of our `IntList`. Here we will explore fold in more detail, and learn the pattern for implementing fold for any algebraic data type.
 
 
 ### Fold
 
-Last time we saw fold we were working with a list of integers. Let's generalise to a list of a generic type. We're already see all the tools we need. First our data definition, in this instance slightly modified to use the covariant sum type pattern.
+Last time we saw fold we were working with a list of integers. Let's generalise to a list of a generic type. We're already see all the tools we need. First our data definition, in this instance slightly modified to use the invariant sum type pattern.
 
 ~~~ scala
 sealed trait LinkedList[A]
@@ -80,7 +80,7 @@ def fold[B](end: ???, pair: ???): B =
 From the rules for the function types:
 
 - `end` has no parameters (as `End` stores no values) and returns `B`. Thus its type is `() => B`, which we can optimise to just a value of type `B`; and
-- `pair` has two parameters, one for the list head and one for the tail. The argument for the head has type `A`, and the tail is recursive call and thus has type `B`. The final type is therefore `(A, B) => B`.
+- `pair` has two parameters, one for the list head and one for the tail. The argument for the head has type `A`, and the tail is recursive and thus has type `B`. The final type is therefore `(A, B) => B`.
 
 Substituting in we get
 
@@ -102,11 +102,11 @@ There are a few tricks in Scala for working with functions and methods that acce
 
 #### Placeholder syntax
 
-In very simple situations we can write inline functions using an extreme shorthand called **placeholder syntax**. It looks like this:
+In very simple situations we can write inline functions using an extreme shorthand called *placeholder syntax*. It looks like this:
 
 ~~~ scala
-scala> ((_: Int) * 2)
-res23: Int => Int = <function1>
+((_: Int) * 2)
+// res: Int => Int = <function1>
 ~~~
 
 `(_: Int) * 2` is expanded by the compiler to `(a: Int) => a * 2`. It is more idiomatic to use the placeholder syntax only in the cases where the compiler can infer the types. Here are a few more examples:
@@ -123,34 +123,32 @@ Placeholder syntax, while wonderfully terse, can be confusing for large expressi
 
 ### Converting methods to functions
 
-Scala contains one final feature that is directly relevant to this section---the ability to convert method calls to functions. This is closely related to placeholder syntax---simply follow a method with an underscore:
+Scala contains another feature that is directly relevant to this section---the ability to convert method calls to functions. This is closely related to placeholder syntax---simply follow a method with an underscore:
 
 ~~~ scala
-scala> object Sum {
-         def sum(x: Int, y: Int) = x + y
-       }
-defined module Sum
+object Sum {
+  def sum(x: Int, y: Int) = x + y
+}
 
-scala> Sum.sum
-<console>:9: error: missing arguments for method sum in object Sum;
-follow this method with `_' if you want to treat it as a partially applied function
-              Sum.sum
-                  ^
+Sum.sum
+// <console>:9: error: missing arguments for method sum in object Sum;
+// follow this method with `_' if you want to treat it as a partially applied function
+//               Sum.sum
+//                   ^
 
-scala> (Sum.sum _)
-res11: (Int, Int) => Int = <function2>
+(Sum.sum _)
+// res: (Int, Int) => Int = <function2>
 ~~~
 
 In situations where Scala can infer that we need a function, we can even drop the underscore and simply write the method name---the compiler will promote the method to a function automatically:
 
 ~~~ scala
-scala> object MathStuff {
-         def add1(num: Int) = num + 1
-       }
-defined module MathStuff
+object MathStuff {
+  def add1(num: Int) = num + 1
+}
 
-scala> Counter(2).adjust(MathStuff.add1)
-res12: Counter = Counter(3)
+Counter(2).adjust(MathStuff.add1)
+// res: Counter = Counter(3)
 ~~~
 
 #### Multiple Parameter Lists
@@ -158,11 +156,11 @@ res12: Counter = Counter(3)
 Methods in Scala can actually have multiple parameter lists. Such methods work just like normal methods, except we must bracket each parameter list separately.
 
 ~~~ scala
-scala> def example(x: Int)(y: Int) = x + y
-example: (x: Int)(y: Int)Int
+def example(x: Int)(y: Int) = x + y
+// example: (x: Int)(y: Int)Int
 
-scala> example(1)(2)
-res2: Int = 3
+example(1)(2)
+// res: Int = 3
 ~~~
 
 Multiple parameter lists have two relevant uses: they look nicer when defining functions inline and they assist with type inference.
@@ -195,7 +193,7 @@ More important is the use of multiple parameter lists to ease type inference. Sc
 def fold[B](end: B, pair: (A, B) => B): B
 ~~~
 
-if Scala infers `B` for `end` it cannot then use this inferred type for `pair`, so we must often write a type declaration on `pair`. However, Scala can use types inferred for one parameter list in another parameter *list*. So if we write `fold` as
+if Scala infers `B` for `end` it cannot then use this inferred type for the `B` in`pair`, so we must often write a type declaration on `pair`. However, Scala can use types inferred for one parameter list in another parameter *list*. So if we write `fold` as
 
 ~~~ scala
 def fold[B](end: B)(pair: (A, B) => B): B
