@@ -1,6 +1,6 @@
 ## For Comprehensions
 
-We've discussed the main collection transformation functions---`map`, `flatMap`, `foldLeft`, `foldRight`, and `foreach`---and seen that they provide a powerful way of working with collections. Then can become unwiedly to work with when dealing with many collections of many nested transformations. Fortunately Scala has special syntax for working with collections (in fact any class that implements `map` and `flatMap`) that makes complicated operations simpler to write. This syntax is known as a *for comprehension*.
+We've discussed the main collection transformation functions---`map`, `flatMap`, `foldLeft`, `foldRight`, and `foreach`---and seen that they provide a powerful way of working with collections. They can become unwieldy to work with when dealing with many collections or many nested transformations. Fortunately Scala has special syntax for working with collections (in fact any class that implements `map` and `flatMap`) that makes complicated operations simpler to write. This syntax is known as a *for comprehension*.
 
 <div class="alert alert-warning">
 **Important note:** *for comprehensions* in Scala are very different to the C-style *for loops* in Java. There is no direct equivalent of either language's syntax in the other.
@@ -9,39 +9,39 @@ We've discussed the main collection transformation functions---`map`, `flatMap`,
 Let's start with a simple example. Say we have the sequence `Seq(1, 2, 3)` and we wish to create a sequence with every element doubled. We know we can write
 
 ~~~ scala
-scala> Seq(1, 2, 3).map(_ * 2)
-res0: Seq[Int] = List(2, 4, 6)
+Seq(1, 2, 3).map(_ * 2)
+// res: Seq[Int] = List(2, 4, 6)
 ~~~
 
 The equivalent program written with a for comprehension is:
 
 ~~~ scala
-scala> for {
-         x <- Seq(1, 2, 3)
-       } yield x * 2
-res1: Seq[Int] = List(2, 4, 6)
+for {
+  x <- Seq(1, 2, 3)
+} yield x * 2
+// res: Seq[Int] = List(2, 4, 6)
 ~~~
 
 We call the expression containing the `<-` a *generator*, with a *pattern* on the left hand side and a *generator expression* on the right. A for comprehension iterates over the elements in the generator, binding each element to the pattern and calling the `yield` expression. It combines the yielded results into a sequence of the same type as the original generator.
 
-In simple examples like this one we don't really see the power of for comprehensions---direct use of `map` and `flatMap` are often more compact in the simplest case. Let's try a more complicated example instead. Say we want to double all the numbers in `Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))` and return a flattened sequence of the results. To do this with `map` and `flatMap` we must nest calls:
+In simple examples like this one we don't really see the power of for comprehensions---direct use of `map` and `flatMap` are often more compact in the simplest case. Let's try a more complicated example. Say we want to double all the numbers in `Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))` and return a flattened sequence of the results. To do this with `map` and `flatMap` we must nest calls:
 
 ~~~ scala
-scala> val data = Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))
-data: Seq[Seq[Int]] = List(List(1), List(2, 3), List(4, 5, 6))
+val data = Seq(Seq(1), Seq(2, 3), Seq(4, 5, 6))
+// data: Seq[Seq[Int]] = List(List(1), List(2, 3), List(4, 5, 6))
 
-scala> data.flatMap(_.map(_ * 2))
-res3: Seq[Int] = List(2, 4, 6, 8, 10, 12)
+data.flatMap(_.map(_ * 2))
+// res: Seq[Int] = List(2, 4, 6, 8, 10, 12)
 ~~~
 
-This is getting complicated. The equivalent for comprehension is much more... comprehensible:
+This is getting complicated. The equivalent for comprehension is much more ... comprehensible.
 
 ~~~ scala
-scala> for {
-         subseq  <- data
-         element <- subseq
-       } yield element * 2
-res3: Seq[Int] = List(2, 4, 6, 8, 10, 12)
+for {
+  subseq  <- data
+  element <- subseq
+} yield element * 2
+// res: Seq[Int] = List(2, 4, 6, 8, 10, 12)
 ~~~
 
 This gives us an idea of what the for comprehensions does. A general for comprehension:
@@ -62,16 +62,16 @@ a.flatMap(x => b.flatMap(y => c.map(z => e)))
 
 The intuitive understanding of the code is to iterate through all of the sequences in the generators, mapping the `yield` expression over every element therein, and accumulating a result of the same type as sequence fed into the first generator.
 
-Note that if we omit the `yield` keyword the final expression, the overall type of the `for` comprehension becomes `Unit`. This version of the `for` comprehension is executed purely for its side-effects, and any result is ignored. Revisiting doubling example from earlier, we can print the results instead of returning them:
+Note that if we omit the `yield` keyword before the final expression, the overall type of the `for` comprehension becomes `Unit`. This version of the `for` comprehension is executed purely for its side-effects, and any result is ignored. Revisiting the doubling example from earlier, we can print the results instead of returning them:
 
 ~~~ scala
-scala> for {
-         seq <- Seq(Seq(1), Seq(2, 3))
-         elt <- seq
-       } println(elt * 2) // Note: no 'yield' keyword
-2
-4
-6
+for {
+  seq <- Seq(Seq(1), Seq(2, 3))
+  elt <- seq
+} println(elt * 2) // Note: no 'yield' keyword
+// 2
+// 4
+// 6
 ~~~
 
 The equivalent method calls use `flatMap` as usual and `foreach` in place of the final `map`:
@@ -124,7 +124,7 @@ for {
 
 #### (More) Heroes of the Silver Screen
 
-Repeat the following exercises from the previous section **without using `map` or `flatMap`**:
+Repeat the following exercises from the previous section *without using `map` or `flatMap`*:
 
 ##### Nolan Films
 

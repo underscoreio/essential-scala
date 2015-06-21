@@ -1,15 +1,15 @@
 ## Sequences {#seq}
 
-A **sequence** is a collection of items with a defined and stable order. Sequences are one of the most common data structures. In this section we're going to look at the basics of sequences: creating them, key methods on sequences, and the distinction between mutable and immutable sequences.
+A *sequence* is a collection of items with a defined and stable order. Sequences are one of the most common data structures. In this section we're going to look at the basics of sequences: creating them, key methods on sequences, and the distinction between mutable and immutable sequences.
 
 Here's how you create a sequence in Scala:
 
 ~~~ scala
-scala> val sequence = Seq(1, 2, 3)
-sequence: Seq[Int] = List(1, 2, 3)
+val sequence = Seq(1, 2, 3)
+// sequence: Seq[Int] = List(1, 2, 3)
 ~~~
 
-This immediately shows off a key feature of Scala's collections, the **separation between interface and implementation**. In the above, the value has type `Seq[Int]` but is implemented by a `List`.
+This immediately shows off a key feature of Scala's collections, the *separation between interface and implementation*. In the above, the value has type `Seq[Int]` but is implemented by a `List`.
 
 ### Basic operations
 
@@ -20,65 +20,67 @@ Sequences implement [many methods](http://docs.scala-lang.org/overviews/collecti
 We can access the elements of a sequence using its `apply` method, which accepts an `Int` index as a parameter. Indices start from `0`.
 
 ~~~ scala
-scala> sequence.apply(0)
-res0: Int = 1
+sequence.apply(0)
+// res: Int = 1
 
-scala> sequence(0) // sugared syntax
-res1: Int = 1
+sequence(0) // sugared syntax
+// res: Int = 1
 ~~~
 
 An exception is raised if we use an index that is out of bounds:
 
 ~~~ scala
-scala> sequence(3)
-java.lang.IndexOutOfBoundsException: 3
-        at ...
+sequence(3)
+// java.lang.IndexOutOfBoundsException: 3
+//        at ...
 ~~~
 
 We can also access the head and tail of the sequence:
 
 ~~~ scala
-scala> sequence.head
-res0: Int = 1
+sequence.head
+// res: Int = 1
 
-scala> sequence.tail
-res1: Seq[Int] = List(2, 3)
+sequence.tail
+// res: Seq[Int] = List(2, 3)
 
-scala> sequence.tail.head
-res2: Int = 2
+sequence.tail.head
+// res: Int = 2
 ~~~
 
 Again, trying to access an element that doesn't exist throws an exception:
 
 ~~~ scala
-scala> Seq().head
-java.util.NoSuchElementException: head of empty list
-  at scala.collection.immutable.Nil$.head(List.scala:337)
-  ...
+Seq().head
+// java.util.NoSuchElementException: head of empty list
+//   at scala.collection.immutable.Nil$.head(List.scala:337)
+//   ...
 
-scala> Seq().tail
-java.lang.UnsupportedOperationException: tail of empty list
-  at scala.collection.immutable.Nil$.tail(List.scala:339)
-  ...
+Seq().tail
+// java.lang.UnsupportedOperationException: tail of empty list
+//   at scala.collection.immutable.Nil$.tail(List.scala:339)
+//   ...
 ~~~
 
-If we want to safely get the `head` without yielding an exception, we can use `headOption`:
+If we want to safely get the `head` without risking an exception, we can use `headOption`:
 
 ~~~ scala
-scala> sequence.headOption
-res7: Option[Int] = Some(1)
+sequence.headOption
+// res: Option[Int] = Some(1)
 
-scala> Seq().headOption
-res8: Option[Nothing] = None
+Seq().headOption
+// res: Option[Nothing] = None
 ~~~
+
+The `Option` class here is Scala's built-in equivalent of our `Maybe` class from earlier. It has two subtypes---`Some` and `None`---representing the presence and absence of a value respectively.
 
 ### Sequence length
 
-Fortunately, finding the length of a sequence is straightforward:
+Finding the length of a sequence is straightforward:
 
 ~~~ scala
-scala> sequence.length
-res3: Int = 3
+sequence.length
+// res: Int = 3
 ~~~
 
 ### Searching for elements
@@ -86,27 +88,25 @@ res3: Int = 3
 There are a few ways of searching for elements. The `contains` method tells us whether a sequence contains an element (using `==` for comparison):
 
 ~~~ scala
-scala> sequence.contains(2)
-res4: Boolean = true
+sequence.contains(2)
+// res: Boolean = true
 ~~~
 
 The `find` method is like a generalised version of `contains` - we provide a test function and the sequence returns the first item for which the test returns `true`:
 
 ~~~ scala
-scala> sequence.find(_ == 3)
-res5: Option[Int] = Some(3)
+sequence.find(_ == 3)
+// res: Option[Int] = Some(3)
 
-scala> sequence.find(_ > 4)
-res6: Option[Int] = None
+sequence.find(_ > 4)
+// res: Option[Int] = None
 ~~~
-
-The `Option` class here is Scala's built-in equivalent of our `Maybe` class from earlier. It has two subtypes---`Some` and `None`---representing the presence and absence of a value respectively.
 
 The `filter` method is a variant of `find` that returns *all* the matching elements in the sequence:
 
 ~~~ scala
-scala> sequence.filter(_ > 1)
-res7: Seq[Int] = List(2, 3)
+sequence.filter(_ > 1)
+// res: Seq[Int] = List(2, 3)
 ~~~
 
 ### Sorting elements
@@ -114,8 +114,8 @@ res7: Seq[Int] = List(2, 3)
 We can use the `sortWith` method to sort a list using a binary function. The function takes two list items as parameters and returns `true` if they are in the correct order and `false` if they are the wrong way around:
 
 ~~~ scala
-scala> sequence.sortWith(_ < _)
-res 8: Seq[Int] = List(3, 2, 1)
+sequence.sortWith(_ < _)
+// res: Seq[Int] = List(3, 2, 1)
 ~~~
 
 ### Appending/prepending elements
@@ -123,39 +123,39 @@ res 8: Seq[Int] = List(3, 2, 1)
 There are many ways to add elements to a sequence. We can append an element with the `:+` method:
 
 ~~~ scala
-scala> sequence.:+(4)
-res6: Seq[Int] = List(1, 2, 3, 4)
+sequence.:+(4)
+// res: Seq[Int] = List(1, 2, 3, 4)
 ~~~
 
 It is more idiomatic to call `:+` as an infix operator:
 
 ~~~ scala
-scala> sequence :+ 4
-res7: Seq[Int] = List(1, 2, 3, 4)
+sequence :+ 4
+// res: Seq[Int] = List(1, 2, 3, 4)
 ~~~
 
 We can similarly *prepend* an element using the `+:` method:
 
 ~~~ scala
-scala> sequence.+:(0)
-res4: Seq[Int] = List(0, 1, 2, 3)
+sequence.+:(0)
+// res: Seq[Int] = List(0, 1, 2, 3)
 ~~~
 
-Again, it is more idiomatic to call `+:` as an infix operator. Here **the trailing colon makes it right associative**, so we write the operator-style expression the other way around:
+Again, it is more idiomatic to call `+:` as an infix operator. Here *the trailing colon makes it right associative*, so we write the operator-style expression the other way around:
 
 ~~~ scala
-scala> 0 +: sequence
-res5: Seq[Int] = List(0, 1, 2, 3)
+0 +: sequence
+// res: Seq[Int] = List(0, 1, 2, 3)
 ~~~
+
+This is another of Scala's general syntax rules---any method ending with a `:` character becomes *right associative* when written as an infix operator. This rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). We'll look at this in more detail in a moment.
 
 Finally we can concatenate entire sequences using the `++` method.
 
 ~~~ scala
-scala> sequence ++ Seq(4, 5, 6)
-res10: Seq[Int] = List(1, 2, 3, 4, 5, 6)
+sequence ++ Seq(4, 5, 6)
+// res: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 ~~~
-
-Another of Scala's general syntax rules---any method ending with a `:` character becomes **right associative** when written as an infix operator. This rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). We'll look at this in more detail in a moment.
 
 <!--
 ### Updating elements
@@ -163,8 +163,8 @@ Another of Scala's general syntax rules---any method ending with a `:` character
 The `updated` method replaces the *nth* item in a sequence with a new value:
 
 ~~~ scala
-scala> sequence.updated(0, 5)
-res11: Seq[Int] = List(5, 2, 3)
+sequence.updated(0, 5)
+// res: Seq[Int] = List(5, 2, 3)
 ~~~
 -->
 
@@ -175,32 +175,32 @@ The default implementation of `Seq` is a `List`, which is a classic [linked list
 We can write an empty list using the singleton object `Nil`:
 
 ~~~ scala
-scala> Nil
-res0: scala.collection.immutable.Nil.type = List()
+Nil
+// res: scala.collection.immutable.Nil.type = List()
 ~~~
 
 Longer lists can be created by prepending elements in classic linked-list style using the `::` method, which is equivalent to `+:`:
 
 ~~~ scala
-scala> 1 :: 2 :: 3 :: Nil
-res1: List[Int] = List(1, 2, 3)
+val list = 1 :: 2 :: 3 :: Nil
+// list: List[Int] = List(1, 2, 3)
 
-scala> 4 :: 5 :: res1
-res1: List[Int] = List(4, 5, 1, 2, 3)
+4 :: 5 :: list
+// res: List[Int] = List(4, 5, 1, 2, 3)
 ~~~
 
 We can also use the `List.apply` method for a more conventional constructor notation:
 
 ~~~ scala
-scala> List(1, 2, 3)
-res2: List[Int] = List(1, 2, 3)
+List(1, 2, 3)
+// res: List[Int] = List(1, 2, 3)
 ~~~
 
 Finally, the `:::` method is a right-associative `List`-specific version of `++`:
 
 ~~~ scala
-scala> List(1, 2, 3) ::: List(4, 5, 6)
-res3: List[Int] = List(1, 2, 3, 4, 5, 6)
+List(1, 2, 3) ::: List(4, 5, 6)
+// res: List[Int] = List(1, 2, 3, 4, 5, 6)
 ~~~
 
 `::` and `:::` are specific to lists whereas `+:`, `:+` and `++` work on any type of sequence.
@@ -215,34 +215,31 @@ The `Seq` and `List` types are so ubiquitous in Scala that they are made automat
 The main collections package is called `scala.collection.immutable`. We can import specific collections from this package as follows:
 
 ~~~ scala
-scala> import scala.collection.immutable.Vector
 import scala.collection.immutable.Vector
 
-scala> Vector(1, 2, 3)
-res1: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
+Vector(1, 2, 3)
+// res: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
 ~~~
 
-We can also use **wildcard imports** to import everything in a package:
+We can also use *wildcard imports* to import everything in a package:
 
 ~~~ scala
-scala> import scala.collection.immutable._
 import scala.collection.immutable._
 
-scala> Queue(1, 2, 3)
-res2: scala.collection.immutable.Queue[Int] = Queue(1, 2, 3)
+Queue(1, 2, 3)
+// res: scala.collection.immutable.Queue[Int] = Queue(1, 2, 3)
 ~~~
 
 We can also use `import` to bring methods and fields into scope from a singleton:
 
 ~~~ scala
-scala> import scala.collection.immutable.Vector._
-import scala.collection.immutable.Vector.empty
+import scala.collection.immutable.Vector.apply
 
-scala> apply(1, 2, 3)
-res3: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
+apply(1, 2, 3)
+// res: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
 ~~~
 
-We can write import statements anywhere in our code---imported identifiers are scoped lexically to the block where we use them:
+We can write import statements anywhere in our code---imported identifiers are lexically scoped to the block where we use them:
 
 ~~~ scala
 // `empty` is unbound here
@@ -265,7 +262,7 @@ def someMethod = {
 
 `Seq` is Scala's general sequence datatype. It has a number of general subtypes such as `List`, `Stack`, `Vector`, `Queue`, and `Array`, and specific subtypes such as `String`.
 
-**The default sequences in Scala are immutable.** We also have access to mutable sequences, which are covered separately in the [Collections Redux](/collections-redux/index.html) chapter.
+*The default sequences in Scala are immutable.* We also have access to mutable sequences, which are covered separately in the [Collections Redux](/collections-redux/index.html) chapter.
 
 We have covered a variety of methods that operate on sequences. Here is a type table of everything we have seen so far:
 
@@ -304,7 +301,7 @@ We have covered a variety of methods that operate on sequences. Here is a type t
 | `updated`   | `Seq[A]`   | `Int` `A`           | `Seq[A]`    |
 -->
 
-We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement. This has a number of features that aren't present in Java---it can be used to import methods from objects, and be written anywhere in our code.
+We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement as we have seen. 
 
 ### Exercises
 
@@ -321,7 +318,7 @@ Discovering Scala's collection classes is all about knowing how to read the API 
 
  - What method of `Option` can be used to determine whether the option contains a value?
 
-**Tip:** There is a link to the Scala API documentation in the left-hand menu of the course notes.
+**Tip:** There is a link to the Scala API documentation at [http://scala-lang.org](http://scala-lang.org).
 
 <div class="solution">
 The synonym for `length` is `size`.
@@ -353,7 +350,7 @@ Create a `Seq` containing the `String`s `"cat"`, `"dog"`, and `"penguin"`. Bind 
 
 <div class="solution">
 ~~~ scala
-scala> val animals = Seq("cat", "dog", "penguin")
+val animals = Seq("cat", "dog", "penguin")
 animals: Seq[String] = List(cat, dog, penguin)
 ~~~
 </div>
@@ -362,8 +359,8 @@ Append the element `"tyrannosaurus"` to `animals` and prepend the element `"mous
 
 <div class="solution">
 ~~~ scala
-scala> "mouse" +: animals :+ "tyrannosaurus"
-res6: Seq[String] = List(mouse, cat, dog, penguin, tyrannosaurus)
+"mouse" +: animals :+ "tyrannosaurus"
+// res: Seq[String] = List(mouse, cat, dog, penguin, tyrannosaurus)
 ~~~
 </div>
 
@@ -373,8 +370,8 @@ What happens if you prepend the `Int` `2` to `animals`? Why? Try it out... were 
 The returned sequence has type `Seq[Any]`.  It is perfectly valid to return a supertype (in this case `Seq[Any]`) from a non-destructive operation.
 
 ~~~ scala
-scala> 2 +: animals
-res7: Seq[Any] = List(2, cat, dog, penguin)
+2 +: animals
+// res: Seq[Any] = List(2, cat, dog, penguin)
 ~~~
 
 You might expect a type error here, but Scala is capable of determining the least upper bound of `String` and `Int` and setting the type of the returned sequence accordingly.
