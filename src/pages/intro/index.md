@@ -7,8 +7,8 @@ In this chapter we look at the fundamental building blocks of Scala programs: *e
 In the Scala console or worksheet enter `"Hello world!"` and press return (in the console) or save the worksheet. You should see an interaction similar to this:
 
 ~~~ scala
-scala> "Hello world!"
-res0: String = Hello world!
+"Hello world!"
+// res: String = Hello world!
 ~~~
 
 There is a lot to say about this program. It consists of a single expression, and in particular a *literal expression* or literal for short. 
@@ -20,8 +20,8 @@ Although the output value "Hello world!" looks the same as the program that crea
 Let's look at a slightly more complex program
 
 ~~~ scala
-scala> "Hello world!".toUpperCase
-res5: String = HELLO WORLD!
+"Hello world!".toUpperCase
+// res: String = HELLO WORLD!
 ~~~
 
 This program extends our first example by adding a *method call*. Evaluation in Scala proceeds left to right. First the literal `"Hello world!"` is evaluated, as in the first example. Then the method `toUpperCase` is called on the result. This method transforms a string value to its upper case equivalent and returns this new string. This is the final value we see printed by the console.
@@ -40,19 +40,19 @@ Compilation is a process of checking that a program makes sense. There are two w
 1. It must be *syntactically correct*, meaning the parts of the program must be arranged according to the grammar of the language. An example English sentence that is not syntactically correct is "on cat mat sat the". An example syntactically incorrect Scala program is
 
 ~~~ scala
-scala> toUpperCase."Hello world!"
-<console>:1: error: identifier expected but string literal found.
-       toUpperCase."Hello world!"
-                   ^
+toUpperCase."Hello world!"
+// error: identifier expected but string literal found.
+//       toUpperCase."Hello world!"
+//                   ^
 ~~~
 
 2. It must *type check*, meaning it must obey certain constraints on what a sensible program is. An example English sentence that is syntactically correct but fails to make sense is "the mat sat on the cat". A simple program that would fail to type check is trying to convert a number to uppercase.
 
 ~~~ scala
-scala> 2.toUpperCase
-<console>:8: error: value toUpperCase is not a member of Int
-             2.toUpperCase
-               ^
+2.toUpperCase
+// error: value toUpperCase is not a member of Int
+//             2.toUpperCase
+//               ^
 ~~~
 
 The concept of upper and lowercase doesn't make sense for numbers, and the type system will catch this error.
@@ -62,8 +62,8 @@ If a program passes the checks at compile-time it may then be run. This is the p
 Even though a program successfully compiles it can still fail at run-time. Dividing an integer by zero causes a run-time error in Scala.
 
 ~~~ scala
-scala> 2 / 0
-java.lang.ArithmeticException: / by zero
+2 / 0
+// java.lang.ArithmeticException: / by zero
 ~~~
 
 The type of integers, `Int`, allows division so the program type checks. At run-time the program fails because there is no `Int` that can represent the result of the division.
@@ -80,8 +80,8 @@ The defining characteristic of an expression is that it evaluates to a value. A 
 We compute with values. They are entities that our programs can pass around and manipulate. For example, to compute the minimum of two numbers we might write a program like
 
 ~~~ scala
-scala> 2.min(3)
-res13: Int = 2
+2.min(3)
+// res: Int = 2
 ~~~
 
 Here we have two values, `2` and `3`, and we combine them into a larger program that evaluates to `2`.
@@ -95,11 +95,11 @@ At this stage, the most important point about types is that *expressions have ty
 We can show that types exist at compile-time by asking the Scala console to tell us the type of an expression that causes a run-time error.
 
 ~~~ scala
-scala> :type 2 / 0
-Int
+:type 2 / 0
+// Int
 
-scala> 2 / 0
-java.lang.ArithmeticException: / by zero
+2 / 0
+// java.lang.ArithmeticException: / by zero
 ~~~
 
 We see that the expression `2 / 0` has type `Int` even though this expression fails when we evaluate it.
@@ -152,14 +152,14 @@ Type is `Int` and value is `3`.
 Type is `Int`, but this one doesn't evaluate to a value---it raises an exception instead, and a raised exception is not a value. How can we tell this? We can't continuing computing with the result of the expression. For example, we can't print it. Compare
 
 ~~~ scala
-scala> println("foo")
+println("foo")
 foo
 ~~~
 
 and
 
 ~~~ scala
-scala> println("foo".toInt)
+println("foo".toInt)
 java.lang.NumberFormatException: For input string: "foo"
 ~~~
 

@@ -14,20 +14,18 @@ We have some special terminology for the data and operations of an object. The o
 We interact with objects by *calling* methods[^patterns]. We have already seen some examples of calling methods. For example, we have seen we can get the uppercase version of a `String` by calling its `toUpperCase` method.
 
 ~~~ scala
-scala> "hello".toUpperCase
-res21: String = HELLO
+"hello".toUpperCase
+// res: String = HELLO
 ~~~
 
 Some methods accept *parameters* or *arguments*, which control how the method works. The `take` method, for example, takes characters from a `String`. We must pass a parameter to `take` to specify how many characters we want.
 
 ~~~ scala
-scala> "abcdef".take(3)
 "abcdef".take(3)
-res0: String = abc
+// res: String = abc
 
-scala> "abcdef".take(2)
 "abcdef".take(2)
-res1: String = ab
+// res: String = ab
 ~~~
 
 <div class="callout callout-info">
@@ -55,8 +53,8 @@ where
 A method call is an expression, and thus evaluates to an object. This means we can chain method calls together to make more complex programs:
 
 ~~~ scala
-scala> "hello".toUpperCase.toLowerCase
-res22: String = hello
+"hello".toUpperCase.toLowerCase
+// res: String = hello
 ~~~
 
 In what order are the various expressions in a method call evaluated? Method parameters are evaluated left-to-right, before the method is called. So in the expression
@@ -72,21 +70,21 @@ the expression `"Hello world!"` is evaluated first, then `2 + 3` (which requires
 Because every value in Scala is an object we can also call methods on primitive types such as `Int` and `Boolean`. This is in contrast to Java where `int` and `boolean` are not objects:
 
 ~~~ scala
-scala> 123.toShort // this is how we define a `Short` in Scala
-res1: Short = 123
+123.toShort // this is how we define a `Short` in Scala
+// res: Short = 123
 
-scala> 123.toByte // and this is how we define a `Byte`
-res2: Byte = 123
+123.toByte // and this is how we define a `Byte`
+// res: Byte = 123
 ~~~
 
 But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes---Scala methods can have symbolic names as well as alphanumeric ones!
 
 ~~~ scala
-scala> 43 - 3 + 2
-res18: Int = 42
+43 - 3 + 2
+// res: Int = 42
 
-scala> 43.-(3).+(2)
-res20: Int = 42
+43.-(3).+(2)
+// res: Int = 42
 ~~~
 
 <div class="callout callout-warning">
@@ -104,8 +102,8 @@ Note that `a b c d e` is equivalent to `a.b(c).d(e)`, not `a.b(c, d, e)`.
 We can use *infix operator notation* with any method that takes one parameter, regardless of whether it has a symbolic or alphanumeric name:
 
 ~~~ scala
-scala> "the quick brown fox" split " "
-res0: Array[String] = Array(the, quick, brown, fox)
+"the quick brown fox" split " "
+// res: Array[String] = Array(the, quick, brown, fox)
 ~~~
 
 Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions instead of verbose method calls. There are also notations for *prefix*, *postfix*, *right-associative*, and *assignment-style operators*, but there are much less common than infix notation.
@@ -113,14 +111,14 @@ Infix notation is one of several syntactic shorthands that allow us to write sim
 A question poses itself---what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
 
 ~~~ scala
-scala> 2 * 3 + 4 * 5
-res0: Int = 26
+2 * 3 + 4 * 5
+// res: Int = 26
 
-scala> (2 * 3) + (4 * 5)
-res1: Int = 26
+(2 * 3) + (4 * 5)
+// res: Int = 26
 
-scala> 2 * (3 + 4) * 5
-res2: Int = 70
+2 * (3 + 4) * 5
+// res: Int = 70
 ~~~
 
 ### Take home points
