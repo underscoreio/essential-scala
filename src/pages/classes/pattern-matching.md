@@ -26,11 +26,11 @@ Notice the syntax for a pattern (`Person("Luke", "Skywalker")`) matches the synt
 Here it is in use:
 
 ~~~ scala
-scala> Stormtrooper.inspect(Person("Noel", "Welsh"))
-res0: String = Move along, Noel
+Stormtrooper.inspect(Person("Noel", "Welsh"))
+// res: String = Move along, Noel
 
-scala> Stormtrooper.inspect(Person("Han", "Solo"))
-res2: String = Stop, rebel scum!
+Stormtrooper.inspect(Person("Han", "Solo"))
+// res: String = Stop, rebel scum!
 ~~~
 
 <div class="callout callout-info">

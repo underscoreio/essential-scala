@@ -5,24 +5,15 @@ Sometimes we want to create a method that logically belongs to a class but is in
 One common use case is auxiliary constructors. Although Scala does have syntax that lets us define multiple constructors for a class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the *companion object* of the class. For example:
 
 ~~~ scala
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
-
 class Timestamp(val seconds: Long)
 
 object Timestamp {
   def apply(hours: Int, minutes: Int, seconds: Int) =
     new Timestamp(hours*60*60 + minutes*60 + seconds)
 }
-^D
 
-// Exiting paste mode, now interpreting.
-
-defined class Timestamp
-defined module Timestamp
-
-scala> Timestamp(1, 1, 1).seconds
-res2: Long = 3661
+Timestamp(1, 1, 1).seconds
+// res: Long = 3661
 ~~~
 
 <div class="alert alert-info">
@@ -38,8 +29,8 @@ As we saw earlier, Scala has two namespaces: a space of *type names* and a space
 It is important to note that *the companion object is not an instance of the class*---it is a singleton object with its own type:
 
 ~~~ scala
-scala> Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
-res3: Timestamp.type = Timestamp$@602b24e6
+Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
+// res: Timestamp.type = Timestamp$@602b24e6
 ~~~
 
 <div class="callout callout-info">
@@ -77,11 +68,11 @@ Implement a companion object for `Person` containing an `apply` method that acce
 Tip: you can split a `String` into an `Array` of components as follows:
 
 ~~~ scala
-scala> val parts = "John Doe".split(" ")
-parts: Array[String] = Array(John, Doe)
+val parts = "John Doe".split(" ")
+// parts: Array[String] = Array(John, Doe)
 
-scala> parts(0)
-res36: String = John
+parts(0)
+// res: String = John
 ~~~
 
 <div class="solution">
@@ -99,11 +90,11 @@ object Person {
 And here it is in use:
 
 ~~~ scala
-scala> Person.apply("John Doe").firstName // full method call
-res6: String = John
+Person.apply("John Doe").firstName // full method call
+// res: String = John
 
-scala> Person("John Doe").firstName // sugared apply syntax
-res7: String = John
+Person("John Doe").firstName // sugared apply syntax
+// res: String = John
 ~~~
 </div>
 
