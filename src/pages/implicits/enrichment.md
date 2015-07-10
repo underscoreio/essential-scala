@@ -1,6 +1,6 @@
 ## Enriched Interfaces
 
-A second type of type class interface, called **type enrichment**[^pimping] allow us to create
+A second type of type class interface, called *type enrichment*[^pimping] allow us to create
  interfaces that act as if they were methods defined on the classes of interest. For example, suppose we have a method called `numberOfVowels`:
 
 ~~~ scala
@@ -11,10 +11,10 @@ numberOfVowels("the quick brown fox")
 // res: Int = 5
 ~~~
 
-[^pimping]: Type enrichment is sometimes referred to as pimping, but we will not use that term.
+[^pimping]: Type enrichment is sometimes referred to as pimping in older literature. We will not use that term.
 
 
-This is a method that we use all the time. It would be great if `numberOfVowels` was a built-in method of `String` so we could write `"a string".numberOfVowels`, but of course we can't change the source code for `String`. Scala has a feature called called **implicit classes** that allow us to add new functionality to an existing class without editing its source code. This is a similar concept to *categories* in Objective C or *extension methods* in C#, but the implementation is different in each case.
+This is a method that we use all the time. It would be great if `numberOfVowels` was a built-in method of `String` so we could write `"a string".numberOfVowels`, but of course we can't change the source code for `String`. Scala has a feature called called *implicit classes* that allow us to add new functionality to an existing class without editing its source code. This is a similar concept to *categories* in Objective C or *extension methods* in C#, but the implementation is different in each case.
 
 ### Implicit Classes
 
@@ -44,11 +44,11 @@ implicit class ExtraStringMethods(str: String) { /* ... */ }
 // res: Int = 5
 ~~~
 
-When the compiler process our call to `numberOfVowels`, it interprets it as a type error because there is no such method in `String`. Rather than give up, the compiler attempts to fix the error searching for an implicit class that provides the method and can be constructed from a `String`. It finds `ExtraStringMethods`. The compiler then inserts an invisible constructor call, and our code type checks correctly.
+When the compiler processes our call to `numberOfVowels`, it interprets it as a type error because there is no such method in `String`. Rather than give up, the compiler attempts to fix the error by searching for an implicit class that provides the method and can be constructed from a `String`. It finds `ExtraStringMethods`. The compiler then inserts an invisible constructor call, and our code type checks correctly.
 
 Implicit classes follow the same scoping rules as implicit values. Like implicit values, they must be defined within an enclosing object, class, or trait (except when writing Scala at the console).
 
-There is one additional restriction for implicit classes: only a single implicit class with be used to resolve a type error. The compiler will not look to construct a chain of implicit classes to access the desired method. 
+There is one additional restriction for implicit classes: only a single implicit class will be used to resolve a type error. The compiler will not look to construct a chain of implicit classes to access the desired method. 
 
 ## Combining Type Classes and Type Enrichment
 
@@ -72,9 +72,9 @@ This gives us many benefits. We can extend existing types to give them new funct
 
 ### Take Home Points
 
-**Implicit classes** are a Scala language feature that allows us to define extra functionality on existing data types without using conventional inheritance. This is a programming pattern called **type enrichment**. 
+*Implicit classes* are a Scala language feature that allows us to define extra functionality on existing data types without using conventional inheritance. This is a programming pattern called *type enrichment*. 
 
-The Scala compiler uses implicit classes to **fix type errors in our code**. When it encounters us accessing a method or field that doesn't exist, it looks through the available implicits to find some code it can insert to fix the error.
+The Scala compiler uses implicit classes to *fix type errors in our code*. When it encounters us accessing a method or field that doesn't exist, it looks through the available implicits to find some code it can insert to fix the error.
 
 The rules for implicit classes are the same as for implicit values, with the additional restriction that only a single implicit class will be used to fix a type error.
 
@@ -85,16 +85,16 @@ The rules for implicit classes are the same as for implicit values, with the add
 Use your newfound powers to add a method `yeah` to `Int`, which prints `Oh yeah!` as many times as the `Int` on which it is called if the `Int` is positive, and is silent otherwise. Here's an example of usage:
 
 ~~~ scala
-scala> 2.yeah
-Oh yeah!
-Oh yeah!
+2.yeah
+// Oh yeah!
+// Oh yeah!
 
-scala> 3.yeah
-Oh yeah!
-Oh yeah!
-Oh yeah!
+3.yeah
+// Oh yeah!
+// Oh yeah!
+// Oh yeah!
 
-scala> -1.yeah
+-1.yeah
 
 ~~~
 
@@ -117,7 +117,7 @@ import IntImplicits._
 
 The solution uses a `for` comprehension and a range to iterate through the correct number of iterations. Remember that the range `0 until n` is the same as `0 to n-1`---it contains all numbers from `0` inclusive to `n` exclusive.
 
-The names `IntImplicits` and `IntOps` are quite vague -- we would probably name them something more specific in a production codebase. However, for this exercise they will suffice.
+The names `IntImplicits` and `IntOps` are quite vague---we would probably name them something more specific in a production codebase. However, for this exercise they will suffice.
 </div>
 
 #### Times
@@ -125,10 +125,10 @@ The names `IntImplicits` and `IntOps` are quite vague -- we would probably name 
 Extend your previous example to give `Int` an extra method called `times` that accepts a function of type `Int => Unit` as an argument and executes it `n` times. Example usage:
 
 ~~~ scala
-scala> 3.times(i => println(s"Look - it's the number $i!"))
-Look - it's the number 0!
-Look - it's the number 1!
-Look - it's the number 2!
+3.times(i => println(s"Look - it's the number $i!"))
+// Look - it's the number 0!
+// Look - it's the number 1!
+// Look - it's the number 2!
 ~~~
 
 For bonus points, re-implement `yeah` in terms of `times`.
@@ -157,7 +157,7 @@ trait Equal[A] {
 }
 ~~~
 
-Implement an enrichment so we can use this type class via ` triple equal (`===`) method. For example, if the correct implicits are in scope the following should work.
+Implement an enrichment so we can use this type class via a triple equal (`===`) method. For example, if the correct implicits are in scope the following should work.
 
 ~~~ scala
 "abcd".===("ABCD") // Assumes case-insensitive equality implicit

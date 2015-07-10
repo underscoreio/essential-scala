@@ -14,38 +14,38 @@ Imagine we want to sort a `List` of `Int`s. There are many different ways to sor
 Let's define some `Ordering`s and see them in action.
 
 ~~~ scala
-scala> import scala.math.Ordering
+import scala.math.Ordering
 
-scala> val minOrdering = Ordering.fromLessThan[Int](_ < _)
-minOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$9@787f32b7
+val minOrdering = Ordering.fromLessThan[Int](_ < _)
+// minOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$9@787f32b7
 
-scala> val maxOrdering = Ordering.fromLessThan[Int](_ > _)
-maxOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$9@4bf324f9
+val maxOrdering = Ordering.fromLessThan[Int](_ > _)
+// maxOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$9@4bf324f9
 
-scala> List(3, 4, 2).sorted(minOrdering)
-res9: List[Int] = List(2, 3, 4)
+List(3, 4, 2).sorted(minOrdering)
+// res: List[Int] = List(2, 3, 4)
 
-scala> List(3, 4, 2).sorted(maxOrdering)
-res10: List[Int] = List(4, 3, 2)
+List(3, 4, 2).sorted(maxOrdering)
+// res: List[Int] = List(4, 3, 2)
 ~~~
 
-Here we define two orderings: `minOrdering`, which sorts from lowest to highest, and `maxOrdering`, which sorts from highest to lowest. When we call `sorted` we pass the `Ordering` we want to use. These implementations of a type class are called **type class instances**.
+Here we define two orderings: `minOrdering`, which sorts from lowest to highest, and `maxOrdering`, which sorts from highest to lowest. When we call `sorted` we pass the `Ordering` we want to use. These implementations of a type class are called *type class instances*.
 
 The type class pattern separates the implementation of functionality (the type class instance, an `Ordering[A]` in our example) from the type the functionality is provided for (the `A` in an `Ordering[A]`). *This is the basic pattern for type classes.* Everything else we will see just provides extra convenience.
 
 
 ## Implicit Values
 
-It can be inconvenient to continually pass the type class instance to a method when we want to repeatedly use the same instance. Scala provides a convenience, called an **implicit value**, that allows us to get the compiler to pass the type class instance for us. Here's an example of use:
+It can be inconvenient to continually pass the type class instance to a method when we want to repeatedly use the same instance. Scala provides a convenience, called an *implicit value*, that allows us to get the compiler to pass the type class instance for us. Here's an example of use:
 
 ~~~ scala
-scala> implicit val ordering = Ordering.fromLessThan[Int](_ < _)
+implicit val ordering = Ordering.fromLessThan[Int](_ < _)
 
 scala> List(2, 4, 3).sorted
-res1: List[Int] = List(2, 3, 4)
+// res: List[Int] = List(2, 3, 4)
 
-scala> List(1, 7 ,5).sorted
-res2: List[Int] = List(1, 5, 7)
+List(1, 7 ,5).sorted
+// res: List[Int] = List(1, 5, 7)
 ~~~
 
 Note we didn't supply an ordering to `sorted`. Instead, the compiler provides it for us.
@@ -70,20 +70,20 @@ An implicit value must be declared within a surrounding object, class, or trait.
 What happens when multiple implicit values are in scope? Let's ask the console.
 
 ~~~ scala
-scala> implicit val minOrdering = Ordering.fromLessThan[Int](_ < _)
+implicit val minOrdering = Ordering.fromLessThan[Int](_ < _)
 
-scala> implicit val maxOrdering = Ordering.fromLessThan[Int](_ > _)
+implicit val maxOrdering = Ordering.fromLessThan[Int](_ > _)
 
-scala> List(3,4,5).sorted
- <console>:12: error: ambiguous implicit values:
- both value ordering of type => scala.math.Ordering[Int]
- and value minOrdering of type => scala.math.Ordering[Int]
- match expected type scala.math.Ordering[Int]
-                List(3,4,5).sorted
-                            ^
+List(3,4,5).sorted
+//  <console>:12: error: ambiguous implicit values:
+//  both value ordering of type => scala.math.Ordering[Int]
+//  and value minOrdering of type => scala.math.Ordering[Int]
+//  match expected type scala.math.Ordering[Int]
+//                 List(3,4,5).sorted
+//                             ^
 ~~~
 
-The rule is simple. The compiler will signal an error if there is any ambiguity in which implicit value should be used.
+The rule is simple: the compiler will signal an error if there is any ambiguity in which implicit value should be used.
 
 
 ## Take Home Points

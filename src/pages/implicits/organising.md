@@ -3,13 +3,13 @@ layout: page
 title: Organising Type Class Instances
 ---
 
-In section we'll learn about the places the compiler searches for type class instances (implicit values), known as the **implicit scope**, and we'll discuss how to organise type class instances to make their use more convenient.
+In section we'll learn about the places the compiler searches for type class instances (implicit values), known as the *implicit scope*, and we'll discuss how to organise type class instances to make their use more convenient.
 
 ## Implicit Scope
 
-When the compiler tries to find an implicit value to supply as an implicit parameter it searches within the implicit scope. The implicit scope is composed of several parts, and there are rules that prioritise some parts over others. 
+The compiler searches the implicit scope when it tries to find an implicit value to supply as an implicit parameter. The implicit scope is composed of several parts, and there are rules that prioritise some parts over others. 
 
-The first part of the implicit scope is the normal scope where other identifiers are found. This includes identifiers declared in the local scope, within any enclosing class, object, or trait, or `import`ed from elsewhere. An eligible implicit value must be a single identifier (i.e. `a`, not `a.b`). This is referred to as the **local scope**.
+The first part of the implicit scope is the normal scope where other identifiers are found. This includes identifiers declared in the local scope, within any enclosing class, object, or trait, or `import`ed from elsewhere. An eligible implicit value must be a single identifier (i.e. `a`, not `a.b`). This is referred to as the *local scope*.
 
 The implicit scope also includes the companion objects of types involved in the method call with the implicit parameter. Let's look at `sorted` for example. The signature for `sorted`, defined on `List[A]`, is
 
@@ -102,7 +102,7 @@ When defining a type class instance, if
 1. there is a single instance for the type; and
 2. you can edit the code for the type that you are defining the instance for
 
-then **define the type class instance in the companion object of the type**.
+then *define the type class instance in the companion object of the type*.
 </div>
 
 ## Implicit Priority
@@ -147,7 +147,7 @@ When defining a type class instance, if
 1. there is a single good default instance for the type; and
 2. you can edit the code for the type that you are defining the instance for
 
-then **define the type class instance in the companion object of the type**. This allows users to override the instance by defining one in the local scope whilst still providing sensible default behaviour.
+then *define the type class instance in the companion object of the type*. This allows users to override the instance by defining one in the local scope whilst still providing sensible default behaviour.
 </div>
 
 ## Packaging Implicit Values Without Companion Objects
@@ -206,7 +206,7 @@ We have a requirement to order `Order`s in three different ways:
 Implement and package implicits to provide these orderings, and justify your packaging.
 
 <div class="solution">
-By implementation is below. I decided that ordering by `totalPrice` is likely to be the most common choice, and therefore should be the default. Thus I placed it in the companion object for `Order`. The other two orderings I placed in objects so the user could explicitly import them.
+My implementation is below. I decided that ordering by `totalPrice` is likely to be the most common choice, and therefore should be the default. Thus I placed it in the companion object for `Order`. The other two orderings I placed in objects so the user could explicitly import them.
 
 ~~~ scala
 final case class Order(units: Int, unitPrice: Double) {
