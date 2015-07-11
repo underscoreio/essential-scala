@@ -369,7 +369,7 @@ class Director(
   def copy(
     firstName: String = this.firstName,
     lastName: String = this.lastName,
-    yearOfBirth: Int = this.yearOfBirth) =
+    yearOfBirth: Int = this.yearOfBirth): Director =
     new Director(firstName, lastName, yearOfBirth)
 }
 
@@ -389,7 +389,7 @@ class Film(
     name: String = this.name,
     yearOfRelease: Int = this.yearOfRelease,
     imdbRating: Double = this.imdbRating,
-    director: Director = this.director) =
+    director: Director = this.director): Film =
     new Film(name, yearOfRelease, imdbRating, director)
 }
 ~~~

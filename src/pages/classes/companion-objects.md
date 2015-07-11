@@ -8,7 +8,7 @@ One common use case is auxiliary constructors. Although Scala does have syntax t
 class Timestamp(val seconds: Long)
 
 object Timestamp {
-  def apply(hours: Int, minutes: Int, seconds: Int) =
+  def apply(hours: Int, minutes: Int, seconds: Int): Timestamp =
     new Timestamp(hours*60*60 + minutes*60 + seconds)
 }
 
@@ -80,7 +80,7 @@ Here is the code:
 
 ~~~ scala
 object Person {
-  def apply(name: String) = {
+  def apply(name: String): Person = {
     val parts = name.split(" ")
     new Person(parts(0), parts(1))
   }
@@ -136,7 +136,7 @@ class Director(
 }
 
 object Director {
-  def apply(firstName: String, lastName: String, yearOfBirth: Int) =
+  def apply(firstName: String, lastName: String, yearOfBirth: Int): Director =
     new Director(firstName, lastName, yearOfBirth)
 
   def older(director1: Director, director2: Director): Director =
@@ -168,7 +168,7 @@ object Film {
     name: String,
     yearOfRelease: Int,
     imdbRating: Double,
-    director: Director) =
+    director: Director): Film =
     new Film(name, yearOfRelease, imdbRating, director)
 
   def newer(film1: Film, film2: Film): Film =
