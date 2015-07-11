@@ -250,7 +250,7 @@ Tips:
 
  - A `List[String]` can be converted back to a `String` with the code `list.mkString(" ")`.
 
-This extractor isn't particularly useful, and in general defining your own extractors is not common in Scala. However it can be a useful tool in certain cirucmstances.
+This extractor isn't particularly useful, and in general defining your own extractors is not common in Scala. However it can be a useful tool in certain circumstances.
 
 <div class="solution">
 The model solution splits the string into a list of words and maps over the list, manipulating each word before re-combining the words into a string.
