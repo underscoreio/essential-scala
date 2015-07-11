@@ -2,7 +2,7 @@
 # Used by Pandoc to print covers:
 title: Essential Scala
 author: "Noel Welsh and Dave Gurnell"
-date: "July 2015"
+date: "Version 1.0, July 2015"
 # Used by Pandoc to generate the PDF cover...
 # see src/css/book.css for HTML/ePub covers:
 coverColor: "E8515B"
