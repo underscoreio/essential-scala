@@ -69,6 +69,8 @@ pages:
   - src/pages/implicits/conversions.md
   - src/pages/implicits/json.md
 
+  - src/pages/conclusions.md
+
   - src/pages/start-of-appendix.md
 
   - src/pages/pattern-matching/index.md
