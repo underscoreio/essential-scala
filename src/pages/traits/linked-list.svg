@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="320px" height="248px" viewBox="0 0 320 248" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <title>linked-list</title>
+    <description>Created with Sketch (http://www.bohemiancoding.com/sketch)</description>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <path d="M83.0135135,37.7799401 L19.6824933,69.4121832" id="Line" stroke="#979797" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+        <path d="M83.0135135,37.7799401 L145.41016,68.9454884" id="Line" stroke="#979797" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+        <text id="a:-Pair" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="60.696197" y="25">a: Pair</tspan>
+        </text>
+        <text id="head" fill="#676767" sketch:type="MSTextLayer" transform="translate(50.027027, 43.500000) rotate(335.000000) translate(-50.027027, -43.500000) " font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="33.6912631" y="49" fill="#000000">head</tspan>
+        </text>
+        <text id="tail" fill="#676767" sketch:type="MSTextLayer" transform="translate(117.027027, 44.500000) rotate(27.000000) translate(-117.027027, -44.500000) " font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="107.19224" y="50" fill="#000000">tail</tspan>
+        </text>
+        <text id="head" fill="#676767" sketch:type="MSTextLayer" transform="translate(112.027027, 111.500000) rotate(335.000000) translate(-112.027027, -111.500000) " font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="95.6912631" y="117" fill="#000000">head</tspan>
+        </text>
+        <text id="tail" fill="#676767" sketch:type="MSTextLayer" transform="translate(179.027027, 112.500000) rotate(27.000000) translate(-179.027027, -112.500000) " font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="169.19224" y="118" fill="#000000">tail</tspan>
+        </text>
+        <text id="head" fill="#676767" sketch:type="MSTextLayer" transform="translate(173.027027, 178.500000) rotate(335.000000) translate(-173.027027, -178.500000) " font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="156.691263" y="184" fill="#000000">head</tspan>
+        </text>
+        <text id="tail" fill="#676767" sketch:type="MSTextLayer" transform="translate(240.027027, 179.500000) rotate(27.000000) translate(-240.027027, -179.500000) " font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="230.19224" y="185" fill="#000000">tail</tspan>
+        </text>
+        <path d="M144.635135,105.648204 L81.3041149,137.280447" id="Line" stroke="#979797" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+        <path d="M144.635135,105.648204 L207.031781,136.813752" id="Line" stroke="#979797" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+        <text id="b:-Pair" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="121.864694" y="92.8682635">b: Pair</tspan>
+        </text>
+        <path d="M206.256757,173.516467 L142.925737,205.14871" id="Line" stroke="#979797" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+        <path d="M206.256757,173.516467 L268.653403,204.682015" id="Line" stroke="#979797" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+        <text id="c:-Pair" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="184.580065" y="160.736527">c: Pair</tspan>
+        </text>
+        <text id="d:-End" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="236.031808" y="230.065868">d: End</tspan>
+        </text>
+        <text id="1" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="15.6055649" y="92.8682635">1</tspan>
+        </text>
+        <text id="2" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="76.1461055" y="160.736527">2</tspan>
+        </text>
+        <text id="3" sketch:type="MSTextLayer" font-family="Open Sans" font-size="16" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="139.308268" y="230.065868">3</tspan>
+        </text>
+    </g>
+</svg>

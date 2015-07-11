@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800px" height="440px" viewBox="0 0 800 440" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <title>scala-type-hierarchy</title>
+    <description>Created with Sketch (http://www.bohemiancoding.com/sketch)</description>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <text id="Any" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="384.299447" y="23">Any</tspan>
+        </text>
+        <text id="AnyVal" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="169.66237" y="112">AnyVal</tspan>
+        </text>
+        <text id="Int" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="29.8336263" y="211" fill="#000000">Int</tspan>
+            <tspan x="6.98990886" y="232.425781" font-size="12" line-spacing="9" letter-spacing="-0.0302083343" fill="#4A4A4A">= java int</tspan>
+        </text>
+        <text id="Double" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="118.990983" y="211" fill="#000000">Double</tspan>
+            <tspan x="98.8096354" y="232.425781" font-size="12" line-spacing="9" letter-spacing="-0.0302083343" fill="#4A4A4A">= java double</tspan>
+        </text>
+        <text id="Boolean" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="219.744444" y="211" fill="#000000">Boolean</tspan>
+            <tspan x="199.54056" y="232.425781" font-size="12" line-spacing="9" letter-spacing="-0.0302083343" fill="#4A4A4A">= java boolean</tspan>
+        </text>
+        <text id="Array[T]" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="522.736187" y="211" fill="#000000">Array[T]</tspan>
+            <tspan x="509.862891" y="232.425781" font-size="12" line-spacing="9" letter-spacing="-0.0302083343" fill="#4A4A4A">= java array</tspan>
+        </text>
+        <text id="All-Java" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="629.689312" y="211">All Java</tspan>
+            <tspan x="621.984679" y="231.330078" line-spacing="10">classes</tspan>
+        </text>
+        <text id="All-Scala" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="732.138574" y="211">All Scala</tspan>
+            <tspan x="727.984679" y="231.330078" line-spacing="10">classes</tspan>
+        </text>
+        <text id="java.lang.String" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="397.125694" y="211">java.lang.String</tspan>
+        </text>
+        <text id="AnyRef" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="583.664909" y="112" fill="#000000">AnyRef</tspan>
+            <tspan x="551" y="133.425781" font-size="12" line-spacing="9" letter-spacing="-0.0302083343" fill="#4A4A4A">= java.lang.Object</tspan>
+        </text>
+        <text id="Nothing" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="300.448546" y="405" fill="#000000">Nothing</tspan>
+            <tspan x="282.967578" y="426.425781" font-size="12" line-spacing="9" letter-spacing="-0.05" fill="#4A4A4A">type of throw</tspan>
+        </text>
+        <text id="Null" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="460.45574" y="331" fill="#000000">Null</tspan>
+            <tspan x="435.842969" y="352.425781" font-size="12" line-spacing="9" letter-spacing="-0.05" fill="#4A4A4A">type of null</tspan>
+        </text>
+        <text id="Unit" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567">
+            <tspan x="318.436209" y="212" fill="#000000">Unit</tspan>
+            <tspan x="296.108008" y="233.425781" font-size="12" line-spacing="9" letter-spacing="-0.05" fill="#4A4A4A">~ java void</tspan>
+        </text>
+        <text id="etc…" sketch:type="MSTextLayer" font-family="Open Sans" font-size="14" font-weight="normal" sketch:alignment="middle" letter-spacing="-0.0352430567" fill="#000000">
+            <tspan x="175.350271" y="275">etc…</tspan>
+        </text>
+        <path d="M397.516355,32.5 L191.483645,92.5" id="Line" stroke="#979797" stroke-linecap="round" stroke-linejoin="round" sketch:type="MSShapeGroup"></path>
+        <path id="Line-decoration-1" d="M201.581939,86.4345946 C198.246281,88.4996089 195.387145,90.2696211 192.051487,92.3346353 C195.974307,92.2858653 199.336725,92.2440624 203.259545,92.1952923" stroke="#979797" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M397.483645,32.5 L603.516355,91.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path id="Line-decoration-1" d="M592.005937,91.3244321 C595.928937,91.3556276 599.291508,91.3823667 603.214507,91.4135622 C599.869632,89.3635123 597.002595,87.6063267 593.65772,85.5562767" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M191.482456,121.339261 L245.517544,189.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path id="Line-decoration-1" d="M235.848019,182.131838 C239.019076,184.441664 241.737125,186.421515 244.908182,188.731342 C243.382746,185.116934 242.075228,182.01887 240.549792,178.404462" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M191.637747,121.322284 L333.516892,190.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path id="Line-decoration-1" d="M321.734439,188.092696 C325.592256,188.805535 328.898957,189.416541 332.756775,190.129381 C329.819307,187.528962 327.301477,185.300031 324.364009,182.699611" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M136.482456,121.339261 L190.517544,189.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup" transform="translate(163.500000, 155.500000) scale(-1, 1) translate(-163.500000, -155.500000) "></path>
+        <path id="Line-decoration-1" d="M180.848019,182.131838 C184.019076,184.441664 186.737125,186.421515 189.908182,188.731342 C188.382746,185.116934 187.075228,182.01887 185.549792,178.404462" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M46.6377472,120.322284 L188.516892,189.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup" transform="translate(117.500000, 155.000000) scale(-1, 1) translate(-117.500000, -155.000000) "></path>
+        <path id="Line-decoration-1" d="M176.734439,187.092696 C180.592256,187.805535 183.898957,188.416541 187.756775,189.129381 C184.819307,186.528962 182.301477,184.300031 179.364009,181.699611" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M606.514793,142.5 L443.485207,192.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path id="Line-decoration-1" d="M453.432447,186.311333 C450.126462,188.423527 447.292761,190.233979 443.986776,192.346172 C447.908508,192.241678 451.269992,192.152111 455.191724,192.047616" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M606.515873,142.5 L546.484127,191.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path id="Line-decoration-1" d="M553.333997,182.036411 C551.069597,185.240064 549.128682,187.986052 546.864282,191.189704 C550.456583,189.612913 553.535699,188.261378 557.128,186.684587" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M606.477778,142.5 L648.522222,190.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path id="Line-decoration-1" d="M638.615612,183.743177 C641.896093,185.894768 644.707934,187.738989 647.988415,189.89058 C646.28762,186.355301 644.829795,183.325062 643.129,179.789783" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M606.483974,142.5 L756.516026,189.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path id="Line-decoration-1" d="M745.101644,189.068017 C749.022678,189.19603 752.383565,189.305755 756.3046,189.433767 C753.011342,187.301784 750.188549,185.474371 746.895291,183.342388" stroke="#979797" stroke-linecap="round"></path>
+        <path d="M326.8865,389.179343 L266.13314,353.314509" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path d="M327.83544,389.096786 L300.123646,353.365891" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path d="M326.91973,388.957072 L355.085304,353.406882" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path d="M327.046982,389.008454 L452.515385,329.5" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path d="M471.812074,315.179343 L371.220445,279.314509" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path d="M472.735528,315.096786 L428.198716,279.365891" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path d="M473.870994,314.957072 L519.137096,279.406882" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+        <path d="M474.077876,315.008454 L572.184555,279.328942" id="Line" stroke="#979797" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+    </g>
+</svg>

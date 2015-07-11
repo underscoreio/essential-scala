@@ -8,3 +8,12 @@ Thumbs.db
 
 .rbenv-version
 .rvmrc
+/bower_components/
+/dist/
+/essential-scala/
+/essential-scala.zip
+/node_modules/
+
+essential-scala.sublime-workspace
+core-scala.sublime-workspace
+essential-scala
