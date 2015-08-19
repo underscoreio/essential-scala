@@ -2,7 +2,7 @@
   "name": "essesntial-scala",
   "version": "1.0.0",
   "devDependencies": {
-    "underscore-ebook-template": "git+https://github.com/underscoreio/underscore-ebook-template.git#0.0.15"
+    "underscore-ebook-template": "git+https://github.com/underscoreio/underscore-ebook-template.git#0.0.16"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
