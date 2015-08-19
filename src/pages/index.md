@@ -1,4 +1,4 @@
-# Foreword
+# Foreword #{-}
 
 This book is aimed to programmer learning Scala for the first time. We assume you have some familiarity with an object-oriented programming language such as Java, but little or no experience with functional programming.
 
@@ -8,7 +8,7 @@ Except for a few exercises we don't rely on any external libraries. You should b
 
 Essential Scala was created by [Noel Welsh](http://noelwelsh.com) and [Dave Gurnell](http://davegurnell.com/) of [Underscore](http://underscore.io). It was built using [Underscore's eBook Template](https://github.com/underscoreio/underscore-ebook-template), plain text, and a deep and profound love of functional programming.
 
-## Conventions Used in This Book
+## Conventions Used in This Book #{-}
 
 This book contains a lot of technical information and program code. We use the following typographical conventions to reduce ambiguity and highlight important concepts:
 
