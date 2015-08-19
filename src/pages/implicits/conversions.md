@@ -2,10 +2,12 @@
 
 So far we have seen two programming patterns using implicits: *type enrichment*, which we implement using *implicit classes*, and *type classes*, which we implement using *implicit values and parameter lists*.
 
-Scala has a third implicit mechanism called **implicit conversions** that we will cover here for completeness. Implicit conversions can be seen as a more general form of implicit classes, and can be used in a wider variety of contexts.
+Scala has a third implicit mechanism called *implicit conversions* that we will cover here for completeness. Implicit conversions can be seen as a more general form of implicit classes, and can be used in a wider variety of contexts.
 
 <div class="alert alert-warning">
-**Here be dragons:** As we shall see later in this section, undisciplined use of implicit conversions can cause as many problems as it fixes for the beginning programmer. Scala even requires us to write a special import statement to silence compiler warnings resulting from the use of implicit conversions:
+**Here be dragons**
+
+As we shall see later in this section, undisciplined use of implicit conversions can cause as many problems as it fixes for the beginning programmer. Scala even requires us to write a special import statement to silence compiler warnings resulting from the use of implicit conversions:
 
 ~~~ scala
 import scala.language.implicitConversions
@@ -88,22 +90,22 @@ object IntImplicits {
 The code still works the same way it did previously. The implicit conversion is not available until we bring it into scope:
 
 ~~~ scala
-scala> 5.yeah
-<console>:8: error: value yeah is not a member of Int
-              5.yeah
-                ^
+5.yeah
+// <console>:8: error: value yeah is not a member of Int
+//               5.yeah
+//                 ^
 ~~~
 
 Once the conversion has been brought into scope, we can use `yeah` and `times` as usual:
 
 ~~~ scala
-scala> import IntImplicits._
+import IntImplicits._
 
-scala> 5.yeah
-Oh yeah!
-Oh yeah!
-Oh yeah!
-Oh yeah!
-Oh yeah!
+5.yeah
+// Oh yeah!
+// Oh yeah!
+// Oh yeah!
+// Oh yeah!
+// Oh yeah!
 ~~~
 </div>

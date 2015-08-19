@@ -1,42 +1,42 @@
 ## Generics
 
-Generic types allow us to **abstract over types**. There are useful for all sorts of data structures, but commonly encountered in collections so that's where we'll start.
+Generic types allow us to *abstract over types*. There are useful for all sorts of data structures, but commonly encountered in collections so that's where we'll start.
 
 ### Pandora's Box
 
 Let's start with a collection that is even simpler than our list---a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
 ~~~ scala
-scala> case class Box[A](value: A)
-defined class Box
+final case class Box[A](value: A)
 
-scala> Box(2)
-res0: Box[Int] = Box(2)
+Box(2)
+// res0: Box[Int] = Box(2)
 
-scala> res0.value
-res1: Int = 2
+res0.value
+// res1: Int = 2
 
-scala> Box("hi") // if we omit the type parameter, scala will infer its value
-res2: Box[String] = Box(hi)
+Box("hi") // if we omit the type parameter, scala will infer its value
+// res2: Box[String] = Box(hi)
 
-scala> res2.value
-res3: String = hi
+res2.value
+// res3: String = hi
 ~~~
 
-The syntax `[A]` is called a **type parameter**. Type parameters work in a way analagous to method parameters. When we call a method with bind the method's parameter names to the values given in the method call. When we "invoke" a class with a generic type, but creating an instance of the class, we bind the type parameters to concrete types. Wherever a type parameter occurs in class we substitute in the concrete type.
-
-We can also add type parameters to methods, which limits the scope of the parameter to the method declaration and body:
+The syntax `[A]` is called a *type parameter*. We can also add type parameters to methods, which limits the scope of the parameter to the method declaration and body:
 
 ~~~ scala
-scala> def generic[A](in: A): A = in
-generic: [A](in: A)A
+def generic[A](in: A): A = in
 
-scala> generic[String]("foo")
-res10: String = foo
+generic[String]("foo")
+// res: String = foo
 
-scala> generic(1) // again, if we omit the type parameter, scala will infer it
-res11: Int = 1
+generic(1) // again, if we omit the type parameter, scala will infer it
+/ res: Int = 1
 ~~~
+
+Type parameters work in a way analogous to method parameters. When we call a method we bind the method's parameter names to the values given in the method call. For example, when we call `generic(1)` the name `in` is bound to the value `1` within the body of `generic`.
+
+When we call a method or construct a class with a type parameter, the type parameter is bound to the concrete type within the method or class body. So when we call `generic(1)` the type parameter `A` is bound to `Int` in the body of `generic`.
 
 <div class="callout callout-info">
 #### Type Parameter Syntax
@@ -59,7 +59,7 @@ def name[A](...){ ... }
 
 ### Generic Algebraic Data Types
 
-We described type parameters as analogous to method parameters, and this analogy continues when extending a trait that has type parameters. Extending a trait, as we do in a sum type, is the type level equivalent of calling a method and we must supply values for an type parameters of the trait we're extending.
+We described type parameters as analogous to method parameters, and this analogy continues when extending a trait that has type parameters. Extending a trait, as we do in a sum type, is the type level equivalent of calling a method and we must supply values for any type parameters of the trait we're extending.
 
 In previous sections we've seen sum types like the following:
 
@@ -79,7 +79,7 @@ case class Success[A](result: A) extends Result[A]
 case class Failure[A](reason: String) extends Result[A]
 ~~~
 
-Notice that both `Success` and `Failure` introduce a type parameter `A` which is passed to `Result` when it is extended. `Success` also has a value of type `A`, but `Failure` only introduces `A` so it can pass it onward to `Result`. In a later section we'll introduce **variance**, giving us a cleaner way to implement this, but for now this is the pattern we'll use.
+Notice that both `Success` and `Failure` introduce a type parameter `A` which is passed to `Result` when it is extended. `Success` also has a value of type `A`, but `Failure` only introduces `A` so it can pass it onward to `Result`. In a later section we'll introduce *variance*, giving us a cleaner way to implement this, but for now this is the pattern we'll use.
 
 <div class="callout callout-info">
 #### Invariant Generic Sum Type Pattern
@@ -121,7 +121,7 @@ final case class End[A]() extends LinkedList[A]
 
 #### Working With Generic Types
 
-There isn't much we can do with our `LinkedList` type. Remember that types define the available operations, and with a generic type like `A` there isn't a concrete type to define any available operations. (Remember generic types are made concrete when a class is instantiated, which is too late to make use of the information.)
+There isn't much we can do with our `LinkedList` type. Remember that types define the available operations, and with a generic type like `A` there isn't a concrete type to define any available operations. (Generic types are made concrete when a class is instantiated, which is too late to make use of the information in the definition of the class.)
 
 However, we can still do some useful things with our `LinkedList`! Implement `length`, returning the length of the `LinkedList`. Some test cases are below.
 
@@ -155,6 +155,8 @@ val example = Pair(1, Pair(2, Pair(3, Empty())))
 assert(example.contains(3) == true)
 assert(example.contains(4) == false)
 assert(Empty().contains(0) == false)
+// This should not compile
+// example.contains("not an Int")
 ~~~
 
 <div class="solution">

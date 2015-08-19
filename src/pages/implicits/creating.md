@@ -11,13 +11,13 @@ There are four components of the type class pattern:
 - interfaces using implicit parameters; and
 - interfaces using enrichment and implicit parameters.
 
-We have already seen type class instances and talked briefly about implicit parameters. Here we will look at defining our own type class, and in the following section we will look at the two interface styles.
+We have already seen type class instances and talked briefly about implicit parameters. Here we will look at defining our own type class, and in the following section we will look at the two styles of interface.
 
 ## Creating a Type Class
 
 Let's start with an example---converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
 
-The obvious implementation it to implement `toHtml` using a simple trait we `extend` wherever we want this functionality:
+One implementation strategy is to create a trait we `extend` wherever we want this functionality:
 
 ~~~ scala
 trait HtmlWriteable {
@@ -47,7 +47,7 @@ object HtmlWriter {
 }
 ~~~
 
-This implementation has its own issues. We have lost type safety because there is no useful supertype that covers just the elements we want to render. We can't have more than one implemnetation of rendering for a given type. We also have to modify this code whenever we want to render a new type.
+This implementation has its own issues. We have lost type safety because there is no useful supertype that covers just the elements we want to render and no more. We can't have more than one implemnetation of rendering for a given type. We also have to modify this code whenever we want to render a new type.
 
 We can overcome all of these problems by moving our HTML rendering to an adapter class:
 
@@ -96,7 +96,7 @@ You might recognise `PersonWriter`, `DateWriter`, and `ObfuscatedPersonWriter` a
 <div class="callout callout-info">
 #### Type Class Pattern
 
-A type class is a trait with at least one type variable. The type variables specify the concrete types the instances are defined for. Methods in the trait usually use the type variables.
+A type class is a trait with at least one type variable. The type variables specify the concrete types the type class instances are defined for. Methods in the trait usually use the type variables.
 
 ~~~ scala
 trait ExampleTypeClass[A] {

@@ -2,7 +2,7 @@
 
 In this section we have an extended example involving serializing Scala data to JSON, which is one of the classic use cases for type classes. The typical process for converting data to JSON in Scala involves two steps. First we convert our data types to an intermediate case class representation, then we serialize the intermediate representation to a string.
 
-Here is a suitable case class representation of a subset of the JSON language. We have a `sealed trait JsValue` that defines a `stringify` method, and a set of subtypes for two of the main JSON data types -- objects and strings:
+Here is a suitable case class representation of a subset of the JSON language. We have a `sealed trait JsValue` that defines a `stringify` method, and a set of subtypes for two of the main JSON data types---objects and strings:
 
 ~~~ scala
 sealed trait JsValue {
@@ -25,11 +25,11 @@ You should recognise this as the algebraic data type pattern.
 We can construct JSON objects and serialize them as follows:
 
 ~~~ scala
-scala> JsObject(Map("foo" -> JsString("a"), "bar" -> JsString("b"), "baz" -> JsString("c")))
-res4: JsObject = JsObject(Map(foo -> JsString(a), bar -> JsString(b), baz -> JsString(c)))
+JsObject(Map("foo" -> JsString("a"), "bar" -> JsString("b"), "baz" -> JsString("c")))
+// res: JsObject = JsObject(Map(foo -> JsString(a), bar -> JsString(b), baz -> JsString(c)))
 
-scala> res4.stringify
-res5: String = {"foo":"a","bar":"b","baz":"c"}
+res4.stringify
+// res: String = {"foo":"a","bar":"b","baz":"c"}
 ~~~
 
 ### Convert X to JSON

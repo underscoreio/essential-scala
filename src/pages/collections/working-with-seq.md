@@ -1,51 +1,51 @@
 ## Working with Sequences
 
-In the [previous section](#seq) we looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences---how functional programming allows us to process every element of a sequence at once in a terse and declarative style.
+In the [previous section](#seq) we looked at the basic operations on sequences. Now we're going to look at practical aspects of working with sequences---how functional programming allows us to process sequences in a terse and declarative style.
 
 ### Bulk Processing of Elements
 
-When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. In Java we have to do this using loops. Scala gives us a number of powerful options that allow us to solve many problems more elegantly.
+When working with sequences we often want to deal with the collection as a whole, rather than accessing and manipulating individual elements. Scala gives us a number of powerful options that allow us to solve many problems more directly.
 
-### map
+### Map
 
-Let's start with something simple---suppose we want to double every element of a sequence. In Java we would do this using a `for` or a `while` loop. However, this requires writing several lines of looping machinery for only one line of actual doubling functionality.
+Let's start with something simple---suppose we want to double every element of a sequence. You might wish to express this as a loop. However, this requires writing several lines of looping machinery for only one line of actual doubling functionality.
 
-In Scala we can use the `map` method that exists on every sequence. `map` takes a function and applies it to every element, creating a sequence of the results. To double every element we can write:
+In Scala we can use the `map` method defined on any sequence. `Map` takes a function and applies it to every element, creating a sequence of the results. To double every element we can write:
 
 ~~~ scala
-scala> val sequence = Seq(1, 2, 3)
-sequence: Seq[Int] = List(1, 2, 3)
+val sequence = Seq(1, 2, 3)
+// sequence: Seq[Int] = List(1, 2, 3)
 
-scala> sequence.map(elt => elt * 2)
-res0: Seq[Int] = List(2, 4, 6)
+sequence.map(elt => elt * 2)
+// res: Seq[Int] = List(2, 4, 6)
 ~~~
 
 If we use *placeholder syntax* we can write this even more compactly:
 
 ~~~ scala
-scala> sequence.map(_ * 2)
-res1: Seq[Int] = List(2, 4, 6)
+sequence.map(_ * 2)
+// res: Seq[Int] = List(2, 4, 6)
 ~~~
 
 Given a sequence with type `Seq[A]`, the function we pass to `map` must have type `A => B` and we get a `Seq[B]` as a result. This isn't right for every situation. For example, suppose we have a sequence of strings, and we want to generate a sequence of all the permutations of those strings. We can call the `permutations` method on a string to get all permutations of it:
 
 ~~~ scala
-scala> "dog".permutations
-res12: Iterator[String] = non-empty iterator
+"dog".permutations
+// res: Iterator[String] = non-empty iterator
 ~~~
 
-This returns an `Iterable`, which is a bit like a Java `Iterator`. We're going to look at Iterables in more detail later. For now all we need to know is tha we can call the `toList` method to convert an `Iterable` to a `List`.
+This returns an `Iterable`, which is a bit like a Java `Iterator`. We're going to look at iterables in more detail later. For now all we need to know is that we can call the `toList` method to convert an `Iterable` to a `List`.
 
 ~~~ scala
-scala> "dog".permutations.toList
-res13: List[String] = List(dog, dgo, odg, ogd, gdo, god)
+"dog".permutations.toList
+// res: List[String] = List(dog, dgo, odg, ogd, gdo, god)
 ~~~
 
-Thus we could write:
+Thus we could write
 
 ~~~ scala
-scala> Seq("a", "wet", "dog").map(_.permutations.toList)
-res14: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), List(dog, dgo, odg, ogd, ↩
+Seq("a", "wet", "dog").map(_.permutations.toList)
+// res: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), List(dog, dgo, odg, ogd, ↩
                                                                                              gdo, god))
 ~~~
 
@@ -61,46 +61,44 @@ but we end up with a sequence of sequences. Let's look at the types in more deta
 | `???`  | `Seq[A]`      | `A => Seq[B]`            | `Seq[B]`            |
 +--------+---------------+--------------------------+---------------------+
 
-
-
 What is the method `???` that we can use to collect a single flat sequence?
 
-### flatMap
+### FlatMap
 
 Our mystery method above is called `flatMap`. If we simply replace `map` with `flatMap` we get the answer we want:
 
 ~~~ scala
-scala> Seq("a", "wet", "dog").flatMap(_.permutations.toList)
-res15: Seq[String] = List(a, wet, wte, ewt, etw, twe, tew, dog, dgo, odg, ogd, gdo, god)
+Seq("a", "wet", "dog").flatMap(_.permutations.toList)
+// res: Seq[String] = List(a, wet, wte, ewt, etw, twe, tew, dog, dgo, odg, ogd, gdo, god)
 ~~~
 
 `flatMap` is similar to `map` except that it expects our function to return a sequence. The sequences for each input element are appended together. For example:
 
 ~~~ scala
-scala> Seq(1, 2, 3).flatMap(num => Seq(num, num * 10))
-res16: List[Int] = List(1, 10, 2, 20, 3, 30)
+Seq(1, 2, 3).flatMap(num => Seq(num, num * 10))
+// res: List[Int] = List(1, 10, 2, 20, 3, 30)
 ~~~
 
 The end result is (nearly) always the same type as the original sequence: `aList.flatMap(...)` returns another `List`, `aVector.flatMap(...)` returns another `Vector`, and so on:
 
 ~~~ scala
-scala> import scala.collection.immutable.Vector
+import scala.collection.immutable.Vector
 
-scala> Vector(1, 2, 3).flatMap(num => Seq(num, num * 10))
-res17: scala.collection.immutable.Vector[Int] = Vector(1, 10, 2, 20, 3, 30)
+Vector(1, 2, 3).flatMap(num => Seq(num, num * 10))
+// res: scala.collection.immutable.Vector[Int] = Vector(1, 10, 2, 20, 3, 30)
 ~~~
 
-### foldLeft and foldRight
+### Folds
 
 Now let's look at another kind of operation. Say we have a `Seq[Int]` and we want to add all the numbers together. `map` and `flatMap` don't apply here for two reasons:
 
- - they expect a *unary* function, whereas `+` is a *binary* operation;
- - they both return sequences of items, whereas we want to return a single `Int`.
+1. they expect a *unary* function, whereas `+` is a *binary* operation;
+2. they both return sequences of items, whereas we want to return a single `Int`.
 
-There are also two further wrinkles:
+There are also two further wrinkles to consider.
 
- - what result do we expect if the sequence is empty? If we're adding items together then `0` seems like a natural result, but what is the answer in general?
- - although `+` is associative (i.e. `a+b == b+a`), in general we may need to specify an order in which to pass arguments to our binary function.
+1. What result do we expect if the sequence is empty? If we're adding items together then `0` seems like a natural result, but what is the answer in general?
+2. Although `+` is commutative (i.e. `a+b == b+a`), in general we may need to specify an order in which to pass arguments to our binary function.
 
 Let's make another type table to see what we're looking for:
 
@@ -111,7 +109,7 @@ Let's make another type table to see what we're looking for:
 +--------+------------+-----------------------------+----------+
 
 
-The methods that fit the bill are called folds, with two common cases `foldLeft` and `foldRight` correspond to the order the fold is applied. The job of these methods is to traverse a sequence and accumulate a result. The types are as follows:
+The methods that fit the bill are called folds, with two common cases `foldLeft` and `foldRight` corresponding to the order the fold is applied. The job of these methods is to traverse a sequence and accumulate a result. The types are as follows:
 
 +-------------+----------+-----------------------+----------+
 | Method      | We have  | We provide            | We get   |
@@ -134,7 +132,7 @@ Given the sequence `Seq(1, 2, 3)`, `0`, and `+` the methods calculate the follow
 
 As we know from studying algebraic data types, the fold methods are very flexible. We can write *any* transformation on a sequence in terms of fold.
 
-### foreach
+### Foreach
 
 There is one more traversal method that is commonly used: `foreach`. Unlike `map`, `flatMap` and the `fold`s, `foreach` does not return a useful result---we use it purely for its side-effects. The type table is:
 
@@ -144,11 +142,10 @@ There is one more traversal method that is commonly used: `foreach`. Unlike `map
 | `foreach` | `Seq[A]` | `A => Unit` | `Unit`   |
 +-----------+----------+-------------+----------+
 
-
-A great example using `foreach` is printing the elements of a sequence:
+A common example of using `foreach` is printing the elements of a sequence:
 
 ~~~ scala
-scala> List(1, 2, 3).foreach(num => println("And a " + num + "..."))
+List(1, 2, 3).foreach(num => println("And a " + num + "..."))
 And a 1...
 And a 2...
 And a 3...
@@ -171,8 +168,6 @@ We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `fo
 +----------+-----------------------+-----------+-------------+
 | `Seq[A]` | `B` and `(A, B) => B` | `B`       | `foldRight` |
 +----------+-----------------------+-----------+-------------+
-
-
 
 This type of analysis may see foreign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
 
@@ -221,7 +216,7 @@ Tip: you can concisely find the minimum of two numbers `a` and `b` using `math.m
 There are a number of ways to do this. We can sort the list of films and then retrieve the smallest element.
 
 ~~~ scala
-McTiernan.fils.sortWith { (a, b) =>
+McTiernan.films.sortWith { (a, b) =>
   a.yearOfRelease < b.yearOfRelease
 }.headOption
 ~~~
@@ -417,11 +412,11 @@ def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
 Write your own implementation of `foldLeft` that uses `foreach` and mutable state. Remember you can create a mutable variable using the `var` keyword, and assign a new value using `=`. For example
 
 ~~~ scala
-scala> var mutable = 1
+var mutable = 1
 var mutable = 1
 mutable: Int = 1
 
-scala> mutable = 2
+mutable = 2
 mutable = 2
 mutable: Int = 2
 ~~~

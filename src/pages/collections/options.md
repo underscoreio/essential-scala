@@ -35,42 +35,42 @@ final case object None extends Option[Nothing] {
 }
 ~~~
 
-Here is a typical item of code for generating an option---reading an integer from the user:
+Here is a typical example of code for generating an option---reading an integer from the user:
 
 ~~~ scala
 def readInt(str: String): Option[Int] =
   if(str matches "\\d+") Some(str.toInt) else None
 ~~~
 
-The `toInt` method of `String` throws a `NumberFormatException` if the string isn't a valid series of digits, so we have to guard its use with a regular expression. If the number is correctly formatted we return `Some` of the `Int` result. Otherwise we return `None`. Example usage:
+The `toInt` method of `String` throws a `NumberFormatException` if the string isn't a valid series of digits, so we guard its use with a regular expression. If the number is correctly formatted we return `Some` of the `Int` result. Otherwise we return `None`. Example usage:
 
 ~~~ scala
-scala> readInt("123")
-res7: Option[Int] = Some(123)
+readInt("123")
+// res: Option[Int] = Some(123)
 
-scala> readInt("abc")
-res8: Option[Int] = None
+readInt("abc")
+// res: Option[Int] = None
 ~~~
 
 ### Extracting Values from Options
 
-There are several ways to safely extract the value in an option without the risk of throwing any exceptions:
+There are several ways to safely extract the value in an option without the risk of throwing any exceptions.
 
 **Alternative 1: the `getOrElse` method**---useful if we want to fall back to a default value:
 
 ~~~ scala
-scala> readInt("abc").getOrElse(0)
-res9: Int = 0
+readInt("abc").getOrElse(0)
+// res: Int = 0
 ~~~
 
 **Alternative 2: pattern matching**---`Some` and `None` both have associated patterns that we can use in a `match` expression:
 
 ~~~ scala
-scala> readInt("123") match {
-         case Some(number) => number + 1
-         case None         => 0
-       }
-res10: Int = 124
+readInt("123") match {
+  case Some(number) => number + 1
+  case None         => 0
+}
+// res: Int = 124
 ~~~
 
 **Alternative 3: `map` and `flatMap`**---`Option` supports both of these methods, enabling us to chain off of the value within producing a new `Option`. This bears a more explanation---let's look at it in a little more detail.
@@ -98,20 +98,20 @@ sealed trait Option[+A] {
 }
 ~~~
 
-Because of the limited size of `0` or `1`, there is a bit of redundancy here: `filter` and `find` effectively do the same thing, and `foldLeft` and `foldRight` only differ int the order of their arguments. However, these methods give us a lot flexibility for manipulating optional values. For example, we can use `map` and `flatMap` to define optional versions of common operations:
+Because of the limited size of `0` or `1`, there is a bit of redundancy here: `filter` and `find` effectively do the same thing, and `foldLeft` and `foldRight` only differ in the order of their arguments. However, these methods give us a lot flexibility for manipulating optional values. For example, we can use `map` and `flatMap` to define optional versions of common operations:
 
 ~~~ scala
-scala> def sum(optionA: Option[Int], optionB: Option[Int]): Option[Int] =
-         optionA.flatMap(a => optionB.map(b => a + b))
+def sum(optionA: Option[Int], optionB: Option[Int]): Option[Int] =
+  optionA.flatMap(a => optionB.map(b => a + b))
 
-scala> sum(readInt("1"), readInt("2"))
-res12: Option[Int] = Some(3)
+sum(readInt("1"), readInt("2"))
+// res: Option[Int] = Some(3)
 
-scala> sum(readInt("1"), readInt("b"))
-res13: Option[Int] = None
+sum(readInt("1"), readInt("b"))
+// res: Option[Int] = None
 
-scala> sum(readInt("a"), readInt("2"))
-res14: Option[Int] = None
+sum(readInt("a"), readInt("2"))
+// res: Option[Int] = None
 ~~~
 
 The implementation of `sum` looks complicated at first, so let's break it down:
@@ -129,15 +129,15 @@ Although `map` and `flatMap` don't allow us to *extract* values from our `Option
 We can use `map` and `flatMap` in combination with pattern matching or `getOrElse` to combine several `Options` and yield a single non-optional result:
 
 ~~~ scala
-scala> sum(readInt("1"), readInt("b")).getOrElse(0)
-res17: Int = 0
+sum(readInt("1"), readInt("b")).getOrElse(0)
+// res: Int = 0
 ~~~
 
 It's worth noting that `Option` and `Seq` are also compatible in some sense. We can turn a `Seq[Option[A]]` into a `Seq[A]` using `flatMap`:
 
 ~~~ scala
-scala> Seq(readInt("1"), readInt("b"), readInt("3")).flatMap(x => x)
-res18: Seq[Int] = List(1, 3)
+Seq(readInt("1"), readInt("b"), readInt("3")).flatMap(x => x)
+// res: Seq[Int] = List(1, 3)
 ~~~
 
 ## Options as Flow Control
@@ -164,13 +164,11 @@ Let's stop to think about this block of code for a moment. There are three ways 
     optionA.flatMap(a => optionB.map(b => a + b))
     ~~~
 
- 2. We can think of `optionA` and `optionB` as sequences of zero or one elements, in which case the is going to be a flattened sequence of length `optionA.length * optionB.length`[^option-length]. If either `optionA` or `optionB` is `None` then the result is of length `0`.
+ 2. We can think of `optionA` and `optionB` as sequences of zero or one elements, in which case the result is going to be a flattened sequence of length `optionA.size * optionB.size`. If either `optionA` or `optionB` is `None` then the result is of length `0`.
 
  3. We can think of each clause in the for comprehension as an expression that says: *if this clause results in a `Some`, extract the value and continue... if it results in a `None`, exit the for comprehension and return `None`*.
 
 Once we get past the initial foreignness of using for comprehensions to "iterate through" options, we find a useful control structure that frees us from excessive use of `map` and `flatMap`.
-
-[^option-length]: Note that `Option` doesn't actually have a `length` method---this example is for illustrative purposes only.
 
 ### Exercises
 

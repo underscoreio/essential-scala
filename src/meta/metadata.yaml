@@ -2,7 +2,7 @@
 # Used by Pandoc to print covers:
 title: Essential Scala
 author: "Noel Welsh and Dave Gurnell"
-date: "Pre-Release, April 2015"
+date: "Version 1.0, July 2015"
 # Used by Pandoc to generate the PDF cover...
 # see src/css/book.css for HTML/ePub covers:
 coverColor: "E8515B"
@@ -69,14 +69,13 @@ pages:
   - src/pages/implicits/conversions.md
   - src/pages/implicits/json.md
 
+  - src/pages/conclusions.md
+
+  - src/pages/start-of-appendix.md
+
   - src/pages/pattern-matching/index.md
   - src/pages/pattern-matching/extractors.md
   
-  - src/pages/dsl/index.md
-  - src/pages/dsl/operators.md
-  - src/pages/dsl/control.md
-  - src/pages/dsl/macros.md
-
   - src/pages/collections-redux/index.md
   - src/pages/collections-redux/seq-implementations.md
   - src/pages/collections-redux/arrays-and-strings.md

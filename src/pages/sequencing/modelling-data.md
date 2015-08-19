@@ -1,6 +1,6 @@
 ## Modelling Data with Generic Types
 
-In this section we'll see the additional power the generic types give us when modelling data. We see that with generic types we can implement **generic sum and product types**, and also model some other useful abstractions such as **optional values**.
+In this section we'll see the additional power the generic types give us when modelling data. We see that with generic types we can implement *generic sum and product types*, and also model some other useful abstractions such as *optional values*.
 
 ### Generic Product Types
 
@@ -24,7 +24,7 @@ case class BooleanAndDouble(booleanValue: Boolean, doubleValue: Double)
 def booleanAndDouble: BooleanAndDouble = // ...
 ~~~
 
-The answer is to use generics to create a **product type**---for example a `Pair`---that contains the relevant data for *both* return types:
+The answer is to use generics to create a *product type*---for example a `Pair`---that contains the relevant data for *both* return types:
 
 ~~~ scala
 def intAndString: Pair[Int, String] = // ...
@@ -39,14 +39,14 @@ Generics provide a different approach to defining product types--- one that reli
 Implement the `Pair` class from above. It should store two values---`one` and `two`---and be generic in both arguments. Example usage:
 
 ~~~ scala
-scala> val pair = Pair[String, Int]("hi", 2)
-pair: Pair[String,Int] = Pair(hi,2)
+val pair = Pair[String, Int]("hi", 2)
+// pair: Pair[String,Int] = Pair(hi,2)
 
-scala> pair.one
-res13: String = hi
+pair.one
+// res: String = hi
 
-scala> pair.two
-res14: Int = 2
+pair.two
+// res: Int = 2
 ~~~
 
 <div class="solution">
@@ -61,72 +61,72 @@ This is just the product type pattern we have seen before, but we introduce gene
 Note that we don't always need to specify the type parameters when we construct `Pairs`. The compiler will attempt to infer the types as usual wherever it can:
 
 ~~~ scala
-scala> val pair = Pair("hi", 2)
-pair: Pair[String,Int] = Pair(hi,2)
+val pair = Pair("hi", 2)
+// pair: Pair[String,Int] = Pair(hi,2)
 ~~~
 </div>
 
 ### Tuples
 
-A *tuple* is the generalisation of a pair to any number of terms. Scala includes built-in generic tuple types with up to 22 elements, along with special syntax for creating them. With these classes we can represent any kind of *this and that* relationship between any number of terms.
+A *tuple* is the generalisation of a pair to more terms. Scala includes built-in generic tuple types with up to 22 elements, along with special syntax for creating them. With these classes we can represent any kind of *this and that* relationship between almost any number of terms.
 
 The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they can also be written in the sugared[^sugar] form `(A, B, C, ...)`. For example:
 
 [^sugar]: The term "syntactic sugar" is used to refer to convenience syntax that is not needed but makes programming sweeter. Operator syntax is another example of syntactic sugar that Scala provides.
 
 ~~~ scala
-scala> Tuple2("hi", 1) // unsugared syntax
-res19: (String, Int) = (hi,1)
+Tuple2("hi", 1) // unsugared syntax
+// res: (String, Int) = (hi,1)
 
-scala> ("hi", 1) // sugared syntax
-res19: (String, Int) = (hi,1)
+("hi", 1) // sugared syntax
+// res: (String, Int) = (hi,1)
 
-scala> ("hi", 1, true)
-res20: (String, Int, Boolean) = (hi,1,true)
+("hi", 1, true)
+// res: (String, Int, Boolean) = (hi,1,true)
 ~~~
 
 We can define methods that accept tuples as parameters using the same syntax:
 
 ~~~ scala
-scala> def tuplized[A, B](in: (A, B)) = in._1
-tuplized: [A, B](in: (A, B))A
+def tuplized[A, B](in: (A, B)) = in._1
+// tuplized: [A, B](in: (A, B))A
 
-scala> tuplized(("a", 1))
-res21: String = a
+tuplized(("a", 1))
+// res: String = a
 ~~~
 
 We can also pattern match on tuples as follows:
 
 ~~~ scala
-scala> (1, "a") match {
-         case (a, b) => a + b
-       }
-res3: String = 1a
+(1, "a") match {
+  case (a, b) => a + b
+}
+// res: String = 1a
 ~~~
 
 Although pattern matching is the natural way to deconstruct a tuple, each class also has a complement of fields named `_1`, `_2` and so on:
 
 ~~~ scala
-scala> val x = (1, "b", true)
-x: (Int, String, Boolean) = (1,b,true)
+val x = (1, "b", true)
+// x: (Int, String, Boolean) = (1,b,true)
 
-scala> x._1
-res5: Int = 1
+x._1
+// res: Int = 1
 
-scala> x._3
-res6: Boolean = true
+x._3
+// res: Boolean = true
 ~~~
 
 ### Generic Sum Types
 
-Now let's look at using generics to model a *sum type*. Again, we have previously implemented this using our algebraic data type pattern, factoring out the common aspects into a supertype. Generics allow us to abstract over this pattern, providing a, well, generic implementation.
+Now let's look at using generics to model a *sum type*. Again, we have previously implemented this using our algebraic data type pattern, factoring out the common aspects into a supertype. Generics allow us to abstract over this pattern, providing a ... well ... generic implementation.
 
 Consider a method that, depending on the value of its parameters, returns one of two types:
 
 ~~~ scala
-scala> def intOrString(input: Boolean) =
-         if(input == true) 123 else "abc"
-intOrString: (input: Boolean)Any
+def intOrString(input: Boolean) =
+  if(input == true) 123 else "abc"
+// intOrString: (input: Boolean)Any
 ~~~
 
 We can't simply write this method as shown above because the compiler infers the result type as `Any`. Instead we have to introduce a new type to explicitly represent the disjunction:
@@ -149,20 +149,20 @@ Implement a trait `Sum[A, B]` with two subtypes `Left` and `Right`. Create type 
 Hint: you will need to put both type parameters on all three types. Example usage:
 
 ~~~ scala
-scala> Left[Int, String](1).value
-res24: Int = 1
+Left[Int, String](1).value
+// res: Int = 1
 
-scala> Right[Int, String]("foo").value
-res25: String = foo
+Right[Int, String]("foo").value
+// res: String = foo
 
-scala> val sum: Sum[Int, String] = Right("foo")
-sum: Sum[Int,String] = Right(foo)
+val sum: Sum[Int, String] = Right("foo")
+// sum: Sum[Int,String] = Right(foo)
 
-scala> sum match {
-         case Left(x) => x.toString
-         case Right(x) => x
-       }
-res26: String = foo
+sum match {
+  case Left(x) => x.toString
+  case Right(x) => x
+}
+// res: String = foo
 ~~~
 
 <div class="solution">
@@ -189,11 +189,11 @@ We generally want to write robust programs, and in Scala we try to utilise the t
 Create a generic trait called `Maybe` of a generic type `A` with two subtypes, `Full` containing an `A`, and `Empty` containing no value. Example usage:
 
 ~~~ scala
-scala> val perhaps: Maybe[Int] = Empty[Int]
-perhaps: Maybe[Int] = Empty()
+val perhaps: Maybe[Int] = Empty[Int]
+// perhaps: Maybe[Int] = Empty()
 
-scala> val perhaps: Maybe[Int] = Full(1)
-perhaps: Maybe[Int] = Full(1)
+val perhaps: Maybe[Int] = Full(1)
+// perhaps: Maybe[Int] = Full(1)
 ~~~
 
 <div class="solution">
@@ -216,7 +216,7 @@ These abstractions are commonly used in Scala code and have implementations in t
 
 #### Generics versus Traits
 
-Sum types and product types are general concepts that allow us to model almost any kind of data structure. We have seen two methods of writing these types---traits and generics---when should we consider using each?
+Sum types and product types are general concepts that allow us to model almost any kind of data structure. We have seen two methods of writing these types---traits and generics. When should we consider using each?
 
 <div class="solution">
 Ultimately the decision is up to us. Different teams will adopt different programming styles. However, we look at the properties of each approach to inform our choices:

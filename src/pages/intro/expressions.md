@@ -7,15 +7,15 @@ We have almost finished our basic introduction to Scala. In this section we are 
 A conditional allows us to choose an expression to evaluate based on some condition. For example, we can choose a string based on which of two numbers is the smallest.
 
 ~~~
-scala> if(1 < 2) "Yes" else "No"
-res2: String = Yes
+if(1 < 2) "Yes" else "No"
+// res: String = Yes
 ~~~
 
 The expression that is not selected does not get evaluated. This is apparent if we use an expression with a side-effect.
 
 ~~~
-scala> if(1 < 2) println("Yes") else println("No")
-Yes
+if(1 < 2) println("Yes") else println("No")
+// Yes
 ~~~
 
 We can tell the expression `println("No")` is not evaluated because `No` is not output to the console.
@@ -53,16 +53,16 @@ Scala's `if` statement has the same syntax as Java's. One important difference i
 Blocks are expressions that allow us to sequence computations together. They are written as a pair of braces containing sub-expressions separated by semicolons or newlines.
 
 ~~~ scala
-scala> { 1; 2; 3 }
-<console>:8: warning: a pure expression does nothing in statement position; you may be omitting       ↩
-                      necessary parentheses
-              { 1; 2; 3 }
-                ^
-<console>:8: warning: a pure expression does nothing in statement position; you may be omitting       ↩
-                      necessary parentheses
-              { 1; 2; 3 }
-                   ^
-res0: Int = 3
+{ 1; 2; 3 }
+// warning: a pure expression does nothing in statement position; you may be omitting       ↩
+//          necessary parentheses
+//  { 1; 2; 3 }
+//    ^
+// warning: a pure expression does nothing in statement position; you may be omitting       ↩
+//          necessary parentheses
+//  { 1; 2; 3 }
+//       ^
+// res: Int = 3
 ~~~
 
 <div class="callout callout-info">
@@ -76,28 +76,27 @@ Why execute `1` and `2` if we're going to throw their values away? This is a goo
 One reason to use a block is to use code that produces side-effects before calculating a final value:
 
 ~~~ scala
-scala> {
-         println("This is a side-effect")
-         println("This is a side-effect as well")
-         3
-       }
-This is a side-effect
-This is a side-effect as well
-res1: Int = 3
+{
+  println("This is a side-effect")
+  println("This is a side-effect as well")
+  3
+}
+// This is a side-effect
+// This is a side-effect as well
+// res: Int = 3
 ~~~
 
 We can also use a block when we want to name intermediate results, such as
 
 ~~~ scala
-scala> def name: String = {
-         val title = "Professor"
-         val name = "Funkenstein"
-         title + " " + name
-       }
-name: String
+def name: String = {
+  val title = "Professor"
+  val name = "Funkenstein"
+  title + " " + name
+}
 
-scala> name
-res4: String = Professor Funkenstein
+name
+// res: String = Professor Funkenstein
 ~~~
 
 <div class="callout callout-info">

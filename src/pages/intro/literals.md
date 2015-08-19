@@ -3,8 +3,8 @@
 We have already covered some of Scala's basic types. In this section we're going to round out that knowledge by covering all of Scala's *literal expressions*. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
 ~~~ scala
-scala> 42
-res0: Int = 42
+42
+// res: Int = 42
 ~~~
 
 This interaction at the REPL shows us that the literal `42` evaluates to the `Int` `42`.
@@ -18,17 +18,17 @@ If you have prior programming experience, particularly Java experience, the lite
 Numbers share the same types available in Java: `Int` for 32-bit integers, `Double` for 64-bit floating point, `Float` for 32-bit floating point, and `Long` for 64-bit integers.
 
 ~~~ scala
-scala> 42
-res0: Int = 42
+42
+// res: Int = 42
 
-scala> 42.0
-res1: Double = 42.0
+42.0
+// res: Double = 42.0
 
-scala> 42.0f
-res2: Float = 42.0
+42.0f
+// res: Float = 42.0
 
-scala> 42L
-res3: Long = 42
+42L
+// res: Long = 42
 ~~~
 
 Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. Instead, we create them using methods called `toShort` and `toByte`.
@@ -38,11 +38,11 @@ Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no litera
 Booleans are exactly the same as Java: `true` or `false`.
 
 ~~~ scala
-scala> true
-res11: Boolean = true
+true
+// res: Boolean = true
 
-scala> false
-res12: Boolean = false
+false
+// res: Boolean = false
 ~~~
 
 ### Characters
@@ -50,8 +50,8 @@ res12: Boolean = false
 `Chars` are 16-bit Unicode values written as a single character enclosed in single quotes.
 
 ~~~ scala
-scala> 'a'
-res34: Char = a
+'a'
+// res: Char = a
 ~~~
 
 <div class="callout callout-info">
@@ -67,13 +67,13 @@ In Scala all of these types act like objects with methods and fields. However, o
 Strings are exactly Java's strings, and are written the same way.
 
 ~~~ scala
-scala> "this is a string"
-res8: java.lang.String = this is a string
+"this is a string"
+// res: java.lang.String = this is a string
 
-scala> "the\nusual\tescape characters apply"
-res9: java.lang.String =
-the
-    usual escape characters apply
+"the\nusual\tescape characters apply"
+// res: java.lang.String =
+// the
+//     usual escape characters apply
 ~~~
 
 ### Null
@@ -81,8 +81,8 @@ the
 Null is the same as Java, though not used nearly as often. Scala's `null` also has its own type: `Null`.
 
 ~~~ scala
-scala> null
-res13: Null = null
+null
+// res: Null = null
 ~~~
 
 <div class="callout callout-info">
@@ -100,16 +100,16 @@ Later we will see that Scala has the means to define optional values that *are* 
 Unit, written `()`, is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The console doesn't print unit but we can ask for the type of an expression to see that unit is in fact the result of some expressions.
 
 ~~~ scala
-scala> ()
+()
 
-scala> :type ()
-Unit
+:type ()
+// Unit
 
-scala> println("something")
-something
+println("something")
+// something
 
-scala> :type println("something")
-Unit
+:type println("something")
+// Unit
 ~~~
 
 Unit is an important concept in Scala. Many of Scala's syntactic constructs are *expressions* that have types and values. We need a placeholder for expressions that don't yield a useful value, and unit provides just that.

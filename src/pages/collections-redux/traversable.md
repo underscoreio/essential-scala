@@ -4,7 +4,7 @@ So far we've avoided discussing the finer details of the collection class hierar
 
 ### Traversable
 
-The trait `Traversable` sits at the top of the collection hierarchy and represents a collection that allows traversal of its contents. The only abstract operation is `foreach`. Most of the collection methods are implemented in `Traversable` though classes extending it may reimplement methods for performance.
+The trait `Traversable` sits at the top of the collection hierarchy and represents a collection that allows traversal of its contents. The only abstract operation is `foreach`. Most of the collection methods are implemented in `Traversable`, though classes extending it may reimplement methods for performance.
 
 #### TraversableOnce
 

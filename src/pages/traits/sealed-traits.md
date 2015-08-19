@@ -97,7 +97,7 @@ Finally, verify that the compiler complains when you comment out a `case` clause
 <div class="solution">
 ~~~ scala
 object Draw {
-  def apply(shape: Shape) = shape match {
+  def apply(shape: Shape): String = shape match {
     case Rectangle(width, height) =>
       s"A rectangle of width ${width}cm and height ${height}cm"
 
@@ -323,7 +323,7 @@ final case class Finite(value: Int) extends DivisionResult
 final case object Infinite extends DivisionResult
 
 object divide {
-  def apply(num: Int, den: Int) =
+  def apply(num: Int, den: Int): DivisionResult =
     if(den == 0) Infinite else Finite(num / den)
 }
 
@@ -363,7 +363,7 @@ Here are some useful tips:
 <div class="solution">
 ~~~ scala
 object Draw {
-  def apply(shape: Shape) = shape match {
+  def apply(shape: Shape): Unit = shape match {
     case Rectangle(width, height) =>
       val w = width.toInt
       val h = height.toInt

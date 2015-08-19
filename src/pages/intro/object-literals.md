@@ -7,8 +7,7 @@ When we write an object literal we use a *declaration*, which is a different kin
 We can declare an empty object as follows:
 
 ~~~ scala
-scala> object Test {}
-defined object Test
+object Test {}
 ~~~
 
 This is not an expression---it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object).
@@ -16,8 +15,8 @@ This is not an expression---it does not evaluate to a value. Rather, it binds a 
 Once we have bound the name `Test` we can use it in expressions, where it evaluates to the object we have declared. The simplest expression is just the name on its own, which evaluates to the value itself:
 
 ~~~ scala
-scala> Test
-res0: Test.type = Test$@1668bd43
+Test
+// res: Test.type = Test$@1668bd43
 ~~~
 
 This expression is equivalent to writing a literal like `123` or `"abc"`.
@@ -51,30 +50,29 @@ Let's see how to declare methods and fields.
 We interact with objects via methods so let's create an object with a method.
 
 ~~~ scala
-scala> object Test2 {
-         def name: String = "Probably the best object ever"
-       }
-defined object Test2
+object Test2 {
+  def name: String = "Probably the best object ever"
+}
 ~~~
 
 Here we've create a method called `name`. We can call it in the usual way.
 
 ~~~ scala
-scala> Test2.name
-res3: String = Probably the best object ever
+Test2.name
+// res: String = Probably the best object ever
 ~~~
 
 Here's an object with a more complex method:
 
 ~~~ scala
-scala> object Test3 {
-         def hello(name: String) =
-           "Hello " + name
-       }
+object Test3 {
+  def hello(name: String) =
+    "Hello " + name
+}
 defined object Test3
 
-scala> Test3.hello("Noel")
-res7: String = Hello Noel
+Test3.hello("Noel")
+// res: String = Hello Noel
 ~~~
 
 <div class="callout callout-info">
@@ -103,6 +101,8 @@ where
 - the `bodyExpression` is an expression that calling the method evaluates to.
 
 Method parameters are optional, but if a method has parameters their type must be given. Although the result type is optional it is good practice to define it as it serves as (machine checked!) documentation.
+
+The term *argument* may be used interchangably with *parameter*.
 </div>
 
 <div class="callout callout-info">
@@ -117,22 +117,14 @@ The return value of the method is determined by evaluating the body---there is n
 An object can also contain other objects, called *fields*. We introduce these using the keywords `val` or `var`, which look similar to `def`:
 
 ~~~ scala
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
-
 object Test4 {
   val name = "Noel"
-  def hello(other: String) =
+  def hello(other: String): String =
     name + " says hi to " + other
 }
-^D
 
-// Exiting paste mode, now interpreting.
-
-defined object Test4
-
-scala> Test4.hello("Dave")
-res8: String = Noel says hi to Dave
+Test4.hello("Dave")
+// res: String = Noel says hi to Dave
 ~~~
 
 <div class="callout callout-info">
@@ -169,17 +161,16 @@ You might wonder why we need fields when we can have methods of no arguments tha
 Here's an object that shows the difference:
 
 ~~~ scala
-scala> object Test7 {
-         val simpleField = {
-           println("Evaluating simpleField")
-           42
-         }
-         def noArgMethod = {
-           println("Evaluating noArgMethod")
-           42
-         }
-       }
-defined object Test7
+object Test7 {
+   val simpleField = {
+     println("Evaluating simpleField")
+     42
+   }
+   def noParameterMethod = {
+     println("Evaluating noParameterMethod")
+     42
+   }
+}
 ~~~
 
 Here we have used a `println` expression to print something to the console, and a block expression (expressions surrounded by `{` and `}`) to group expressions. We'll see more about block expressions in the next section.
@@ -191,9 +182,9 @@ Objects and classes (which we'll see later) aren't loaded until they are referen
 Let's force Scala to evaluate our object body by referencing `Test7` in an expression:
 
 ~~~ scala
-scala> Test7
-Evaluating simpleField
-res7: Test7.type = Test7$@b22e8c9
+Test7
+// Evaluating simpleField
+// res: Test7.type = Test7$@b22e8c9
 ~~~
 
 When the object is first loaded, Scala runs through its definitions and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
@@ -201,23 +192,23 @@ When the object is first loaded, Scala runs through its definitions and calculat
 *The body expression of a field is run only once* after which the final value is stored in the object. The expression is never evaluated again---notice the lack of `println` output below.
 
 ~~~ scala
-scala> Test7.simpleField
-res8: Int = 42
+Test7.simpleField
+// res: Int = 42
 
-scala> Test7.simpleField
-res9: Int = 42
+Test7.simpleField
+// res: Int = 42
 ~~~
 
 The body of a method, on the other hand, is evaluated every time we call the method---notice the repreated println output below.
 
 ~~~ scala
-scala> Test7.noArgMethod
-Evaluating noArgMethod
-res11: Int = 42
+Test7.noParameterMethod
+// Evaluating noParameterMethod
+// res: Int = 42
 
-scala> Test7.noArgMethod
-Evaluating noArgMethod
-res12: Int = 42
+Test7.noParameterMethod
+// Evaluating noParameterMethod
+// res: Int = 42
 ~~~
 
 ### Take home points
@@ -388,7 +379,7 @@ a
 c
 a
 a
-res1: String = 3c31
+// res: String = 3c31
 ~~~
 
 The full sequence of evaluation is as follows:
@@ -464,42 +455,40 @@ Are methods values? Are they expressions? Why might this be the case?
 First let's deal with the equivalence between methods and expressions. As we know, expressions are program fragments that produce values. A simple test of whether something is an expression is to see if we can assign it to a field.
 
 ~~~ scala
-scala> object calculator {
-     |   def square(x: Int) = x * x
-     | }
-defined object calculator
+object calculator {
+  def square(x: Int) = x * x
+}
 
-scala> val someField = calculator.square
-<console>:8: error: missing arguments for method square in object calculator;
-follow this method with `_' if you want to treat it as a partially applied function
-       val someField = calculator.square
-                                  ^
+val someField = calculator.square
+// error: missing arguments for method square in object calculator;
+// follow this method with `_' if you want to treat it as a partially applied function
+//        val someField = calculator.square
+//                                   ^
 ~~~
 
 Although we don't understand this error message fully yet (we shall learn about "partially applied functions" later), it does show us that `square` *is not an expression*. However, a *call* to `square` *does* yield a value:
 
 ~~~ scala
-scala> val someField = calculator.square(2)
-someField: Int = 4
+val someField = calculator.square(2)
+// someField: Int = 4
 ~~~
 
 A method with no arguments looks like it behaves differently. However, this is a trick of the syntax.
 
 ~~~ scala
-scala> object clock {
-     |   def time = System.currentTimeMillis
-     | }
-defined object clock
+object clock {
+  def time = System.currentTimeMillis
+}
 
-scala> val now = clock.time
-now: Long = 1395402828639
+val now = clock.time
+// now: Long = 1395402828639
 ~~~
 
 Although it looks like `now` is being assigned `clock.time` as a value, it is actually being assigned the *value returned by calling `clock.time`*. We can demonstrate this by calling the method again:
 
 ~~~ scala
-scala> val aBitLaterThanNow = clock.time
-aBitLaterThanNow: Long = 1395403220551
+val aBitLaterThanNow = clock.time
+// aBitLaterThanNow: Long = 1395403220551
 ~~~
 
 As we saw above, references to fields and calls to argumentless methods look identical in Scala. This is by design, to allow us to swap the implementation of a field for a method (and vice versa) without affecting other code. It is a programming language feature called the *[uniform access principle][uap1]*.

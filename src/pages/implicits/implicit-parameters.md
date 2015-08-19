@@ -12,7 +12,7 @@ object PersonWriter extends HtmlWriter[Person] {
 }
 ~~~
 
-This issue with this code is that we need manage a lot of `HtmlWriter` instances when we render any complex data. We have already seen that we can manage this complexity using implicit values and have mentioned **implicit parameters** in passing. In this section we go in depth on implicit parameters.
+This issue with this code is that we need manage a lot of `HtmlWriter` instances when we render any complex data. We have already seen that we can manage this complexity using implicit values and have mentioned *implicit parameters* in passing. In this section we go in depth on implicit parameters.
 
 ### Implicit Parameter Lists
 
@@ -31,11 +31,11 @@ The `htmlify` method accepts two arguments: some `data` to convert to HTML and a
 The `implicit` keyword applies to the *whole parameter list*, not just an individual parameter. This makes the parameter list optional---when we call `HtmlUtil.htmlify` we can either specify the list as normal
 
 ~~~ scala
-scala> HtmlUtil.htmlify(Person("John", "john@example.com"))(PersonWriter)
-res2: String = <span>John &lt;john@example.com&gt;</span>
+HtmlUtil.htmlify(Person("John", "john@example.com"))(PersonWriter)
+// res: String = <span>John &lt;john@example.com&gt;</span>
 ~~~
 
-or we can omit implicit parameters. If we omit implicit parameters, the compiler searches for implicit values of the correct type it can use to fill in the missing arguments. We have already learned about implicit values, but let's see a quick example to refresh our memory. First we define an implicit value.
+or we can omit the implicit parameters. If we omit the implicit parameters, the compiler searches for implicit values of the correct type it can use to fill in the missing arguments. We have already learned about implicit values, but let's see a quick example to refresh our memory. First we define an implicit value.
 
 ~~~ scala
 implicit object ApproximationWriter extends HtmlWriter[Int] {
@@ -44,11 +44,11 @@ implicit object ApproximationWriter extends HtmlWriter[Int] {
 }
 ~~~
 
-When we use `HtmlUtil` we don't have to specify the implicit value if one can be found.
+When we use `HtmlUtil` we don't have to specify the implicit parameter if an implicit value can be found.
 
 ~~~ scala
-scala> HtmlUtil.htmlify(2)
-res4: String = It's definitely less than 10
+HtmlUtil.htmlify(2)
+// res: String = It's definitely less than 10
 ~~~
 
 ## Interfaces Using Implicit Parameters

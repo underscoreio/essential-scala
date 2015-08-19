@@ -1,15 +1,15 @@
 # Type Classes
 
-**Type classes** are a powerful feature of Scala that allow us to extend existing libraries with new functionality, without using inheritance and without having access to the original library source code. In this chapter we will learn how to use and implement type classes, using a Scala feature called **implicits**.
+*Type classes* are a powerful feature of Scala that allow us to extend existing libraries with new functionality, without using inheritance and without having access to the original library source code. In this chapter we will learn how to use and implement type classes, using a Scala feature called *implicits*.
 
-In the [section on traits](../traits/working-with-data.html) we compared object oriented and functional style in terms of extensibility, using this table.
+In the section on traits we compared object oriented and functional style in terms of extensibility, using this table.
 
 +--------+-------------------------+-------------------------+
 |        | Add new method          | Add new data            |
 +========+=========================+=========================+
-| **OO** | Change existing code    | Existing code unchanged |
+| *OO* | Change existing code    | Existing code unchanged |
 +--------+-------------------------+-------------------------+
-| **FP** | Existing code unchanged | Change existing code    |
+| *FP* | Existing code unchanged | Change existing code    |
 +--------+-------------------------+-------------------------+
 
 

@@ -1,6 +1,6 @@
 ## Using Type Classes
 
-We have seen how to define type classes. In this section we'll see some conveniences for using them: **context bounds** and the **implicitly** method.
+We have seen how to define type classes. In this section we'll see some conveniences for using them: *context bounds* and the *implicitly* method.
 
 ### Context Bounds
 
@@ -45,17 +45,14 @@ It expands into a generic type parameter `[A]` along with an implicit parameter 
 Context bounds give us a short-hand syntax for declaring implicit parameters, but since we don't have an explicit name for the parameter we cannot use it in our methods. Normally we use context bounds when we don't need explicit access to the implicit parameter, but rather just implicitly pass it on to some other method. However if we do need access for some reason we can use the `implicitly` method.
 
 ~~~ scala
-scala> case class Example(name: String)
-defined class Example
+case class Example(name: String)
+implicit val implicitExample = Example("implicit")
 
-scala> implicit val implicitExample = Example("implicit")
-implicitExample: Example = Example(implicit)
+implicitly[Example]
+// res: Example = Example(implicit)
 
-scala> implicitly[Example]
-res4: Example = Example(implicit)
-
-scala> implicitly[Example] == implicitExample
-res5: Boolean = true
+implicitly[Example] == implicitExample
+// res: Boolean = true
 ~~~
 
 The `implicitly` method takes no parameters but has a generic type parameters. It returns the implicit matching the given type, assuming there is no ambiguity.
