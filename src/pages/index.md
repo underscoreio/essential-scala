@@ -12,7 +12,7 @@ Essential Scala was created by [Noel Welsh](http://noelwelsh.com) and [Dave Gurn
 
 This book contains a lot of technical information and program code. We use the following typographical conventions to reduce ambiguity and highlight important concepts:
 
-### Typographical Conventions
+### Typographical Conventions #{-}
 
 New terms and phrases are introduced in *italics*. After their initial introduction they are written in normal roman font.
 
@@ -20,7 +20,7 @@ Terms from program code, filenames, and file contents, are written in `monospace
 
 References to external resources are written as [hyperlinks][link-underscore]. References to API documentation are written using a combination of hyperlinks and monospace font, for example: [`Option`].
 
-### Source Code
+### Source Code #{-}
 
 Source code blocks are written as follows. Syntax is highlighted appropriately where applicable:
 
@@ -43,7 +43,7 @@ should actually be written as follows:
 println("This code should all be written on one line.")
 ~~~
 
-### Callout Boxes
+### Callout Boxes #{-}
 
 We use three types of *callout box* to highlight particular content:
 
