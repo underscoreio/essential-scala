@@ -149,7 +149,7 @@ This comes in doubly useful when used in combination with *default parameter val
 
 ~~~ scala
 def greet(firstName: String = "Some", lastName: String = "Body") =
-         "Greetings, " + firstName + " " + lastName + "!"
+  "Greetings, " + firstName + " " + lastName + "!"
 ~~~
 
 If a parameter has a default value we can omit it in the method call:
@@ -171,7 +171,7 @@ greet(lastName = "Dave")
 
 ~~~ scala
 def greet(title: String = "Citizen", firstName: String = "Some", lastName: String = "Body") =
-         "Greetings, " + title + " " + firstName + " " + lastName + "!"
+  "Greetings, " + title + " " + firstName + " " + lastName + "!"
 
 greet("Awesome") // this is now incorrect
 // res: String = Greetings, Awesome Some Body
@@ -497,4 +497,4 @@ public class MyActionListener implements ActionListener {
 ~~~
 
 The disadvantage of objects like `Adders` and `ActionListeners` is that they are limited to use in one particular circumstance. Scala includes a much more general concept called *functions* that allow us to represent any kind of computation as an object. We will be introduced to some of the concepts behind functions in this chapter.
-</div> 
+</div>
