@@ -34,7 +34,7 @@ Stormtrooper.inspect(Person("Han", "Solo"))
 ~~~
 
 <div class="callout callout-info">
-#### Pattern Matching Syntax
+#### Pattern Matching Syntax {-}
 
 The syntax of a pattern matching expression is
 

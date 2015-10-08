@@ -1,11 +1,8 @@
----
-layout: page
-title: Organising Type Class Instances
----
+## Organising Type Class Instances
 
 In section we'll learn about the places the compiler searches for type class instances (implicit values), known as the *implicit scope*, and we'll discuss how to organise type class instances to make their use more convenient.
 
-## Implicit Scope
+### Implicit Scope
 
 The compiler searches the implicit scope when it tries to find an implicit value to supply as an implicit parameter. The implicit scope is composed of several parts, and there are rules that prioritise some parts over others. 
 
@@ -95,7 +92,7 @@ object Example {
 This leads us to our first pattern for packaging type class instances.
 
 <div class="callout callout-info">
-#### Type Class Instance Packaging: Companion Objects
+#### Type Class Instance Packaging: Companion Objects {-}
 
 When defining a type class instance, if
 
@@ -105,7 +102,7 @@ When defining a type class instance, if
 then *define the type class instance in the companion object of the type*.
 </div>
 
-## Implicit Priority
+### Implicit Priority
 
 If we look in the [companion object for `Ordering`](http://www.scala-lang.org/api/current/#scala.math.Ordering$) we see some type class instances are already defined. In particular there is an instance for `Int`, yet we could define our own instances for `Ordering[Int]` (which we did in the previous section) and not have an issue with ambiguity.
 
@@ -140,7 +137,7 @@ object Example {
 Notice that `higherPriorityImplicit` defines a different ordering to the one defined in the companion object for `Rational`. We've also changed the expected ordering in `example` to match this new ordering. This code both compiles and runs correctly, illustrating the effect of the priority rules.
 
 <div class="callout callout-info">
-#### Type Class Instance Packaging: Companion Objects Part 2
+#### Type Class Instance Packaging: Companion Objects Part 2 {-}
 
 When defining a type class instance, if
 
@@ -150,7 +147,7 @@ When defining a type class instance, if
 then *define the type class instance in the companion object of the type*. This allows users to override the instance by defining one in the local scope whilst still providing sensible default behaviour.
 </div>
 
-## Packaging Implicit Values Without Companion Objects
+### Packaging Implicit Values Without Companion Objects
 
 If there is no good default instance for a type class instance, or if there are several good defaults, we should not place an type class instances in the companion object but instead require the user to explicitly import an instance into the local scope.
 
@@ -176,7 +173,7 @@ object RationalGreaterThanOrdering {
 
 In use the user would `import RationalLessThanOrdering._` or `import RationalGreaterThanOrdering._` as appropriate.
 
-## Take Home Points
+### Take Home Points
 
 The compiler looks for type class instances (implicit values) in two places:
 
@@ -187,7 +184,9 @@ Implicits found in the local scope take precedence over those found in companion
 
 When packaging type class instances, if there is a single instance or a single good default we should put it in the companion object if possible. Otherwise, one way to package implicits is to place each one in an object and require the user to explicitly import them.
 
-## Exercises
+### Exercises
+
+#### Ordering Orders
 
 Here is a case class to store orders of some arbitrary item.
 

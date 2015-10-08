@@ -51,7 +51,7 @@ HtmlUtil.htmlify(2)
 // res: String = It's definitely less than 10
 ~~~
 
-## Interfaces Using Implicit Parameters
+### Interfaces Using Implicit Parameters
 
 A complete use of the type class pattern requires an interface using implicit parameters, along with implicit type class instances. We've seen two examples already: the `sorted` method using `Ordering`, and the `htmlify` method above. The best interface depends on the problem being solved, but there is a pattern that occurs frequently enough that it is worth explaining here.
 
@@ -82,7 +82,7 @@ HtmlWriter[Person].write(Person("Noel", "noel@example.org"))
 The idea is to simply select a type class instance by type (done by the no-argument `apply` method) and then directly call the methods defined on that instance.
 
 <div class="callout callout-info">
-#### Type Class Interface Pattern
+#### Type Class Interface Pattern {-}
 
 If the desired interface to a type class `TypeClass` is exactly the methods defined on the type class trait, define an interface on the companion object using a no-argument `apply` method like
 
@@ -115,7 +115,7 @@ object TypeClass {
 
 ### Exercises
 
-#### Equality
+#### Equality Again
 
 In the previous section we defined a trait `Equal` along with some implementations for `Person`.
 

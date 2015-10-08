@@ -50,19 +50,6 @@ new Person("Noel", "Welsh") == new Person("Noel", "Welsh")
 // res: Boolean = true
 ~~~
 
-   <div class="callout callout-info">
-   The two expressions above are equivalent. Scala's `==` operator is different from Java's---it delegates to `equals` rather than comparing values on reference identity.
-
-   Scala has an operator called `eq` with the same behaviour as Java's `==`. However, it is rarely used in application code:
-
-~~~ scala
-new Person("Noel", "Welsh") eq (new Person("Noel", "Welsh"))
-// res: Boolean = false
-
-dave eq dave
-// res: Boolean = true
-~~~
-   </div>
 
 4. *A `copy` method* that creates a new object with the same field values as the current one:
 
@@ -88,6 +75,23 @@ dave.copy(lastName = "Gurnell2")
 // res: Person = Person(Dave,Gurnell2)
 ~~~
 
+<div class="callout callout-info">
+
+#### Value and Reference Equality {-}
+
+Scala's `==` operator is different from Java's---it delegates to `equals` rather than comparing values on reference identity.
+
+Scala has an operator called `eq` with the same behaviour as Java's `==`. However, it is rarely used in application code:
+
+~~~ scala
+new Person("Noel", "Welsh") eq (new Person("Noel", "Welsh"))
+// res: Boolean = false
+
+dave eq dave
+// res: Boolean = true
+~~~
+</div>
+
 ### Features of a case class companion object
 
 The companion object contains an `apply` method with the same arguments as the class constructor. Scala programmers tend to prefer the `apply` method over the constructor for the brevity of omitting `new`, which makes constructors much easier to read inside expressions:
@@ -103,7 +107,7 @@ Person("Dave", "Gurnell") == Person("Dave", "Gurnell")
 Finally, the companion object also contains code to implement an *extractor pattern* for use in *pattern matching*. We'll see this later this chapter.
 
 <div class="callout callout-info">
-#### Case Class Declaration Syntax
+#### Case Class Declaration Syntax {-}
 
 The syntax to declare a case class is
 

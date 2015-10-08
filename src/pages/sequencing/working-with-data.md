@@ -40,7 +40,7 @@ final case class End[A]() extends LinkedList[A]
 Fold is just an adaptation of structural recursion where we allow the user to pass in the functions we apply at each case. As structural recursion is the generic pattern for writing any function that transforms an algebraic datatype, fold is the concrete realisation of this generic pattern. That is, fold is the generic transformation or iteration method. *Any function* you care to write on an algebraic datatype can be written in terms of fold.
 
 <div class="callout callout-info">
-#### Fold Pattern
+#### Fold Pattern {-}
 
 For an algebraic datatype `A`, fold converts it to a generic type `B`. Fold is a structural recursion with:
 

@@ -11,7 +11,7 @@ In the Scala console or worksheet enter `"Hello world!"` and press return (in th
 // res: String = Hello world!
 ~~~
 
-There is a lot to say about this program. It consists of a single expression, and in particular a *literal expression* or literal for short. 
+There is a lot to say about this program. It consists of a single expression, and in particular a *literal expression* or literal for short.
 
 Scala runs, or *evaluates*, our program. When we evaluate a program in the Scala console or worksheet we are told two pieces of information: the *type* of the program, and the *value* it evaluates to. In this case the type is `String` and the value is `"Hello world!"`.
 
@@ -27,7 +27,6 @@ Let's look at a slightly more complex program
 This program extends our first example by adding a *method call*. Evaluation in Scala proceeds left to right. First the literal `"Hello world!"` is evaluated, as in the first example. Then the method `toUpperCase` is called on the result. This method transforms a string value to its upper case equivalent and returns this new string. This is the final value we see printed by the console.
 
 Once again the type of this program is `String`, but in this case it evaluates to `"HELLO WORLD!"`
-
 
 ### Compile-time and Run-time
 
@@ -57,7 +56,7 @@ toUpperCase."Hello world!"
 
 The concept of upper and lowercase doesn't make sense for numbers, and the type system will catch this error.
 
-If a program passes the checks at compile-time it may then be run. This is the process of the computer performing the instructions in the program. 
+If a program passes the checks at compile-time it may then be run. This is the process of the computer performing the instructions in the program.
 
 Even though a program successfully compiles it can still fail at run-time. Dividing an integer by zero causes a run-time error in Scala.
 
@@ -106,7 +105,7 @@ We see that the expression `2 / 0` has type `Int` even though this expression fa
 
 Types, which exist at compile-time, restrict us to writing programs that give a consistent interpretation to values. We cannot claim that a particular 32-bits is at one point an `Int` and another a `Float`. When a program type checks, Scala guarantees that all values are used consistently and thus it does not need to record type information in a value's representation. This process of removing type information is called *type erasure*[^type-erasure].
 
-[^type-erasure]: This is not entirely true. The Java Virtual Machine, the program that runs Scala code, distinguishes between two kinds of objects. Primitive types don't store any type information along with the value they represent. Object types do store type information. However this type information is not complete and there are occasions where it is lost. Blurring the distinction between compile- and run-time is thus dangerous. If we never rely on type information being around at run-time (and the patterns we will show you do not) we will never run into these issues. 
+[^type-erasure]: This is not entirely true. The Java Virtual Machine, the program that runs Scala code, distinguishes between two kinds of objects. Primitive types don't store any type information along with the value they represent. Object types do store type information. However this type information is not complete and there are occasions where it is lost. Blurring the distinction between compile- and run-time is thus dangerous. If we never rely on type information being around at run-time (and the patterns we will show you do not) we will never run into these issues.
 
 Types necessarily do not contain all possible information about the values that conform to the type. If they did, type checking would be equivalent to running the program. We have already seen that the type system will not prevent us from dividing an `Int` by zero, which causes a run-time error.
 
@@ -125,6 +124,8 @@ Values exist in the computer's memory, and are what a running program manipulate
 
 
 ### Exercises
+
+#### Type and Value
 
 Using the Scala console or worksheet, determine the type and value of the following expressions:
 

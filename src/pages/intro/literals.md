@@ -55,7 +55,7 @@ false
 ~~~
 
 <div class="callout callout-info">
-**Java tip**
+#### Scala vs Java's Type Hierarchy {-}
 
 Although they are written with initial capitals, Scala's `Int`, `Double`, `Float`, `Long`, `Short`, `Byte`, `Boolen` and `Char` refer to exactly the same things as `int`, `double`, `float`, `long`, `short`, `byte`, `boolean`, and `char` in Java.
 
@@ -86,7 +86,7 @@ null
 ~~~
 
 <div class="callout callout-info">
-**Java tip**
+#### Using Nulls in Scala {-}
 
 Although `null`s are common in Java code, they are considered very bad practice in Scala.
 

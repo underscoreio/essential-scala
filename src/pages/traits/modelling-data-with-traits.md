@@ -11,7 +11,7 @@ Our first pattern is to model data that contains other data. We might describe t
 The way we write this is to use a case class. We've already done this many times in exercises; now we're formalising the pattern.
 
 <div class="callout callout-info">
-#### Product Type Pattern
+#### Product Type Pattern {-}
 
 If `A` has a `b` (with type `B`) and a `c` (with type `C`) write
 
@@ -36,7 +36,7 @@ Our next pattern is to model data that is two or more distinct cases. We might d
 We write this using the sealed trait / final case class pattern.
 
 <div class="callout callout-info">
-#### Sum Type Pattern
+#### Sum Type Pattern {-}
 
 If `A` is a `B` or `C` write
 

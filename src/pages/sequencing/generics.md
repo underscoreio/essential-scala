@@ -39,7 +39,7 @@ Type parameters work in a way analogous to method parameters. When we call a met
 When we call a method or construct a class with a type parameter, the type parameter is bound to the concrete type within the method or class body. So when we call `generic(1)` the type parameter `A` is bound to `Int` in the body of `generic`.
 
 <div class="callout callout-info">
-#### Type Parameter Syntax
+#### Type Parameter Syntax {-}
 
 We declare generic types with a list of type names within square brackets like `[A, B, C]`. By convention we use single uppercase letters for generic types.
 
@@ -82,7 +82,7 @@ case class Failure[A](reason: String) extends Result[A]
 Notice that both `Success` and `Failure` introduce a type parameter `A` which is passed to `Result` when it is extended. `Success` also has a value of type `A`, but `Failure` only introduces `A` so it can pass it onward to `Result`. In a later section we'll introduce *variance*, giving us a cleaner way to implement this, but for now this is the pattern we'll use.
 
 <div class="callout callout-info">
-#### Invariant Generic Sum Type Pattern
+#### Invariant Generic Sum Type Pattern {-}
 
 If `A` of type `T` is a `B` or `C` write
 

@@ -70,7 +70,7 @@ We write a function type like `(A, B) => C` where `A` and `B` are the types of t
 In our example above we want `f` to be a function that accepts two `Int`s as parameters and returns an `Int`. Thus we can write it as `(Int, Int) => Int`.
 
 <div class="callout callout-info">
-#### Function Type Declaration Syntax
+#### Function Type Declaration Syntax {-}
 
 To declare a function type, write
 
@@ -125,7 +125,7 @@ a function and it is normally inferred, but if we find ourselves needing to do t
 [^parens]: Note that we only can drop the parentheses around the argument list on single-argument functions---we still have to write `() => foo` and `(a, b) => foo` on functions of other arities.
 
 <div class="callout callout-info">
-#### Function Literal Syntax
+#### Function Literal Syntax {-}
 
 The syntax for declaring a function literal is
 

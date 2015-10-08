@@ -25,8 +25,7 @@ Note that the type of the object is reported as `Test.type`. This is not like an
 Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions. It is more common, however, to put declarations such as declaring methods, fields, or even more objects.
 
 <div class="callout callout-info">
-
-#### Object Declaration Syntax
+#### Object Declaration Syntax {-}
 
 The syntax for declaring an object is
 
@@ -76,7 +75,7 @@ Test3.hello("Noel")
 ~~~
 
 <div class="callout callout-info">
-#### Method Declaration Syntax
+#### Method Declaration Syntax {-}
 
 The syntax for declaring a method is
 
@@ -106,9 +105,9 @@ The term *argument* may be used interchangably with *parameter*.
 </div>
 
 <div class="callout callout-info">
-**Java tip**
+#### Return is Implicit {-}
 
-The return value of the method is determined by evaluating the body---there is no need to write `return`.
+The return value of the method is determined by evaluating the body---there is no need to write `return` like you would in Java.
 </div>
 
 
@@ -128,7 +127,7 @@ Test4.hello("Dave")
 ~~~
 
 <div class="callout callout-info">
-#### Field Declaration Syntax
+#### Field Declaration Syntax {-}
 
 The syntax for declaring a field is
 
@@ -282,7 +281,7 @@ object Quentin {
 </div>
 
 
-#### Square dance!
+#### Square Dance!
 
 Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *calling `square`* as part of its result calculation.
 
@@ -297,7 +296,7 @@ object calc {
 ~~~
 </div>
 
-#### Precise square dance!
+#### Precise Square Dance!
 
 Copy and paste `calc` from the previous exercise to create a `calc2` that is generalized to work with `Ints` as well as `Doubles`. If you have Java experience, this should be fairly straightforward. If not, read the solution below.
 
@@ -335,8 +334,8 @@ You can manually use the `toInt` method of `Double` to work around this:
 val x: Int = calc.square(2).toInt // toInt rounds down
 ~~~
 
-<div class="alert alert-info">
-**Java tip**
+<div class="callout callout-warning">
+#### The Dangers of String Concatenation {-}
 
 To maintain similar behaviour to Java, Scala also automatically converts any object to a `String` where required. This is to make it easy to write things like `println("a" + 1)`, which Scala automatically rewrites as `println("a" + 1.toString)`.
 
@@ -447,7 +446,7 @@ Notice the type on the `p` parameter of `greet`: `person.type`. This is one of t
 This imposes a significant limitation on our ability to write programs in Scala. We can only write methods that work with built-in types or single objects of our own creation. In order to build useful programs we need the ability to *define our own types* and create multiple values of each. We can do this using `classes`, which we will cover in the next section.
 </div>
 
-#### The value of methods
+#### The Value of Methods
 
 Are methods values? Are they expressions? Why might this be the case?
 

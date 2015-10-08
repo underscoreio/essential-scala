@@ -62,7 +62,7 @@ alien.greet(newNoel)
 ~~~
 
 <div class="callout callout-info">
-**Java tip**
+#### Java Tip {-}
 
 Scala classes are all subclasses of `java.lang.Object` and are, for the most part, usable from Java as well as Scala. The default printing behaviour of `Person` comes from the `toString` method defined in `java.lang.Object`.
 </div>
@@ -100,15 +100,13 @@ new Person("Dave", "Gurnell").firstName
 // res: String = Dave
 ~~~
 
-<div class="callout callout-info">
 `val` fields are *immutable*---they are initialized once after which we cannot change their values. Scala also provides the `var` keyword for defining *mutable* fields.
 
 Scala programmers tend to prefer to write immutability and side-effect-free code so we can reason about it using the substitution model. In this course we will concentrate almost exclusively on immutable `val` fields.
-</div>
 
 <div class="callout callout-info">
 
-#### Class Declaration Syntax
+#### Class Declaration Syntax {-}
 
 The syntax for declaring a class is
 
@@ -149,7 +147,7 @@ This comes in doubly useful when used in combination with *default parameter val
 
 ~~~ scala
 def greet(firstName: String = "Some", lastName: String = "Body") =
-         "Greetings, " + firstName + " " + lastName + "!"
+  "Greetings, " + firstName + " " + lastName + "!"
 ~~~
 
 If a parameter has a default value we can omit it in the method call:
@@ -167,11 +165,13 @@ greet(lastName = "Dave")
 ~~~
 
 <div class="callout callout-info">
+#### Keyword Parameters {-}
+
 *Keyword parameters are robust to changes in the number and order of parameters.* For example, if we add a `title` parameter to the `greet` method, the meaning of keywordless method calls changes but keyworded calls remain the same:
 
 ~~~ scala
 def greet(title: String = "Citizen", firstName: String = "Some", lastName: String = "Body") =
-         "Greetings, " + title + " " + firstName + " " + lastName + "!"
+  "Greetings, " + title + " " + firstName + " " + lastName + "!"
 
 greet("Awesome") // this is now incorrect
 // res: String = Greetings, Awesome Some Body
@@ -243,7 +243,7 @@ Finally we learned about Scala's type hierarchy, including the overlap with Java
 
 We now have enough machinery to have some fun playing with classes.
 
-### Cats, Again
+#### Cats, Again
 
 Recall the cats from a previous exercise:
 
@@ -416,11 +416,7 @@ Aside from practicing with classes and objects, this exercise has a second goal-
 
 Because `val` fields are immutable, we need to come up with some other way of propagating the new value of `count`. Methods that return new `Counter` objects give us a way of returning new state without the side-effects of assignment. They also permit *method chaining*, allowing us to write whole sequences of updates in a single expression
 
-<div class="alert alert-info">
-**Performance tip**
-
 The use-case `new Counter(10).inc.dec.inc.inc.count` actually creates 5 instances of `Counter` before returning its final `Int` value. You may be concerned about the extra memory and CPU overhead for such a simple calculation, but don't be. Modern execution environments like the JVM render the extra overhead of this style of programming negligable in all but the most performance critical code.
-</div>
 </div>
 
 #### Counting Faster
@@ -497,4 +493,4 @@ public class MyActionListener implements ActionListener {
 ~~~
 
 The disadvantage of objects like `Adders` and `ActionListeners` is that they are limited to use in one particular circumstance. Scala includes a much more general concept called *functions* that allow us to represent any kind of computation as an object. We will be introduced to some of the concepts behind functions in this chapter.
-</div> 
+</div>

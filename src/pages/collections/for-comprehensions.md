@@ -2,8 +2,10 @@
 
 We've discussed the main collection transformation functions---`map`, `flatMap`, `foldLeft`, `foldRight`, and `foreach`---and seen that they provide a powerful way of working with collections. They can become unwieldy to work with when dealing with many collections or many nested transformations. Fortunately Scala has special syntax for working with collections (in fact any class that implements `map` and `flatMap`) that makes complicated operations simpler to write. This syntax is known as a *for comprehension*.
 
-<div class="alert alert-warning">
-**Important note:** *for comprehensions* in Scala are very different to the C-style *for loops* in Java. There is no direct equivalent of either language's syntax in the other.
+<div class="callout callout-info">
+#### Not Your Father's For Loops {-}
+
+*for comprehensions* in Scala are very different to the C-style *for loops* in Java. There is no direct equivalent of either language's syntax in the other.
 </div>
 
 Let's start with a simple example. Say we have the sequence `Seq(1, 2, 3)` and we wish to create a sequence with every element doubled. We know we can write
@@ -80,8 +82,7 @@ The equivalent method calls use `flatMap` as usual and `foreach` in place of the
 a.flatMap(x => b.flatMap(y => c.foreach(z => e)))
 ~~~
 
-<div class="alert alert-info">
-**Syntax tip:** We can use parentheses instead of braces to delimit the generators in a for loop. However, we must use semicolons to separate the generators if we do. Thus:
+We can use parentheses instead of braces to delimit the generators in a for loop. However, we must use semicolons to separate the generators if we do. Thus:
 
 ~~~ scala
 for (
@@ -118,15 +119,14 @@ for {
   // ...
 }
 ~~~
-</div>
 
 ### Exercises
 
-#### (More) Heroes of the Silver Screen
+*(More) Heroes of the Silver Screen*
 
 Repeat the following exercises from the previous section *without using `map` or `flatMap`*:
 
-##### Nolan Films
+*Nolan Films*
 
 List the names of the films directed by Christopher Nolan.
 
@@ -138,7 +138,7 @@ for {
 ~~~
 </div>
 
-##### Cinephile
+*Cinephile*
 
 List the names of all films by all directors.
 
@@ -151,7 +151,7 @@ for {
 ~~~
 </div>
 
-##### High Score Table
+*High Score Table*
 
 Find all films sorted by descending IMDB rating:
 
@@ -179,7 +179,7 @@ films sortWith { (a, b) =>
 ~~~
 </div>
 
-##### Tonight's Listings
+*Tonight's Listings*
 
 Print the following for every film: `"Tonight only! FILM NAME by DIRECTOR!"`
 

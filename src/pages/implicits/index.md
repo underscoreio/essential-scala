@@ -7,9 +7,9 @@ In the section on traits we compared object oriented and functional style in ter
 +--------+-------------------------+-------------------------+
 |        | Add new method          | Add new data            |
 +========+=========================+=========================+
-| *OO* | Change existing code    | Existing code unchanged |
+| *OO*   | Change existing code    | Existing code unchanged |
 +--------+-------------------------+-------------------------+
-| *FP* | Existing code unchanged | Change existing code    |
+| *FP*   | Existing code unchanged | Change existing code    |
 +--------+-------------------------+-------------------------+
 
 

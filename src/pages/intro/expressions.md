@@ -11,6 +11,12 @@ if(1 < 2) "Yes" else "No"
 // res: String = Yes
 ~~~
 
+<div class="callout callout-info">
+#### Conditionals are Expressions {-}
+
+Scala's `if` statement has the same syntax as Java's. One important difference is that *Scala's conditional is an expression*---it has a type and returns a value.
+</div>
+
 The expression that is not selected does not get evaluated. This is apparent if we use an expression with a side-effect.
 
 ~~~
@@ -21,7 +27,7 @@ if(1 < 2) println("Yes") else println("No")
 We can tell the expression `println("No")` is not evaluated because `No` is not output to the console.
 
 <div class="callout callout-info">
-#### Conditional Expression Syntax
+#### Conditional Expression Syntax {-}
 
 The syntax for a conditional expression is
 
@@ -37,14 +43,6 @@ where
 - `condition` is an expression with `Boolean` type;
 - `trueExpression` is the expression evaluated if `condition` evaluates to `true`; and
 - `falseExpression` is the expression evaluated if `condition` evaluates to `false`.
-</div>
-
-
-
-<div class="callout callout-info">
-**Java tip**
-
-Scala's `if` statement has the same syntax as Java's. One important difference is that *Scala's conditional is an expression*---it has a type and returns a value.
 </div>
 
 
@@ -65,13 +63,11 @@ Blocks are expressions that allow us to sequence computations together. They are
 // res: Int = 3
 ~~~
 
-<div class="callout callout-info">
 As you can see, executing this code causes the console to raise a number of warnings and return the `Int` value `3`.
 
 A block is a sequence of expressions or declarations surrounded by braces. A block is also an expression: it executes each of its sub-expressions in order and returns the value of the last expression.
 
 Why execute `1` and `2` if we're going to throw their values away? This is a good question, and is the reason the Scala compiler raised those warnings above.
-</div>
 
 One reason to use a block is to use code that produces side-effects before calculating a final value:
 
@@ -101,7 +97,7 @@ name
 
 <div class="callout callout-info">
 
-#### Block Expression Syntax
+#### Block Expression Syntax {-}
 
 The syntax of a block expression is
 
@@ -146,7 +142,7 @@ The type and value of a block is that of the last expression in the block.
 
 ### Exercises
 
-#### A classic rivalry
+#### A Classic Rivalry
 
 What is the type and value of the following conditional?
 
@@ -162,7 +158,7 @@ if(1 > 2) "alien" else "predator"
   The value is determined at runtime. `2` is greater than `1` so the conditional evaluates to the value of the *else* expression.
 </div>
 
-#### A less well known rivalry
+#### A Less Well Known Rivalry
 
 What about this conditional?
 
@@ -180,7 +176,7 @@ This is an important observation: types are determined at compile time, before t
 We'll learn more about `Any` in the following sections. Java programmers shouldn't confuse it with `Object` because it subsumes value types like `Int` and `Boolean` as well.
 </div>
 
-#### An if without an else
+#### An if Without an else
 
 What about this conditional?
 

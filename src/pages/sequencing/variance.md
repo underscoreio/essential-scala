@@ -43,8 +43,10 @@ The problem here is that `Empty` is a `Maybe[Nothing]` and a `Maybe[Nothing]` is
 
 ### Invariance, Covariance, and Contravariance
 
-<div class="alert alert-warning">
-**Note:** Variance is one of the trickier aspects of Scala's type system. Although it is useful to be aware of its existence, we rarely have to use it in application code.
+<div class="callout callout-info">
+#### Variance is Hard {-}
+
+Variance is one of the trickier aspects of Scala's type system. Although it is useful to be aware of its existence, we rarely have to use it in application code.
 </div>
 
 If we have some type `Foo[A]`, and `A` is a subtype of `B`, is `Foo[A]` a subtype of `Foo[B]`? The answer depends on the *variance* of the type `Foo`. The variance of a generic type determines how its supertype/subtype relationships change with respect with its type parameters:
@@ -117,7 +119,7 @@ val perhaps: Maybe[Int] = Empty
 This pattern is the most commonly used one with generic sum types. We should only use covariant types where the container type is immutable. If the container allows mutation we should only use invariant types.
 
 <div class="callout callout-info">
-#### Covariant Generic Sum Type Pattern
+#### Covariant Generic Sum Type Pattern {-}
 
 If `A` of type `T` is a `B` or `C`, and `C` is not generic, write
 
@@ -216,7 +218,7 @@ final case class Success[B](value: B) extends Sum[Nothing, B]
 ~~~
 
 <div class="callout callout-info">
-#### Contravariant Position Pattern
+#### Contravariant Position Pattern {-}
 
 If `A` of a covariant type `T` and a method `f` of `A` complains that `T` is used in a contravariant position, introduce a type `TT >: T` in `f`.
 

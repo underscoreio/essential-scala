@@ -254,8 +254,10 @@ def someMethod = {
 // `empty` is unbound again here
 ~~~
 
-<div class="alert alert-info">
-**Java tip:** Import statements are significantly more flexible in Scala than Java. The main differences are described nicely in the [Scala Wikibook](http://en.wikibooks.org/wiki/Scala/Import).
+<div class="callout callout-info">
+#### Import Statements {-}
+
+Import statements in Scala are very flexible. The main points are nicely described in the [Scala Wikibook](http://en.wikibooks.org/wiki/Scala/Import).
 </div>
 
 ### Take Home Points

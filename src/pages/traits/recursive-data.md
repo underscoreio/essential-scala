@@ -105,7 +105,7 @@ Our patterns will carry us most of the way to a correct answer, but we still nee
 - For the recursive case, assume the recursion will return the correct result and work out what you need to add to get the correct answer. We saw this for `sum`, where we assume the recursive call will give us the correct result for the tail of the list and we then just add on the head.
 
 <div class="callout callout-info">
-#### Recursive Algebraic Data Types Pattern
+#### Recursive Algebraic Data Types Pattern {-}
 
 When defining recursive algebraic data types, there must be at least two cases: one that is recursive, and one that is not. Cases that are not recursive are known as base cases. In code, the general skeleton is:
 
@@ -117,7 +117,7 @@ final case object BaseCase extends RecursiveExample
 </div>
 
 <div class="callout callout-info">
-#### Recursive Structural Recursion Pattern
+#### Recursive Structural Recursion Pattern {-}
 
 When writing structurally recursive code on a recursive algebraic data type:
 
@@ -179,6 +179,8 @@ Any non-tail recursion function can be transformed into a tail recursive version
 In Scala we tend not to work directly with tail recursive functions as there is a rich collections library that covers the most common cases where tail recursion is used. Should you need to go beyond this, because you're implementing your own datatypes or are optimising code, it is useful to know about tail recursion.
 
 ### Exercises
+
+#### A List of Methods
 
 Using our definition of `IntList`
 
