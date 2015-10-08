@@ -2,7 +2,7 @@
 
 In the previous sections we saw how to create and use type class instances. Now we're going to explore creating our own type classes.
 
-## Elements of Type Classes
+### Elements of Type Classes
 
 There are four components of the type class pattern:
 
@@ -13,7 +13,7 @@ There are four components of the type class pattern:
 
 We have already seen type class instances and talked briefly about implicit parameters. Here we will look at defining our own type class, and in the following section we will look at the two styles of interface.
 
-## Creating a Type Class
+### Creating a Type Class
 
 Let's start with an example---converting data to HTML. This is a fundamental operation in any web application, and it would be great to be able to provide a `toHtml` method across the board in our application.
 

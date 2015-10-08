@@ -122,11 +122,11 @@ for {
 
 ### Exercises
 
-#### (More) Heroes of the Silver Screen
+*(More) Heroes of the Silver Screen*
 
 Repeat the following exercises from the previous section *without using `map` or `flatMap`*:
 
-##### Nolan Films
+*Nolan Films*
 
 List the names of the films directed by Christopher Nolan.
 
@@ -138,7 +138,7 @@ for {
 ~~~
 </div>
 
-##### Cinephile
+*Cinephile*
 
 List the names of all films by all directors.
 
@@ -151,7 +151,7 @@ for {
 ~~~
 </div>
 
-##### High Score Table
+*High Score Table*
 
 Find all films sorted by descending IMDB rating:
 
@@ -179,7 +179,7 @@ films sortWith { (a, b) =>
 ~~~
 </div>
 
-##### Tonight's Listings
+*Tonight's Listings*
 
 Print the following for every film: `"Tonight only! FILM NAME by DIRECTOR!"`
 

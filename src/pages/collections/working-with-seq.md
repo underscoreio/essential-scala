@@ -186,7 +186,7 @@ When you have answered these questions look at the type table above to find the 
 
 These exercises re-use the example code from the *Intranet Movie Database* exercise from the previous section:
 
-#### Nolan Films
+*Nolan Films*
 
 Starting with the definition of `nolan`, create a list containing the names of the films directed by Christopher Nolan.
 
@@ -196,7 +196,7 @@ nolan.films.map(_.name)
 ~~~
 </div>
 
-#### Cinephile
+*Cinephile*
 
 Starting with the definition of `directors`, create a list containing the names of all films by all directors.
 
@@ -206,7 +206,7 @@ directors.flatMap(director => director.films.map(film => film.name))
 ~~~
 </div>
 
-#### Vintage McTiernan
+*Vintage McTiernan*
 
 Starting with `mcTiernan`, find the date of the earliest McTiernan film.
 
@@ -230,7 +230,7 @@ mcTiernan.films.foldLeft(Int.MaxValue) { (current, film) =>
 ~~~
 </div>
 
-#### High Score Table
+*High Score Table*
 
 Starting with `directors`, find all films sorted by descending IMDB rating:
 
@@ -254,7 +254,7 @@ films.foldLeft(0)((a, b) => a.imdbRating + b.imdbRating) / films.length
 ~~~
 </div>
 
-#### Tonight's Listings
+*Tonight's Listings*
 
 Starting with `directors`, print the following for every film: `"Tonight only! FILM NAME by DIRECTOR!"`
 
@@ -270,7 +270,7 @@ directors.foreach { director =>
 ~~~
 </div>
 
-#### From the Archives
+*From the Archives*
 
 Finally, starting with `directors` again, find the *earliest film* by any director:
 
@@ -285,11 +285,11 @@ directors
 ~~~
 </div>
 
-### Do-It-Yourself
+#### Do-It-Yourself
 
 Now we know the essential methods of `Seq`, we can write our own versions of some other library methods.
 
-#### Minimum
+*Minimum*
 
 Write a method to find the smallest element of a `Seq[Int]`.
 
@@ -306,7 +306,7 @@ def smallest(seq: Seq[Int]): Int =
 ~~~
 </div>
 
-#### Unique
+*Unique*
 
 Given `Seq(1, 1, 2, 4, 3, 4)` create the sequence containing each number only once. Order is not important, so `Seq(1, 2, 4, 3)` or `Seq(4, 3, 2, 1)` are equally valid answers. Hint: Use `contains` to check if a sequence contains a value.
 
@@ -348,7 +348,7 @@ unique(Seq(1, 1, 2, 4, 3, 4))
 Note how I created the empty sequence. I could have written `Seq[Int]()` but in both cases I need to supply a type (`Int`) to help the type inference along.
 </div>
 
-#### Reverse
+*Reverse*
 
 Write a function that reverses the elements of a sequence. Your output does not have to use the same concrete implementation as the input. Hint: use `foldLeft`.
 
@@ -385,7 +385,7 @@ def reverse[A](seq: Seq[A]): Seq[A] = {
 ~~~
 </div>
 
-#### Map
+*Map*
 
 Write `map` in terms of `foldRight`.
 
@@ -407,7 +407,7 @@ def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
 ~~~
 </div>
 
-#### Fold Left
+*Fold Left*
 
 Write your own implementation of `foldLeft` that uses `foreach` and mutable state. Remember you can create a mutable variable using the `var` keyword, and assign a new value using `=`. For example
 

@@ -1,11 +1,8 @@
----
-layout: page
-title: Type Class Instances
----
+## Type Class Instances
 
 Type classes in Scala involve the interaction of a number of components. To simplify the presentation we are going to start by looking at *using* type classes before we look at how to *build them ourselves*.
 
-## Ordering
+### Ordering
 
 A simple example of a type class is the [`Ordering`](http://www.scala-lang.org/api/current/#scala.math.Ordering) trait. For a type `A`, an `Ordering[A]` defines a comparison method `compare` that compares two instances of `A` by some ordering. To construct an `Ordering` we can use the convenience method `fromLessThan` defined the companion object.
 
@@ -34,7 +31,7 @@ Here we define two orderings: `minOrdering`, which sorts from lowest to highest,
 The type class pattern separates the implementation of functionality (the type class instance, an `Ordering[A]` in our example) from the type the functionality is provided for (the `A` in an `Ordering[A]`). *This is the basic pattern for type classes.* Everything else we will see just provides extra convenience.
 
 
-## Implicit Values
+### Implicit Values
 
 It can be inconvenient to continually pass the type class instance to a method when we want to repeatedly use the same instance. Scala provides a convenience, called an *implicit value*, that allows us to get the compiler to pass the type class instance for us. Here's an example of use:
 
@@ -86,7 +83,7 @@ List(3,4,5).sorted
 The rule is simple: the compiler will signal an error if there is any ambiguity in which implicit value should be used.
 
 
-## Take Home Points
+### Take Home Points
 
 In this section we've seen the basics for using type classes. In Scala, a type class is just a trait. To use a type class we:
 
@@ -99,9 +96,9 @@ Marking values as implicit tells the compiler it can supply them as a parameter 
 2. there must be an implicit value available of the same type as the parameter; and
 3. there must be only one such implicit value available.
 
-## Exercises
+### Exercises
 
-### More Orderings
+#### More Orderings
 
 Define an `Ordering` that orders `Int`s from lowest to highest by absolute value. The following test cases should pass.
 
@@ -135,7 +132,7 @@ implicit val absOrdering = Ordering.fromLessThan[Int]{ (x, y) =>
 ~~~
 </div>
 
-### Rational Orderings
+#### Rational Orderings
 
 Scala doesn't have a class to represent rational numbers, but we can easily implement one ourselves.
 
@@ -157,5 +154,4 @@ implicit val ordering = Ordering.fromLessThan[Rational]((x, y) =>
   (y.numerator.toDouble / y.denominator.toDouble)
 )
 ~~~
-</div>
-
+</div> 

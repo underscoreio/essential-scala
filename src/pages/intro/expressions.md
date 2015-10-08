@@ -142,7 +142,7 @@ The type and value of a block is that of the last expression in the block.
 
 ### Exercises
 
-#### A classic rivalry
+#### A Classic Rivalry
 
 What is the type and value of the following conditional?
 
@@ -158,7 +158,7 @@ if(1 > 2) "alien" else "predator"
   The value is determined at runtime. `2` is greater than `1` so the conditional evaluates to the value of the *else* expression.
 </div>
 
-#### A less well known rivalry
+#### A Less Well Known Rivalry
 
 What about this conditional?
 
@@ -176,7 +176,7 @@ This is an important observation: types are determined at compile time, before t
 We'll learn more about `Any` in the following sections. Java programmers shouldn't confuse it with `Object` because it subsumes value types like `Int` and `Boolean` as well.
 </div>
 
-#### An if without an else
+#### An if Without an else
 
 What about this conditional?
 

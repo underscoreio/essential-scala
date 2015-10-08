@@ -180,6 +180,8 @@ In Scala we tend not to work directly with tail recursive functions as there is 
 
 ### Exercises
 
+#### A List of Methods
+
 Using our definition of `IntList`
 
 ~~~ scala

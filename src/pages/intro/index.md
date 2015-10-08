@@ -125,6 +125,8 @@ Values exist in the computer's memory, and are what a running program manipulate
 
 ### Exercises
 
+#### Type and Value
+
 Using the Scala console or worksheet, determine the type and value of the following expressions:
 
 ~~~ scala

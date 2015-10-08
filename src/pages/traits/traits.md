@@ -216,7 +216,7 @@ case class Panther(...) extends BigCat
 ~~~
 </div>
 
-#### Shaping up with traits
+#### Shaping Up With Traits
 
 Define a trait called `Shape` and give it three abstract methods:
 
@@ -256,7 +256,7 @@ case class Square(size: Double) extends Shape {
 ~~~
 </div>
 
-#### Shaping up 2 (da streets)
+#### Shaping Up 2 (Da Streets)
 
 The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape`---it's also a type of `Rectangle` where the width and height are the same.
 

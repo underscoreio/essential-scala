@@ -281,7 +281,7 @@ object Quentin {
 </div>
 
 
-#### Square dance!
+#### Square Dance!
 
 Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input *calling `square`* as part of its result calculation.
 
@@ -296,7 +296,7 @@ object calc {
 ~~~
 </div>
 
-#### Precise square dance!
+#### Precise Square Dance!
 
 Copy and paste `calc` from the previous exercise to create a `calc2` that is generalized to work with `Ints` as well as `Doubles`. If you have Java experience, this should be fairly straightforward. If not, read the solution below.
 
@@ -446,7 +446,7 @@ Notice the type on the `p` parameter of `greet`: `person.type`. This is one of t
 This imposes a significant limitation on our ability to write programs in Scala. We can only write methods that work with built-in types or single objects of our own creation. In order to build useful programs we need the ability to *define our own types* and create multiple values of each. We can do this using `classes`, which we will cover in the next section.
 </div>
 
-#### The value of methods
+#### The Value of Methods
 
 Are methods values? Are they expressions? Why might this be the case?
 

@@ -51,7 +51,7 @@ HtmlUtil.htmlify(2)
 // res: String = It's definitely less than 10
 ~~~
 
-## Interfaces Using Implicit Parameters
+### Interfaces Using Implicit Parameters
 
 A complete use of the type class pattern requires an interface using implicit parameters, along with implicit type class instances. We've seen two examples already: the `sorted` method using `Ordering`, and the `htmlify` method above. The best interface depends on the problem being solved, but there is a pattern that occurs frequently enough that it is worth explaining here.
 
@@ -115,7 +115,7 @@ object TypeClass {
 
 ### Exercises
 
-#### Equality
+#### Equality Again
 
 In the previous section we defined a trait `Equal` along with some implementations for `Person`.
 

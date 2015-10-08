@@ -243,7 +243,7 @@ Finally we learned about Scala's type hierarchy, including the overlap with Java
 
 We now have enough machinery to have some fun playing with classes.
 
-### Cats, Again
+#### Cats, Again
 
 Recall the cats from a previous exercise:
 

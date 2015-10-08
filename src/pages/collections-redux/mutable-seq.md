@@ -46,8 +46,8 @@ mutable
 // res: scala.collection.mutable.Seq[Int] = ArrayBuffer(1, 2, 3)
 ~~~
 
-<div class="alert alert-info">
-**Mutable collections tip**
+<div class="callout callout-info">
+#### Using Mutable Collections Safely
 
 Scala programmers tend to favour immutable collections and only bring in mutable ones in specific circumastances. Using `import scala.collection.mutable._` at the top of a file tends to create a whole series of naming collisions that we have to work around.
 
