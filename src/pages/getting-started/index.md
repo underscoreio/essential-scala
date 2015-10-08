@@ -186,8 +186,7 @@ Select the **Run Menu** and choose **Run**. This should execute the code in your
 ![Scala IDE: Hello World](src/pages/getting-started/scala-ide-hello-world.png)\
 
 
-<div class="alert alert-info">
-**Java tip:** Developers with Java experience will notice the resemblance of the code above to the Java hello world app:
+Developers with Java experience will notice the resemblance of the code above to the Java hello world app:
 
 ~~~java
 public class HelloWorld {
@@ -198,7 +197,6 @@ public class HelloWorld {
 ~~~
 
 The resemblance is, of course, no coincidence. These two applications compile to more or less the same bytecode and have exactly the same semantics. We will learn much more about the similarities and differences between Scala and Java as the course continues.
-</div>
 
 ### Creating your First Worksheet
 

@@ -334,8 +334,8 @@ You can manually use the `toInt` method of `Double` to work around this:
 val x: Int = calc.square(2).toInt // toInt rounds down
 ~~~
 
-<div class="alert alert-info">
-**Java tip**
+<div class="callout callout-warning">
+#### The Dangers of String Concatenation {-}
 
 To maintain similar behaviour to Java, Scala also automatically converts any object to a `String` where required. This is to make it easy to write things like `println("a" + 1)`, which Scala automatically rewrites as `println("a" + 1.toString)`.
 

@@ -4,8 +4,8 @@ So far we have seen two programming patterns using implicits: *type enrichment*,
 
 Scala has a third implicit mechanism called *implicit conversions* that we will cover here for completeness. Implicit conversions can be seen as a more general form of implicit classes, and can be used in a wider variety of contexts.
 
-<div class="alert alert-warning">
-**Here be dragons**
+<div class="callout callout-warning">
+#### The Dangers of Implicit Conversions {-}
 
 As we shall see later in this section, undisciplined use of implicit conversions can cause as many problems as it fixes for the beginning programmer. Scala even requires us to write a special import statement to silence compiler warnings resulting from the use of implicit conversions:
 

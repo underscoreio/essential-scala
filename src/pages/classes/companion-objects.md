@@ -16,8 +16,8 @@ Timestamp(1, 1, 1).seconds
 // res: Long = 3661
 ~~~
 
-<div class="alert alert-info">
-**Console tip**
+<div class="callout callout-info">
+#### Using the Console Effectively {-}
 
 Note our use of the `:paste` command in the transcript above. Companion objects must be defined in the same compilation unit as the classes they support. In a normal codebase this simply means defining the class and object in the same file, but on the REPL we have to enter then in one command using `:paste`.
 
