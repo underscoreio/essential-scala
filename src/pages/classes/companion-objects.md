@@ -34,7 +34,7 @@ Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
 ~~~
 
 <div class="callout callout-info">
-#### Companion Object Syntax
+#### Companion Object Syntax {-}
 
 To define a companion object for a class, in the *same file* as the class define an object with the same name.
 

@@ -3,7 +3,7 @@
 Traits are templates for creating classes, in the same way that classes are templates for creating objects. Traits allow us to express that two or more classes can be considered the same, and thus both implement the same operations. In other words, traits allow us to express that multiple classes share a common super-type (outside of the `Any` super-type that all classes share).
 
 <div class="callout callout-info">
-**Java tip**
+#### Traits vs Java Interfaces {-}
 
 Traits are very much like Java 8's *interfaces* with *default methods*. If you have not used Java 8, you can think of traits as being like a cross between interfaces and *abstract classes*.
 </div>
@@ -70,7 +70,7 @@ res4: Boolean = true
 Here the method `older` can be called with either an `Anonymous` or a `User` as they are both subtypes of `Visitor`.
 
 <div class="callout callout-info">
-#### Trait Syntax
+#### Trait Syntax {-}
 
 To declare a trait we write
 

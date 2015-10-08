@@ -29,7 +29,7 @@ Some methods accept *parameters* or *arguments*, which control how the method wo
 ~~~
 
 <div class="callout callout-info">
-#### Method Call Syntax
+#### Method Call Syntax {-}
 
 The syntax for a method call is
 
@@ -87,12 +87,10 @@ But if an `Int` is an object, what are the basic methematical operators such as 
 // res: Int = 42
 ~~~
 
-<div class="callout callout-warning">
-Note that in Scala 2.10 and earlier you would have to write `(43).-(3).+(2)` to prevent `43.` being interpreted as a `Double`.
-</div>
+(Note that in Scala 2.10 and earlier you would have to write `(43).-(3).+(2)` to prevent `43.` being interpreted as a `Double`.)
 
 <div class="callout callout-info">
-#### Infix Operator Notation
+#### Infix Operator Notation {-}
 
 Any Scala expression written `a.b(c)` can also be written `a b c`.
 

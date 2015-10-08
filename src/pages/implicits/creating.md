@@ -94,7 +94,7 @@ Much safer---it'll take a spam bot more than a few microseconds to decypher that
 You might recognise `PersonWriter`, `DateWriter`, and `ObfuscatedPersonWriter` as following the type class instance pattern (though we haven't made them implicit values at this point). The `HtmlWriter` trait, which the instances implement, is the type class itself.
 
 <div class="callout callout-info">
-#### Type Class Pattern
+#### Type Class Pattern {-}
 
 A type class is a trait with at least one type variable. The type variables specify the concrete types the type class instances are defined for. Methods in the trait usually use the type variables.
 

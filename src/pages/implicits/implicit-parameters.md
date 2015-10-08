@@ -82,7 +82,7 @@ HtmlWriter[Person].write(Person("Noel", "noel@example.org"))
 The idea is to simply select a type class instance by type (done by the no-argument `apply` method) and then directly call the methods defined on that instance.
 
 <div class="callout callout-info">
-#### Type Class Interface Pattern
+#### Type Class Interface Pattern {-}
 
 If the desired interface to a type class `TypeClass` is exactly the methods defined on the type class trait, define an interface on the companion object using a no-argument `apply` method like
 

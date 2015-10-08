@@ -39,7 +39,7 @@ final case class Anonymous(/* ... */) extends Visitor
 This is a very powerful pattern and one we will use frequently.
 
 <div class="callout callout-info">
-#### Sealed Trait Pattern
+#### Sealed Trait Pattern {-}
 
 If all the subtypes of a trait are known, seal the trait
 

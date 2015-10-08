@@ -25,8 +25,7 @@ Note that the type of the object is reported as `Test.type`. This is not like an
 Empty objects are not so useful. Within the body (between the braces) of an object declaration we can put expressions. It is more common, however, to put declarations such as declaring methods, fields, or even more objects.
 
 <div class="callout callout-info">
-
-#### Object Declaration Syntax
+#### Object Declaration Syntax {-}
 
 The syntax for declaring an object is
 
@@ -76,7 +75,7 @@ Test3.hello("Noel")
 ~~~
 
 <div class="callout callout-info">
-#### Method Declaration Syntax
+#### Method Declaration Syntax {-}
 
 The syntax for declaring a method is
 
@@ -106,9 +105,9 @@ The term *argument* may be used interchangably with *parameter*.
 </div>
 
 <div class="callout callout-info">
-**Java tip**
+#### Return is Implicit {-}
 
-The return value of the method is determined by evaluating the body---there is no need to write `return`.
+The return value of the method is determined by evaluating the body---there is no need to write `return` like you would in Java.
 </div>
 
 
@@ -128,7 +127,7 @@ Test4.hello("Dave")
 ~~~
 
 <div class="callout callout-info">
-#### Field Declaration Syntax
+#### Field Declaration Syntax {-}
 
 The syntax for declaring a field is
 

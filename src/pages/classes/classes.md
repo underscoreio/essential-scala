@@ -62,7 +62,7 @@ alien.greet(newNoel)
 ~~~
 
 <div class="callout callout-info">
-**Java tip**
+#### Java Tip {-}
 
 Scala classes are all subclasses of `java.lang.Object` and are, for the most part, usable from Java as well as Scala. The default printing behaviour of `Person` comes from the `toString` method defined in `java.lang.Object`.
 </div>
@@ -100,15 +100,13 @@ new Person("Dave", "Gurnell").firstName
 // res: String = Dave
 ~~~
 
-<div class="callout callout-info">
 `val` fields are *immutable*---they are initialized once after which we cannot change their values. Scala also provides the `var` keyword for defining *mutable* fields.
 
 Scala programmers tend to prefer to write immutability and side-effect-free code so we can reason about it using the substitution model. In this course we will concentrate almost exclusively on immutable `val` fields.
-</div>
 
 <div class="callout callout-info">
 
-#### Class Declaration Syntax
+#### Class Declaration Syntax {-}
 
 The syntax for declaring a class is
 
@@ -167,6 +165,8 @@ greet(lastName = "Dave")
 ~~~
 
 <div class="callout callout-info">
+#### Keyword Parameters {-}
+
 *Keyword parameters are robust to changes in the number and order of parameters.* For example, if we add a `title` parameter to the `greet` method, the meaning of keywordless method calls changes but keyworded calls remain the same:
 
 ~~~ scala

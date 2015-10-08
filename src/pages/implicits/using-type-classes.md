@@ -29,7 +29,7 @@ def pageTemplate[A : HtmlWriter](body: A): String = {
 The context bound is the notation `[A : HtmlWriter]` and it expands into the equivalent implicit parameter list in the prior example.
 
 <div class="callout callout-info">
-#### Context Bound Syntax
+#### Context Bound Syntax {-}
 
 A context bound is an annotation on a generic type variable like so:
 

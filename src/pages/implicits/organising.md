@@ -95,7 +95,7 @@ object Example {
 This leads us to our first pattern for packaging type class instances.
 
 <div class="callout callout-info">
-#### Type Class Instance Packaging: Companion Objects
+#### Type Class Instance Packaging: Companion Objects {-}
 
 When defining a type class instance, if
 
@@ -140,7 +140,7 @@ object Example {
 Notice that `higherPriorityImplicit` defines a different ordering to the one defined in the companion object for `Rational`. We've also changed the expected ordering in `example` to match this new ordering. This code both compiles and runs correctly, illustrating the effect of the priority rules.
 
 <div class="callout callout-info">
-#### Type Class Instance Packaging: Companion Objects Part 2
+#### Type Class Instance Packaging: Companion Objects Part 2 {-}
 
 When defining a type class instance, if
 

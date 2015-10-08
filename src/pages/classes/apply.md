@@ -36,7 +36,7 @@ With this one simple trick, objects can "look" syntactically like functions. The
 
 <div class="callout callout-info">
 
-#### Function Application Syntax
+#### Function Application Syntax {-}
 
 The method call `object.apply(parameter, ...)` can also be written as `object(parameter, ...)`
 

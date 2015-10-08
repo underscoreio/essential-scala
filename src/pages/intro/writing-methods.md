@@ -65,7 +65,7 @@ Finally we should run the code again and check that the tests all pass in this c
 This is very simple example but practicing the process now will serve you well for the more complicated examples we will encounter later.
 
 <div class="callout callout-info">
-#### Process for Writing Methods
+#### Process for Writing Methods {-}
 
 We have a six-step process for writing methods in a systematic way.
 
