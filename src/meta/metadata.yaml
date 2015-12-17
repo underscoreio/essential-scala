@@ -85,4 +85,33 @@ pages:
   - src/pages/collections-redux/mutable-seq.md
 
   - src/pages/solutions.md
+
+previewPages:
+  - src/pages/index.md
+  - src/pages/thanks.md
+  - src/pages/getting-started/index.md
+
+  - src/pages/intro/index.md
+  - src/pages/intro/objects.md
+  - src/pages/intro/literals.md
+  - src/pages/intro/object-literals.md
+  - src/pages/intro/writing-methods.md
+  - src/pages/intro/expressions.md
+  - src/pages/intro/conclusion.md
+  
+  - src/pages/classes/index.md
+  - src/pages/classes/classes.md
+  - src/pages/classes/apply.md
+  - src/pages/classes/companion-objects.md
+  - src/pages/classes/case-classes.md
+  - src/pages/classes/pattern-matching.md
+  - src/pages/classes/conclusions.md
+
+  - src/pages/traits/index.md
+  - src/pages/traits/traits.md
+  - src/pages/traits/sealed-traits.md
+  - src/pages/traits/modelling-data-with-traits.md
+  - src/pages/traits/working-with-data.md
+  - src/pages/traits/recursive-data.md
+  - src/pages/traits/conclusions.md
 ...
