@@ -1,4 +1,4 @@
-## Algebraic Data Types Mini Projects
+## Extended Examples
 
 To test your skills with algebraic data types and structural recursion here are some larger projects to attempt.
 

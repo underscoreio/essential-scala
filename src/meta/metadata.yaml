@@ -2,7 +2,7 @@
 # Used by Pandoc to print covers:
 title: Essential Scala
 author: "Noel Welsh and Dave Gurnell"
-date: "Version 1.1, August 2015"
+date: "Version 1.2, February 2016"
 # Used by Pandoc to generate the PDF cover...
 # see src/css/book.css for HTML/ePub covers:
 coverColor: "E8515B"
@@ -38,7 +38,7 @@ pages:
   - src/pages/traits/modelling-data-with-traits.md
   - src/pages/traits/working-with-data.md
   - src/pages/traits/recursive-data.md
-  - src/pages/traits/mini-projects.md
+  - src/pages/traits/extended-examples.md
   - src/pages/traits/conclusions.md
 
   - src/pages/sequencing/index.md
@@ -114,6 +114,6 @@ previewPages:
   - src/pages/traits/modelling-data-with-traits.md
   - src/pages/traits/working-with-data.md
   - src/pages/traits/recursive-data.md
-  - src/pages/traits/mini-projects.md
+  - src/pages/traits/extended-examples.md
   - src/pages/traits/conclusions.md
 ...
