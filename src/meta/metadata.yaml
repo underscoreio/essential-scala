@@ -38,6 +38,7 @@ pages:
   - src/pages/traits/modelling-data-with-traits.md
   - src/pages/traits/working-with-data.md
   - src/pages/traits/recursive-data.md
+  - src/pages/traits/mini-projects.md
   - src/pages/traits/conclusions.md
 
   - src/pages/sequencing/index.md
@@ -113,5 +114,6 @@ previewPages:
   - src/pages/traits/modelling-data-with-traits.md
   - src/pages/traits/working-with-data.md
   - src/pages/traits/recursive-data.md
+  - src/pages/traits/mini-projects.md
   - src/pages/traits/conclusions.md
 ...
