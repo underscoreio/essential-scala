@@ -45,3 +45,23 @@ The default grunt behaviour is to run `zip`:
 ~~~
 grunt
 ~~~
+
+Publishing a Preview
+--------------------
+
+The `grunt` command generates `essential-scala-preview.pdf` but this does not include the full TOC.
+To create a version of the preview with the full TOC:
+
+~~~
+$ cd  ..
+$ git checkout https://github.com/d6y/toctastic
+$ cd toctastic
+$ sh escala.sh
+~~~
+
+This will create `dist/essential-scala-preview-with-full-toc.pdf`.
+
+Upload this file to the Underscore S3 account, in the `book-sample` bucket.
+It should have world-read permissions on it.
+Check that you can download it from the book page to be sure.
+
