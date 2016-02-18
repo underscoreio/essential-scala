@@ -154,7 +154,7 @@ If a parameter has a default value we can omit it in the method call:
 
 ~~~ scala
 greet("Awesome")
-// res: String = Greetings, Awesome Body
+// res: String = Greetings, Awesome Body!
 ~~~
 
 Combining keywords with default parameter values let us skip earlier parameters and just provide values for later ones:
@@ -206,18 +206,19 @@ There are two special types at the *bottom* of the hierarchy. `Nothing` is the t
 
 ~~~ scala
 def badness = throw new Exception("Error")
+// badness: Nothing
 
 null
 // res: Null = null
 
-if(true) 123 else badness
-// res: Int = 123
+val bar = if(true) 123 else badness
+// bar: Int = 123
 
-if(false) "it worked" else null
-// res: String = null
+val baz = if(false) "it worked" else null
+// baz: String = null
 ~~~
 
-Although the types of `badness` and `// res` are `Nothing` and `Null` respectively, the types of `res2` and `res3` are still sensible. This is because `Int` is the least common supertype of `Int` and `Nothing`, and `String` is the least common supertype of `String` and `Null`.
+Although the types of `badness` and `res` are `Nothing` and `Null` respectively, the types of `bar` and `baz` are still sensible. This is because `Int` is the least common supertype of `Int` and `Nothing`, and `String` is the least common supertype of `String` and `Null`.
 
 ### Take Home Points
 
