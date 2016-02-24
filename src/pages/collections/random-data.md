@@ -190,3 +190,106 @@ object Distribution {
 ```
 </div>
 
+### Examples
+
+With `Distribution` we can now define some interesting model. We could do some classic problems, such as working out the probability that a coin flip gives three heads in a row.
+
+```scala
+sealed trait Coin
+final case object Heads extends Coin
+final case object Tails extends Coin
+
+val fairCoin: Distribution[Coin] = Distribution.uniform(List(Heads, Tails))
+val threeFlips =
+  for {
+    c1 <- fairCoin
+    c2 <- fairCoin
+    c3 <- fairCoin
+  } yield (c1, c2, c3)
+// threeFlips: Distribution[(Coin, Coin, Coin)] = 
+// Distribution(List(
+//    ((Heads,Heads,Heads),0.125),
+//    ((Heads,Heads,Tails),0.125),
+//    ((Heads,Tails,Heads),0.125),
+//    ((Heads,Tails,Tails),0.125),
+//    ((Tails,Heads,Heads),0.125),
+//    ((Tails,Heads,Tails),0.125),
+//    ((Tails,Tails,Heads),0.125),
+//    ((Tails,Tails,Tails),0.125)
+// ))
+```
+
+From this we can read of the probability of three heads being 0.125, as we'd expect.
+
+Let's create a more complex model. Imagine the following situation:
+
+I put my food into the oven and after some time it ready to eat and produces delicious smell with probability 0.3 and otherwise it is still raw and produces no smell with probability 0.7. If there are delicious smells the cat comes to harass me with probability 0.8, and otherwise it stays asleep. If there is no smell the cat harasses me for the hell of it with probability 0.4 and otherwise stays asleep.
+
+Implement this model and answer the question: if the cat comes to harass me what is the probability my food is producing delicious smells (and therefore is ready to eat.)
+
+I found it useful to add this constructor to the companion object of `Distribution`:
+
+```scala
+def discrete[A](events: List[(A,Double)]): Distribution[A] =
+  Distribution(events).compact.normalize
+```
+
+<div class="solution">
+First I constructed the model
+
+```scala
+// We assume cooked food makes delicious smells with probability 1.0, and raw
+// food makes no smell with probability 0.0.
+sealed trait Food
+final case object Raw extends Food
+final case object Cooked extends Food
+
+val food: Distribution[Food] =
+  Distribution.discrete(List(Cooked -> 0.3, Raw -> 0.7))
+
+sealed trait Cat
+final case object Asleep extends Cat
+final case object Harassing extends Cat
+
+def cat(food: Food): Distribution[Cat] =
+  food match {
+    case Cooked => Distribution.discrete(List(Harassing -> 0.8, Asleep -> 0.2))
+    case Raw => Distribution.discrete(List(Harassing -> 0.4, Asleep -> 0.6))
+  }
+
+val foodModel: Distribution[(Food, Cat)] =
+  for {
+    f <- food
+    c <- cat(f)
+  } yield (f, c)
+```
+
+From `foodModel` we could read off the probabilities of interest, but it's more fun to write some code to do this for us. Here's what I did.
+
+```scala
+// Probability the cat is harassing me
+val pHarassing: Double =
+  foodModel.events filter {
+    case ((_, Harassing), _) => true
+    case ((_, Asleep), _) => false
+  } map { case (a, p) => p } sum
+
+// Probability the food is cooked given the cat is harassing me
+val pCookedGivenHarassing: Option[Double] =
+  foodModel.events collectFirst[Double] {
+    case ((Cooked, Harassing), p) => p
+  } map (_ / pHarassing)
+```
+
+From this we can see the probability my food is cooked given the cat is harassing me is probably 0.46. I should probably check the oven even though it's more likely the food isn't cooked because leaving my food in and it getting burned is a far worse outcome than checking my food while it is still raw.
+
+This example also shows us that to use this library for real we'd probably want to define a lot of utility functions, such as `filter`, directly on distribution. We also need to keep probabilities unnormalised after certain operations, such as filtering, so we can compute conditional probabilities correctly.
+</div>
+
+### Next Steps
+
+The current library is limited to working with discrete events. If we wanted to work with continuous domains, such as coordinates in the plane, we need a different representation as we clearly can't represent all possible outcomes. We can even run into issues with complex discrete models, as the number of events increases exponentially with each `flatMap`.
+
+Instead of representing all events we can sample from the distributions of interest and maintain a set of samples. Varying the size of the set allows us to tradeoff accuracy with computational resources.
+
+We could use the same style of implementation with a sampling representation, but this requires we fix the number of samples in advance. It's more useful to be able to repeatedly sample from the same model, so the user can ask for more samples if they decide they need higher accuracy. To do so requires we separate defining the structure of the model from the process of sampling from it, and reify the model. We're not going to go further into this implementation here, but if you're going through the case study you'll pick up the techniques need to implement it.
