@@ -339,4 +339,22 @@ Sequence ::= SeqCell phrase:Phrase tail:Sequence
 Parallel ::= ParCell phrase:Phrase tail:Parallel
            | ParEnd
 ```
+
+This representation allows us to arbitrarily nest parallel and sequential units of notes. We might prefer a normalised representation, such as
+
+```bash
+Sequence ::= SeqCell note:Note tail:Sequence
+           | SeqEnd
+           
+Parallel ::= ParCell sequence:Sequence tail:Parallel
+           | ParEnd
+```
+
+There are many things missing from this model. Some of them include:
+
+- We don't model musical dynamics in any way. Notes can be louder or softer, and volume can change while a note is being played. Notes do not always have constant pitch, either. Pitch bends or slurs are examples of changing pitches in a single note
+
+- We haven't modelled different instruments at all. 
+
+- We haven't modelled effects, like echo and distortion, that make up an important part of modern music.
 </div>
