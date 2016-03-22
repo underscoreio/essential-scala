@@ -59,6 +59,7 @@ pages:
   - src/pages/collections/for-comprehensions-redux.md
   - src/pages/collections/map-and-set.md
   - src/pages/collections/ranges.md
+  - src/pages/collections/random-data.md
 
   - src/pages/implicits/index.md
   - src/pages/implicits/instances.md
