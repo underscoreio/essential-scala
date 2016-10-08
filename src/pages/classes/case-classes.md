@@ -50,7 +50,6 @@ new Person("Noel", "Welsh") == new Person("Noel", "Welsh")
 // res: Boolean = true
 ~~~
 
-
 4. *A `copy` method* that creates a new object with the same field values as the current one:
 
 ~~~ scala
@@ -92,6 +91,8 @@ dave eq dave
 ~~~
 </div>
 
+5. Case classes implement two traits: `java.io.Serializable` and `scala.Product`. Neither are used directly. The latter provides methods for inspecting the number of fields and the name of the case class.
+
 ### Features of a case class companion object
 
 The companion object contains an `apply` method with the same arguments as the class constructor. Scala programmers tend to prefer the `apply` method over the constructor for the brevity of omitting `new`, which makes constructors much easier to read inside expressions:
@@ -127,7 +128,7 @@ where
 
 ### Case objects
 
-A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a *case object*. A case object is defined just like a case class and has the same default methods as a case class.
+A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a *case object*. A case object is defined just like a regular singleton object, but has a more meaningful `toString` method and extends the `Product` and `Serializable` traits:
 
 ~~~ scala
 case object Citizen {
@@ -135,18 +136,10 @@ case object Citizen {
   def lastName  = "Doe"
   def name = firstName + " " + lastName
 }
+
+Citizen.toString
+// res: String = Citizen
 ~~~
-
-The differences between a case object and a regular singleton object are:
-
- - The `case object` keyword defines a class and an object, and makes the object an instance (actually the only instance) of the class:
-
-~~~ scala
-class Citizen { /* ... */ }
-object Citizen extends Citizen { /* ... */ }
-~~~
-
- - With a case object we still get all of the functionality defined for case classes above.
 
 ### Take Home Points
 

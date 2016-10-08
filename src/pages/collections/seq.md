@@ -303,7 +303,7 @@ We have covered a variety of methods that operate on sequences. Here is a type t
 | `updated`   | `Seq[A]`   | `Int` `A`           | `Seq[A]`    |
 -->
 
-We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement as we have seen. 
+We can always use `Seq` and `List` in our code. Other collections can be brought into scope using the `import` statement as we have seen.
 
 ### Exercises
 
@@ -484,25 +484,25 @@ def directorBornBeforeWithBackCatalogOfSize(year: Int, numberOfFilms: Int): Seq[
 
 ~~~ scala
 def directorsSortedByAge(ascending: Boolean = true) =
- if(ascending) {
-   directors.sortWith((a, b) => a.yearOfBirth < b.yearOfBirth)
- } else {
-   directors.sortWith((a, b) => a.yearOfBirth > b.yearOfBirth)
- }
+  if(ascending) {
+    directors.sortWith((a, b) => a.yearOfBirth < b.yearOfBirth)
+  } else {
+    directors.sortWith((a, b) => a.yearOfBirth > b.yearOfBirth)
+  }
 ~~~
 
    Because Scala is a functional language, we can also factor our code as follows:
 
 ~~~ scala
 def directorsSortedByAge(ascending: Boolean = true) = {
- val comparator =
-   if(ascending) {
-     (a, b) => a.yearOfBirth < b.yearOfBirth
-   } else {
-     (a, b) => a.yearOfBirth > b.yearOfBirth
-   }
+  val comparator =
+    if(ascending) {
+      (a, b) => a.yearOfBirth < b.yearOfBirth
+    } else {
+      (a, b) => a.yearOfBirth > b.yearOfBirth
+    }
 
- directors.sortWith(comparator)
+  directors.sortWith(comparator)
 }
 ~~~
 
@@ -511,13 +511,13 @@ def directorsSortedByAge(ascending: Boolean = true) = {
 
 ~~~ scala
 def directorsSortedByAge(ascending: Boolean = true) =
- directors.sortWith { (a, b) =>
-   if(ascending) {
-     a.yearOfBirth < b.yearOfBirth
-   } else {
-     a.yearOfBirth > b.yearOfBirth
-   }
- }
+  directors.sortWith { (a, b) =>
+    if(ascending) {
+      a.yearOfBirth < b.yearOfBirth
+    } else {
+      a.yearOfBirth > b.yearOfBirth
+    }
+  }
 ~~~
 
    Note the use of braces instead of parentheses on the call to `sortWith` in the

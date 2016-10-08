@@ -149,7 +149,7 @@ We started developing an abstraction over `sum`, `length`, and `product` which w
 def abstraction(end: Int, f: ???): Int =
   this match {
     case End => end
-    case Pair(hd, tl) => f(hd, tl.abstraction(f, end))
+    case Pair(hd, tl) => f(hd, tl.abstraction(end, f))
   }
 ~~~
 
