@@ -151,10 +151,10 @@ final case class End[A]() extends LinkedList[A]
 On the JVM we can compare all values for equality. Implement a method `contains` that determines whether or not a given item is in the list. Ensure your code works with the following test cases:
 
 ~~~ scala
-val example = Pair(1, Pair(2, Pair(3, Empty())))
+val example = Pair(1, Pair(2, Pair(3, End())))
 assert(example.contains(3) == true)
 assert(example.contains(4) == false)
-assert(Empty().contains(0) == false)
+assert(End().contains(0) == false)
 // This should not compile
 // example.contains("not an Int")
 ~~~
@@ -191,7 +191,7 @@ throw new Exception("Bad things happened")
 Ensure your solution works with the following test cases:
 
 ~~~ scala
-val example = Pair(1, Pair(2, Pair(3, Empty())))
+val example = Pair(1, Pair(2, Pair(3, End())))
 assert(example(0) == 1)
 assert(example(1) == 2)
 assert(example(2) == 3)

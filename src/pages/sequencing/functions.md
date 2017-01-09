@@ -59,7 +59,7 @@ add1(2)
 
 This is a big step towards doing real functional programming in Scala but we're missing one important component: *types*.
 
-As we have seen, types allow us to abstract across values. We've seen all sorts of special case functions like `Adders` and `ActionListeners`, but what we really want is a generalised set of types that allow us to represent computations of any kind.
+As we have seen, types allow us to abstract across values. We've seen special case functions like `Adders`, but what we really want is a generalised set of types that allow us to represent computations of any kind.
 
 Enter Scala's `Function` types.
 
