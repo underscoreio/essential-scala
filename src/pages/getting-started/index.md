@@ -12,30 +12,28 @@ We'll walk through the setup for each process here.
 
 Follow the instructions on [http://scala-lang.org](http://scala-lang.org) to set Scala up on your computer. Once Scala is installed, you should be able to run an interactive console by typing `scala` at your command line prompt. Here's an example from OS X:
 
-~~~ bash
+```bash
 dave@Jade ~> scala
 Welcome to Scala version 2.11.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.7.0_45).
 Type in expressions to have them evaluated.
 Type :help for more information.
 
 scala>
-~~~
+```
 
 You can enter individual expressions at the `scala>` prompt and press *Enter* to compile and execute them:
 
-~~~ scala
-scala> "Hello world!"
-res0: String = Hello world!
-~~~
+```tut
+"Hello world!"
+```
 
 ### Entering Single-Line Expressions
 
 Let's try entering a simple expression:
 
-~~~ scala
-scala> 1 + 2 + 3
-res1: Int = 6
-~~~
+```tut
+1 + 2 + 3
+```
 
 When we press Enter, the console responds with three things:
 
@@ -47,17 +45,15 @@ As we will see in the next chapter, every expression in Scala has a *type* and a
 
 The identifier `res1` is a convenience provided by the console to allow us to refer to the result of the expression in future expressions. For example, we can multiply our result by two as folllows:
 
-~~~ scala
-scala> res1 * 2
-res2: Int = 12
-~~~
+```tut
+res1 * 2
+```
 
 If we enter an expression that doesn't yield a useful value, the console won't print anything in response:
 
-~~~ scala
-scala> println("Hello world!")
-Hello world!
-~~~
+```tut
+println("Hello world!")
+```
 
 Here, the output `"Hello world!"` is from our `println` statement---the expression we entered doesn't actually return a value. The console doesn't provide output similar to the output we saw above.
 
@@ -65,18 +61,15 @@ Here, the output `"Hello world!"` is from our `println` statement---the expressi
 
 We can split long expressions across multiple lines quite simply. If we press enter before the end of an expression, the console will print a `|` character to indicate that we can continue on the next line:
 
-~~~ scala
-scala> for(i <- 1 to 3) {
-     |   println(i)
-     | }
-1
-2
-3
-~~~
+```tut
+for(i <- 1 to 3) {
+  println(i)
+}
+```
 
 Sometimes we want to enter multiple expressions at once. In these cases we can use the `:paste` command. We simply type `:paste`, press Enter, and write (or copy-and-paste) our code. When we're done we press `Ctrl+D` to compile and execute the code as normal. The console prints output for every expression in one big block at the end of the input:
 
-~~~ scala
+```scala
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
@@ -89,24 +82,24 @@ x + y
 x: Int = 1
 y: Int = 2
 res6: Int = 3
-~~~
+```
 
 If we have Scala code in a file, we can use `:paste` to paste the contents of the file into the console. This is much more convenient than re-entering expressions in the console. For example, with a file named `example.txt` containing `1 + 2 + 3` we can use `:paste` like so:
 
-~~~ scala
+```scala
 scala> :paste example.scala
 Pasting file example.scala...
 res0: Int = 6
-~~~
+```
 
 ### Printing the Type of an Expression
 
 One final tip for using the console. Occasionally we want to know the *type* of an expression without actually running it. To do this we can use the `:type` command:
 
-~~~ scala
+```scala
 scala> :type println("Hello world!")
 Unit
-~~~
+```
 
 Notice that the console doesn't execute our `println` statement in this expression. It simply compiles it and prints out its type, which in this case is something called `Unit`.
 
@@ -164,21 +157,21 @@ A project is no good without code to run! Let's create our first simple Scala ap
 
 The content of the file should read as follows:
 
-~~~ scala
+```tut:book:silent
 object HelloWorld {
 
 }
-~~~
+```
 
 Replace this text with the following minimalist application:
 
-~~~ scala
+```tut:book:silent
 object HelloWorld {
   def main(args: Array[String]): Unit = {
     println("Hello world!")
   }
 }
-~~~
+```
 
 Select the **Run Menu** and choose **Run**. This should execute the code in your application, resulting in the words `Hello world!` appearing in the *Console* pane at the bottom of the window. Congratulations - you just ran your first Scala application!
 
@@ -188,13 +181,13 @@ Select the **Run Menu** and choose **Run**. This should execute the code in your
 
 Developers with Java experience will notice the resemblance of the code above to the Java hello world app:
 
-~~~java
+```java
 public class HelloWorld {
   public static void main(String[] args) {
     System.out.println("Hello world!");
   }
 }
-~~~
+```
 
 The resemblance is, of course, no coincidence. These two applications compile to more or less the same bytecode and have exactly the same semantics. We will learn much more about the similarities and differences between Scala and Java as the course continues.
 
@@ -218,19 +211,19 @@ Enter a **Worksheet name** of `FirstSteps` and click **Finish**. A new file call
 
 Note that the object on the left contains a single line of Scala code:
 
-~~~ scala
+```tut:book:silent
 println("Welcome to the Scala worksheet")
-~~~
+```
 
 for which Eclipse is displaying the corresponding output on the right:
 
-~~~
+```
 Welcome to the Scala worksheet
-~~~
+```
 
 Any expression you add to the left of the editor is evaluated and printed on the right. To demonstrate this, change the text in the editor to the following:
 
-~~~ scala
+```scala
 object FirstSteps {
   println("Welcome to the Scala worksheet")
 
@@ -240,11 +233,11 @@ object FirstSteps {
 
   println("The ultimate answer is " + 42)
 }
-~~~
+```
 
 Save your work by selecting the **File Menu** and choosing **Save** (or better still by pressing **Ctrl+S**). Eclipse should automatically evaluate each line of code and print the results on the right of the editor:
 
-~~~ scala
+```scala
 object FirstSteps {
   println("Welcome to the Scala worksheet")   //> Welcome to the Scala worksheet
 
@@ -254,7 +247,7 @@ object FirstSteps {
 
   println("The ultimate answer is " + 42)     //> The ultimate answer is 42
 }
-~~~
+```
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
 ![Scala IDE: Completed Scala worksheet](src/pages/getting-started/scala-ide-completed-worksheet.png)\
