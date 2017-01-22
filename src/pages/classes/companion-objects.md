@@ -4,17 +4,18 @@ Sometimes we want to create a method that logically belongs to a class but is in
 
 One common use case is auxiliary constructors. Although Scala does have syntax that lets us define multiple constructors for a class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the *companion object* of the class. For example:
 
-~~~ scala
+```tut:book:silent
 class Timestamp(val seconds: Long)
 
 object Timestamp {
   def apply(hours: Int, minutes: Int, seconds: Int): Timestamp =
     new Timestamp(hours*60*60 + minutes*60 + seconds)
 }
+```
 
+```tut:book
 Timestamp(1, 1, 1).seconds
-// res: Long = 3661
-~~~
+```
 
 <div class="callout callout-info">
 #### Using the Console Effectively {-}
@@ -28,17 +29,16 @@ As we saw earlier, Scala has two namespaces: a space of *type names* and a space
 
 It is important to note that *the companion object is not an instance of the class*---it is a singleton object with its own type:
 
-~~~ scala
+```tut:book
 Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
-// res: Timestamp.type = Timestamp$@602b24e6
-~~~
+```
 
 <div class="callout callout-info">
 #### Companion Object Syntax {-}
 
 To define a companion object for a class, in the *same file* as the class define an object with the same name.
 
-~~~ scala
+```scala
 class Name {
   ...
 }
@@ -46,7 +46,7 @@ class Name {
 object Name {
   ...
 }
-~~~
+```
 </div>
 
 ### Take home points
@@ -67,35 +67,34 @@ Implement a companion object for `Person` containing an `apply` method that acce
 
 Tip: you can split a `String` into an `Array` of components as follows:
 
-~~~ scala
+```tut:book
 val parts = "John Doe".split(" ")
-// parts: Array[String] = Array(John, Doe)
-
 parts(0)
-// res: String = John
-~~~
+```
 
 <div class="solution">
 Here is the code:
 
-~~~ scala
+```tut:book:silent
+class Person(val firstName: String, val lastName: String) {
+  def name: String =
+    s"$firstName $lastName"
+}
+
 object Person {
   def apply(name: String): Person = {
     val parts = name.split(" ")
     new Person(parts(0), parts(1))
   }
 }
-~~~
+```
 
 And here it is in use:
 
-~~~ scala
+```tut:book
 Person.apply("John Doe").firstName // full method call
-// res: String = John
-
 Person("John Doe").firstName // sugared apply syntax
-// res: String = John
-~~~
+```
 </div>
 
 #### Extended Body of Work
@@ -119,7 +118,7 @@ Write companion objects for `Director` and `Film` as follows:
 
 This exercise is inteded to provide more practice writing code. The model solution, including the class definitions from the previous section, is now:
 
-~~~ scala
+```tut:book:silent
 class Director(
   val firstName: String,
   val lastName: String,
@@ -183,7 +182,7 @@ object Film {
   def oldestDirectorAtTheTime(film1: Film, film2: Film): Director =
     if (film1.directorsAge > film2.directorsAge) film1.director else film2.director
 }
-~~~
+```
 
 </div>
 
@@ -193,39 +192,39 @@ The similarity in naming of classes and companion objects tends to cause confusi
 
 This is the inspiration for the new hit quiz, *Type or Value?*, which we will be piloting below. In each case identify whether the word `Film` refers to the type or value:
 
-~~~ scala
+```scala
 val prestige: Film = bestFilmByChristopherNolan()
-~~~
+```
 
 <div class="solution">
 **Type!**---this code is defining a value `prestige` of type `Film`.
 </div>
 
-~~~ scala
+```scala
 new Film("Last Action Hero", 1993, mcTiernan)
-~~~
+```
 
 <div class="solution">
 *Type!*---this is a reference to the *constructor* of `Film`. The constructor is part of the *class* `Film`, which is a *type*.
 </div>
 
-~~~ scala
+```scala
 Film("Last Action Hero", 1993, mcTiernan)
-~~~
+```
 
 <div class="solution">
 *Value!*---this is shorthand for:
 
-~~~ scala
+```scala
 Film.apply("Last Action Hero", 1993, mcTiernan)
-~~~
+```
 
 `apply` is a method defined on the *singleton object* (or value) `Film`.
 </div>
 
-~~~ scala
+```scala
 Film.newer(highPlainsDrifter, thomasCrownAffair)
-~~~
+```
 
 <div class="solution">
 *Value!*---`newer` is another method defined on the *singleton object* `Film`.
@@ -233,9 +232,9 @@ Film.newer(highPlainsDrifter, thomasCrownAffair)
 
 Finally a tough one...
 
-~~~ scala
+```scala
 Film.type
-~~~
+```
 
 <div class="solution">
 *Value!*---This is tricky! You'd be forgiven for getting this one wrong.
