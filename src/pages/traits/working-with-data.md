@@ -229,7 +229,7 @@ Which should we use? The first two methods give the same result: a method define
 
 When we implement a method in the classes of interest we can have only one implementation of the method, and everything that method requires to work must be contained within the class and parameters we pass to the method. When we implement methods using pattern matching in an external object we can provide multiple implementations, one per object (multiple `Diner`s in the example above).
 
-The general rule is: if a method only depends on other fields and methods in a class it is a good candidate to be implemented inside the class. If the method depends on other data (for example, if we needed a `Cook` to make dinner) consider implementing is using pattern matching outside of the classes in question. If we want to have more than one implementation we should use pattern matching and implement it outside the classes.
+The general rule is: if a method only depends on other fields and methods in a class it is a good candidate to be implemented inside the class. If the method depends on other data (for example, if we needed a `Cook` to make dinner) consider implementing it using pattern matching outside of the classes in question. If we want to have more than one implementation we should use pattern matching and implement it outside the classes.
 
 ### Object-Oriented vs Functional Extensibility
 

@@ -454,9 +454,10 @@ The solution follows the same pattern as the union for sets, but here we have to
 ~~~ scala
 def union[A](map1: Map[A, Int], map2: Map[A, Int]): Map[A, Int] = {
   map1.foldLeft(map2){ (map, elt) =>
-    val (k, v) = elt
-    val newV = map.getOrElse(k, v)
-    map + (k -> newV)
+    val (key, value1) = elt
+    val value2 = map.get(key)
+    val total = value1 + value2.getOrElse(0)
+    map + (key -> total)
   }
 }
 ~~~

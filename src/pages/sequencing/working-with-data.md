@@ -5,7 +5,7 @@ We've seen that when we define a class with generic data, we cannot implement ve
 
 ### Fold
 
-Last time we saw fold we were working with a list of integers. Let's generalise to a list of a generic type. We're already see all the tools we need. First our data definition, in this instance slightly modified to use the invariant sum type pattern.
+Last time we saw fold we were working with a list of integers. Let's generalise to a list of a generic type. We've already seen all the tools we need. First our data definition, in this instance slightly modified to use the invariant sum type pattern.
 
 ~~~ scala
 sealed trait LinkedList[A]

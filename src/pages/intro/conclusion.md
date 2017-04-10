@@ -9,4 +9,4 @@ We've seen how we can write literals for many objects, and use method calls and 
 
 We have also declared our own objects, and constructed methods and fields.
 
-Next we're going to see how a new kind of declaration, a class, provides a template for creating objects. Classes allow us to reuse code and unify similar objects will a common type.
+Next we're going to see how a new kind of declaration, a class, provides a template for creating objects. Classes allow us to reuse code and unify similar objects with a common type.

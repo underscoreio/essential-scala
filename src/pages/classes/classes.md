@@ -352,7 +352,8 @@ thomasCrownAffair.copy(yearOfRelease = 1968,
 // returns Film("The Thomas Crown Affair", 1926, /* etc */)
 
 inception.copy().copy().copy()
-// returns a new copy of `inception`
+// returns a new copy of `inception`...
+// (one copy() is actually enough)
 ~~~
 
 <div class="solution">

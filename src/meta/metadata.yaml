@@ -3,7 +3,7 @@
 title: Essential Scala
 author: "Noel Welsh and Dave Gurnell"
 date: "Version 1.3, April 2017"
-copyright: "2017"
+copyright: "2014-2017"
 # Used by Pandoc to generate the PDF cover...
 # see src/css/book.css for HTML/ePub covers:
 coverColor: "E8515B"
@@ -24,7 +24,7 @@ pages:
   - intro/writing-methods.md
   - intro/expressions.md
   - intro/conclusion.md
-  
+
   - classes/index.md
   - classes/classes.md
   - classes/apply.md
@@ -78,7 +78,7 @@ pages:
 
   - pattern-matching/index.md
   - pattern-matching/extractors.md
-  
+
   - collections-redux/index.md
   - collections-redux/seq-implementations.md
   - collections-redux/arrays-and-strings.md
@@ -101,7 +101,7 @@ previewPages:
   - intro/writing-methods.md
   - intro/expressions.md
   - intro/conclusion.md
-  
+
   - classes/index.md
   - classes/classes.md
   - classes/apply.md

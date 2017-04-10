@@ -95,7 +95,7 @@ A linked list is another type of generic sequence, similar to an array. Unlike a
 In this example we have four links in our chain. `d` represents an empty list, and `a`, `b`, and `c` are pairs built on top of it:
 
 ~~~ scala
-val d = Empty()
+val d = End()
 val c = Pair(3, d)
 val b = Pair(2, c)
 val a = Pair(1, b)
@@ -124,13 +124,13 @@ To implement a `LinkedList` in Scala we need to combine our newfound knowledge o
 Start by writing the simplest trait and classes you can so that you can build a list. You should be able to use your implementation as follows:
 
 ~~~ scala
-val list: LinkedList[Int] = Pair(1, Pair(2, Pair(3, Empty())))
+val list: LinkedList[Int] = Pair(1, Pair(2, Pair(3, End())))
 
 list.isInstanceOf[LinkedList[Int]] // returns true
 
 list.head      // returns 1 as an Int
 list.tail.head // returns 2 as an Int
-list.tail.tail // returns Pair(3, Empty()) as a LinkedList[Int]
+list.tail.tail // returns Pair(3, End()) as a LinkedList[Int]
 ~~~
 
 <div class="solution">
