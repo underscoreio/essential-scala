@@ -2,7 +2,8 @@
 # Used by Pandoc to print covers:
 title: Essential Scala
 author: "Noel Welsh and Dave Gurnell"
-date: "Version 1.2, February 2016"
+date: "Version 1.3, April 2017"
+copyright: "2017"
 # Used by Pandoc to generate the PDF cover...
 # see src/css/book.css for HTML/ePub covers:
 coverColor: "E8515B"
@@ -12,109 +13,109 @@ filenameStem: "essential-scala"
 exercisesRepo: null # "git@github.com:underscoreio/essential-scala-code.git"
 # Used by Grunt to assemble pandoc command line:
 pages:
-  - src/pages/index.md
-  - src/pages/thanks.md
-  - src/pages/getting-started/index.md
+  - index.md
+  - thanks.md
+  - getting-started/index.md
 
-  - src/pages/intro/index.md
-  - src/pages/intro/objects.md
-  - src/pages/intro/literals.md
-  - src/pages/intro/object-literals.md
-  - src/pages/intro/writing-methods.md
-  - src/pages/intro/expressions.md
-  - src/pages/intro/conclusion.md
+  - intro/index.md
+  - intro/objects.md
+  - intro/literals.md
+  - intro/object-literals.md
+  - intro/writing-methods.md
+  - intro/expressions.md
+  - intro/conclusion.md
   
-  - src/pages/classes/index.md
-  - src/pages/classes/classes.md
-  - src/pages/classes/apply.md
-  - src/pages/classes/companion-objects.md
-  - src/pages/classes/case-classes.md
-  - src/pages/classes/pattern-matching.md
-  - src/pages/classes/conclusions.md
+  - classes/index.md
+  - classes/classes.md
+  - classes/apply.md
+  - classes/companion-objects.md
+  - classes/case-classes.md
+  - classes/pattern-matching.md
+  - classes/conclusions.md
 
-  - src/pages/traits/index.md
-  - src/pages/traits/traits.md
-  - src/pages/traits/sealed-traits.md
-  - src/pages/traits/modelling-data-with-traits.md
-  - src/pages/traits/working-with-data.md
-  - src/pages/traits/recursive-data.md
-  - src/pages/traits/extended-examples.md
-  - src/pages/traits/conclusions.md
+  - traits/index.md
+  - traits/traits.md
+  - traits/sealed-traits.md
+  - traits/modelling-data-with-traits.md
+  - traits/working-with-data.md
+  - traits/recursive-data.md
+  - traits/extended-examples.md
+  - traits/conclusions.md
 
-  - src/pages/sequencing/index.md
-  - src/pages/sequencing/generics.md
-  - src/pages/sequencing/functions.md
-  - src/pages/sequencing/working-with-data.md
-  - src/pages/sequencing/modelling-data.md
-  - src/pages/sequencing/sequencing-computation.md
-  - src/pages/sequencing/variance.md
-  - src/pages/sequencing/conclusions.md
+  - sequencing/index.md
+  - sequencing/generics.md
+  - sequencing/functions.md
+  - sequencing/working-with-data.md
+  - sequencing/modelling-data.md
+  - sequencing/sequencing-computation.md
+  - sequencing/variance.md
+  - sequencing/conclusions.md
 
-  - src/pages/collections/index.md
-  - src/pages/collections/seq.md
-  - src/pages/collections/working-with-seq.md
-  - src/pages/collections/for-comprehensions.md
-  - src/pages/collections/options.md
-  - src/pages/collections/meeting-monads.md
-  - src/pages/collections/for-comprehensions-redux.md
-  - src/pages/collections/map-and-set.md
-  - src/pages/collections/ranges.md
-  - src/pages/collections/random-data.md
+  - collections/index.md
+  - collections/seq.md
+  - collections/working-with-seq.md
+  - collections/for-comprehensions.md
+  - collections/options.md
+  - collections/meeting-monads.md
+  - collections/for-comprehensions-redux.md
+  - collections/map-and-set.md
+  - collections/ranges.md
+  - collections/random-data.md
 
-  - src/pages/implicits/index.md
-  - src/pages/implicits/instances.md
-  - src/pages/implicits/organising.md
-  - src/pages/implicits/creating.md
-  - src/pages/implicits/implicit-parameters.md
-  - src/pages/implicits/enrichment.md
-  - src/pages/implicits/using-type-classes.md
-  - src/pages/implicits/conversions.md
-  - src/pages/implicits/json.md
+  - implicits/index.md
+  - implicits/instances.md
+  - implicits/organising.md
+  - implicits/creating.md
+  - implicits/implicit-parameters.md
+  - implicits/enrichment.md
+  - implicits/using-type-classes.md
+  - implicits/conversions.md
+  - implicits/json.md
 
-  - src/pages/conclusions.md
+  - conclusions.md
 
-  - src/pages/start-of-appendix.md
+  - start-of-appendix.md
 
-  - src/pages/pattern-matching/index.md
-  - src/pages/pattern-matching/extractors.md
+  - pattern-matching/index.md
+  - pattern-matching/extractors.md
   
-  - src/pages/collections-redux/index.md
-  - src/pages/collections-redux/seq-implementations.md
-  - src/pages/collections-redux/arrays-and-strings.md
-  - src/pages/collections-redux/iterators.md
-  - src/pages/collections-redux/traversable.md
-  - src/pages/collections-redux/java-interop.md
-  - src/pages/collections-redux/mutable-seq.md
+  - collections-redux/index.md
+  - collections-redux/seq-implementations.md
+  - collections-redux/arrays-and-strings.md
+  - collections-redux/iterators.md
+  - collections-redux/traversable.md
+  - collections-redux/java-interop.md
+  - collections-redux/mutable-seq.md
 
-  - src/pages/solutions.md
+  - solutions.md
 
 previewPages:
-  - src/pages/index.md
-  - src/pages/thanks.md
-  - src/pages/getting-started/index.md
+  - index.md
+  - thanks.md
+  - getting-started/index.md
 
-  - src/pages/intro/index.md
-  - src/pages/intro/objects.md
-  - src/pages/intro/literals.md
-  - src/pages/intro/object-literals.md
-  - src/pages/intro/writing-methods.md
-  - src/pages/intro/expressions.md
-  - src/pages/intro/conclusion.md
+  - intro/index.md
+  - intro/objects.md
+  - intro/literals.md
+  - intro/object-literals.md
+  - intro/writing-methods.md
+  - intro/expressions.md
+  - intro/conclusion.md
   
-  - src/pages/classes/index.md
-  - src/pages/classes/classes.md
-  - src/pages/classes/apply.md
-  - src/pages/classes/companion-objects.md
-  - src/pages/classes/case-classes.md
-  - src/pages/classes/pattern-matching.md
-  - src/pages/classes/conclusions.md
+  - classes/index.md
+  - classes/classes.md
+  - classes/apply.md
+  - classes/companion-objects.md
+  - classes/case-classes.md
+  - classes/pattern-matching.md
+  - classes/conclusions.md
 
-  - src/pages/traits/index.md
-  - src/pages/traits/traits.md
-  - src/pages/traits/sealed-traits.md
-  - src/pages/traits/modelling-data-with-traits.md
-  - src/pages/traits/working-with-data.md
-  - src/pages/traits/recursive-data.md
-  - src/pages/traits/extended-examples.md
-  - src/pages/traits/conclusions.md
+  - traits/index.md
+  - traits/traits.md
+  - traits/sealed-traits.md
+  - traits/modelling-data-with-traits.md
+  - traits/working-with-data.md
+  - traits/recursive-data.md
+  - traits/extended-examples.md
+  - traits/conclusions.md
 ...
