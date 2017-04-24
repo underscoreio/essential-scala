@@ -9,9 +9,9 @@ Scala has a third implicit mechanism called *implicit conversions* that we will 
 
 As we shall see later in this section, undisciplined use of implicit conversions can cause as many problems as it fixes for the beginning programmer. Scala even requires us to write a special import statement to silence compiler warnings resulting from the use of implicit conversions:
 
-~~~ scala
+```scala
 import scala.language.implicitConversions
-~~~
+```
 
 We recommend using implicit classes and implicit values/parameters over implicit conversions wherever possible. By sticking to the type enrichment and type class design patterns you should find very little cause to use implicit conversions in your code.
 
@@ -22,7 +22,7 @@ You have been warned!
 
 Implicit conversions are a more general form of implicit classes. We can tag any single-argument method with the `implicit` keyword to allow the compiler to implicitly use the method to perform automated conversions from one type to another:
 
-~~~ scala
+```scala
 class B {
   def bar = "This is the best method ever!"
 }
@@ -33,7 +33,7 @@ implicit def aToB(in: A): B = new B()
 
 new A().bar
 // res: String = This is the best method ever!
-~~~
+```
 
 Implicit classes are actually just syntactic sugar for the combination of a regular class and an implicit conversion. With an implicit class we have to define a new type as a target for the conversion; with an implicit method we can convert from any type to any other type as long as an implicit is available in scope.
 
@@ -41,7 +41,7 @@ Implicit classes are actually just syntactic sugar for the combination of a regu
 
 The power of implicit conversions tends to cause problems for newer Scala developers. We can easily define very general type conversions that play strange games with the semantics of our programs:
 
-~~~ scala
+```scala
 implicit def intToBoolean(int: Int) = int == 0
 
 if(1) "yes" else "no"
@@ -49,7 +49,7 @@ if(1) "yes" else "no"
 
 if(0) "yes" else "no"
 // res: String = yes
-~~~
+```
 
 This example is ridiculous, but it demonstrates the potential problems implicits can cause. `intToBoolean` could be defined in a library in a completely different part of our codebase, so how would we debug the bizarre behaviour of the `if` expressions above?
 
@@ -72,7 +72,7 @@ Any implicit class can be reimplemented as a class paired with an implicit metho
 <div class="solution">
 Here is the solution. The methods `yeah` and `times` are exactly as we implemented them previously. The only differences are the removal of the `implicit` keyword on the `class` and the addition of the `implicit def` to do the job of the implicit constructor:
 
-~~~ scala
+```scala
 object IntImplicits {
   class IntOps(n: Int) {
     def yeah =
@@ -85,20 +85,20 @@ object IntImplicits {
   implicit def intToIntOps(value: Int) =
     new IntOps(value)
 }
-~~~
+```
 
 The code still works the same way it did previously. The implicit conversion is not available until we bring it into scope:
 
-~~~ scala
+```scala
 5.yeah
 // <console>:8: error: value yeah is not a member of Int
 //               5.yeah
 //                 ^
-~~~
+```
 
 Once the conversion has been brought into scope, we can use `yeah` and `times` as usual:
 
-~~~ scala
+```scala
 import IntImplicits._
 
 5.yeah
@@ -107,5 +107,5 @@ import IntImplicits._
 // Oh yeah!
 // Oh yeah!
 // Oh yeah!
-~~~
+```
 </div>

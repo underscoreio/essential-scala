@@ -27,7 +27,7 @@ The *scope rule* of implicit resolution uses a special set of scoping rules that
 
 Implicits **cannot be defined at the top level** (except in the Scala console). They must be wrapped in an outer trait, class, or singleton object. The typical way of packaging an implicit value is to define it inside a trait called `SomethingImplicits` and extend that trait to create a singleton of the same name:
 
-~~~ scala
+```scala
 trait VowelImplicits {
   implicit class VowelOps(str: String) {
     val vowels = Seq('a', 'e', 'i', 'o', 'u')
@@ -37,13 +37,13 @@ trait VowelImplicits {
 }
 
 object VowelImplicits extends VowelImplicits
-~~~
+```
 
 This gives developers two convenient ways of using our code:
 
  1. quickly bring our implicit into scope via the singleton object using an `import`:
 
-    ~~~ scala
+    ```scala
     // `VowelOps` is not in scope here
 
     def testMethod = {
@@ -55,11 +55,11 @@ This gives developers two convenient ways of using our code:
     }
 
     // `VowelOps` is no longer in scope here
-    ~~~
+    ```
 
  2. stack our trait with a set of other traits to produce a library of implicits that can be brought into scope using inheritance or an `import`:
 
-    ~~~ scala
+    ```scala
     object AllTheImplicits extends VowelImplicits
       with MoreImplicits
       with YetMoreImplicits
@@ -68,7 +68,7 @@ This gives developers two convenient ways of using our code:
 
     // `VowelOps` is in scope here
     // along with other implicit classes
-    ~~~
+    ```
 
 <div class="alert alert-info">
 **Implicits tip:** Some Scala developers dislike implicits because they can be hard to debug. The reason for this is that an implicit definition at one point in our codebase can have an invisible affect on the meaning of a line of code written elsewhere.
@@ -85,7 +85,7 @@ The same resolution rules apply for implicit values as for implicit classes. If 
 
 Let's redefine our adapters for `HtmlWriter` so we can bring them all into scope. Note that outside the REPL implicit values are subject to the same packaging restrictions as implicit classes---they have to be defined inside another class, object, or trait. We'll use the packaging convention we discussed in the previous section:
 
-~~~ scala
+```scala
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
@@ -106,16 +106,16 @@ object HtmlImplicits extends HtmlImplicits
 
 defined trait HtmlWriters
 defined object HtmlWriters
-~~~
+```
 
 We can now use our adapters with `htmlify`:
 
-~~~ scala
+```scala
 scala> import HtmlImplicits._
 import HtmlImplicits._
 
 scala> HtmlUtil.htmlify(Person("John", "john@example.com"))
 res4: String = <span>John &lt;john@example.com&gt;</span>
-~~~
+```
 
 This version of the code has much lighter syntax requirements than its predecessor. We have now assembled the complete type class pattern: `HtmlUtil` specifies our HTML rendering functionality, `HtmlWriter` and `HtmlWriters` implement the functionality as a set of adapters, and the implicit argument to `htmlify` implicitly selects the correct adapter for any given argument. However, we can take things one step further to really simplify things.

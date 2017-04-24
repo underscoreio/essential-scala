@@ -11,7 +11,7 @@ We already know how to do simple aggregation in simple cases using fields. Here 
 
 Generic types naturally arise in collections, so let's consider a really simple collection---a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
-~~~ scala
+```scala
 scala> case class Box[A](val value: A)
 defined class Box
 
@@ -26,13 +26,13 @@ res2: Box[String] = Box(hi)
 
 scala> res2.value
 res3: String = hi
-~~~
+```
 
 The syntax `[A]` is called a **type parameter**---it binds a name to a type. Wherever `A` occurs in our class definition we will substitute in the same type. This works in the same way that binding a name to a value (using `val`) allows us to substitute in the value wherever the name occurs. The only difference is that we're operating on types rather than values.
 
 We can also add type parameters to methods, which limits the scope of the parameter to the method declaration and body:
 
-~~~ scala
+```scala
 scala> def generic[A](in: A): A = in
 generic: [A](in: A)A
 
@@ -41,7 +41,7 @@ res10: String = foo
 
 scala> generic(1) // again, if we omit the type parameter, scala will infer it
 res11: Int = 1
-~~~
+```
 
 ## Arrays
 
@@ -51,7 +51,7 @@ Scala has a built-in `Array` type that has the same underlying representation as
 
 The code below shows how to create an array, determine its length, and retrieve elements by index using its `apply` method. Notice how the return type of `apply` matches the type parameter on the array---we always get out the type we put in:
 
-~~~ scala
+```scala
 scala> val array = Array(1, 2, 3, 4 ,5)
 array: Array[Int] = Array(1, 2, 3, 4, 5)
 
@@ -66,11 +66,11 @@ array2: Array[String] = Array(a, b, c)
 
 scala> array2(1)
 res2: String = b
-~~~
+```
 
 All of the items in an array must be of the same type. If we try to mix types in the constructor, Scala infers the overall type of the array as the *least common supertype* of the arguments. For example:
 
-~~~ scala
+```scala
 scala> val array3 = Array(1, true, 3.0)
 array3: Array[AnyVal] = Array(1, true, 3.0)
 
@@ -82,7 +82,7 @@ array4: Array[Any] = Array(123, abc)
 
 scala> array4(1)
 res4: Any = abc
-~~~
+```
 
 Again, the type of the elements retrieved from the array matches the type parameter on the array. `AnyVal` and `Any` aren't particularly useful types---if we were using this code in a real application, we may have to use pattern matching to identify the type of data retrieved.
 
@@ -94,12 +94,12 @@ A linked list is another type of generic sequence, similar to an array. Unlike a
 
 In this example we have four links in our chain. `d` represents an empty list, and `a`, `b`, and `c` are pairs built on top of it:
 
-~~~ scala
+```scala
 val d = End()
 val c = Pair(3, d)
 val b = Pair(2, c)
 val a = Pair(1, b)
-~~~
+```
 
 In addition to being links in a chain, these data structures all represent complete sequences of integers:
 
@@ -123,7 +123,7 @@ To implement a `LinkedList` in Scala we need to combine our newfound knowledge o
 
 Start by writing the simplest trait and classes you can so that you can build a list. You should be able to use your implementation as follows:
 
-~~~ scala
+```scala
 val list: LinkedList[Int] = Pair(1, Pair(2, Pair(3, End())))
 
 list.isInstanceOf[LinkedList[Int]] // returns true
@@ -131,18 +131,18 @@ list.isInstanceOf[LinkedList[Int]] // returns true
 list.head      // returns 1 as an Int
 list.tail.head // returns 2 as an Int
 list.tail.tail // returns Pair(3, End()) as a LinkedList[Int]
-~~~
+```
 
 <div class="solution">
 Here is the model solution. `Empty` doesn't contain any data so it may seem more natural to define it as a singleton object. However, objects can't have type parameters so we have to define it as a class. We'll be able to work around this later when we learn about something called *variance* :
 
-~~~ scala
+```scala
 sealed trait LinkedList[A]
 
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
 
 final case class Empty[A]() extends LinkedList[A]
-~~~
+```
 </div>
 
 ### Exercise: Checking it Twice
@@ -157,16 +157,16 @@ In each case, start by writing an abstract method definition in `LinkedList`. Th
 
 **Hint:** If you need to signal an error in your code (there's one situation in which you will need to do this), consider throwing an exception. Here is an example:
 
-~~~ scala
+```scala
 throw new Exception("Bad things happened")
-~~~
+```
 
 <div class="solution">
 The hint about exceptions was for the implementation of `apply` in `Empty`. The list is empty---there is no <em>n<sup>th</sup></em> element to return!
 
 Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
 
-~~~ scala
+```scala
 sealed trait LinkedList[A] {
   def head: A
   def tail: LinkedList[A]
@@ -190,5 +190,5 @@ case class Empty[A]() extends LinkedList[A] {
   override def length = 0
   override def contains(item: A) = false
 }
-~~~
+```
 </div>

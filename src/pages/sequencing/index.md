@@ -4,7 +4,7 @@ In this section we're going to look at two more language features, *generics* an
 
 Our starting point is code that we developed in the previous section. We developed `IntList`, a list of integers, and wrote code like the following:
 
-~~~ scala
+```scala
 sealed trait IntList {
   def length: Int =
     this match {
@@ -29,7 +29,7 @@ sealed trait IntList {
 }
 final case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
-~~~
+```
 
 There are two problems with this code. The first is that our list is restricted to storing `Int`s. The second problem is that here is a lot of repetition. The code has the same general structure, which is unsurprising given we're using our structural recursion pattern, and it would be nice to reduce the amount of duplication.
 

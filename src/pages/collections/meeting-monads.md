@@ -16,7 +16,7 @@ Broadly speaking, a monad is a generic type that allows us to sequence computati
 
 To demonstrate the generality of this principle, here are some examples. This first example calculates the sum of two numbers that may or may not be there:
 
-~~~ scala
+```scala
 for {
   a <- getFirstNumber  // getFirstNumber  returns Option[Int]
   b <- getSecondNumber // getSecondNumber returns Option[Int]
@@ -24,11 +24,11 @@ for {
 
 // The final result is an Option[Int]---the result of
 // applying `+` to `a` and `b` if both values are present
-~~~
+```
 
 This second example calculate the sums of all possible pairs of numbers from two sequences:
 
-~~~ scala
+```scala
 for {
   a <- getFirstNumbers  // getFirstNumbers  returns Seq[Int]
   b <- getSecondNumbers // getSecondNumbers returns Seq[Int]
@@ -36,11 +36,11 @@ for {
 
 // The final result is a Seq[Int]---the results of
 // applying `+` to all combinations of `a` and `b`
-~~~
+```
 
 This third example asynchronously calculates the sum of two numbers that can only be obtained asynchronously (all without blocking):
 
-~~~ scala
+```scala
 for {
   a <- getFirstNumber   // getFirstNumber  returns Future[Int]
   b <- getSecondNumber  // getSecondNumber returns Future[Int]
@@ -49,7 +49,7 @@ for {
 // The final result is a Future[Int]---a data structure
 // that will eventually allow us to access the result of
 // applying `+` to `a` and `b`
-~~~
+```
 
 The important point here is that, if we ignore the comments, *these three examples look identical*. Monads allow us to forget about one part of the problem at hand---optional values, multiple values, or asynchronously available values---and focus on just the part we care about---adding two numbers together.
 
@@ -61,7 +61,7 @@ There are many other monads that can be used to simplify problems in different c
 
 We've already seen how we can use a for comprehension to neatly add together three optional values. Let's extend this to other monads. Use the following definitions:
 
-~~~ scala
+```scala
 import scala.util.Try
 
 val opt1 = Some(1)
@@ -75,12 +75,12 @@ val seq3 = Seq(3)
 val try1 = Try(1)
 val try2 = Try(2)
 val try3 = Try(3)
-~~~
+```
 
 Add together all the options to create a new option. Add together all the sequences to create a new sequence. Add together all the trys to create a new try. Use a for comprehension for each. It shouldn't take you long!
 
 <div class="solution">
-~~~ scala
+```scala
 for {
  x <- opt1
  y <- opt2
@@ -98,7 +98,7 @@ for {
  y <- try2
  z <- try3
 } yield x + y + z
-~~~
+```
 
 How's that for a cut-and-paste job?
 </div>

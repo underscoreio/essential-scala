@@ -6,15 +6,15 @@ In this section we'll see the additional power the generic types give us when mo
 
 Let's look at using generics to model a *product type*. Consider a method that returns two values---for example, an `Int` and a `String`, or a `Boolean` and a `Double`:
 
-~~~ scala
+```scala
 def intAndString: ??? = // ...
 
 def booleanAndDouble: ??? = // ...
-~~~
+```
 
 The question is what do we use as the return types? We could use a regular class without any type parameters, with our usual algebraic data type patterns, but then we would have to implement one version of the class for each combination of return types:
 
-~~~ scala
+```scala
 case class IntAndString(intValue: Int, stringValue: String)
 
 def intAndString: IntAndString = // ...
@@ -22,15 +22,15 @@ def intAndString: IntAndString = // ...
 case class BooleanAndDouble(booleanValue: Boolean, doubleValue: Double)
 
 def booleanAndDouble: BooleanAndDouble = // ...
-~~~
+```
 
 The answer is to use generics to create a *product type*---for example a `Pair`---that contains the relevant data for *both* return types:
 
-~~~ scala
+```scala
 def intAndString: Pair[Int, String] = // ...
 
 def booleanAndDouble: Pair[Boolean, Double] = // ...
-~~~
+```
 
 Generics provide a different approach to defining product types--- one that relies on aggregation as opposed to inheritance.
 
@@ -38,7 +38,7 @@ Generics provide a different approach to defining product types--- one that reli
 
 Implement the `Pair` class from above. It should store two values---`one` and `two`---and be generic in both arguments. Example usage:
 
-~~~ scala
+```scala
 val pair = Pair[String, Int]("hi", 2)
 // pair: Pair[String,Int] = Pair(hi,2)
 
@@ -47,23 +47,23 @@ pair.one
 
 pair.two
 // res: Int = 2
-~~~
+```
 
 <div class="solution">
 If one type parameter is good, two type parameters are better:
 
-~~~ scala
+```scala
 case class Pair[A, B](one: A, two: B)
-~~~
+```
 
 This is just the product type pattern we have seen before, but we introduce generic types.
 
 Note that we don't always need to specify the type parameters when we construct `Pairs`. The compiler will attempt to infer the types as usual wherever it can:
 
-~~~ scala
+```scala
 val pair = Pair("hi", 2)
 // pair: Pair[String,Int] = Pair(hi,2)
-~~~
+```
 </div>
 
 ### Tuples
@@ -74,7 +74,7 @@ The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they c
 
 [^sugar]: The term "syntactic sugar" is used to refer to convenience syntax that is not needed but makes programming sweeter. Operator syntax is another example of syntactic sugar that Scala provides.
 
-~~~ scala
+```scala
 Tuple2("hi", 1) // unsugared syntax
 // res: (String, Int) = (hi,1)
 
@@ -83,30 +83,30 @@ Tuple2("hi", 1) // unsugared syntax
 
 ("hi", 1, true)
 // res: (String, Int, Boolean) = (hi,1,true)
-~~~
+```
 
 We can define methods that accept tuples as parameters using the same syntax:
 
-~~~ scala
+```scala
 def tuplized[A, B](in: (A, B)) = in._1
 // tuplized: [A, B](in: (A, B))A
 
 tuplized(("a", 1))
 // res: String = a
-~~~
+```
 
 We can also pattern match on tuples as follows:
 
-~~~ scala
+```scala
 (1, "a") match {
   case (a, b) => a + b
 }
 // res: String = 1a
-~~~
+```
 
 Although pattern matching is the natural way to deconstruct a tuple, each class also has a complement of fields named `_1`, `_2` and so on:
 
-~~~ scala
+```scala
 val x = (1, "b", true)
 // x: (Int, String, Boolean) = (1,b,true)
 
@@ -115,7 +115,7 @@ x._1
 
 x._3
 // res: Boolean = true
-~~~
+```
 
 ### Generic Sum Types
 
@@ -123,22 +123,22 @@ Now let's look at using generics to model a *sum type*. Again, we have previousl
 
 Consider a method that, depending on the value of its parameters, returns one of two types:
 
-~~~ scala
+```scala
 def intOrString(input: Boolean) =
   if(input == true) 123 else "abc"
 // intOrString: (input: Boolean)Any
-~~~
+```
 
 We can't simply write this method as shown above because the compiler infers the result type as `Any`. Instead we have to introduce a new type to explicitly represent the disjunction:
 
-~~~ scala
+```scala
 def intOrString(input: Boolean): Sum[Int, String] =
   if(input == true) {
     Left[Int, String](123)
   } else {
     Right[Int, String]("abc")
   }
-~~~
+```
 
 How do we implement `Sum`? We just have to use the patterns we've already seen, with the addition of generic types.
 
@@ -148,7 +148,7 @@ Implement a trait `Sum[A, B]` with two subtypes `Left` and `Right`. Create type 
 
 Hint: you will need to put both type parameters on all three types. Example usage:
 
-~~~ scala
+```scala
 Left[Int, String](1).value
 // res: Int = 1
 
@@ -163,16 +163,16 @@ sum match {
   case Right(x) => x
 }
 // res: String = foo
-~~~
+```
 
 <div class="solution">
 The code is an adaptation of our invariant generic sum type pattern, with another type parameter:
 
-~~~ scala
+```scala
 sealed trait Sum[A, B]
 final case class Left[A, B](value: A) extends Sum[A, B]
 final case class Right[A, B](value: B) extends Sum[A, B]
-~~~
+```
 
 Scala's standard library has the generic sum type `Either` for two cases, but it does not have types for more cases.
 </div>
@@ -188,22 +188,22 @@ We generally want to write robust programs, and in Scala we try to utilise the t
 
 Create a generic trait called `Maybe` of a generic type `A` with two subtypes, `Full` containing an `A`, and `Empty` containing no value. Example usage:
 
-~~~ scala
+```scala
 val perhaps: Maybe[Int] = Empty[Int]
 // perhaps: Maybe[Int] = Empty()
 
 val perhaps: Maybe[Int] = Full(1)
 // perhaps: Maybe[Int] = Full(1)
-~~~
+```
 
 <div class="solution">
 We can apply our invariant generic sum type pattern and get
 
-~~~ scala
+```scala
 sealed trait Maybe[A]
 final case class Full[A](value: A) extends Maybe[A]
 final case class Empty[A]() extends Maybe[A]
-~~~
+```
 </div>
 
 ### Take Home Points
@@ -230,18 +230,18 @@ Generic data structures---`Tuples`, `Options`, `Eithers`, and so on---are extrem
 
 In this section we implemented a sum type for modelling optional data:
 
-~~~ scala
+```scala
 sealed trait Maybe[A]
 final case class Full[A](value: A) extends Maybe[A]
 final case class Empty[A]() extends Maybe[A]
-~~~
+```
 
 Implement fold for this type.
 
 <div class="solution">
 The code is very similar to the implementation for `LinkedList`. I choose pattern matching in the base trait for my solution.
 
-~~~ scala
+```scala
 sealed trait Maybe[A] {
   def fold[B](full: A => B, empty: B): B =
     this match {
@@ -251,23 +251,23 @@ sealed trait Maybe[A] {
 }
 final case class Full[A](value: A) extends Maybe[A]
 final case class Empty[A]() extends Maybe[A]
-~~~
+```
 </div>
 
 #### Folding Sum
 
 In this section we implemented a generic sum type:
 
-~~~ scala
+```scala
 sealed trait Sum[A, B]
 final case class Left[A, B](value: A) extends Sum[A, B]
 final case class Right[A, B](value: B) extends Sum[A, B]
-~~~
+```
 
 Implement `fold` for `Sum`.
 
 <div class="solution">
-~~~ scala
+```scala
 sealed trait Sum[A, B] {
   def fold[C](left: A => C, right: B => C): C =
     this match {
@@ -277,5 +277,5 @@ sealed trait Sum[A, B] {
 }
 final case class Left[A, B](value: A) extends Sum[A, B]
 final case class Right[A, B](value: B) extends Sum[A, B]
-~~~
+```
 </div>

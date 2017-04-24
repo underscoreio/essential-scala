@@ -5,7 +5,7 @@ title: Function Types
 
 In the previous section we described how to write function literals and function types, but we glossed over how exactly function types are implemented. Scala has 23 built-in generic classes for functions of 0 to 22 arguments. Here's what they look like:
 
-~~~ scala
+```scala
 trait Function0[+R] {
   def apply: R
 }
@@ -19,7 +19,7 @@ trait Function2[-A, -B, +C] {
 }
 
 // and so on...
-~~~
+```
 
 For the most part this is all stuff we know. The only pieces of syntax we haven't seen are the `+` and `-` annotations on the type parameters. These are called *variance annotations*. Let's look at this for a moment.
 
@@ -41,13 +41,13 @@ A type `Foo[-T]` is **contravariant** in terms of `T`, meaning that `Foo[A]` is 
 
 Functions are contravariant in terms of their arguments and covariant in terms of their return type. This seems counterintuitive but it makes sense if we look at it from the point of view of function arguments. Consider some code that expects a `Function1[A, B]`:
 
-~~~ scala
+```scala
 class Box[A](value: A) {
   /** Apply `func` to `value`, returning a `Box` of the result. */
   def map[B](func: Function1[A, B]): Box[B] =
     Box(func(a))
 }
-~~~
+```
 
 To understand variance, consider what functions can we safely pass to this `map` method:
 
@@ -66,7 +66,7 @@ As functions are instances of a `Function` class we might ask what methods we ge
 
 - for functions of a single parameters we can compose them together to apply one function to the result of another
 
-  ~~~ scala
+  ```scala
   scala> val f = ((x: Int) => x + 1).compose((x: Int) => x * 2)
   f: Int => Int = <function1>
 
@@ -78,11 +78,11 @@ As functions are instances of a `Function` class we might ask what methods we ge
 
   scala> f(2)
   res6: Int = 6
-  ~~~
+  ```
 
 - for functions with two or more parameters we can convert them to functions that accepts a tuple of arguments, or a "curried" function which takes a single argument and returns a function.
 
-  ~~~ scala
+  ```scala
   scala> val f = ((x: Int, y: Int) => x + y).curried
   f: Int => (Int => Int) = <function1>
 
@@ -97,7 +97,7 @@ As functions are instances of a `Function` class we might ask what methods we ge
 
   scala> f( (1, 2) )
   res10: Int = 3
-  ~~~
+  ```
 
 ## Exercises
 
@@ -110,12 +110,12 @@ Using the notation `A <: B` to indicate `A` is a subtype of `B` and assuming:
 
 if I have a method
 
-~~~ scala
+```scala
 def groom(groomer: Cat => CatSound): CatSound =
   val oswald = Cat("Black", "Cat food")
   groomer(oswald)
 }
-~~~
+```
 
 which of the following can I pass to `groom`?
 

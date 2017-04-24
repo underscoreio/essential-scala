@@ -29,7 +29,7 @@ There is no monad type per se in Scala (though there is in the Scalaz library) b
 
 Remember that a for comprehension is compiled into a sequence of `flatMap` calls. For a monad of type `F[A]`, the type `A` can change in a `flatMap` but not the type `F`. Thus you can't mix several monads in a for comprehension. More concretely, the following will not work:
 
-~~~ scala
+```scala
 scala> import scala.util.Try
 import scala.util.Try
 
@@ -42,11 +42,11 @@ scala> for {
  required: Option[?]
                 y <- Try(2)
                   ^
-~~~
+```
 
 It's reasonably common to nest monads. For example, we might have a `Try`, representing a computation might fail, containing an `Option`, representing a value may be absent. To deal with nested monads we must nest for comprehensions. So the following works:
 
-~~~ scala
+```scala
 scala> for {
   opt <- Try(Some(2))
 } yield {
@@ -55,7 +55,7 @@ scala> for {
   } yield v + 2
 }
 res3: scala.util.Try[Option[Int]] = Success(Some(4))
-~~~
+```
 
 This nesting can get inconvenient, in which case we might turn to monad transformers to flatten our monads. Monad transformers are beyond the scope of this training material but you will want to learn about them if you get heavily into this style of programming.
 
@@ -69,14 +69,14 @@ There are still more monads out there. For instance, we can represent concurrent
 
 Add up the sequence of options
 
-~~~ scala
+```scala
 val options: Seq[Option[Int]] = Seq(Some(1), Some(2), Some(3), Some(4))
-~~~
+```
 
 <div class="solution">
 This is a fold, which we can implement using `foreach` and mutable state. Here I've used the for-comprehension equivalent of `foreach`.
 
-~~~ scala
+```scala
 var sum = Some(0)
 for {
   opt <- options
@@ -84,22 +84,22 @@ for {
   y   <- sum
 } sum = y + x
 sum
-~~~
+```
 
 Or we can implement it using `foldLeft` or `foldRight`.
 
-~~~ scala
+```scala
 options.foldLeft(0){ (sum, opt) =>
   opt.map(_ + sum).getOrElse(sum)
 }
-~~~
+```
 </div>
 
 ### Abstracting All the Things
 
 We've seen we can write the same code to add up the elements in a monad. Can we abstract this into a method that would work for any monad containing an `Int`? That is, could we write a method like:
 
-~~~ scala
+```scala
 def addAllTheThings(monad1: ???[Int], monad2: ???[Int], monad3: ???[Int]): ???[Int] = {
   for {
     x <- monad1
@@ -107,7 +107,7 @@ def addAllTheThings(monad1: ???[Int], monad2: ???[Int], monad3: ???[Int]): ???[I
     z <- monad3
   } yield x + y + z
 }
-~~~
+```
 Hint: we can add monads such as `Option[Int]`, `Seq[Int]`, and `Try[Int]`. Can we write a type that encompasses all of them?
 
 <div class="solution">
@@ -119,16 +119,16 @@ Higher-kinded types allow us to abstract over a type constructor. The type `Opti
 
 The complete code is below. It's a bit verbose, but you'll see it works for `Option[Int]` and an other monad you define a `Monad` instance for (I've only defined `Option` below). E.g.
 
-~~~ scala
+```scala
 scala> addAllTheThings(Some(1) : Option[Int], Some(2) : Option[Int], Some(3) : Option[Int])
 res21: Option[Int] = Some(6)
-~~~
+```
 
 (Note the type annotations on the options.)
 
 At this point the code is probably hard to understand. That's ok. It's here more so you know this is possible than that we expect you to understand it.
 
-~~~ scala
+```scala
 import scala.language.higherKinds
 
 trait Monad[F[_]] {
@@ -175,5 +175,5 @@ def addAllTheThings[F[_]](monad1: F[Int], monad2: F[Int], monad3: F[Int])(implic
     z <- monad3
   } yield x + y + z
 }
-~~~
+```
 </div>

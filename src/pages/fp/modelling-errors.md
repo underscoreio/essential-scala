@@ -18,15 +18,15 @@ Tip: Although we're using `Throwable` we aren't actually `throwing` any exceptio
 </div>
 
 <div class="solution">
-~~~ scala
+```scala
 sealed trait Try[+A]
 final case class Success[A](elt: A) extends Try[A]
 final case class Failure[A](error: Throwable) extends Try[A]
-~~~
+```
 
 This is just like `Maybe` except we store a `Throwable` in the failure case. Using a `Throwable` as an error type has the advantage that we can print the location of the error using `throwable.printStackTrace`:
 
-~~~ scala
+```scala
 scala> val result: Try[Int] = Failure(new Exception("Boom!"))
 result: Try[Int] = Failure(java.lang.Exception: Boom!)
 
@@ -36,7 +36,7 @@ scala> result match {
      | }
 java.lang.Exception: Boom!
   // and so on...
-~~~
+```
 </div>
 
 ### Exercise: Using Try
@@ -44,7 +44,7 @@ java.lang.Exception: Boom!
 In the previous section we saw that `fold`, `map`, and `flatMap` were useful mehtods on `Maybe`. There are also useful methods on `Try`. Let's implement them.
 
 <div class="solution">
-~~~ scala
+```scala
 sealed trait Try[+A] {
   def fold[B](failure: Throwable => B, success: A => B): B
 
@@ -69,7 +69,7 @@ final case class Success[A](val elt: A) extends Try[A] {
   def fold[B](failure: Throwable => B, success: A => B): B =
     success(elt)
 }
-~~~
+```
 
 In this case I've implemented the auxillary functions in terms of `fold`, which saves on code duplication.
 </div>

@@ -14,7 +14,7 @@ We achieve composition in Scala by separating each component into its own trait 
 
 The syntax is to write `extends` for the first trait and `with` for each following trait: `A extends B with C with D`. For example, imagine the following model of staff and students at a university:
 
-~~~ scala
+```scala
 trait Person {
   def firstName: String
   def lastName: String
@@ -31,7 +31,7 @@ trait Staff extends Person {
 }
 
 trait TeachingAssistant extends Staff with Student
-~~~
+```
 
 In this example, `TeachingAssistent` ends up with all of the methods from `Person`, `Staff`, and `Student`.
 
@@ -45,7 +45,7 @@ Don't confuse an is-a relationship with a **has a** relationship. A book has a p
 
 Traits and classes can mofidy the fields and methods they inherit from supertypes. We can use the `override` keyword to redefine an existing field or method, and use the `super` keyword to refer to the original definition that we are overriding. For example:
 
-~~~ scala
+```scala
 trait Person {
   def firstName: String
   def lastName: String
@@ -56,13 +56,13 @@ trait Veteran extends Person {
   def rank: String
   def name = s"$rank ${super.name}"
 }
-~~~
+```
 
 ## Trait Linearization
 
 Overriding can lead to interesting interactions if we have many traits that each override a particular method. Consider the following code---what happens when we call `foo` on an instance of `Example`?
 
-~~~ scala
+```scala
 trait Fooable { def foo: String }
 
 trait A extends Fooable { override def foo: String = "A" }
@@ -70,14 +70,14 @@ trait B extends Fooable { override def foo: String = "B" }
 trait C extends Fooable { override def foo: String = "C" }
 
 case class Example() extends A with B with C
-~~~
+```
 
 The simple way to tell is to ask the REPL:
 
-~~~
+```
 scala> Example().foo
 res1: String = C
-~~~
+```
 
 Ambiguity between traits is resolved using **linearization**. They are effectively stacked on top of one another and any method call is resolved by searchin up the stack until a matching definition is found. In the example the search order imposed by linearization is `Example -> C -> B -> A -> AnyRef -> Any` (extending `AnyRef` is implicit when you don't explicitly `extend` anything else).
 
@@ -116,7 +116,7 @@ Tip: a sequence of type `A` has type `Seq[A]`.
 <div class="solution">
 This is as much a problem of parsing the problem description as it is writing code. However, looking at the final Scala code it is easy to verify that all of the initial requirements hold:
 
-~~~ scala
+```scala
 trait Publication {
   def title: String
 }
@@ -144,5 +144,5 @@ case class Issue(
   issue: Int,
   manuscripts: Seq[Manuscript]
 )
-~~~
+```
 </div>
