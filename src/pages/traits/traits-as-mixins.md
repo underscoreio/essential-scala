@@ -14,7 +14,11 @@ We achieve composition in Scala by separating each component into its own trait 
 
 The syntax is to write `extends` for the first trait and `with` for each following trait: `A extends B with C with D`. For example, imagine the following model of staff and students at a university:
 
-```scala
+```tut:invisible
+trait Course
+```
+
+```tut:book:silent
 trait Person {
   def firstName: String
   def lastName: String
@@ -45,7 +49,7 @@ Don't confuse an is-a relationship with a **has a** relationship. A book has a p
 
 Traits and classes can mofidy the fields and methods they inherit from supertypes. We can use the `override` keyword to redefine an existing field or method, and use the `super` keyword to refer to the original definition that we are overriding. For example:
 
-```scala
+```tut:book:silent
 trait Person {
   def firstName: String
   def lastName: String
@@ -54,7 +58,7 @@ trait Person {
 
 trait Veteran extends Person {
   def rank: String
-  def name = s"$rank ${super.name}"
+  override def name = s"$rank ${super.name}"
 }
 ```
 
@@ -62,7 +66,7 @@ trait Veteran extends Person {
 
 Overriding can lead to interesting interactions if we have many traits that each override a particular method. Consider the following code---what happens when we call `foo` on an instance of `Example`?
 
-```scala
+```tut:book:silent
 trait Fooable { def foo: String }
 
 trait A extends Fooable { override def foo: String = "A" }
@@ -116,7 +120,11 @@ Tip: a sequence of type `A` has type `Seq[A]`.
 <div class="solution">
 This is as much a problem of parsing the problem description as it is writing code. However, looking at the final Scala code it is easy to verify that all of the initial requirements hold:
 
-```scala
+```tut:invisible
+trait Issue
+```
+
+```tut:book:silent
 trait Publication {
   def title: String
 }

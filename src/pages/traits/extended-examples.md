@@ -20,7 +20,7 @@ Implement this in Scala.
 <div class="solution">
 This is a straightforward algebraic data type.
 
-```scala
+```tut:book:silent
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
@@ -51,7 +51,7 @@ final case class Number(value: Int) extends Expression
 We're now going to add some expressions that call fail: division and square root. Start by extending the abstract syntax tree to include representations for `Division` and `SquareRoot`.
 
 <div class="solution">
-```scala
+```tut:book:silent
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
@@ -66,7 +66,7 @@ Now we're going to change `eval` to represent that a computation can fail. (`Dou
 <div class="solution">
 We did this in the previous section.
 
-```scala
+```tut:book:silent
 sealed trait Calculation
 final case class Success(result: Double) extends Calculation
 final case class Failure(reason: String) extends Calculation
@@ -192,7 +192,7 @@ Translate your representation to Scala code.
 <div class="solution">
 This should be a mechanical process. This is the point of algebraic data types---we do the work in modelling the data, and the code follows directly from that model.
 
-```scala
+```tut:book:silent
 sealed trait Json
 final case class JsNumber(value: Double) extends Json
 final case class JsString(value: String) extends Json
@@ -212,56 +212,61 @@ Now add a method to convert your JSON representation to a `String`. Make sure yo
 <div class="solution">
 This is an application of structural recursion, as all transformations on algebraic data types are, with the wrinkle that we have to treat the sequence types specially. Here is my solution.
 
-```scala
-sealed trait Json {
-  def print: String = {
-    def quote(s: String): String =
-      '"'.toString ++ s ++ '"'.toString
-    def seqToJson(seq: SeqCell): String =
-      seq match {
-        case SeqCell(h, t @ SeqCell(_, _)) =>
-          s"${h.print}, ${seqToJson(t)}"
-        case SeqCell(h, SeqEnd) => h.print
-      }
+```tut:reset:book:silent
+object json {
+  sealed trait Json {
+    def print: String = {
+      def quote(s: String): String =
+        '"'.toString ++ s ++ '"'.toString
+      def seqToJson(seq: SeqCell): String =
+        seq match {
+          case SeqCell(h, t @ SeqCell(_, _)) =>
+            s"${h.print}, ${seqToJson(t)}"
+          case SeqCell(h, SeqEnd) => h.print
+        }
 
-    def objectToJson(obj: ObjectCell): String =
-      obj match {
-        case ObjectCell(k, v, t @ ObjectCell(_, _, _)) =>
-          s"${quote(k)}: ${v.print}, ${objectToJson(t)}"
-        case ObjectCell(k, v, ObjectEnd) =>
-          s"${quote(k)}: ${v.print}"
-      }
+      def objectToJson(obj: ObjectCell): String =
+        obj match {
+          case ObjectCell(k, v, t @ ObjectCell(_, _, _)) =>
+            s"${quote(k)}: ${v.print}, ${objectToJson(t)}"
+          case ObjectCell(k, v, ObjectEnd) =>
+            s"${quote(k)}: ${v.print}"
+        }
 
-    this match {
-      case JsNumber(v) => v.toString
-      case JsString(v) => quote(v)
-      case JsBoolean(v) => v.toString
-      case JsNull => "null"
-      case s @ SeqCell(_, _) => "[" ++ seqToJson(s) ++ "]"
-      case SeqEnd => "[]"
-      case o @ ObjectCell(_, _, _) => "{" ++ objectToJson(o) ++ "}"
-      case ObjectEnd => "{}"
+      this match {
+        case JsNumber(v) => v.toString
+        case JsString(v) => quote(v)
+        case JsBoolean(v) => v.toString
+        case JsNull => "null"
+        case s @ SeqCell(_, _) => "[" ++ seqToJson(s) ++ "]"
+        case SeqEnd => "[]"
+        case o @ ObjectCell(_, _, _) => "{" ++ objectToJson(o) ++ "}"
+        case ObjectEnd => "{}"
+      }
     }
   }
+  final case class JsNumber(value: Double) extends Json
+  final case class JsString(value: String) extends Json
+  final case class JsBoolean(value: Boolean) extends Json
+  final case object JsNull extends Json
+  sealed trait JsSequence extends Json
+  final case class SeqCell(head: Json, tail: JsSequence) extends JsSequence
+  final case object SeqEnd extends JsSequence
+  sealed trait JsObject extends Json
+  final case class ObjectCell(key: String, value: Json, tail: JsObject) extends JsObject
+  final case object ObjectEnd extends JsObject
 }
-final case class JsNumber(value: Double) extends Json
-final case class JsString(value: String) extends Json
-final case class JsBoolean(value: Boolean) extends Json
-final case object JsNull extends Json
-sealed trait JsSequence extends Json
-final case class SeqCell(head: Json, tail: JsSequence) extends JsSequence
-final case object SeqEnd extends JsSequence
-sealed trait JsObject extends Json
-final case class ObjectCell(key: String, value: Json, tail: JsObject) extends JsObject
-final case object ObjectEnd extends JsObject
 ```
 </div>
 
 Test your method works. Here are some examples using the representation I chose.
 
-```scala
+```tut:invisible
+import json._
+```
+
+```tut:book
 SeqCell(JsString("a string"), SeqCell(JsNumber(1.0), SeqCell(JsBoolean(true), SeqEnd))).print
-// res: String = ["a string", 1.0, true]
 
 ObjectCell(
   "a", SeqCell(JsNumber(1.0), SeqCell(JsNumber(2.0), SeqCell(JsNumber(3.0), SeqEnd))),
@@ -275,7 +280,6 @@ ObjectCell(
     )
   )
 ).print
-// res: String = {"a": [1.0, 2.0, 3.0], "b": ["a", "b", "c"], "c": {"doh": true, "ray": false, "me": 1.0}}
 ```
 
 #### Music

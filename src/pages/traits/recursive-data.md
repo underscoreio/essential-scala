@@ -15,7 +15,7 @@ To define valid recursive data we must define a *base case*, which is the case t
 
 Here is a more useful recursive definition: an `IntList` is either the empty list `End`, or a `Pair`[^pair] containing an `Int` and an `IntList`. We can directly translate this to code using our familiar patterns:
 
-```scala
+```tut:book:silent
 sealed trait IntList
 final case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
@@ -25,7 +25,7 @@ final case class Pair(head: Int, tail: IntList) extends IntList
 
 Here `End` is the base case. We construct the list containing `1`, `2`, and `3` as follows:
 
-```scala
+```tut:book:silent
 Pair(1, Pair(2, Pair(3, End)))
 ```
 
@@ -68,7 +68,7 @@ Note how the tests define `0` to be the sum of the elements of an `End` list. It
 
 Now we apply our structural recursion pattern to fill out the body of the method.
 
-```scala
+```tut:book:silent
 def sum(list: IntList): Int =
   list match {
     case End => ???
@@ -88,7 +88,7 @@ def sum(list: IntList): Int =
 
 The recursive call will return the sum of the tail of the list, by definition. Thus the correct thing to do is to add `hd` to this result. This gives us our final result:
 
-```scala
+```tut:book:silent
 def sum(list: IntList): Int =
   list match {
     case End => 0
@@ -109,7 +109,7 @@ Our patterns will carry us most of the way to a correct answer, but we still nee
 
 When defining recursive algebraic data types, there must be at least two cases: one that is recursive, and one that is not. Cases that are not recursive are known as base cases. In code, the general skeleton is:
 
-```scala
+```tut:book:silent
 sealed trait RecursiveExample
 final case class RecursiveCase(recursion: RecursiveExample) extends RecursiveExample
 final case object BaseCase extends RecursiveExample
@@ -131,7 +131,7 @@ You may be concerned that recursive calls will consume excessive stack space. Sc
 
 A tail call is a method call where the caller immediately returns the value. So this is a tail call
 
-```scala
+```tut:book:silent
 def method1: Int =
   1
 
@@ -141,7 +141,7 @@ def tailCall: Int =
 
 because `tailCall` immediately returns the result of calling `method1` while
 
-```scala
+```tut:book:silent
 def notATailCall: Int =
   method1 + 2
 ```
@@ -150,29 +150,28 @@ because `notATailCall` does not immediatley return---it adds an number to the re
 
 A tail call can be optimised to not use stack space. Due to limitations in the JVM, Scala only optimises tail calls where the caller calls itself. Since tail recursion is an important property to maintain, we can use the `@tailrec` annotation to ask the compiler to check that methods we believe are tail recursion really are. Here we have two versions of `sum` annotated. One is tail recursive and one is not. You can see the compiler complains about the method that is not tail recursive.
 
-```scala
-scala> import scala.annotation.tailrec
+```tut:book:silent
 import scala.annotation.tailrec
+import scala.annotation.tailrec
+```
 
-scala> @tailrec
-       def sum(list: IntList): Int =
-         list match {
-           case End => 0
-           case Pair(hd, tl) => hd + sum(tl)
-         }
-<console>:15: error: could not optimize @tailrec annotated method sum: it contains a recursive call   ↩
-                     not in tail position
-         list match {
-         ^
+```tut:fail
+@tailrec
+def sum(list: IntList): Int =
+  list match {
+    case End => 0
+    case Pair(hd, tl) => hd + sum(tl)
+  }
+```
 
-scala> @tailrec
-       def sum(list: IntList, total: Int = 0): Int =
-         list match {
-           case End => total
-           case Pair(hd, tl) => sum(tl, total + hd)
-         }
-sum: (list: IntList, total: Int)Int
-```~
+```tut
+@tailrec
+def sum(list: IntList, total: Int = 0): Int =
+  list match {
+    case End => total
+    case Pair(hd, tl) => sum(tl, total + hd)
+  }
+```
 
 Any non-tail recursion function can be transformed into a tail recursive version by adding an accumulator as we have done with `sum` above. This transforms stack allocation into heap allocation, which sometimes is a win, and other times is not.
 
@@ -184,7 +183,7 @@ In Scala we tend not to work directly with tail recursive functions as there is 
 
 Using our definition of `IntList`
 
-```scala
+```tut:book:silent
 sealed trait IntList
 final case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
@@ -201,16 +200,18 @@ assert(End.length == 0)
 ```
 
 <div class="solution">
-```scala
-sealed trait IntList {
-  def length: Int =
-    this match {
-      case End => 0
-      case Pair(hd, tl) => 1 + tl.length
-    }
+```tut:book:silent
+object solution {
+  sealed trait IntList {
+    def length: Int =
+      this match {
+        case End => 0
+        case Pair(hd, tl) => 1 + tl.length
+      }
+  }
+  final case object End extends IntList
+  final case class Pair(head: Int, tail: IntList) extends IntList
 }
-final case object End extends IntList
-final case class Pair(head: Int, tail: IntLIst) extends IntList
 ```
 </div>
 
@@ -223,16 +224,18 @@ assert(End.product == 1)
 ```
 
 <div class="solution">
-```scala
-sealed trait IntList {
-  def product: Int =
-    this match {
-      case End => 1
-      case Pair(hd, tl) => hd * tl.product
-    }
+```tut:book:silent
+object solution {
+  sealed trait IntList {
+    def product: Int =
+      this match {
+        case End => 1
+        case Pair(hd, tl) => hd * tl.product
+      }
+  }
+  final case object End extends IntList
+  final case class Pair(head: Int, tail: IntList) extends IntList
 }
-final case object End extends IntList
-final case class Pair(head: Int, tail: IntList) extends IntList
 ```
 </div>
 
@@ -245,16 +248,18 @@ assert(End.double == End)
 ```
 
 <div class="solution">
-```scala
-sealed trait IntList {
-  def double: IntList =
-    this match {
-      case End => End
-      case Pair(hd, tl) => Pair(hd * 2, tl.double)
-    }
+```tut:book:silent
+object solution {
+  sealed trait IntList {
+    def double: IntList =
+      this match {
+        case End => End
+        case Pair(hd, tl) => Pair(hd * 2, tl.double)
+      }
+  }
+  final case object End extends IntList
+  final case class Pair(head: Int, tail: IntList) extends IntList
 }
-final case object End extends IntList
-final case class Pair(head: Int, tail: IntList) extends IntList
 ```
 </div>
 
@@ -267,7 +272,7 @@ A `Tree` is a `Node` with a left and right `Tree` or a `Leaf` with an element of
 Implement this algebraic data type.
 
 <div class="solution">
-```scala
+```tut:book:silent
 sealed trait Tree
 final case class Node(val l: Tree, val r: Tree) extends Tree
 final case class Leaf(val elt: Int) extends Tree
@@ -277,7 +282,7 @@ final case class Leaf(val elt: Int) extends Tree
 Implement `sum` and `double` on `Tree` using polymorphism and pattern matching.
 
 <div class="solution">
-```scala
+```tut:book:silent
 object TreeOps {
   def sum(tree: Tree): Int =
     tree match {
@@ -312,4 +317,3 @@ final case class Leaf(val elt: Int) extends Tree {
 }
 ```
 </div>
-
