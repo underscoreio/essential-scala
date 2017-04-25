@@ -38,21 +38,22 @@ Generics provide a different approach to defining product types--- one that reli
 
 Implement the `Pair` class from above. It should store two values---`one` and `two`---and be generic in both arguments. Example usage:
 
-```scala
+```tut:invisible
+case class Pair[A, B](one: A, two: B)
+```
+
+```tut:book
 val pair = Pair[String, Int]("hi", 2)
-// pair: Pair[String,Int] = Pair(hi,2)
 
 pair.one
-// res: String = hi
 
 pair.two
-// res: Int = 2
 ```
 
 <div class="solution">
 If one type parameter is good, two type parameters are better:
 
-```scala
+```tut:book:silent
 case class Pair[A, B](one: A, two: B)
 ```
 
@@ -60,9 +61,8 @@ This is just the product type pattern we have seen before, but we introduce gene
 
 Note that we don't always need to specify the type parameters when we construct `Pairs`. The compiler will attempt to infer the types as usual wherever it can:
 
-```scala
+```tut:book
 val pair = Pair("hi", 2)
-// pair: Pair[String,Int] = Pair(hi,2)
 ```
 </div>
 
@@ -74,47 +74,38 @@ The classes are called `Tuple1[A]` through to `Tuple22[A, B, C, ...]` but they c
 
 [^sugar]: The term "syntactic sugar" is used to refer to convenience syntax that is not needed but makes programming sweeter. Operator syntax is another example of syntactic sugar that Scala provides.
 
-```scala
+```tut:book
 Tuple2("hi", 1) // unsugared syntax
-// res: (String, Int) = (hi,1)
 
 ("hi", 1) // sugared syntax
-// res: (String, Int) = (hi,1)
 
 ("hi", 1, true)
-// res: (String, Int, Boolean) = (hi,1,true)
 ```
 
 We can define methods that accept tuples as parameters using the same syntax:
 
-```scala
+```tut:book
 def tuplized[A, B](in: (A, B)) = in._1
-// tuplized: [A, B](in: (A, B))A
 
 tuplized(("a", 1))
-// res: String = a
 ```
 
 We can also pattern match on tuples as follows:
 
-```scala
+```tut:book
 (1, "a") match {
   case (a, b) => a + b
 }
-// res: String = 1a
 ```
 
 Although pattern matching is the natural way to deconstruct a tuple, each class also has a complement of fields named `_1`, `_2` and so on:
 
-```scala
+```tut:book
 val x = (1, "b", true)
-// x: (Int, String, Boolean) = (1,b,true)
 
 x._1
-// res: Int = 1
 
 x._3
-// res: Boolean = true
 ```
 
 ### Generic Sum Types
@@ -123,15 +114,23 @@ Now let's look at using generics to model a *sum type*. Again, we have previousl
 
 Consider a method that, depending on the value of its parameters, returns one of two types:
 
-```scala
+```tut:book
 def intOrString(input: Boolean) =
   if(input == true) 123 else "abc"
-// intOrString: (input: Boolean)Any
 ```
 
 We can't simply write this method as shown above because the compiler infers the result type as `Any`. Instead we have to introduce a new type to explicitly represent the disjunction:
 
-```scala
+```tut:invisible
+object sum {
+  sealed trait Sum[A, B]
+  final case class Left[A, B](value: A) extends Sum[A, B]
+  final case class Right[A, B](value: B) extends Sum[A, B]
+}
+import sum._
+```
+
+```tut:book
 def intOrString(input: Boolean): Sum[Int, String] =
   if(input == true) {
     Left[Int, String](123)
@@ -148,27 +147,23 @@ Implement a trait `Sum[A, B]` with two subtypes `Left` and `Right`. Create type 
 
 Hint: you will need to put both type parameters on all three types. Example usage:
 
-```scala
+```tut:book
 Left[Int, String](1).value
-// res: Int = 1
 
 Right[Int, String]("foo").value
-// res: String = foo
 
 val sum: Sum[Int, String] = Right("foo")
-// sum: Sum[Int,String] = Right(foo)
 
 sum match {
   case Left(x) => x.toString
   case Right(x) => x
 }
-// res: String = foo
 ```
 
 <div class="solution">
 The code is an adaptation of our invariant generic sum type pattern, with another type parameter:
 
-```scala
+```tut:book:silent
 sealed trait Sum[A, B]
 final case class Left[A, B](value: A) extends Sum[A, B]
 final case class Right[A, B](value: B) extends Sum[A, B]
@@ -190,16 +185,14 @@ Create a generic trait called `Maybe` of a generic type `A` with two subtypes, `
 
 ```scala
 val perhaps: Maybe[Int] = Empty[Int]
-// perhaps: Maybe[Int] = Empty()
 
 val perhaps: Maybe[Int] = Full(1)
-// perhaps: Maybe[Int] = Full(1)
 ```
 
 <div class="solution">
 We can apply our invariant generic sum type pattern and get
 
-```scala
+```tut:book:silent
 sealed trait Maybe[A]
 final case class Full[A](value: A) extends Maybe[A]
 final case class Empty[A]() extends Maybe[A]
@@ -230,7 +223,7 @@ Generic data structures---`Tuples`, `Options`, `Eithers`, and so on---are extrem
 
 In this section we implemented a sum type for modelling optional data:
 
-```scala
+```tut:book:silent
 sealed trait Maybe[A]
 final case class Full[A](value: A) extends Maybe[A]
 final case class Empty[A]() extends Maybe[A]
@@ -241,16 +234,18 @@ Implement fold for this type.
 <div class="solution">
 The code is very similar to the implementation for `LinkedList`. I choose pattern matching in the base trait for my solution.
 
-```scala
-sealed trait Maybe[A] {
-  def fold[B](full: A => B, empty: B): B =
-    this match {
-      case Full(v) => full(v)
-      case Empty() => empty
-    }
+```tut:book:silent
+object solution {
+  sealed trait Maybe[A] {
+    def fold[B](full: A => B, empty: B): B =
+      this match {
+        case Full(v) => full(v)
+        case Empty() => empty
+      }
+  }
+  final case class Full[A](value: A) extends Maybe[A]
+  final case class Empty[A]() extends Maybe[A]
 }
-final case class Full[A](value: A) extends Maybe[A]
-final case class Empty[A]() extends Maybe[A]
 ```
 </div>
 
@@ -258,7 +253,7 @@ final case class Empty[A]() extends Maybe[A]
 
 In this section we implemented a generic sum type:
 
-```scala
+```tut:book:silent
 sealed trait Sum[A, B]
 final case class Left[A, B](value: A) extends Sum[A, B]
 final case class Right[A, B](value: B) extends Sum[A, B]
@@ -267,15 +262,17 @@ final case class Right[A, B](value: B) extends Sum[A, B]
 Implement `fold` for `Sum`.
 
 <div class="solution">
-```scala
-sealed trait Sum[A, B] {
-  def fold[C](left: A => C, right: B => C): C =
-    this match {
-      case Left(a) => left(a)
-      case Right(b) => right(b)
-    }
+```tut:book:silent
+object solution {
+  sealed trait Sum[A, B] {
+    def fold[C](left: A => C, right: B => C): C =
+      this match {
+        case Left(a) => left(a)
+        case Right(b) => right(b)
+      }
+  }
+  final case class Left[A, B](value: A) extends Sum[A, B]
+  final case class Right[A, B](value: B) extends Sum[A, B]
 }
-final case class Left[A, B](value: A) extends Sum[A, B]
-final case class Right[A, B](value: B) extends Sum[A, B]
 ```
 </div>

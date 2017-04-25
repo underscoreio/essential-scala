@@ -4,7 +4,7 @@ In this section we cover *variance annotations*, which allow us to control subcl
 
 Recall our `Maybe` type, which we defined as
 
-```scala
+```tut:book:silent
 sealed trait Maybe[A]
 final case class Full[A](value: A) extends Maybe[A]
 final case class Empty[A]() extends Maybe[A]
@@ -20,22 +20,14 @@ final case object Empty extends Maybe[???]
 
 Objects can't have type parameters. In order to make `Empty` an object we need to provide a concrete type in the `extends Maybe` part of the definition. But what type parameter should we use? In the absence of a preference for a particular data type, we could use something like `Unit` or `Nothing`. However this leads to type errors:
 
-```scala
-scala> :paste
+```tut:book
 sealed trait Maybe[A]
 final case class Full[A](value: A) extends Maybe[A]
 final case object Empty extends Maybe[Nothing]
-^D
+```
 
-defined trait Maybe
-defined class Full
-defined module Empty
-
-scala> val possible: Maybe[Int] = Empty
-<console>:9: error: type mismatch;
- found   : Empty.type
- required: Maybe[Int]
-       val possible: Maybe[Int] = Empty
+```tut:book:fail
+val possible: Maybe[Int] = Empty
 ```
 
 The problem here is that `Empty` is a `Maybe[Nothing]` and a `Maybe[Nothing]` is not a subtype of `Maybe[Int]`. To overcome this issue we need to introduce variance annotations.
@@ -61,7 +53,7 @@ A type `Foo[-T]` is *contravariant* in terms of `T`, meaning that `Foo[A]` is a 
 
 When we discussed function types we glossed over how exactly they are implemented. Scala has 23 built-in generic classes for functions of 0 to 22 arguments. Here's what they look like:
 
-```scala
+```tut:book:silent
 trait Function0[+R] {
   def apply: R
 }
@@ -79,11 +71,11 @@ trait Function2[-A, -B, +C] {
 
 Functions are contravariant in terms of their arguments and covariant in terms of their return type. This seems counterintuitive but it makes sense if we look at it from the point of view of function arguments. Consider some code that expects a `Function1[A, B]`:
 
-```scala
-class Box[A](value: A) {
+```tut:book:silent
+case class Box[A](value: A) {
   /** Apply `func` to `value`, returning a `Box` of the result. */
   def map[B](func: Function1[A, B]): Box[B] =
-    Box(func(a))
+    Box(func(value))
 }
 ```
 
@@ -103,7 +95,7 @@ To understand variance, consider what functions can we safely pass to this `map`
 
 Now we know about variance annotations we can solve our problem with `Maybe` by making it covariant.
 
-```scala
+```tut:book:silent
 sealed trait Maybe[+A]
 final case class Full[A](value: A) extends Maybe[A]
 final case object Empty extends Maybe[Nothing]
@@ -111,9 +103,8 @@ final case object Empty extends Maybe[Nothing]
 
 In use we get the behaviour we expect. `Empty` is a subtype of all `Full` values.
 
-```scala
+```tut:book
 val perhaps: Maybe[Int] = Empty
-// perhaps: Maybe[Int] = Empty
 ```
 
 This pattern is the most commonly used one with generic sum types. We should only use covariant types where the container type is immutable. If the container allows mutation we should only use invariant types.
@@ -123,7 +114,7 @@ This pattern is the most commonly used one with generic sum types. We should onl
 
 If `A` of type `T` is a `B` or `C`, and `C` is not generic, write
 
-```scala
+```tut:book:silent
 sealed trait A[+T]
 final case class B[T](t: T) extends A[T]
 final case object C extends A[Nothing]
@@ -132,6 +123,9 @@ final case object C extends A[Nothing]
 This pattern extends to more than one type parameter. If a type parameter is not needed for a specific case of a sum type, we can substitute `Nothing` for that parameter.
 </div>
 
+```tut:reset:invisible
+// clear previously defined types
+```
 
 ### Contravariant Position
 
@@ -142,7 +136,7 @@ There is another pattern we need to learn for covariant sum types, which involve
 Implement a covariant `Sum` using the covariant generic sum type pattern.
 
 <div class="solution">
-```scala
+```tut:book:silent
 sealed trait Sum[+A, +B]
 final case class Failure[A](value: A) extends Sum[A, Nothing]
 final case class Success[B](value: B) extends Sum[Nothing, B]
@@ -162,22 +156,24 @@ error: covariant type A occurs in contravariant position in type B => Sum[A,C] o
 ```
 
 <div class="solution">
-```scala
-sealed trait Sum[+A, +B] {
-  def flatMap[C](f: B => Sum[A, C]): Sum[A, C] =
-    this match {
-      case Failure(v) => Failure(v)
-      case Success(v) => f(v)
-    }
+```tut:book:silent:fail
+object solution {
+  sealed trait Sum[+A, +B] {
+    def flatMap[C](f: B => Sum[A, C]): Sum[A, C] =
+      this match {
+        case Failure(v) => Failure(v)
+        case Success(v) => f(v)
+      }
+  }
+  final case class Failure[A](value: A) extends Sum[A, Nothing]
+  final case class Success[B](value: B) extends Sum[Nothing, B]
 }
-final case class Failure[A](value: A) extends Sum[A, Nothing]
-final case class Success[B](value: B) extends Sum[Nothing, B]
 ```
 </div>
 
 What is going on here? Let's momentarily switch to a simpler example that illustrates the problem.
 
-```scala
+```tut:book:silent:fail
 case class Box[+A](value: A) {
   def set(a: A): Box[A] = Box(a)
 }
@@ -195,7 +191,7 @@ Remember that functions, and hence methods, which are just like functions, are c
 
 The solution is introduce a new type that is a supertype of `A`. We can do this with the notation `[AA >: A]` like so:
 
-```scala
+```tut:book:silent
 case class Box[+A](value: A) {
   def set[AA >: A](a: AA): Box[AA] = Box(a)
 }
@@ -205,16 +201,18 @@ This successfully compiles.
 
 Back to `flatMap`, the function `f` is a parameter, and thus in a contravariant position. This means we accept *supertypes* of `f`. It is declared with type `B => Sum[A, C]` and thus a supertype is *covariant* in `B` and *contravariant* in `A` and `C`. `B` is declared as covariant, so that is fine. `C` is invariant, so that is fine as well. `A` on the other hand is covariant but in a contravariant position. Thus we have to apply the same solution we did for `Box` above.
 
-```scala
-sealed trait Sum[+A, +B] {
-  def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C] =
-    this match {
-      case Failure(v) => Failure(v)
-      case Success(v) => f(v)
-    }
+```tut:book:silent
+object solution {
+  sealed trait Sum[+A, +B] {
+    def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C] =
+      this match {
+        case Failure(v) => Failure(v)
+        case Success(v) => f(v)
+      }
+  }
+  final case class Failure[A](value: A) extends Sum[A, Nothing]
+  final case class Success[B](value: B) extends Sum[Nothing, B]
 }
-final case class Failure[A](value: A) extends Sum[A, Nothing]
-final case class Success[B](value: B) extends Sum[Nothing, B]
 ```
 
 <div class="callout callout-info">
@@ -222,9 +220,9 @@ final case class Success[B](value: B) extends Sum[Nothing, B]
 
 If `A` of a covariant type `T` and a method `f` of `A` complains that `T` is used in a contravariant position, introduce a type `TT >: T` in `f`.
 
-```scala
-case class A[+T] {
-  def f[TT >: T](t: TT): A[TT]
+```tut:book:silent
+case class A[+T]() {
+  def f[TT >: T](t: TT): A[TT] = ???
 }
 ```
 </div>
@@ -232,11 +230,18 @@ case class A[+T] {
 
 ### Type Bounds
 
+```tut:reset
+```
+
 We have see some type bounds above, in the contravariant position pattern. Type bounds extend to specify subtypes as well as supertypes. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
 
 For example, the following type allows us to store a `Visitor` or any subtype:
 
-```scala
+```tut:invisible
+trait Visitor
+```
+
+```tut:book:silent
 case class WebAnalytics[A <: Visitor](
   visitor: A,
   pageViews: Int,
@@ -250,6 +255,20 @@ case class WebAnalytics[A <: Visitor](
 
 #### Covariance and Contravariance
 
+```tut:invisible
+object catExample {
+  trait Animal
+  trait Cat extends Animal { val color: String; val food: String }
+  object Cat { def apply(aColor: String, aFood: String) = new Cat { val color = aColor; val food = aFood } }
+  trait Siamese extends Cat
+
+  trait Sound
+  trait CatSound extends Sound
+  trait Purr extends Sound
+}
+import catExample._
+```
+
 Using the notation `A <: B` to indicate `A` is a subtype of `B` and assuming:
 
 - `Siamese <: Cat <: Animal`; and
@@ -257,8 +276,8 @@ Using the notation `A <: B` to indicate `A` is a subtype of `B` and assuming:
 
 if I have a method
 
-```scala
-def groom(groomer: Cat => CatSound): CatSound =
+```tut:book:silent
+def groom(groomer: Cat => CatSound): CatSound = {
   val oswald = Cat("Black", "Cat food")
   groomer(oswald)
 }
@@ -282,32 +301,34 @@ We're going to return to the interpreter example we saw at the end of the last c
 We're going to represent calculations as `Sum[String, Double]`, where the `String` is an error message. Extend `Sum` to have `map` and `fold` method.
 
 <div class="solution">
-```scala
-sealed trait Sum[+A, +B] {
-  def fold[C](error: A => C, success: B => C): C =
-    this match {
-      case Failure(v) => error(v)
-      case Success(v) => success(v)
-    }
-  def map[C](f: B => C): Sum[A, C] =
-    this match {
-      case Failure(v) => Failure(v)
-      case Success(v) => Success(f(v))
-    }
-  def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C] =
-    this match {
-      case Failure(v) => Failure(v)
-      case Success(v) => f(v)
-    }
+```tut:book:silent
+object solution {
+  sealed trait Sum[+A, +B] {
+    def fold[C](error: A => C, success: B => C): C =
+      this match {
+        case Failure(v) => error(v)
+        case Success(v) => success(v)
+      }
+    def map[C](f: B => C): Sum[A, C] =
+      this match {
+        case Failure(v) => Failure(v)
+        case Success(v) => Success(f(v))
+      }
+    def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C] =
+      this match {
+        case Failure(v) => Failure(v)
+        case Success(v) => f(v)
+      }
+  }
+  final case class Failure[A](value: A) extends Sum[A, Nothing]
+  final case class Success[B](value: B) extends Sum[Nothing, B]
 }
-final case class Failure[A](value: A) extends Sum[A, Nothing]
-final case class Success[B](value: B) extends Sum[Nothing, B]
 ```
 </div>
 
 Now we're going to reimplement the calculator from last time. We have an abstract syntax tree defined via the following algebraic data type:
 
-```scala
+```tut:book:silent
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
@@ -328,39 +349,67 @@ assert(Division(Addition(Subtraction(Number(8), Number(6)), Number(2)), Number(2
 <div class="solution">
 Here's my solution. I used a helper method `lift2` to "lift" a function into the result of two expressions. I hope you'll agree the code is both more compact and easier to read than our previous solution!
 
-```scala
-sealed trait Expression {
-  def eval: Sum[String, Double] =
-    this match {
-      case Addition(l, r) => lift2(l, r, (left, right) => Success(left + right))
-      case Subtraction(l, r) => lift2(l, r, (left, right) => Success(left - right))
-      case Division(l, r) => lift2(l, r, (left, right) =>
-        if(right == 0)
-          Failure("Division by zero")
-        else
-          Success(left / right)
-      )
-      case SquareRoot(v) =>
-        v.eval flatMap { value =>
-          if(value < 0)
-            Failure("Square root of negative number")
-          else
-            Success(Math.sqrt(value))
-        }
-      case Number(v) => Success(v)
-    }
-
-  def lift2(l: Expression, r: Expression, f: (Double, Double) => Sum[String, Double]) =
-    l.eval flatMap { left =>
-      r.eval flatMap { right =>
-        f(left, right)
+```tut:invisible
+// must re-paste the Sum definition...
+object solution {
+  sealed trait Sum[+A, +B] {
+    def fold[C](error: A => C, success: B => C): C =
+      this match {
+        case Failure(v) => error(v)
+        case Success(v) => success(v)
       }
-    }
+    def map[C](f: B => C): Sum[A, C] =
+      this match {
+        case Failure(v) => Failure(v)
+        case Success(v) => Success(f(v))
+      }
+    def flatMap[AA >: A, C](f: B => Sum[AA, C]): Sum[AA, C] =
+      this match {
+        case Failure(v) => Failure(v)
+        case Success(v) => f(v)
+      }
+  }
+  final case class Failure[A](value: A) extends Sum[A, Nothing]
+  final case class Success[B](value: B) extends Sum[Nothing, B]
 }
-final case class Addition(left: Expression, right: Expression) extends Expression
-final case class Subtraction(left: Expression, right: Expression) extends Expression
-final case class Division(left: Expression, right: Expression) extends Expression
-final case class SquareRoot(value: Expression) extends Expression
-final case class Number(value: Int) extends Expression
+import solution._
+```
+
+```tut:book:silent
+object solution {
+  sealed trait Expression {
+    def eval: Sum[String, Double] =
+      this match {
+        case Addition(l, r) => lift2(l, r, (left, right) => Success(left + right))
+        case Subtraction(l, r) => lift2(l, r, (left, right) => Success(left - right))
+        case Division(l, r) => lift2(l, r, (left, right) =>
+          if(right == 0)
+            Failure("Division by zero")
+          else
+            Success(left / right)
+        )
+        case SquareRoot(v) =>
+          v.eval flatMap { value =>
+            if(value < 0)
+              Failure("Square root of negative number")
+            else
+              Success(Math.sqrt(value))
+          }
+        case Number(v) => Success(v)
+      }
+
+    def lift2(l: Expression, r: Expression, f: (Double, Double) => Sum[String, Double]) =
+      l.eval.flatMap { left =>
+        r.eval.flatMap { right =>
+          f(left, right)
+        }
+      }
+  }
+  final case class Addition(left: Expression, right: Expression) extends Expression
+  final case class Subtraction(left: Expression, right: Expression) extends Expression
+  final case class Division(left: Expression, right: Expression) extends Expression
+  final case class SquareRoot(value: Expression) extends Expression
+  final case class Number(value: Int) extends Expression
+}
 ```
 </div>

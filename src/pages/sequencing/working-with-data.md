@@ -7,7 +7,7 @@ We've seen that when we define a class with generic data, we cannot implement ve
 
 Last time we saw fold we were working with a list of integers. Let's generalise to a list of a generic type. We've already seen all the tools we need. First our data definition, in this instance slightly modified to use the invariant sum type pattern.
 
-```scala
+```tut:book:silent
 sealed trait LinkedList[A]
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
 final case class End[A]() extends LinkedList[A]
@@ -25,16 +25,18 @@ def fold[A](end: A, f: (Int, A) => A): A =
 
 It's reasonably straightforward to extend this to `LinkedList[A]`. We merely have to account for the head element of a `Pair` being of type `A` not `Int`.
 
-```scala
-sealed trait LinkedList[A] {
-  def fold[B](end: B, f: (A, B) => B): B =
-    this match {
-      case End() => end
-      case Pair(hd, tl) => f(hd, tl.fold(end, f))
-    }
+```tut:book:silent
+object solution {
+  sealed trait LinkedList[A] {
+    def fold[B](end: B, f: (A, B) => B): B =
+      this match {
+        case End() => end
+        case Pair(hd, tl) => f(hd, tl.fold(end, f))
+      }
+  }
+  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+  final case class End[A]() extends LinkedList[A]
 }
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-final case class End[A]() extends LinkedList[A]
 ```
 
 Fold is just an adaptation of structural recursion where we allow the user to pass in the functions we apply at each case. As structural recursion is the generic pattern for writing any function that transforms an algebraic datatype, fold is the concrete realisation of this generic pattern. That is, fold is the generic transformation or iteration method. *Any function* you care to write on an algebraic datatype can be written in terms of fold.
@@ -125,42 +127,46 @@ Placeholder syntax, while wonderfully terse, can be confusing for large expressi
 
 Scala contains another feature that is directly relevant to this section---the ability to convert method calls to functions. This is closely related to placeholder syntax---simply follow a method with an underscore:
 
-```scala
+```tut:book:silent
 object Sum {
   def sum(x: Int, y: Int) = x + y
 }
+```
 
+```tut:book:fail
 Sum.sum
-// <console>:9: error: missing arguments for method sum in object Sum;
-// follow this method with `_' if you want to treat it as a partially applied function
-//               Sum.sum
-//                   ^
+```
 
+```tut:book
 (Sum.sum _)
-// res: (Int, Int) => Int = <function2>
 ```
 
 In situations where Scala can infer that we need a function, we can even drop the underscore and simply write the method name---the compiler will promote the method to a function automatically:
 
-```scala
+```tut:book:silent
 object MathStuff {
   def add1(num: Int) = num + 1
 }
+```
 
+```tut:invisible
+case class Counter(value: Int) {
+  def adjust(f: Int => Int): Counter = Counter(f(value))
+}
+```
+
+```tut:book
 Counter(2).adjust(MathStuff.add1)
-// res: Counter = Counter(3)
 ```
 
 #### Multiple Parameter Lists
 
 Methods in Scala can actually have multiple parameter lists. Such methods work just like normal methods, except we must bracket each parameter list separately.
 
-```scala
+```tut:book
 def example(x: Int)(y: Int) = x + y
-// example: (x: Int)(y: Int)Int
 
 example(1)(2)
-// res: Int = 3
 ```
 
 Multiple parameter lists have two relevant uses: they look nicer when defining functions inline and they assist with type inference.
@@ -215,7 +221,7 @@ Implement this algebraic data type along with a fold method.
 <div class="solution">
 This is another recursive data type just like list. Follow the patterns and you should be ok.
 
-```scala
+```tut:book:silent
 sealed trait Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B
 }
@@ -232,7 +238,7 @@ final case class Leaf[A](value: A) extends Tree[A] {
 
 Using `fold` convert the following `Tree` to a `String`
 
-```scala
+```tut:book:silent
 val tree: Tree[String] =
   Node(Node(Leaf("To"), Leaf("iterate")),
        Node(Node(Leaf("is"), Leaf("human,")),
@@ -244,7 +250,7 @@ Remember you can append `String`s using the `+` method.
 <div class="solution">
 Note it is necessary to instantiate the generic type variable for `fold`. Type inference fails in this case.
 
-```scala
+```tut:book:silent
 tree.fold[String]((a, b) => a + " " + b, str => str)
 ```
 </div>
