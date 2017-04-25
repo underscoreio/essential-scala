@@ -12,41 +12,34 @@ Let's start with something simple---suppose we want to double every element of a
 
 In Scala we can use the `map` method defined on any sequence. `Map` takes a function and applies it to every element, creating a sequence of the results. To double every element we can write:
 
-```scala
+```tut:book
 val sequence = Seq(1, 2, 3)
-// sequence: Seq[Int] = List(1, 2, 3)
 
 sequence.map(elt => elt * 2)
-// res: Seq[Int] = List(2, 4, 6)
 ```
 
 If we use *placeholder syntax* we can write this even more compactly:
 
-```scala
+```tut:book
 sequence.map(_ * 2)
-// res: Seq[Int] = List(2, 4, 6)
 ```
 
 Given a sequence with type `Seq[A]`, the function we pass to `map` must have type `A => B` and we get a `Seq[B]` as a result. This isn't right for every situation. For example, suppose we have a sequence of strings, and we want to generate a sequence of all the permutations of those strings. We can call the `permutations` method on a string to get all permutations of it:
 
-```scala
+```tut:book
 "dog".permutations
-// res: Iterator[String] = non-empty iterator
 ```
 
 This returns an `Iterable`, which is a bit like a Java `Iterator`. We're going to look at iterables in more detail later. For now all we need to know is that we can call the `toList` method to convert an `Iterable` to a `List`.
 
-```scala
+```tut:book
 "dog".permutations.toList
-// res: List[String] = List(dog, dgo, odg, ogd, gdo, god)
 ```
 
 Thus we could write
 
-```scala
+```tut:book
 Seq("a", "wet", "dog").map(_.permutations.toList)
-// res: Seq[List[String]] = List(List(a), List(wet, wte, ewt, etw, twe, tew), List(dog, dgo, odg, ogd, ↩
-                                                                                             gdo, god))
 ```
 
 but we end up with a sequence of sequences. Let's look at the types in more detail to see what's gone wrong:
@@ -67,25 +60,24 @@ What is the method `???` that we can use to collect a single flat sequence?
 
 Our mystery method above is called `flatMap`. If we simply replace `map` with `flatMap` we get the answer we want:
 
-```scala
+```tut:book
 Seq("a", "wet", "dog").flatMap(_.permutations.toList)
-// res: Seq[String] = List(a, wet, wte, ewt, etw, twe, tew, dog, dgo, odg, ogd, gdo, god)
 ```
 
 `flatMap` is similar to `map` except that it expects our function to return a sequence. The sequences for each input element are appended together. For example:
 
-```scala
+```tut:book
 Seq(1, 2, 3).flatMap(num => Seq(num, num * 10))
-// res: List[Int] = List(1, 10, 2, 20, 3, 30)
 ```
 
 The end result is (nearly) always the same type as the original sequence: `aList.flatMap(...)` returns another `List`, `aVector.flatMap(...)` returns another `Vector`, and so on:
 
-```scala
+```tut:book:silent
 import scala.collection.immutable.Vector
+```
 
+```tut:book
 Vector(1, 2, 3).flatMap(num => Seq(num, num * 10))
-// res: scala.collection.immutable.Vector[Int] = Vector(1, 10, 2, 20, 3, 30)
 ```
 
 ### Folds
@@ -144,11 +136,8 @@ There is one more traversal method that is commonly used: `foreach`. Unlike `map
 
 A common example of using `foreach` is printing the elements of a sequence:
 
-```scala
+```tut:book
 List(1, 2, 3).foreach(num => println("And a " + num + "..."))
-And a 1...
-And a 2...
-And a 3...
 ```
 
 ### Algebra of Transformations
@@ -190,8 +179,17 @@ These exercises re-use the example code from the *Intranet Movie Database* exerc
 
 Starting with the definition of `nolan`, create a list containing the names of the films directed by Christopher Nolan.
 
+```tut:invisible
+// some definitions from previous section
+case class Film(name: String, yearOfRelease: Int, imdbRating: Double)
+case class Director(firstName: String, lastName: String, yearOfBirth: Int, films: Seq[Film])
+val mcTiernan = new Director("John", "McTiernan", 1951, Seq.empty)
+val nolan = new Director("Christopher", "Nolan", 1970, Seq.empty)
+val directors = Seq(mcTiernan, nolan)
+```
+
 <div class="solution">
-```scala
+```tut:book:silent
 nolan.films.map(_.name)
 ```
 </div>
@@ -201,7 +199,7 @@ nolan.films.map(_.name)
 Starting with the definition of `directors`, create a list containing the names of all films by all directors.
 
 <div class="solution">
-```scala
+```tut:book:silent
 directors.flatMap(director => director.films.map(film => film.name))
 ```
 </div>
@@ -215,7 +213,7 @@ Tip: you can concisely find the minimum of two numbers `a` and `b` using `math.m
 <div class="solution">
 There are a number of ways to do this. We can sort the list of films and then retrieve the smallest element.
 
-```scala
+```tut:book:silent
 mcTiernan.films.sortWith { (a, b) =>
   a.yearOfRelease < b.yearOfRelease
 }.headOption
@@ -223,7 +221,7 @@ mcTiernan.films.sortWith { (a, b) =>
 
 We can also do this by using a `fold`.
 
-```scala
+```tut:book:silent
 mcTiernan.films.foldLeft(Int.MaxValue) { (current, film) =>
   math.min(current, film.yearOfRelease)
 }
@@ -235,7 +233,7 @@ mcTiernan.films.foldLeft(Int.MaxValue) { (current, film) =>
 Starting with `directors`, find all films sorted by descending IMDB rating:
 
 <div class="solution">
-```scala
+```tut:book:silent
 directors.
   flatMap(director => director.films).
   sortWith((a, b) => a.imdbRating > b.imdbRating)
@@ -247,10 +245,10 @@ Starting with `directors` again, find the *average score* across all films:
 <div class="solution">
 We cache the list of films in a variable because we use it twice---once to calculate the sum of the ratings and once to fetch the number of films:
 
-```scala
+```tut:book:silent
 val films = directors.flatMap(director => director.films)
 
-films.foldLeft(0)((a, b) => a.imdbRating + b.imdbRating) / films.length
+films.foldLeft(0.0)((sum, film) => sum + film.imdbRating) / films.length
 ```
 </div>
 
@@ -261,10 +259,10 @@ Starting with `directors`, print the following for every film: `"Tonight only! F
 <div class="solution">
 Println is used for its side-effects so we don't need to accumulate a result---we use `println` as a simple iterator:
 
-```scala
+```tut:book:silent
 directors.foreach { director =>
   director.films.foreach { film =>
-    println(s"Tonight! ${film.name} by ${director.name}!")
+    println(s"Tonight! ${film.name} by ${director.firstName} ${director.lastName}!")
   }
 }
 ```
@@ -277,11 +275,11 @@ Finally, starting with `directors` again, find the *earliest film* by any direct
 <div class="solution">
 Here's the solution:
 
-```scala
-directors
-  .flatMap(director => director.films)
-  .sortWith((a, b) => a.yearOfRelease < b.yearOfRelease)
-  .headOption
+```tut:book:silent
+directors.
+  flatMap(director => director.films).
+  sortWith((a, b) => a.yearOfRelease < b.yearOfRelease).
+  headOption
 ```
 </div>
 
@@ -300,7 +298,7 @@ What is the identity for `min` so that `min(x, identity) = x`. It is positive in
 
 Thus the solution is:
 
-```scala
+```tut:book:silent
 def smallest(seq: Seq[Int]): Int =
   seq.foldLeft(Int.MaxValue)(math.min)
 ```
@@ -317,7 +315,7 @@ Once again we follow the same pattern. The types are:
 2. We want a `Seq[Int]`
 3. Constructing the operation we want to use requires a bit more thought. The hint is to use `contains`. We can keep a sequence of the unique elements we've seen so far, and use `contains` to test if the sequence contains the current element. If we have seen the element we don't add it, otherwise we do. In code
 
-```scala
+```tut:book:silent
 def insert(seq: Seq[Int], elt: Int): Seq[Int] = {
  if(seq.contains(elt))
    seq
@@ -330,7 +328,7 @@ We these three pieces we can solve the problem. Looking at the type table we see
 
 Thus the solution is
 
-```scala
+```tut:book:silent
 def insert(seq: Seq[Int], elt: Int): Seq[Int] = {
   if(seq.contains(elt))
     seq
@@ -355,7 +353,7 @@ Write a function that reverses the elements of a sequence. Your output does not 
 <div class="solution">
 In this exercise, and the ones that follow, using the types are particularly important. Start by writing down the type of `reverse`.
 
-```scala
+```tut:book:silent
 def reverse[A, B](seq: Seq[A], f: A => B): Seq[B] = {
   ???
 }
@@ -378,7 +376,7 @@ For the zero element we know that it must have the same type as the return type 
 
 So we now we can fill in the answer.
 
-```scala
+```tut:book:silent
 def reverse[A](seq: Seq[A]): Seq[A] = {
   seq.foldLeft(Seq.empty[A]){ (seq, elt) => elt +: seq }
 }
@@ -400,7 +398,7 @@ def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
 
 As usual we need to fill in the zero element and the function. The zero element must have type `Seq[B]`, and the function has type `(A, Seq[B]) => Seq[B])`. The zero element is straightforward: `Seq.empty[B]` is the only sequence we can construct of type `Seq[B]`. For the function, we clearly have to convert that `A` to a `B` somehow. There is only one way to do that, which is with the function supplied to `map`. We then need to add that `B` to our `Seq[B]`, for which we can use the `+:` method. This gives us our final result.
 
-```scala
+```tut:book:silent
 def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
   seq.foldRight(Seq.empty[B]){ (elt, seq) => f(elt) +: seq }
 }
@@ -411,14 +409,10 @@ def map[A, B](seq: Seq[A], f: A => B): Seq[B] = {
 
 Write your own implementation of `foldLeft` that uses `foreach` and mutable state. Remember you can create a mutable variable using the `var` keyword, and assign a new value using `=`. For example
 
-```scala
+```tut:book
 var mutable = 1
-var mutable = 1
-mutable: Int = 1
 
 mutable = 2
-mutable = 2
-mutable: Int = 2
 ```
 
 <div class="solution">
@@ -442,7 +436,7 @@ def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
 
 At this point we can just follow the types. `result` must be initially assigned to the value of `zero` as that is the only `B` we have. The body of the function we pass to `foreach` must call `f` with `result` and `elt`. This returns a `B` which we must store somewhere---the only place we have to store it is in `result`. So the final answer becomes
 
-```scala
+```tut:book:silent
 def foldLeft[A, B](seq: Seq[A], zero: B, f: (B, A) => B): B = {
   var result = zero
   seq.foreach { elt => result = f(result, elt) }

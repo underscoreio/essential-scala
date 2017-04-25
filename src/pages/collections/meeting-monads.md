@@ -16,7 +16,14 @@ Broadly speaking, a monad is a generic type that allows us to sequence computati
 
 To demonstrate the generality of this principle, here are some examples. This first example calculates the sum of two numbers that may or may not be there:
 
-```scala
+```tut:book:invisible
+def getFirstNumber: Option[Int] = Some(2)
+def getSecondNumber: Option[Int] = Some(5)
+def getFirstNumbers: Seq[Int] = Seq(2, 3)
+def getSecondNumbers: Seq[Int] = Seq(5, 6)
+```
+
+```tut:book:silent
 for {
   a <- getFirstNumber  // getFirstNumber  returns Option[Int]
   b <- getSecondNumber // getSecondNumber returns Option[Int]
@@ -28,7 +35,7 @@ for {
 
 This second example calculate the sums of all possible pairs of numbers from two sequences:
 
-```scala
+```tut:book:silent
 for {
   a <- getFirstNumbers  // getFirstNumbers  returns Seq[Int]
   b <- getSecondNumbers // getSecondNumbers returns Seq[Int]
@@ -40,7 +47,7 @@ for {
 
 This third example asynchronously calculates the sum of two numbers that can only be obtained asynchronously (all without blocking):
 
-```scala
+```tut:book:silent
 for {
   a <- getFirstNumber   // getFirstNumber  returns Future[Int]
   b <- getSecondNumber  // getSecondNumber returns Future[Int]
@@ -61,7 +68,7 @@ There are many other monads that can be used to simplify problems in different c
 
 We've already seen how we can use a for comprehension to neatly add together three optional values. Let's extend this to other monads. Use the following definitions:
 
-```scala
+```tut:book:silent
 import scala.util.Try
 
 val opt1 = Some(1)
@@ -80,7 +87,7 @@ val try3 = Try(3)
 Add together all the options to create a new option. Add together all the sequences to create a new sequence. Add together all the trys to create a new try. Use a for comprehension for each. It shouldn't take you long!
 
 <div class="solution">
-```scala
+```tut:book:silent
 for {
  x <- opt1
  y <- opt2

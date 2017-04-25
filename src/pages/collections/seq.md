@@ -4,9 +4,8 @@ A *sequence* is a collection of items with a defined and stable order. Sequences
 
 Here's how you create a sequence in Scala:
 
-```scala
+```tut:book
 val sequence = Seq(1, 2, 3)
-// sequence: Seq[Int] = List(1, 2, 3)
 ```
 
 This immediately shows off a key feature of Scala's collections, the *separation between interface and implementation*. In the above, the value has type `Seq[Int]` but is implemented by a `List`.
@@ -19,17 +18,15 @@ Sequences implement [many methods](http://docs.scala-lang.org/overviews/collecti
 
 We can access the elements of a sequence using its `apply` method, which accepts an `Int` index as a parameter. Indices start from `0`.
 
-```scala
+```tut:book
 sequence.apply(0)
-// res: Int = 1
 
 sequence(0) // sugared syntax
-// res: Int = 1
 ```
 
 An exception is raised if we use an index that is out of bounds:
 
-```scala
+```tut:book:fail:silent
 sequence(3)
 // java.lang.IndexOutOfBoundsException: 3
 //        at ...
@@ -37,20 +34,17 @@ sequence(3)
 
 We can also access the head and tail of the sequence:
 
-```scala
+```tut:book
 sequence.head
-// res: Int = 1
 
 sequence.tail
-// res: Seq[Int] = List(2, 3)
 
 sequence.tail.head
-// res: Int = 2
 ```
 
 Again, trying to access an element that doesn't exist throws an exception:
 
-```scala
+```tut:book:fail:silent
 Seq().head
 // java.util.NoSuchElementException: head of empty list
 //   at scala.collection.immutable.Nil$.head(List.scala:337)
@@ -64,12 +58,10 @@ Seq().tail
 
 If we want to safely get the `head` without risking an exception, we can use `headOption`:
 
-```scala
+```tut:book
 sequence.headOption
-// res: Option[Int] = Some(1)
 
 Seq().headOption
-// res: Option[Nothing] = None
 ```
 
 The `Option` class here is Scala's built-in equivalent of our `Maybe` class from earlier. It has two subtypes---`Some` and `None`---representing the presence and absence of a value respectively.
@@ -78,83 +70,72 @@ The `Option` class here is Scala's built-in equivalent of our `Maybe` class from
 
 Finding the length of a sequence is straightforward:
 
-```scala
+```tut:book
 sequence.length
-// res: Int = 3
 ```
 
 ### Searching for elements
 
 There are a few ways of searching for elements. The `contains` method tells us whether a sequence contains an element (using `==` for comparison):
 
-```scala
+```tut:book
 sequence.contains(2)
-// res: Boolean = true
 ```
 
 The `find` method is like a generalised version of `contains` - we provide a test function and the sequence returns the first item for which the test returns `true`:
 
-```scala
+```tut:book
 sequence.find(_ == 3)
-// res: Option[Int] = Some(3)
 
 sequence.find(_ > 4)
-// res: Option[Int] = None
 ```
 
 The `filter` method is a variant of `find` that returns *all* the matching elements in the sequence:
 
-```scala
+```tut:book
 sequence.filter(_ > 1)
-// res: Seq[Int] = List(2, 3)
 ```
 
 ### Sorting elements
 
 We can use the `sortWith` method to sort a list using a binary function. The function takes two list items as parameters and returns `true` if they are in the correct order and `false` if they are the wrong way around:
 
-```scala
+```tut:book
 sequence.sortWith(_ < _)
-// res: Seq[Int] = List(3, 2, 1)
 ```
 
 ### Appending/prepending elements
 
 There are many ways to add elements to a sequence. We can append an element with the `:+` method:
 
-```scala
+```tut:book
 sequence.:+(4)
-// res: Seq[Int] = List(1, 2, 3, 4)
 ```
 
 It is more idiomatic to call `:+` as an infix operator:
 
-```scala
+```tut:book
 sequence :+ 4
-// res: Seq[Int] = List(1, 2, 3, 4)
 ```
 
 We can similarly *prepend* an element using the `+:` method:
 
-```scala
+```tut:book
 sequence.+:(0)
-// res: Seq[Int] = List(0, 1, 2, 3)
 ```
 
 Again, it is more idiomatic to call `+:` as an infix operator. Here *the trailing colon makes it right associative*, so we write the operator-style expression the other way around:
 
-```scala
+```tut:book
 0 +: sequence
-// res: Seq[Int] = List(0, 1, 2, 3)
 ```
 
 This is another of Scala's general syntax rules---any method ending with a `:` character becomes *right associative* when written as an infix operator. This rule is designed to replicate Haskell-style operators for things like list prepend (`::`) and list concatenation (`:::`). We'll look at this in more detail in a moment.
 
 Finally we can concatenate entire sequences using the `++` method.
 
-```scala
+```tut:book
 sequence ++ Seq(4, 5, 6)
-// res: Seq[Int] = List(1, 2, 3, 4, 5, 6)
 ```
 
 <!--
@@ -162,9 +143,8 @@ sequence ++ Seq(4, 5, 6)
 
 The `updated` method replaces the *nth* item in a sequence with a new value:
 
-```scala
+```tut:book
 sequence.updated(0, 5)
-// res: Seq[Int] = List(5, 2, 3)
 ```
 -->
 
@@ -174,33 +154,28 @@ The default implementation of `Seq` is a `List`, which is a classic [linked list
 
 We can write an empty list using the singleton object `Nil`:
 
-```scala
+```tut:book
 Nil
-// res: scala.collection.immutable.Nil.type = List()
 ```
 
 Longer lists can be created by prepending elements in classic linked-list style using the `::` method, which is equivalent to `+:`:
 
-```scala
+```tut:book
 val list = 1 :: 2 :: 3 :: Nil
-// list: List[Int] = List(1, 2, 3)
 
 4 :: 5 :: list
-// res: List[Int] = List(4, 5, 1, 2, 3)
 ```
 
 We can also use the `List.apply` method for a more conventional constructor notation:
 
-```scala
+```tut:book
 List(1, 2, 3)
-// res: List[Int] = List(1, 2, 3)
 ```
 
 Finally, the `:::` method is a right-associative `List`-specific version of `++`:
 
-```scala
+```tut:book
 List(1, 2, 3) ::: List(4, 5, 6)
-// res: List[Int] = List(1, 2, 3, 4, 5, 6)
 ```
 
 `::` and `:::` are specific to lists whereas `+:`, `:+` and `++` work on any type of sequence.
@@ -214,34 +189,36 @@ The `Seq` and `List` types are so ubiquitous in Scala that they are made automat
 
 The main collections package is called `scala.collection.immutable`. We can import specific collections from this package as follows:
 
-```scala
+```tut:book:silent
 import scala.collection.immutable.Vector
+```
 
+```tut:book
 Vector(1, 2, 3)
-// res: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
 ```
 
 We can also use *wildcard imports* to import everything in a package:
 
-```scala
+```tut:book:silent
 import scala.collection.immutable._
 
+```tut:book
 Queue(1, 2, 3)
-// res: scala.collection.immutable.Queue[Int] = Queue(1, 2, 3)
 ```
 
 We can also use `import` to bring methods and fields into scope from a singleton:
 
-```scala
+```tut:book:silent
 import scala.collection.immutable.Vector.apply
+```
 
+```tut:book
 apply(1, 2, 3)
-// res: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
 ```
 
 We can write import statements anywhere in our code---imported identifiers are lexically scoped to the block where we use them:
 
-```scala
+```tut:book:silent
 // `empty` is unbound here
 
 def someMethod = {
@@ -331,18 +308,18 @@ The methods for retrieving the first element in a list are:
 
 The `mkString` method allows us to quickly display a `Seq` as a `String`:
 
-```scala
+```tut:book:silent
 Seq(1, 2, 3).mkString(",")               // returns "1,2,3"
-Seq(1, 2, 3).mkString("[ ", ", ", " ]"") // returns "[ 1, 2, 3 ]"
+Seq(1, 2, 3).mkString("[ ", ", ", " ]") // returns "[ 1, 2, 3 ]"
 ```
 
 `Options` contain two methods, `isDefined` and `isEmpty`, that we can use as a quick test:
 
-```scala
+```tut:book:silent
 Some(123).isDefined // returns true
-Some(123).isEMpty   // returns false
+Some(123).isEmpty   // returns false
 None.isDefined      // returns false
-None.isEMpty        // returns true
+None.isEmpty        // returns true
 ```
 </div>
 
@@ -351,18 +328,16 @@ None.isEMpty        // returns true
 Create a `Seq` containing the `String`s `"cat"`, `"dog"`, and `"penguin"`. Bind it to the name `animals`.
 
 <div class="solution">
-```scala
+```tut:book
 val animals = Seq("cat", "dog", "penguin")
-animals: Seq[String] = List(cat, dog, penguin)
 ```
 </div>
 
 Append the element `"tyrannosaurus"` to `animals` and prepend the element `"mouse"`.
 
 <div class="solution">
-```scala
+```tut:book
 "mouse" +: animals :+ "tyrannosaurus"
-// res: Seq[String] = List(mouse, cat, dog, penguin, tyrannosaurus)
 ```
 </div>
 
@@ -373,7 +348,6 @@ The returned sequence has type `Seq[Any]`.  It is perfectly valid to return a su
 
 ```scala
 2 +: animals
-// res: Seq[Any] = List(2, cat, dog, penguin)
 ```
 
 You might expect a type error here, but Scala is capable of determining the least upper bound of `String` and `Int` and setting the type of the returned sequence accordingly.
@@ -387,7 +361,7 @@ Let's revisit our films and directors example from the [Classes](/classes) chapt
 
 The code below is a partial rewrite of the previous sample code in which `Films` are stored as a field of `Director` instead of the other way around. Copy and paste this into a new Scala worksheet and continue with the exercises below:
 
-```scala
+```tut:book:silent
 case class Film(
   name: String,
   yearOfRelease: Int,
@@ -439,7 +413,7 @@ Using this sample code, write implementations of the following methods:
    <div class="solution">
     We use `filter` because we are expecting more than one result:
 
-```scala
+```tut:book:silent
 def directorsWithBackCatalogOfSize(numberOfFilms: Int): Seq[Director] =
  directors.filter(_.films.length > numberOfFilms)
 ```
@@ -452,7 +426,7 @@ def directorsWithBackCatalogOfSize(numberOfFilms: Int): Seq[Director] =
    We use `find` because we are expecting at most one result. This solution
    will return the first director found who matches the criteria of the search:
 
-```scala
+```tut:book:silent
 def directorBornBefore(year: Int): Option[Director] =
  directors.find(_.yearOfBirth < year)
 ```
@@ -467,7 +441,7 @@ def directorBornBefore(year: Int): Option[Director] =
    This solution performs each part of the query separately and uses
    `filter` and `contains` to calculate the intersection of the results:
 
-```scala
+```tut:book:silent
 def directorBornBeforeWithBackCatalogOfSize(year: Int, numberOfFilms: Int): Seq[Director] = {
  val byAge   = directors.filter(_.yearOfBirth < year)
  val byFilms = directors.filter(_.films.length > numberOfFilms)
@@ -482,7 +456,7 @@ def directorBornBeforeWithBackCatalogOfSize(year: Int, numberOfFilms: Int): Seq[
    <div class="solution">
    Here is one solution. Note that sorting by ascending age is the same as sorting by descending year of birth:
 
-```scala
+```tut:book:silent
 def directorsSortedByAge(ascending: Boolean = true) =
   if(ascending) {
     directors.sortWith((a, b) => a.yearOfBirth < b.yearOfBirth)
@@ -493,9 +467,9 @@ def directorsSortedByAge(ascending: Boolean = true) =
 
    Because Scala is a functional language, we can also factor our code as follows:
 
-```scala
+```tut:book:silent
 def directorsSortedByAge(ascending: Boolean = true) = {
-  val comparator =
+  val comparator: (Director, Director) => Boolean =
     if(ascending) {
       (a, b) => a.yearOfBirth < b.yearOfBirth
     } else {
@@ -509,7 +483,7 @@ def directorsSortedByAge(ascending: Boolean = true) = {
    Here is a final refactoring that is slightly less efficient because it rechecks
    the value of `ascending` multiple times.
 
-```scala
+```tut:book:silent
 def directorsSortedByAge(ascending: Boolean = true) =
   directors.sortWith { (a, b) =>
     if(ascending) {

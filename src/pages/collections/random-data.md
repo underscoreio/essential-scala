@@ -4,7 +4,7 @@ In this section we have an extended case study generating random data. The ideas
 
 ### Random Words
 
-We'll start by generating text. Imagine we wanted to generate (somewhat) realistic text, perhaps to use as a placeholder to fill in parts of a website design. If we took a large amount of real text we could analyse to work out for each word what the most common words following it are. Such a model is known as a *Markov chain*. 
+We'll start by generating text. Imagine we wanted to generate (somewhat) realistic text, perhaps to use as a placeholder to fill in parts of a website design. If we took a large amount of real text we could analyse to work out for each word what the most common words following it are. Such a model is known as a *Markov chain*.
 
 To keep this example to a reasonable size we're going to deal with a really simplified version of the problem, where all sentences have the form *subject*-*verb*-*object*. For example, "Noel wrote code".
 
@@ -19,7 +19,7 @@ The following code will compute all possible sentences. The equivalent with expl
 
 Note that `flatMap` has more power than we need for this example. We could use the `subject` to alter how we choose the `verb`, for example. We'll use this ability in the next exercise.
 
-```scala
+```tut:book:silent
 val subjects = List("Noel", "The cat", "The dog")
 val verbs = List("wrote", "chased", "slept on")
 val objects = List("the book", "the ball", "the bed")
@@ -54,7 +54,7 @@ Implement this.
 <div class="solution">
 We're now using the full power of `flatMap` to make decisions in our code that are dependent on what has happened before.
 
-```scala
+```tut:book:silent
 def verbsFor(subject: String): List[String] =
   subject match {
     case "Noel" => List("wrote", "chased", "slept on")
@@ -84,7 +84,7 @@ This model has all the features we need for our full random generation model. In
 
 ### Probabilities
 
-We now have a model that we can imagine making arbitrarily complex to generate more and more realistic data, but we're missing the element of probability that would allow us to weight the data generation towards more common outcomes. 
+We now have a model that we can imagine making arbitrarily complex to generate more and more realistic data, but we're missing the element of probability that would allow us to weight the data generation towards more common outcomes.
 
 Let's extend our model to work on `List[(A, Double)]`, where `A` is the type of data we are generating and the `Double` is a probability. We're still enumerating all possibilities but we're now associating a probability with each possible outcome.
 
@@ -93,7 +93,7 @@ Start by defining a class `Distribution` that will wrap a `List[(A, Double)]`. (
 <div class="solution">
 There are no subtypes involved here, so a simple `final case class` will do. We wrap the `List[(A, Double)]` within a class so we can encapsulate manipulating the probabilities---external code can view the probabilities but probably shouldn't be directly working with them.
 
-```scala
+```tut:book:silent
 final case class Distribution[A](events: List[(A, Double)])
 ```
 </div>
@@ -101,16 +101,16 @@ final case class Distribution[A](events: List[(A, Double)])
 We should create some convenience constructors for `Distribution`. A useful one is `uniform` which will accept a `List[A]` and create a `Distribution[A]` where each element has equal probability. Make it so.
 
 <div class="solution">
-As per Scala convention, convenience constructors should live on the companion object. 
+The convenience constructor looks like this:
 
-```scala
-object Distribution {
-  def uniform[A](atoms: List[A]): Distribution[A] = {
-    val p = 1.0 / atoms.length
-    Distribution(atoms.map(a => a -> p))
-  }
+```tut:book
+def uniform[A](atoms: List[A]): Distribution[A] = {
+  val p = 1.0 / atoms.length
+  Distribution(atoms.map(a => a -> p))
 }
 ```
+
+According to Scala convention, convenience constructors should normally live on the companion object.
 </div>
 
 What are the other methods we must add to implement the models we've seen so far? What are their signatures?
@@ -118,11 +118,15 @@ What are the other methods we must add to implement the models we've seen so far
 <div class="solution">
 We need `flatMap` and `map`. The signatures follow the patterns that `flatMap` and `map` always have:
 
-`def flatMap[B](f: A => Distribution[B]): Distribution[B]`
+```scala
+def flatMap[B](f: A => Distribution[B]): Distribution[B]
+```
 
 and
 
-`def map[B](f: A => B): Distribution[B]`
+```scala
+def map[B](f: A => B): Distribution[B]
+```
 </div>
 
 Now implement these methods. Start with `map`, which is simpler. We might end up with elements appearing multiple times in the list of events after calling `map`. That's absolutely ok.
@@ -130,7 +134,7 @@ Now implement these methods. Start with `map`, which is simpler. We might end up
 <div class="solution">
 Implementing `map` merely requires we follow the types.
 
-```scala
+```tut:book:silent
 final case class Distribution[A](events: List[(A, Double)]) {
   def map[B](f: A => B): Distribution[B] =
     Distribution(events map { case (a, p) => f(a) -> p })
@@ -140,25 +144,28 @@ final case class Distribution[A](events: List[(A, Double)]) {
 
 Now implement `flatMap`. To do so you'll need to combine the probability of an event with the probability of the event it depends on. The correct way to do so is to multiply the probabilities together. The may lead to *unnormalised* probabilities---probabilities that do not sum up to 1. You might find the following two utilities useful, though you don't need to normalise probabilities or ensure that elements are unique for the model to work.
 
-```scala
-def normalize: Distribution[A] = {
-  val totalWeight = (events map { case (a, p) => p }).sum
-  Distribution(events map { case (a,p) => a -> (p / totalWeight) })
-}
 
-def compact: Distribution[A] = {
-  val distinct = (events map { case (a, p) => a }).distinct
-  def prob(a: A): Double =
-    (events filter { case (x, p) => x == a } map { case (a, p) => p }).sum
+```tut:book:silent
+final case class Distribution[A](events: List[(A, Double)]) {
+  def normalize: Distribution[A] = {
+    val totalWeight = (events map { case (a, p) => p }).sum
+    Distribution(events map { case (a,p) => a -> (p / totalWeight) })
+  }
 
-  Distribution(distinct map { a => a -> prob(a) })
+  def compact: Distribution[A] = {
+    val distinct = (events map { case (a, p) => a }).distinct
+    def prob(a: A): Double =
+      (events filter { case (x, p) => x == a } map { case (a, p) => p }).sum
+
+    Distribution(distinct map { a => a -> prob(a) })
+  }
 }
 ```
 
 <div class="solution">
 Once we know how to combine probabilities we just have to follow the types. I've decided to normalise the probabilities after `flatMap` as it helps avoid numeric underflow, which can occur in complex models. An alternative is to use log-probabilities, replacing multiplication with addition.
 
-```scala
+```tut:book:silent
 final case class Distribution[A](events: List[(A, Double)]) {
   def map[B](f: A => B): Distribution[B] =
     Distribution(events map { case (a, p) => f(a) -> p })
@@ -181,6 +188,9 @@ final case class Distribution[A](events: List[(A, Double)]) {
     Distribution(distinct map { a => a -> prob(a) })
   }
 }
+```
+
+```scala
 object Distribution {
   def uniform[A](atoms: List[A]): Distribution[A] = {
     val p = 1.0 / atoms.length
@@ -194,29 +204,31 @@ object Distribution {
 
 With `Distribution` we can now define some interesting model. We could do some classic problems, such as working out the probability that a coin flip gives three heads in a row.
 
-```scala
+```tut:book:silent
 sealed trait Coin
 final case object Heads extends Coin
 final case object Tails extends Coin
+```
 
+```tut:invisible
+def uniform[A](atoms: List[A]): Distribution[A] = {
+  val p = 1.0 / atoms.length
+  Distribution(atoms.map(a => a -> p))
+}
+val fairCoin: Distribution[Coin] = uniform[Coin](List(Heads, Tails)) // workaround for Tut
+```
+
+```scala
 val fairCoin: Distribution[Coin] = Distribution.uniform(List(Heads, Tails))
+```
+
+```tut:book
 val threeFlips =
   for {
     c1 <- fairCoin
     c2 <- fairCoin
     c3 <- fairCoin
   } yield (c1, c2, c3)
-// threeFlips: Distribution[(Coin, Coin, Coin)] = 
-// Distribution(List(
-//    ((Heads,Heads,Heads),0.125),
-//    ((Heads,Heads,Tails),0.125),
-//    ((Heads,Tails,Heads),0.125),
-//    ((Heads,Tails,Tails),0.125),
-//    ((Tails,Heads,Heads),0.125),
-//    ((Tails,Heads,Tails),0.125),
-//    ((Tails,Tails,Heads),0.125),
-//    ((Tails,Tails,Tails),0.125)
-// ))
 ```
 
 From this we can read of the probability of three heads being 0.125, as we'd expect.
@@ -229,15 +241,23 @@ Implement this model and answer the question: if the cat comes to harass me what
 
 I found it useful to add this constructor to the companion object of `Distribution`:
 
-```scala
+```tut:book:silent
 def discrete[A](events: List[(A,Double)]): Distribution[A] =
   Distribution(events).compact.normalize
+```
+
+```tut:invisible
+// workaround for Tut
+object Distribution {
+  def discrete[A](events: List[(A,Double)]): Distribution[A] =
+    new Distribution(events).compact.normalize
+}
 ```
 
 <div class="solution">
 First I constructed the model
 
-```scala
+```tut:book:silent
 // We assume cooked food makes delicious smells with probability 1.0, and raw
 // food makes no smell with probability 0.0.
 sealed trait Food
@@ -266,13 +286,13 @@ val foodModel: Distribution[(Food, Cat)] =
 
 From `foodModel` we could read off the probabilities of interest, but it's more fun to write some code to do this for us. Here's what I did.
 
-```scala
+```tut:book:silent
 // Probability the cat is harassing me
 val pHarassing: Double =
-  foodModel.events filter {
+  foodModel.events.filter {
     case ((_, Harassing), _) => true
     case ((_, Asleep), _) => false
-  } map { case (a, p) => p } sum
+  }.map { case (a, p) => p }.sum
 
 // Probability the food is cooked given the cat is harassing me
 val pCookedGivenHarassing: Option[Double] =
