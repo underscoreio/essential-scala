@@ -27,7 +27,7 @@ The *scope rule* of implicit resolution uses a special set of scoping rules that
 
 Implicits **cannot be defined at the top level** (except in the Scala console). They must be wrapped in an outer trait, class, or singleton object. The typical way of packaging an implicit value is to define it inside a trait called `SomethingImplicits` and extend that trait to create a singleton of the same name:
 
-```scala
+```tut:book:silent
 trait VowelImplicits {
   implicit class VowelOps(str: String) {
     val vowels = Seq('a', 'e', 'i', 'o', 'u')
@@ -43,7 +43,7 @@ This gives developers two convenient ways of using our code:
 
  1. quickly bring our implicit into scope via the singleton object using an `import`:
 
-    ```scala
+    ```tut:book:silent
     // `VowelOps` is not in scope here
 
     def testMethod = {
@@ -59,10 +59,14 @@ This gives developers two convenient ways of using our code:
 
  2. stack our trait with a set of other traits to produce a library of implicits that can be brought into scope using inheritance or an `import`:
 
-    ```scala
-    object AllTheImplicits extends VowelImplicits
-      with MoreImplicits
-      with YetMoreImplicits
+    ```tut:invisible
+    trait VowelImplicits
+    trait MoreImplicits
+    trait YetMoreImplicits
+    ```
+
+    ```tut:book:silent
+    object AllTheImplicits extends VowelImplicits with MoreImplicits with YetMoreImplicits
 
     import AllTheImplicits._
 
@@ -85,37 +89,47 @@ The same resolution rules apply for implicit values as for implicit classes. If 
 
 Let's redefine our adapters for `HtmlWriter` so we can bring them all into scope. Note that outside the REPL implicit values are subject to the same packaging restrictions as implicit classes---they have to be defined inside another class, object, or trait. We'll use the packaging convention we discussed in the previous section:
 
-```scala
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
+```tut:invisible
+trait HtmlWriter[A] {
+  def write(a: A): String
+}
+case class Person(name: String, email: String)
+import java.util.Date
+```
 
-trait HtmlImplicits {
-  implicit object PersonWriter extends HtmlWriter[Person] {
-    def write(person: Person) =
-      s"<span>${person.name} &lt;${person.email}&gt;</span>"
+```tut:book:silent
+object solution {
+  trait HtmlImplicits {
+    implicit object PersonWriter extends HtmlWriter[Person] {
+      def write(person: Person) =
+        s"<span>${person.name} &lt;${person.email}&gt;</span>"
+    }
+
+    implicit object DateWriter extends HtmlWriter[Date] {
+      def write(in: Date) = s"<span>${in.toString}</span>"
+    }
   }
 
-  implicit object DateWriter extends HtmlWriter[Date] {
-    def write(in: Date) = s"<span>${in.toString}</span>"
+  object HtmlImplicits extends HtmlImplicits
+}
+```
+
+```tut:invisible
+import solution._
+
+object HtmlUtil {
+  def htmlify[A](data: A)(implicit writer: HtmlWriter[A]): String = {
+    writer.write(data)
   }
 }
-
-object HtmlImplicits extends HtmlImplicits
-
-// Exiting paste mode, now interpreting.
-
-defined trait HtmlWriters
-defined object HtmlWriters
 ```
 
 We can now use our adapters with `htmlify`:
 
-```scala
-scala> import HtmlImplicits._
+```tut:book
 import HtmlImplicits._
 
-scala> HtmlUtil.htmlify(Person("John", "john@example.com"))
-res4: String = <span>John &lt;john@example.com&gt;</span>
+HtmlUtil.htmlify(Person("John", "john@example.com"))
 ```
 
 This version of the code has much lighter syntax requirements than its predecessor. We have now assembled the complete type class pattern: `HtmlUtil` specifies our HTML rendering functionality, `HtmlWriter` and `HtmlWriters` implement the functionality as a set of adapters, and the implicit argument to `htmlify` implicitly selects the correct adapter for any given argument. However, we can take things one step further to really simplify things.

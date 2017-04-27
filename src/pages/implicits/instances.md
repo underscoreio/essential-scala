@@ -10,20 +10,18 @@ Imagine we want to sort a `List` of `Int`s. There are many different ways to sor
 
 Let's define some `Ordering`s and see them in action.
 
-```scala
+```tut:book:silent
 import scala.math.Ordering
+```
 
+```tut:book
 val minOrdering = Ordering.fromLessThan[Int](_ < _)
-// minOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$9@787f32b7
 
 val maxOrdering = Ordering.fromLessThan[Int](_ > _)
-// maxOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$9@4bf324f9
 
 List(3, 4, 2).sorted(minOrdering)
-// res: List[Int] = List(2, 3, 4)
 
 List(3, 4, 2).sorted(maxOrdering)
-// res: List[Int] = List(4, 3, 2)
 ```
 
 Here we define two orderings: `minOrdering`, which sorts from lowest to highest, and `maxOrdering`, which sorts from highest to lowest. When we call `sorted` we pass the `Ordering` we want to use. These implementations of a type class are called *type class instances*.
@@ -35,14 +33,14 @@ The type class pattern separates the implementation of functionality (the type c
 
 It can be inconvenient to continually pass the type class instance to a method when we want to repeatedly use the same instance. Scala provides a convenience, called an *implicit value*, that allows us to get the compiler to pass the type class instance for us. Here's an example of use:
 
-```scala
+```tut:book:silent
 implicit val ordering = Ordering.fromLessThan[Int](_ < _)
+```
 
-scala> List(2, 4, 3).sorted
-// res: List[Int] = List(2, 3, 4)
+```tut:book
+List(2, 4, 3).sorted
 
 List(1, 7 ,5).sorted
-// res: List[Int] = List(1, 5, 7)
 ```
 
 Note we didn't supply an ordering to `sorted`. Instead, the compiler provides it for us.
@@ -66,11 +64,13 @@ An implicit value must be declared within a surrounding object, class, or trait.
 
 What happens when multiple implicit values are in scope? Let's ask the console.
 
-```scala
+```tut:book:silent
 implicit val minOrdering = Ordering.fromLessThan[Int](_ < _)
 
 implicit val maxOrdering = Ordering.fromLessThan[Int](_ > _)
+```
 
+```tut:book:fail
 List(3,4,5).sorted
 //  <console>:12: error: ambiguous implicit values:
 //  both value ordering of type => scala.math.Ordering[Int]
@@ -108,7 +108,7 @@ assert(List(-4, -3, -2, -1).sorted(absOrdering) == List(-1, -2, -3, -4))
 ```
 
 <div class="solution">
-```scala
+```tut:book:silent
 val absOrdering = Ordering.fromLessThan[Int]{ (x, y) =>
   Math.abs(x) < Math.abs(y)
 }
@@ -125,7 +125,7 @@ assert(List(-4, -3, -2, -1).sorted == List(-1, -2, -3, -4))
 <div class="solution">
 Simply mark the value as implicit (and make sure it is in scope)
 
-```scala
+```tut:book:silent
 implicit val absOrdering = Ordering.fromLessThan[Int]{ (x, y) =>
   Math.abs(x) < Math.abs(y)
 }
@@ -136,7 +136,7 @@ implicit val absOrdering = Ordering.fromLessThan[Int]{ (x, y) =>
 
 Scala doesn't have a class to represent rational numbers, but we can easily implement one ourselves.
 
-```scala
+```tut:book:silent
 final case class Rational(numerator: Int, denominator: Int)
 ```
 
@@ -148,7 +148,7 @@ assert(List(Rational(1, 2), Rational(3, 4), Rational(1, 3)).sorted ==
 ```
 
 <div class="solution">
-```scala
+```tut:book:silent
 implicit val ordering = Ordering.fromLessThan[Rational]((x, y) =>
   (x.numerator.toDouble / x.denominator.toDouble) <
   (y.numerator.toDouble / y.denominator.toDouble)
