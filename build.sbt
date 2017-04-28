@@ -26,11 +26,13 @@ libraryDependencies ++= Seq()
 lazy val pdf  = taskKey[Unit]("Build the PDF version of the book")
 lazy val html = taskKey[Unit]("Build the HTML version of the book")
 lazy val epub = taskKey[Unit]("Build the ePub version of the book")
+lazy val json = taskKey[Unit]("Build the JSON version of the book")
 lazy val all  = taskKey[Unit]("Build all versions of the book")
 
 pdf  := { tutQuick.value ; "grunt pdf".!  }
 html := { tutQuick.value ; "grunt html".! }
 epub := { tutQuick.value ; "grunt epub".! }
+json := { tutQuick.value ; "grunt json".! }
 
 all  := {
   tutQuick.value
