@@ -5,7 +5,7 @@ Most of the interfaces we've have covered so far do not have any side-effects---
 The default `Seq` is defined to be `scala.collection.immutable.Seq`. If we want a mutable sequence we can use `scala.collection.mutable.Seq`.
 
 ```tut:book
-val mutable = scala.collection.mutable.Seq(1, 2, 3)
+val mutableCollection = scala.collection.mutable.Seq(1, 2, 3)
 ```
 
 Note that the concrete implementation class is now an `ArrayBuffer` and not a `List`.
@@ -15,21 +15,21 @@ Note that the concrete implementation class is now an `ArrayBuffer` and not a `L
 In addition to all the methods of an immutable sequence, a mutable sequence can be updated using the `update` method. Note that `update` returns `Unit`, so no value is printed in the REPL after this call. When we print the original sequence we see it is changed:
 
 ```tut:book:silent
-mutable.update(0, 5)
+mutableCollection.update(0, 5)
 ```
 
 ```tut:book
-mutable
+mutableCollection
 ```
 
 A more idiomatic way of calling `update` is to use *assignment operator syntax*, which is another special syntax built in to Scala, similar to infix operator syntax and function application syntax:
 
 ```tut:book:silent
-mutable(1) = 7
+mutableCollection(1) = 7
 ```
 
 ```tut:book
-mutable
+mutableCollection
 ```
 
 ### Immutable methods on mutable sequences
@@ -37,11 +37,11 @@ mutable
 Methods defined on both mutable and immutable sequences will never perform destructive updates. For example, `:+` always returns a new copy of the sequence without updating the original:
 
 ```tut:book
-val mutable = scala.collection.mutable.Seq[Int](1, 2, 3)
+val mutableCollection = scala.collection.mutable.Seq[Int](1, 2, 3)
 
-mutable :+ 4
+mutableCollection :+ 4
 
-mutable
+mutableCollection
 ```
 
 <div class="callout callout-info">
@@ -52,7 +52,6 @@ Scala programmers tend to favour immutable collections and only bring in mutable
 To work around this, I suggest importing the `mutable` package iteself rather than its contents. We can then explicitly refer to any mutable collection using the package name as a prefix, leaving the unprefixed names referring to the immutable versions:
 
 ```tut:book:silent
-import scala.collection.mutable
 import scala.collection.mutable
 ```
 
@@ -99,7 +98,7 @@ What happens if you prepend the `Int` `2` to `animals`? Why? Try it out... were 
 <div class="solution">
 The returned sequence has type `Seq[Any]`.  It is perfectly valid to return a supertype (in this case `Seq[Any]`) from a non-destructive operation.
 
-```tut:book
+```scala
 2 +: animals
 ```
 
