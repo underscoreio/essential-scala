@@ -26,7 +26,7 @@ final case class C() extends A {
 
 We declare a value with type `A` but we see the concrete implementation on `B` or `C` is used.
 
-```tut
+```tut:book
 val anA: A = B()
 
 anA.foo
@@ -55,7 +55,7 @@ final case class C() extends A {
 
 The behaviour is as before; the implementation on the concrete class is selected.
 
-```tut
+```tut:book
 val anA: A = B()
 
 anA.foo
@@ -271,41 +271,41 @@ Using polymorphism and then using pattern matching implement a method called `ne
 First with polymorphism:
 
 ```tut:book:silent
-object solution {
-  sealed trait TrafficLight {
-    def next: TrafficLight
-  }
-  final case object Red extends TrafficLight {
-    def next: TrafficLight =
-      Green
-  }
-  final case object Green extends TrafficLight {
-    def next: TrafficLight =
-      Yellow
-  }
-  final case object Yellow extends TrafficLight {
-    def next: TrafficLight =
-      Red
-  }
+object wrapper {
+sealed trait TrafficLight {
+  def next: TrafficLight
 }
+final case object Red extends TrafficLight {
+  def next: TrafficLight =
+    Green
+}
+final case object Green extends TrafficLight {
+  def next: TrafficLight =
+    Yellow
+}
+final case object Yellow extends TrafficLight {
+  def next: TrafficLight =
+    Red
+}
+}; import wrapper._
 ```
 
 Now with pattern matching:
 
 ```tut:book:silent
-object solution {
-  sealed trait TrafficLight {
-    def next: TrafficLight =
-      this match {
-        case Red => Green
-        case Green => Yellow
-        case Yellow => Red
-      }
-  }
-  final case object Red extends TrafficLight
-  final case object Green extends TrafficLight
-  final case object Yellow extends TrafficLight
+object wrapper {
+sealed trait TrafficLight {
+  def next: TrafficLight =
+    this match {
+      case Red => Green
+      case Green => Yellow
+      case Yellow => Red
+    }
 }
+final case object Red extends TrafficLight
+final case object Green extends TrafficLight
+final case object Yellow extends TrafficLight
+}; import wrapper._
 ```
 
 In this case I think implementing inside the class using pattern matching is best. `Next` doesn't depend on any external data and we probably only want one implementation of it. Pattern matching makes the structure of the state machine clearer than polymorphism.

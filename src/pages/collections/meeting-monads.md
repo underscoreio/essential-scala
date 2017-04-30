@@ -89,21 +89,21 @@ Add together all the options to create a new option. Add together all the sequen
 <div class="solution">
 ```tut:book:silent
 for {
- x <- opt1
- y <- opt2
- z <- opt3
+  x <- opt1
+  y <- opt2
+  z <- opt3
 } yield x + y + z
 
 for {
- x <- seq1
- y <- seq2
- z <- seq3
+  x <- seq1
+  y <- seq2
+  z <- seq3
 } yield x + y + z
 
 for {
- x <- try1
- y <- try2
- z <- try3
+  x <- try1
+  y <- try2
+  z <- try3
 } yield x + y + z
 ```
 

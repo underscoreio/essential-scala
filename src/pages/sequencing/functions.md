@@ -5,33 +5,33 @@ Functions allow us to *abstract over methods*, turning methods into values that 
 Let's look at three methods we wrote that manipulate `IntList`.
 
 ```tut:book:silent
-object solution {
-  sealed trait IntList {
-    def length: Int =
-      this match {
-        case End => 0
-        case Pair(hd, tl) => 1 + tl.length
-      }
-    def double: IntList =
-      this match {
-        case End => End
-        case Pair(hd, tl) => Pair(hd * 2, tl.double)
-      }
-    def product: Int =
-      this match {
-        case End => 1
-        case Pair(hd, tl) => hd * tl.product
-      }
-    def sum: Int =
-      this match {
-        case End => 0
-        case Pair(hd, tl) => hd + tl.sum
-      }
-  }
-
-  case object End extends IntList
-  case class Pair(hd: Int, tl: IntList) extends IntList
+object wrapper {
+sealed trait IntList {
+  def length: Int =
+    this match {
+      case End => 0
+      case Pair(hd, tl) => 1 + tl.length
+    }
+  def double: IntList =
+    this match {
+      case End => End
+      case Pair(hd, tl) => Pair(hd * 2, tl.double)
+    }
+  def product: Int =
+    this match {
+      case End => 1
+      case Pair(hd, tl) => hd * tl.product
+    }
+  def sum: Int =
+    this match {
+      case End => 0
+      case Pair(hd, tl) => hd + tl.sum
+    }
 }
+
+case object End extends IntList
+case class Pair(hd: Int, tl: IntList) extends IntList
+}; import wrapper._
 ```
 
 All of these methods have the same general pattern, which is not surprising as they all use structural recursion. It would be nice to be able to remove the duplication.
@@ -169,23 +169,23 @@ Now reimplement `sum`, `length`, and `product` in terms of `fold`.
 
 <div class="solution">
 ```tut:book:silent
-object solution {
-  sealed trait IntList {
-    def fold(end: Int, f: (Int, Int) => Int): Int =
-      this match {
-        case End => end
-        case Pair(hd, tl) => f(hd, tl.fold(end, f))
-      }
-    def length: Int =
-      fold(0, (_, tl) => 1 + tl)
-    def product: Int =
-      fold(1, (hd, tl) => hd * tl)
-    def sum: Int =
-      fold(0, (hd, tl) => hd + tl)
-  }
-  final case object End extends IntList
-  final case class Pair(head: Int, tail: IntList) extends IntList
+object wrapper {
+sealed trait IntList {
+  def fold(end: Int, f: (Int, Int) => Int): Int =
+    this match {
+      case End => end
+      case Pair(hd, tl) => f(hd, tl.fold(end, f))
+    }
+  def length: Int =
+    fold(0, (_, tl) => 1 + tl)
+  def product: Int =
+    fold(1, (hd, tl) => hd * tl)
+  def sum: Int =
+    fold(0, (hd, tl) => hd + tl)
 }
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
+}; import wrapper._
 ```
 </div>
 
@@ -237,24 +237,24 @@ def fold[A](list: IntList, f: (Int, A) => A, end: A): A
 where we've used a generic type on the method to capture the changing return type. With this we can implement `double`. When we try to do so we'll see that type inference fails, so we have to give it a bit of help.
 
 ```tut:book:silent
-object solution {
-  sealed trait IntList {
-    def fold[A](end: A, f: (Int, A) => A): A =
-      this match {
-        case End => end
-        case Pair(hd, tl) => f(hd, tl.fold(end, f))
-      }
-    def length: Int =
-      fold[Int](0, (_, tl) => 1 + tl)
-    def product: Int =
-      fold[Int](1, (hd, tl) => hd * tl)
-    def sum: Int =
-      fold[Int](0, (hd, tl) => hd + tl)
-    def double: IntList =
-      fold[IntList](End, (hd, tl) => Pair(hd * 2, tl))
-  }
-  final case object End extends IntList
-  final case class Pair(head: Int, tail: IntList) extends IntList
+object wrapper {
+sealed trait IntList {
+  def fold[A](end: A, f: (Int, A) => A): A =
+    this match {
+      case End => end
+      case Pair(hd, tl) => f(hd, tl.fold(end, f))
+    }
+  def length: Int =
+    fold[Int](0, (_, tl) => 1 + tl)
+  def product: Int =
+    fold[Int](1, (hd, tl) => hd * tl)
+  def sum: Int =
+    fold[Int](0, (hd, tl) => hd + tl)
+  def double: IntList =
+    fold[IntList](End, (hd, tl) => Pair(hd * 2, tl))
 }
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
+}; import wrapper._
 ```
 </div>

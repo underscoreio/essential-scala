@@ -15,17 +15,17 @@ What these all have in common is we have a type `F[A]` and a function `A => B`, 
 Let's implement `map` for `LinkedList`. We start by outlining the types and adding the general structural recursion skeleton:
 
 ```tut:book:silent
-object solution {
-  sealed trait LinkedList[A] {
-    def map[B](fn: A => B): LinkedList[B] =
-      this match {
-        case Pair(hd, tl) => ???
-        case End() => ???
-      }
-  }
-  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-  final case class End[A]() extends LinkedList[A]
+object wrapper {
+sealed trait LinkedList[A] {
+  def map[B](fn: A => B): LinkedList[B] =
+    this match {
+      case Pair(hd, tl) => ???
+      case End() => ???
+    }
 }
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
+}; import wrapper._
 ```
 
 We know we can use the structural recursion pattern as we know that `fold` (which is just the structural recursion pattern abstracted) is the universal iterator for an algebraic data type. Thus:
@@ -50,17 +50,17 @@ case Pair(hd, tl) => Pair(fn(hd), tl.map(fn))
 Therefore the complete solution is
 
 ```tut:book:silent
-object solution {
-  sealed trait LinkedList[A] {
-    def map[B](fn: A => B): LinkedList[B] =
-      this match {
-        case Pair(hd, tl) => Pair(fn(hd), tl.map(fn))
-        case End() => End[B]()
-      }
-  }
-  case class Pair[A](hd: A, tl: LinkedList[A]) extends LinkedList[A]
-  case class End[A]() extends LinkedList[A]
+object wrapper {
+sealed trait LinkedList[A] {
+  def map[B](fn: A => B): LinkedList[B] =
+    this match {
+      case Pair(hd, tl) => Pair(fn(hd), tl.map(fn))
+      case End() => End[B]()
+    }
 }
+case class Pair[A](hd: A, tl: LinkedList[A]) extends LinkedList[A]
+case class End[A]() extends LinkedList[A]
+}; import wrapper._
 ```
 
 Notice how using the types and patterns guided us to a solution.
@@ -90,34 +90,33 @@ final case class Empty[A]() extends Maybe[A]
 We use the same pattern as before: it's a structural recursion and our types guide us in filling in the method bodies.
 
 ```tut:book:silent
-object solution {
-  sealed trait Maybe[A] {
-    def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-      this match {
-        case Full(v) => fn(v)
-        case Empty() => Empty[B]()
-      }
-  }
-  final case class Full[A](value: A) extends Maybe[A]
-  final case class Empty[A]() extends Maybe[A]
+object wrapper {
+sealed trait Maybe[A] {
+  def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
+    this match {
+      case Full(v) => fn(v)
+      case Empty() => Empty[B]()
+    }
 }
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
+}; import wrapper._
 ```
 
 ### Functors and Monads
 
 ```tut:reset:invisible:silent
-object solution {
-  sealed trait Maybe[A] {
-    def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-      this match {
-        case Full(v) => fn(v)
-        case Empty() => Empty[B]()
-      }
-  }
-  final case class Full[A](value: A) extends Maybe[A]
-  final case class Empty[A]() extends Maybe[A]
+object wrapper {
+sealed trait Maybe[A] {
+  def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
+    this match {
+      case Full(v) => fn(v)
+      case Empty() => Empty[B]()
+    }
 }
-import solution._
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
+}; import wrapper._
 ```
 
 A type like `F[A]` with a `map` method is called a *functor*. If a functor also has a `flatMap` method it is called a *monad*[^monads].
@@ -176,18 +175,17 @@ We use `map` when we want to transform the value within the context to a new val
 Given the following list
 
 ```tut:invisible
-object solution {
-  sealed trait LinkedList[A] {
-    def map[B](fn: A => B): LinkedList[B] =
-      this match {
-        case Pair(hd, tl) => Pair(fn(hd), tl.map(fn))
-        case End() => End[B]()
-      }
-  }
-  case class Pair[A](hd: A, tl: LinkedList[A]) extends LinkedList[A]
-  case class End[A]() extends LinkedList[A]
+object wrapper {
+sealed trait LinkedList[A] {
+  def map[B](fn: A => B): LinkedList[B] =
+    this match {
+      case Pair(hd, tl) => Pair(fn(hd), tl.map(fn))
+      case End() => End[B]()
+    }
 }
-import solution._
+case class Pair[A](hd: A, tl: LinkedList[A]) extends LinkedList[A]
+case class End[A]() extends LinkedList[A]
+}; import wrapper._
 ```
 
 ```tut:book:silent
@@ -214,22 +212,22 @@ Implement `map` for `Maybe`.
 
 <div class="solution">
 ```tut:book:silent
-object solution {
-  sealed trait Maybe[A] {
-    def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-      this match {
-        case Full(v) => fn(v)
-        case Empty() => Empty[B]()
-      }
-    def map[B](fn: A => B): Maybe[B] =
-      this match {
-        case Full(v) => Full(fn(v))
-        case Empty() => Empty[B]()
-      }
-  }
-  final case class Full[A](value: A) extends Maybe[A]
-  final case class Empty[A]() extends Maybe[A]
+object wrapper {
+sealed trait Maybe[A] {
+  def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
+    this match {
+      case Full(v) => fn(v)
+      case Empty() => Empty[B]()
+    }
+  def map[B](fn: A => B): Maybe[B] =
+    this match {
+      case Full(v) => Full(fn(v))
+      case Empty() => Empty[B]()
+    }
 }
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
+}; import wrapper._
 ```
 </div>
 
@@ -237,19 +235,19 @@ For bonus points, implement `map` in terms of `flatMap`.
 
 <div class="solution">
 ```tut:book:silent
-object solution {
-  sealed trait Maybe[A] {
-    def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-      this match {
-        case Full(v) => fn(v)
-        case Empty() => Empty[B]()
-      }
-    def map[B](fn: A => B): Maybe[B] =
-      flatMap[B](v => Full(fn(v)))
-  }
-  final case class Full[A](value: A) extends Maybe[A]
-  final case class Empty[A]() extends Maybe[A]
+object wrapper {
+sealed trait Maybe[A] {
+  def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
+    this match {
+      case Full(v) => fn(v)
+      case Empty() => Empty[B]()
+    }
+  def map[B](fn: A => B): Maybe[B] =
+    flatMap[B](v => Full(fn(v)))
 }
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
+}; import wrapper._
 ```
 </div>
 
@@ -257,20 +255,19 @@ object solution {
 #### Sequencing Computations
 
 ```tut:reset:invisible
-object solution {
-  sealed trait Maybe[A] {
-    def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
-      this match {
-        case Full(v) => fn(v)
-        case Empty() => Empty[B]()
-      }
-    def map[B](fn: A => B): Maybe[B] =
-      flatMap[B](v => Full(fn(v)))
-  }
-  final case class Full[A](value: A) extends Maybe[A]
-  final case class Empty[A]() extends Maybe[A]
+object wrapper {
+sealed trait Maybe[A] {
+  def flatMap[B](fn: A => Maybe[B]): Maybe[B] =
+    this match {
+      case Full(v) => fn(v)
+      case Empty() => Empty[B]()
+    }
+  def map[B](fn: A => B): Maybe[B] =
+    flatMap[B](v => Full(fn(v)))
 }
-import solution._
+final case class Full[A](value: A) extends Maybe[A]
+final case class Empty[A]() extends Maybe[A]
+}; import wrapper._
 ```
 
 We're going to use Scala's builtin `List` class for this exercise as it has a `flatMap` method.
@@ -308,34 +305,34 @@ list.map(maybe => maybe.flatMap[Int] { x => if (x % 2 == 0) Full(x) else Empty()
 Recall our `Sum` type.
 
 ```tut:book:silent
-object solution {
-  sealed trait Sum[A, B] {
-    def fold[C](left: A => C, right: B => C): C =
-      this match {
-        case Left(a) => left(a)
-        case Right(b) => right(b)
-      }
-  }
-  final case class Left[A, B](value: A) extends Sum[A, B]
-  final case class Right[A, B](value: B) extends Sum[A, B]
+object wrapper {
+sealed trait Sum[A, B] {
+  def fold[C](left: A => C, right: B => C): C =
+    this match {
+      case Left(a) => left(a)
+      case Right(b) => right(b)
+    }
 }
+final case class Left[A, B](value: A) extends Sum[A, B]
+final case class Right[A, B](value: B) extends Sum[A, B]
+}; import wrapper._
 ```
 
 To prevent a name collision between the built-in `Either`, rename the `Left` and `Right` cases to `Failure` and `Success` respectively.
 
 <div class="solution">
 ```tut:book:silent
-object solution {
-  sealed trait Sum[A, B] {
-    def fold[C](error: A => C, success: B => C): C =
-      this match {
-        case Failure(v) => error(v)
-        case Success(v) => success(v)
-      }
-  }
-  final case class Failure[A, B](value: A) extends Sum[A, B]
-  final case class Success[A, B](value: B) extends Sum[A, B]
+object wrapper {
+sealed trait Sum[A, B] {
+  def fold[C](error: A => C, success: B => C): C =
+    this match {
+      case Failure(v) => error(v)
+      case Success(v) => success(v)
+    }
 }
+final case class Failure[A, B](value: A) extends Sum[A, B]
+final case class Success[A, B](value: B) extends Sum[A, B]
+}; import wrapper._
 ```
 </div>
 
@@ -349,22 +346,22 @@ def map[C](f: B => C): Sum[A, C]
 
 <div class="solution">
 ```tut:book:silent
-object solution {
-  sealed trait Sum[+A, +B] {
-    def fold[C](error: A => C, success: B => C): C =
-      this match {
-        case Failure(v) => error(v)
-        case Success(v) => success(v)
-      }
-    def map[C](f: B => C): Sum[A, C] =
-      this match {
-        case Failure(v) => Failure(v)
-        case Success(v) => Success(f(v))
-      }
-  }
-  final case class Failure[A, B](value: A) extends Sum[A, B]
-  final case class Success[A, B](value: B) extends Sum[A, B]
+object wrapper {
+sealed trait Sum[+A, +B] {
+  def fold[C](error: A => C, success: B => C): C =
+    this match {
+      case Failure(v) => error(v)
+      case Success(v) => success(v)
+    }
+  def map[C](f: B => C): Sum[A, C] =
+    this match {
+      case Failure(v) => Failure(v)
+      case Success(v) => Success(f(v))
+    }
 }
+final case class Failure[A, B](value: A) extends Sum[A, B]
+final case class Success[A, B](value: B) extends Sum[A, B]
+}; import wrapper._
 ```
 </div>
 
@@ -372,26 +369,26 @@ Now implement `flatMap` using the same logic as `map`.
 
 <div class="solution">
 ```tut:book:silent
-object solution {
-  sealed trait Sum[A, B] {
-    def fold[C](error: A => C, success: B => C): C =
-      this match {
-        case Failure(v) => error(v)
-        case Success(v) => success(v)
-      }
-    def map[C](f: B => C): Sum[A, C] =
-      this match {
-        case Failure(v) => Failure(v)
-        case Success(v) => Success(f(v))
-      }
-    def flatMap[C](f: B => Sum[A, C]) =
-      this match {
-        case Failure(v) => Failure(v)
-        case Success(v) => f(v)
-      }
-  }
-  final case class Failure[A, B](value: A) extends Sum[A, B]
-  final case class Success[A, B](value: B) extends Sum[A, B]
+object wrapper {
+sealed trait Sum[A, B] {
+  def fold[C](error: A => C, success: B => C): C =
+    this match {
+      case Failure(v) => error(v)
+      case Success(v) => success(v)
+    }
+  def map[C](f: B => C): Sum[A, C] =
+    this match {
+      case Failure(v) => Failure(v)
+      case Success(v) => Success(f(v))
+    }
+  def flatMap[C](f: B => Sum[A, C]) =
+    this match {
+      case Failure(v) => Failure(v)
+      case Success(v) => f(v)
+    }
 }
+final case class Failure[A, B](value: A) extends Sum[A, B]
+final case class Success[A, B](value: B) extends Sum[A, B]
+}; import wrapper._
 ```
 </div>

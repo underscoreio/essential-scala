@@ -152,10 +152,9 @@ A tail call can be optimised to not use stack space. Due to limitations in the J
 
 ```tut:book:silent
 import scala.annotation.tailrec
-import scala.annotation.tailrec
 ```
 
-```tut:fail
+```tut:book:fail
 @tailrec
 def sum(list: IntList): Int =
   list match {
@@ -164,7 +163,7 @@ def sum(list: IntList): Int =
   }
 ```
 
-```tut
+```tut:book
 @tailrec
 def sum(list: IntList, total: Int = 0): Int =
   list match {
@@ -201,17 +200,17 @@ assert(End.length == 0)
 
 <div class="solution">
 ```tut:book:silent
-object solution {
-  sealed trait IntList {
-    def length: Int =
-      this match {
-        case End => 0
-        case Pair(hd, tl) => 1 + tl.length
-      }
-  }
-  final case object End extends IntList
-  final case class Pair(head: Int, tail: IntList) extends IntList
+object wrapper {
+sealed trait IntList {
+  def length: Int =
+    this match {
+      case End => 0
+      case Pair(hd, tl) => 1 + tl.length
+    }
 }
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
+}; import wrapper._
 ```
 </div>
 
@@ -225,7 +224,7 @@ assert(End.product == 1)
 
 <div class="solution">
 ```tut:book:silent
-object solution {
+object wrapper {
   sealed trait IntList {
     def product: Int =
       this match {
@@ -235,7 +234,7 @@ object solution {
   }
   final case object End extends IntList
   final case class Pair(head: Int, tail: IntList) extends IntList
-}
+}; import wrapper._
 ```
 </div>
 
@@ -249,17 +248,17 @@ assert(End.double == End)
 
 <div class="solution">
 ```tut:book:silent
-object solution {
-  sealed trait IntList {
-    def double: IntList =
-      this match {
-        case End => End
-        case Pair(hd, tl) => Pair(hd * 2, tl.double)
-      }
-  }
-  final case object End extends IntList
-  final case class Pair(head: Int, tail: IntList) extends IntList
+object wrapper {
+sealed trait IntList {
+  def double: IntList =
+    this match {
+      case End => End
+      case Pair(hd, tl) => Pair(hd * 2, tl.double)
+    }
 }
+final case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
+}; import wrapper._
 ```
 </div>
 

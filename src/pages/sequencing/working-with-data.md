@@ -26,17 +26,17 @@ def fold[A](end: A, f: (Int, A) => A): A =
 It's reasonably straightforward to extend this to `LinkedList[A]`. We merely have to account for the head element of a `Pair` being of type `A` not `Int`.
 
 ```tut:book:silent
-object solution {
-  sealed trait LinkedList[A] {
-    def fold[B](end: B, f: (A, B) => B): B =
-      this match {
-        case End() => end
-        case Pair(hd, tl) => f(hd, tl.fold(end, f))
-      }
-  }
-  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-  final case class End[A]() extends LinkedList[A]
+object wrapper {
+sealed trait LinkedList[A] {
+  def fold[B](end: B, f: (A, B) => B): B =
+    this match {
+      case End() => end
+      case Pair(hd, tl) => f(hd, tl.fold(end, f))
+    }
 }
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
+}; import wrapper._
 ```
 
 Fold is just an adaptation of structural recursion where we allow the user to pass in the functions we apply at each case. As structural recursion is the generic pattern for writing any function that transforms an algebraic datatype, fold is the concrete realisation of this generic pattern. That is, fold is the generic transformation or iteration method. *Any function* you care to write on an algebraic datatype can be written in terms of fold.

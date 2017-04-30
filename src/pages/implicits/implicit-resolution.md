@@ -98,25 +98,23 @@ import java.util.Date
 ```
 
 ```tut:book:silent
-object solution {
-  trait HtmlImplicits {
-    implicit object PersonWriter extends HtmlWriter[Person] {
-      def write(person: Person) =
-        s"<span>${person.name} &lt;${person.email}&gt;</span>"
-    }
-
-    implicit object DateWriter extends HtmlWriter[Date] {
-      def write(in: Date) = s"<span>${in.toString}</span>"
-    }
+object wrapper {
+trait HtmlImplicits {
+  implicit object PersonWriter extends HtmlWriter[Person] {
+    def write(person: Person) =
+      s"<span>${person.name} &lt;${person.email}&gt;</span>"
   }
 
-  object HtmlImplicits extends HtmlImplicits
+  implicit object DateWriter extends HtmlWriter[Date] {
+    def write(in: Date) = s"<span>${in.toString}</span>"
+  }
 }
+
+object HtmlImplicits extends HtmlImplicits
+}; import wrapper._
 ```
 
 ```tut:invisible
-import solution._
-
 object HtmlUtil {
   def htmlify[A](data: A)(implicit writer: HtmlWriter[A]): String = {
     writer.write(data)
