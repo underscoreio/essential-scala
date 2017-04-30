@@ -16,6 +16,11 @@ sealed trait Visitor {
 
 When we mark a trait as `sealed` we *must* define all of its subtypes in the same file. Once the trait is sealed, the compiler knows the complete set of subtypes and will warn us if a pattern matching expression is missing a case:
 
+```tut:invisible
+final case class User(id: String, createdAt: Date, override val age: Long) extends Visitor
+final case class Anonymous(id: String, createdAt: Date) extends Visitor
+```
+
 ```tut:book:fail
 def missingCase(v: Visitor) =
   v match {
