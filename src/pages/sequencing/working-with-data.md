@@ -27,15 +27,15 @@ It's reasonably straightforward to extend this to `LinkedList[A]`. We merely hav
 
 ```tut:book:silent
 object wrapper {
-sealed trait LinkedList[A] {
-  def fold[B](end: B, f: (A, B) => B): B =
-    this match {
-      case End() => end
-      case Pair(hd, tl) => f(hd, tl.fold(end, f))
-    }
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-final case class End[A]() extends LinkedList[A]
+  sealed trait LinkedList[A] {
+    def fold[B](end: B, f: (A, B) => B): B =
+      this match {
+        case End() => end
+        case Pair(hd, tl) => f(hd, tl.fold(end, f))
+      }
+  }
+  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+  final case class End[A]() extends LinkedList[A]
 }; import wrapper._
 ```
 

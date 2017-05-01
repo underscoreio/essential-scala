@@ -138,15 +138,15 @@ This code is largely unchanged from the implementation of `length` on `IntList`.
 
 ```tut:book:silent
 object wrapper {
-sealed trait LinkedList[A] {
-  def length: Int =
-    this match {
-      case Pair(hd, tl) => 1 + tl.length
-      case End() => 0
-    }
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-final case class End[A]() extends LinkedList[A]
+  sealed trait LinkedList[A] {
+    def length: Int =
+      this match {
+        case Pair(hd, tl) => 1 + tl.length
+        case End() => 0
+      }
+  }
+  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+  final case class End[A]() extends LinkedList[A]
 }; import wrapper._
 ```
 </div>
@@ -167,20 +167,20 @@ This is another example of the standard structural recursion pattern. The import
 
 ```tut:book:silent
 object wrapper {
-sealed trait LinkedList[A] {
-  def contains(item: A): Boolean =
-    this match {
-      case Pair(hd, tl) =>
-        if(hd == item)
-          true
-        else
-          tl.contains(item)
-      case End() => false
-    }
-}
+  sealed trait LinkedList[A] {
+    def contains(item: A): Boolean =
+      this match {
+        case Pair(hd, tl) =>
+          if(hd == item)
+            true
+          else
+            tl.contains(item)
+        case End() => false
+      }
+  }
 
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-final case class End[A]() extends LinkedList[A]
+  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+  final case class End[A]() extends LinkedList[A]
 }; import wrapper._
 ```
 </div>
@@ -217,20 +217,20 @@ Finally we get to the actual structural recursion, which is perhaps the trickies
 
 ```tut:book:silent
 object wrapper {
-sealed trait LinkedList[A] {
-  def apply(index: Int): A =
-    this match {
-      case Pair(hd, tl) =>
-        if(index == 0)
-          hd
-        else
-          tl(index - 1)
-      case End() =>
-        throw new Exception("Attempted to get element from an Empty list")
-    }
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-final case class End[A]() extends LinkedList[A]
+  sealed trait LinkedList[A] {
+    def apply(index: Int): A =
+      this match {
+        case Pair(hd, tl) =>
+          if(index == 0)
+            hd
+          else
+            tl(index - 1)
+        case End() =>
+          throw new Exception("Attempted to get element from an Empty list")
+      }
+  }
+  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+  final case class End[A]() extends LinkedList[A]
 }; import wrapper._
 ```
 </div>
@@ -255,24 +255,24 @@ assert(example(3) == Failure("Index out of bounds"))
 <div class="solution">
 ```tut:book:silent
 object wrapper {
-sealed trait Result[A]
-case class Success[A](result: A) extends Result[A]
-case class Failure[A](reason: String) extends Result[A]
+  sealed trait Result[A]
+  case class Success[A](result: A) extends Result[A]
+  case class Failure[A](reason: String) extends Result[A]
 
-sealed trait LinkedList[A] {
-  def apply(index: Int): Result[A] =
-    this match {
-      case Pair(hd, tl) =>
-        if(index == 0)
-          Success(hd)
-        else
-          tl(index - 1)
-      case End() =>
-        Failure("Index out of bounds")
-    }
-}
-final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-final case class End[A]() extends LinkedList[A]
+  sealed trait LinkedList[A] {
+    def apply(index: Int): Result[A] =
+      this match {
+        case Pair(hd, tl) =>
+          if(index == 0)
+            Success(hd)
+          else
+            tl(index - 1)
+        case End() =>
+          Failure("Index out of bounds")
+      }
+  }
+  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+  final case class End[A]() extends LinkedList[A]
 }; import wrapper._
 ```
 </div>

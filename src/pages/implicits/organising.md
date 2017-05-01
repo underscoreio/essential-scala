@@ -80,14 +80,14 @@ Finally let's move the type class instance into the companion object of `Rationa
 
 ```tut:book:silent
 object wrapper {
-final case class Rational(numerator: Int, denominator: Int)
+  final case class Rational(numerator: Int, denominator: Int)
 
-object Rational {
-  implicit val ordering = Ordering.fromLessThan[Rational]((x, y) =>
-    (x.numerator.toDouble / x.denominator.toDouble) <
-    (y.numerator.toDouble / y.denominator.toDouble)
-  )
-}
+  object Rational {
+    implicit val ordering = Ordering.fromLessThan[Rational]((x, y) =>
+      (x.numerator.toDouble / x.denominator.toDouble) <
+      (y.numerator.toDouble / y.denominator.toDouble)
+    )
+  }
 }; import wrapper._
 ```
 
@@ -128,14 +128,14 @@ Let's see this in practice, by defining an `Ordering` for `Rational` within the 
 
 ```tut:book:silent
 object wrapper {
-final case class Rational(numerator: Int, denominator: Int)
+  final case class Rational(numerator: Int, denominator: Int)
 
-object Rational {
-  implicit val ordering = Ordering.fromLessThan[Rational]((x, y) =>
-    (x.numerator.toDouble / x.denominator.toDouble) <
-    (y.numerator.toDouble / y.denominator.toDouble)
-  )
-}
+  object Rational {
+    implicit val ordering = Ordering.fromLessThan[Rational]((x, y) =>
+      (x.numerator.toDouble / x.denominator.toDouble) <
+      (y.numerator.toDouble / y.denominator.toDouble)
+    )
+  }
 }; import wrapper._
 ```
 

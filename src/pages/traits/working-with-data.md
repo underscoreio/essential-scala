@@ -272,21 +272,21 @@ First with polymorphism:
 
 ```tut:book:silent
 object wrapper {
-sealed trait TrafficLight {
-  def next: TrafficLight
-}
-final case object Red extends TrafficLight {
-  def next: TrafficLight =
-    Green
-}
-final case object Green extends TrafficLight {
-  def next: TrafficLight =
-    Yellow
-}
-final case object Yellow extends TrafficLight {
-  def next: TrafficLight =
-    Red
-}
+  sealed trait TrafficLight {
+    def next: TrafficLight
+  }
+  final case object Red extends TrafficLight {
+    def next: TrafficLight =
+      Green
+  }
+  final case object Green extends TrafficLight {
+    def next: TrafficLight =
+      Yellow
+  }
+  final case object Yellow extends TrafficLight {
+    def next: TrafficLight =
+      Red
+  }
 }; import wrapper._
 ```
 
@@ -294,17 +294,17 @@ Now with pattern matching:
 
 ```tut:book:silent
 object wrapper {
-sealed trait TrafficLight {
-  def next: TrafficLight =
-    this match {
-      case Red => Green
-      case Green => Yellow
-      case Yellow => Red
-    }
-}
-final case object Red extends TrafficLight
-final case object Green extends TrafficLight
-final case object Yellow extends TrafficLight
+  sealed trait TrafficLight {
+    def next: TrafficLight =
+      this match {
+        case Red => Green
+        case Green => Yellow
+        case Yellow => Red
+      }
+  }
+  final case object Red extends TrafficLight
+  final case object Green extends TrafficLight
+  final case object Yellow extends TrafficLight
 }; import wrapper._
 ```
 
