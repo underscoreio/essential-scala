@@ -18,20 +18,20 @@ Types alone don't tell all the story. There are many `Double` to `Double` functi
 
 We're not going to use a testing library in this course, as we're trying to avoid external dependencies. We can implement a poor-man's testing library using the `assert` function that Scala provides. For our `square` example we might have test cases like
 
-~~~ scala
+```scala
 assert(square(2.0) == 4.0)
 assert(square(3.0) == 9.0)
 assert(square(-2.0) == 4.0)
-~~~
+```
 
 ### Write the Declaration
 
 With types and test cases ready we can now write the method declaration. We haven't developed the body yet so use `???`, another nifty Scala feature, in its place.
 
-~~~ scala
+```tut:book:silent
 def square(in: Double): Double =
   ???
-~~~
+```
 
 This step should be mechanical given the information gathered in the previous steps.
 
@@ -53,10 +53,10 @@ Our next technique is to look at the type of input parameters to the method. In 
 
 We can now write our complete method as
 
-~~~ scala
+```tut:book:silent
 def square(in: Double): Double =
   in * in
-~~~
+```
 
 ### Run the Code, Again
 
@@ -73,10 +73,10 @@ We have a six-step process for writing methods in a systematic way.
 2. Write some test cases for the expected output of the method given example input. We can use the `assert` function to write down these cases.
 3. Write the method declaration using `???` for the body like so:
 
-~~~ scala
+```scala
 def name(parameter: type, ...): resultType =
  ???
-~~~
+```
 4. Run the code to check the test cases do in fact fail.
 5. Write the body of the method. We currently have two techniques to apply here:
    - consider the result type and how we can create an instance of it; and

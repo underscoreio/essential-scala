@@ -6,18 +6,17 @@ When we write an object literal we use a *declaration*, which is a different kin
 
 We can declare an empty object as follows:
 
-~~~ scala
+```tut:book:silent
 object Test {}
-~~~
+```
 
 This is not an expression---it does not evaluate to a value. Rather, it binds a name (`Test`) to a value (an empty object).
 
 Once we have bound the name `Test` we can use it in expressions, where it evaluates to the object we have declared. The simplest expression is just the name on its own, which evaluates to the value itself:
 
-~~~ scala
+```tut:book
 Test
-// res: Test.type = Test$@1668bd43
-~~~
+```
 
 This expression is equivalent to writing a literal like `123` or `"abc"`.
 Note that the type of the object is reported as `Test.type`. This is not like any type we've seen before---it's a new type, created just for our object, called a *singleton type*. We cannot create other values of this type.
@@ -29,11 +28,11 @@ Empty objects are not so useful. Within the body (between the braces) of an obje
 
 The syntax for declaring an object is
 
-~~~ scala
+```scala
 object name {
   declarationOrExpression ...
 }
-~~~
+```
 
 where
 
@@ -48,48 +47,47 @@ Let's see how to declare methods and fields.
 
 We interact with objects via methods so let's create an object with a method.
 
-~~~ scala
+```tut:book:silent
 object Test2 {
   def name: String = "Probably the best object ever"
 }
-~~~
+```
 
 Here we've create a method called `name`. We can call it in the usual way.
 
-~~~ scala
+```tut:book
 Test2.name
-// res: String = Probably the best object ever
-~~~
+```
 
 Here's an object with a more complex method:
 
-~~~ scala
+```tut:book:silent
 object Test3 {
   def hello(name: String) =
     "Hello " + name
 }
-defined object Test3
+```
 
+```tut:book
 Test3.hello("Noel")
-// res: String = Hello Noel
-~~~
+```
 
 <div class="callout callout-info">
 #### Method Declaration Syntax {-}
 
 The syntax for declaring a method is
 
-~~~ scala
+```scala
 def name(parameter: type, ...): resultType =
   bodyExpression
-~~~
+```
 
 or
 
-~~~ scala
+```scala
 def name: resultType =
   bodyExpression
-~~~
+```
 
 where
 
@@ -115,31 +113,32 @@ The return value of the method is determined by evaluating the body---there is n
 
 An object can also contain other objects, called *fields*. We introduce these using the keywords `val` or `var`, which look similar to `def`:
 
-~~~ scala
+```tut:book:silent
 object Test4 {
   val name = "Noel"
   def hello(other: String): String =
     name + " says hi to " + other
 }
+```
 
+```tut:book
 Test4.hello("Dave")
-// res: String = Noel says hi to Dave
-~~~
+```
 
 <div class="callout callout-info">
 #### Field Declaration Syntax {-}
 
 The syntax for declaring a field is
 
-~~~ scala
+```scala
 val name: type = valueExpression
-~~~
+```
 
 or
 
-~~~ scala
+```scala
 var name: type = valueExpression
-~~~
+```
 
 where
 
@@ -159,7 +158,7 @@ You might wonder why we need fields when we can have methods of no arguments tha
 
 Here's an object that shows the difference:
 
-~~~ scala
+```tut:book:silent
 object Test7 {
    val simpleField = {
      println("Evaluating simpleField")
@@ -170,7 +169,7 @@ object Test7 {
      42
    }
 }
-~~~
+```
 
 Here we have used a `println` expression to print something to the console, and a block expression (expressions surrounded by `{` and `}`) to group expressions. We'll see more about block expressions in the next section.
 
@@ -180,35 +179,25 @@ Objects and classes (which we'll see later) aren't loaded until they are referen
 
 Let's force Scala to evaluate our object body by referencing `Test7` in an expression:
 
-~~~ scala
+```tut:book
 Test7
-// Evaluating simpleField
-// res: Test7.type = Test7$@b22e8c9
-~~~
+```
 
 When the object is first loaded, Scala runs through its definitions and calculates the values of each of its fields. This results in the code printing `"Evaluating simpleField"` as a side-effect.
 
 *The body expression of a field is run only once* after which the final value is stored in the object. The expression is never evaluated again---notice the lack of `println` output below.
 
-~~~ scala
+```tut:book
 Test7.simpleField
-// res: Int = 42
-
 Test7.simpleField
-// res: Int = 42
-~~~
+```
 
 The body of a method, on the other hand, is evaluated every time we call the method---notice the repreated println output below.
 
-~~~ scala
+```tut:book
 Test7.noParameterMethod
-// Evaluating noParameterMethod
-// res: Int = 42
-
 Test7.noParameterMethod
-// Evaluating noParameterMethod
-// res: Int = 42
-~~~
+```
 
 ### Take home points
 
@@ -216,24 +205,24 @@ In this section we have created our own objects, given them methods and fields, 
 
 We have seen the syntax for declaring objects
 
-~~~ scala
+```scala
 object name {
   declarationOrExpression ...
 }
-~~~
+```
 
 for declaring methods
 
-~~~ scala
+```scala
 def name(parameter: type, ...): resultType = bodyExpression
-~~~
+```
 
 and for declaring fields
 
-~~~ scala
+```scala
 val name = valueExpression
 var name = valueExpression
-~~~
+```
 
 All of these are *declarations*, binding names to values. Declarations are different to expressions. They do not evaluate to a value and do not have a type.
 
@@ -256,12 +245,11 @@ The table below shows the names, colour, and favourite foods of three cats. Defi
 +-----------+-----------------+-------+
 
 
-
 <div class="solution">
 
 This is just a finger exercise to get you used to the syntax of defining objects. You should have a solution similar to the code below.
 
-~~~ scala
+```tut:book:silent
 object Oswald {
   val colour: String = "Black"
   val food: String = "Milk"
@@ -276,7 +264,7 @@ object Quentin {
   val colour: String = "Tabby and white"
   val food: String = "Curry"
 }
-~~~
+```
 
 </div>
 
@@ -288,12 +276,12 @@ Define an object called `calc` with a method `square` that accepts a `Double` as
 <div class="solution">
 Here is the solution. `cube(x)` calls `square(x)` and multiplies its value by `x` one more time. The return type of each method is inferred by the compiler as `Double`.
 
-~~~ scala
+```tut:book:silent
 object calc {
   def square(x: Double) = x * x
   def cube(x: Double) = x * square(x)
 }
-~~~
+```
 </div>
 
 #### Precise Square Dance!
@@ -303,7 +291,7 @@ Copy and paste `calc` from the previous exercise to create a `calc2` that is gen
 <div class="solution">
 Like Java, Scala can't generalize particularly well across `Ints` and `Doubles`. However, it will allow us to *"overload"* the `square` and `cube` methods by defining them for each type of parameter.
 
-~~~ scala
+```tut:book:silent
 object calc2 {
   def square(value: Double) = value * value
   def cube(value: Double) = value * square(value)
@@ -311,28 +299,28 @@ object calc2 {
   def square(value: Int) = value * value
   def cube(value: Int) = value * square(value)
 }
-~~~
+```
 
 "Overloaded" methods are ones we have defined several times for different argument types. Whenever we call an overloaded method type, Scala automatically determines which variant we need by looking at the type of the argument.
 
-~~~ scala
+```tut:book
 calc2.square(1.0) // calls the `Double` version of `square`
 calc2.square(1)   // calls the `Int` version `square`
-~~~
+```
 
 The Scala compiler is able to insert automatic conversions between numeric types wherever you have a lower precision and require a higher precision. For example, if you write `calc.square(2)`, the compiler determines that the only version of `calc.square` takes a `Double` and automatically infers that you really mean `calc.square(2.toDouble)`.
 
 Conversions in the opposite direction, from high precision to low precision, are not handled automatically because they can lead to rounding errors. For example, the code below will not compile because `x` is an `Int` and its body expression is a `Double` (try it and see)!
 
-~~~ scala
+```tut:book:fail
 val x: Int = calc.square(2) // compile error
-~~~
+```
 
 You can manually use the `toInt` method of `Double` to work around this:
 
-~~~ scala
+```tut:book
 val x: Int = calc.square(2).toInt // toInt rounds down
-~~~
+```
 
 <div class="callout callout-warning">
 #### The Dangers of String Concatenation {-}
@@ -347,7 +335,7 @@ The fact that string concatenation and numeric addition share the same `+` metho
 
 When entered on the console, what does the following program output, and what is the type and value of the final expression? Think carefully about the types, dependencies, and evaluation behaviour of each field and method.
 
-~~~ scala
+```tut:book:silent
 object argh {
   def a = {
     println("a")
@@ -365,25 +353,22 @@ object argh {
     b + "c"
   }
 }
+```
 
+```scala
 argh.c + argh.b + argh.a
-~~~
+```
 
 <div class="solution">
 Here is the solution:
 
-~~~ scala
-b
-a
-c
-a
-a
-// res: String = 3c31
-~~~
+```tut:book
+argh.c + argh.b + argh.a
+```
 
 The full sequence of evaluation is as follows:
 
-~~~
+```
 - We calculate the main sum at the end of the program, which...
   - Loads `argh`, which...
     - Calculates all the fields in `argh`, which...
@@ -415,7 +400,7 @@ The full sequence of evaluation is as follows:
     - Returns `1`
   - Evaluates the first `+`, determining that it actually refers to string
     concatentation, and yielding `"3c31"`
-~~~
+```
 
 Whew! That's a lot for such a simple piece of code.
 </div>
@@ -427,7 +412,7 @@ Define an object called `person` that contains fields called `firstName` and `la
 What is the type of the `greet` method? Can we use this method to greet other objects?
 
 <div class="solution">
-~~~ scala
+```tut:book:silent
 object person {
   val firstName = "Dave"
   val lastName = "Gurnell"
@@ -437,9 +422,11 @@ object alien {
   def greet(p: person.type) =
     "Greetings, " + p.firstName + " " + p.lastName
 }
+```
 
+```tut:book
 alien.greet(person)
-~~~
+```
 
 Notice the type on the `p` parameter of `greet`: `person.type`. This is one of the *singleton types* we were referring to earlier. In this case it is specific to the object `person`, which prevents us using `greet` on any other object. This is very different from a type such as `Int` that is shared by all Scala integers.
 
@@ -453,42 +440,39 @@ Are methods values? Are they expressions? Why might this be the case?
 <div class="solution">
 First let's deal with the equivalence between methods and expressions. As we know, expressions are program fragments that produce values. A simple test of whether something is an expression is to see if we can assign it to a field.
 
-~~~ scala
+```tut:book:silent
 object calculator {
   def square(x: Int) = x * x
 }
+```
 
+```tut:book:fail
 val someField = calculator.square
-// error: missing arguments for method square in object calculator;
-// follow this method with `_' if you want to treat it as a partially applied function
-//        val someField = calculator.square
-//                                   ^
-~~~
+```
 
 Although we don't understand this error message fully yet (we shall learn about "partially applied functions" later), it does show us that `square` *is not an expression*. However, a *call* to `square` *does* yield a value:
 
-~~~ scala
+```tut:book
 val someField = calculator.square(2)
-// someField: Int = 4
-~~~
+```
 
 A method with no arguments looks like it behaves differently. However, this is a trick of the syntax.
 
-~~~ scala
+```tut:book:silent
 object clock {
   def time = System.currentTimeMillis
 }
+```
 
+```tut:book
 val now = clock.time
-// now: Long = 1395402828639
-~~~
+```
 
 Although it looks like `now` is being assigned `clock.time` as a value, it is actually being assigned the *value returned by calling `clock.time`*. We can demonstrate this by calling the method again:
 
-~~~ scala
+```tut:book
 val aBitLaterThanNow = clock.time
-// aBitLaterThanNow: Long = 1395403220551
-~~~
+```
 
 As we saw above, references to fields and calls to argumentless methods look identical in Scala. This is by design, to allow us to swap the implementation of a field for a method (and vice versa) without affecting other code. It is a programming language feature called the *[uniform access principle][uap1]*.
 

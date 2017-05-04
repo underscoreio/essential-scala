@@ -2,11 +2,11 @@
 
 In the final exercise of the previous section, we defined a class called `Adder`:
 
-~~~ scala
+```tut:book:silent
 class Adder(amount: Int) {
   def add(in: Int): Int = in + amount
 }
-~~~
+```
 
 In the discussion we described an `Adder` as an object representing a computation---a bit like having a method that we can pass around as a value.
 
@@ -20,17 +20,17 @@ In Scala, by convention, an object can be "called" like a function if it has a m
 
 For example, let's rename the `add` method in `Adder` to `apply`:
 
-~~~ scala
+```tut:book:silent
 class Adder(amount: Int) {
   def apply(in: Int): Int = in + amount
 }
+```
 
+```tut:book
 val add3 = new Adder(3)
-// add3: Adder = Adder@1d4f0fb4
-
-add3(2) // shorthand for add3.apply(2)
-// res: Int = 5
-~~~
+add3.apply(2)
+add3(4) // shorthand for add3.apply(4)
+```
 
 With this one simple trick, objects can "look" syntactically like functions. There are lots of things that we can do with objects that we can't do with methods, including assign them to variables and pass them around as arguments.
 

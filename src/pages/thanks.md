@@ -1,5 +1,14 @@
 ## Thanks #{-}
 
-A big thanks to Richard Dallway and Jonathan Ferguson, who took on the herculean task of proof reading our early drafts and helped develop the rendering pipeline that produces the finished book.
+Many thanks to Richard Dallway and Jonathan Ferguson,
+who took on the herculean task of proof reading our early drafts
+and helped develop the rendering pipeline that produces the finished book.
 
-Thanks also to Amir Aryanpour, Rebecca Grenier, Joe Halliwell, Jason Scott, Daniel Watford, N. Sriram, and Audrey Welsh who sent us corrections and suggestions. Knowing that our work was being read and used made the long haul of writing the book worthwhile.
+Thanks also to Danielle Ashley, who updated all of the code samples
+to use [Tut][link-tut] and increased our code quality 100% overnight!
+
+Thanks also to Amir Aryanpour, Rebecca Grenier, Joe Halliwell,
+Jason Scott, Daniel Watford, N. Sriram, and Audrey Welsh
+who sent us corrections and suggestions while the book was in early access.
+Knowing that our work was being read and used
+made the long haul of writing worthwhile.

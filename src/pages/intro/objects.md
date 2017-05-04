@@ -13,35 +13,31 @@ We have some special terminology for the data and operations of an object. The o
 
 We interact with objects by *calling* methods[^patterns]. We have already seen some examples of calling methods. For example, we have seen we can get the uppercase version of a `String` by calling its `toUpperCase` method.
 
-~~~ scala
+```tut:book
 "hello".toUpperCase
-// res: String = HELLO
-~~~
+```
 
 Some methods accept *parameters* or *arguments*, which control how the method works. The `take` method, for example, takes characters from a `String`. We must pass a parameter to `take` to specify how many characters we want.
 
-~~~ scala
+```tut:book
 "abcdef".take(3)
-// res: String = abc
-
 "abcdef".take(2)
-// res: String = ab
-~~~
+```
 
 <div class="callout callout-info">
 #### Method Call Syntax {-}
 
 The syntax for a method call is
 
-~~~ scala
+```scala
 anExpression.methodName(param1, ...)
-~~~
+```
 
 or
 
-~~~ scala
+```scala
 anExpression.methodName
-~~~
+```
 
 where
 
@@ -52,16 +48,15 @@ where
 
 A method call is an expression, and thus evaluates to an object. This means we can chain method calls together to make more complex programs:
 
-~~~ scala
+```tut:book
 "hello".toUpperCase.toLowerCase
-// res: String = hello
-~~~
+```
 
 In what order are the various expressions in a method call evaluated? Method parameters are evaluated left-to-right, before the method is called. So in the expression
 
-~~~ scala
+```tut:book
 "Hello world!".take(2 + 3)
-~~~
+```
 
 the expression `"Hello world!"` is evaluated first, then `2 + 3` (which requires evaluating `2` and then `3` first), then finally `"Hello world!".take(5)`.
 
@@ -69,23 +64,17 @@ the expression `"Hello world!"` is evaluated first, then `2 + 3` (which requires
 
 Because every value in Scala is an object we can also call methods on primitive types such as `Int` and `Boolean`. This is in contrast to Java where `int` and `boolean` are not objects:
 
-~~~ scala
+```tut:book
 123.toShort // this is how we define a `Short` in Scala
-// res: Short = 123
-
-123.toByte // and this is how we define a `Byte`
-// res: Byte = 123
-~~~
+123.toByte // this is how we define a `Byte`
+```
 
 But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes---Scala methods can have symbolic names as well as alphanumeric ones!
 
-~~~ scala
+```tut:book
 43 - 3 + 2
-// res: Int = 42
-
 43.-(3).+(2)
-// res: Int = 42
-~~~
+```
 
 (Note that in Scala 2.10 and earlier you would have to write `(43).-(3).+(2)` to prevent `43.` being interpreted as a `Double`.)
 
@@ -99,25 +88,20 @@ Note that `a b c d e` is equivalent to `a.b(c).d(e)`, not `a.b(c, d, e)`.
 
 We can use *infix operator notation* with any method that takes one parameter, regardless of whether it has a symbolic or alphanumeric name:
 
-~~~ scala
+```tut:book:silent
 "the quick brown fox" split " "
 // res: Array[String] = Array(the, quick, brown, fox)
-~~~
+```
 
 Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions instead of verbose method calls. There are also notations for *prefix*, *postfix*, *right-associative*, and *assignment-style operators*, but there are much less common than infix notation.
 
 A question poses itself---what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
 
-~~~ scala
+```tut:book
 2 * 3 + 4 * 5
-// res: Int = 26
-
 (2 * 3) + (4 * 5)
-// res: Int = 26
-
 2 * (3 + 4) * 5
-// res: Int = 70
-~~~
+```
 
 ### Take home points
 
@@ -125,15 +109,15 @@ All Scala values are objects. We *interact with objects by calling methods* on t
 
 The syntax for a method call is
 
-~~~ scala
+```scala
 anExpression.methodName(parameter, ...)
-~~~
+```
 
 or
 
-~~~ scala
+```scala
 anExpression methodName parameter
-~~~
+```
 
 *Scala has very few operators - almost everything is a method call.* We use syntactic conventions like infix operator notation to keep our code simple and readable, but we can always fall back to standard method notation where it makes sense.
 
@@ -145,37 +129,37 @@ As we will see, Scala's focus on programming with expressions allows us to write
 
 Rewrite in operator-style
 
-~~~ scala
+```tut:book
 "foo".take(1)
-~~~
+```
 
 <div class="solution">
-~~~ scala
+```tut:book
 "foo" take 1
-~~~
+```
 </div>
 
 Rewrite in method call style
 
-~~~ scala
+```tut:book
 1 + 2 + 3
-~~~
+```
 
 <div class="solution">
-~~~ scala
+```tut:book
 1.+(2).+(3)
-~~~
+```
 </div>
 
 #### Substitution
 
 What is the difference between the following expressions? What are the similarities?
 
-~~~ scala
+```tut:book:silent
 1 + 2 + 3
 
 6
-~~~
+```
 
 <div class="solution">
 The expressions have the same result type and return value. However, they arrive at their results in different ways. The first computes its result through a series of additions, while the later is simply a literal.

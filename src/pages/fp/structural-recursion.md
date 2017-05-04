@@ -34,7 +34,7 @@ Modelling real world concepts accurately is one of the more difficult parts of p
 
 Imagine we are modelling the stock for a computer hardware retailer. We have decided on a representation of a computer as either a desktop or a laptop. A computer has RAM, a CPU, and a hard disk, and a laptop also has a screen and a form factor. Assuming we've already defined types for RAM, CPUs, and so on, we can immediately write down the following code.
 
-~~~ scala
+```scala
 sealed trait Computer {
   def ram: Ram
   def cpu: Cpu
@@ -42,7 +42,7 @@ sealed trait Computer {
 }
 final case class Desktop(ram: Ram, cpu: Cpu, hdd: Hdd) extends Computer
 final case class Laptop(ram: Ram, cpu: Cpu, hdd: Hdd, screen: Screen, formFactor: FormFactor) extends Computer
-~~~
+```
 
 The pattern is as follows:
 
@@ -55,12 +55,12 @@ The pattern is as follows:
 
 Pattern matching is the most basic method for dealing with algebraic data types. The rules for pattern matching are simple: you need one pattern for every leaf node in the data definition. The compiler will even complain if we miss out a case. For our computer example this means all our pattern matches need to look like
 
-~~~ scala
+```scala
 computer match {
   case Desktop(ram, cpu, hdd) => ...
   case Laptop(ram. cpu, hdd, screen, formFactor) => ...
 }
-~~~
+```
 
 If we follow this pattern (pun most definitely intended) then our code will never go wrong, so long as do the right thing following each match.
 
@@ -70,7 +70,7 @@ Using a `fold` method is another way to deal with algebraic data types. For a gi
 
 For example, we could define a `fold` on our `Computer` type as follows
 
-~~~ scala
+```scala
 sealed trait Computer {
   def ram: Ram
   def cpu: Cpu
@@ -89,7 +89,7 @@ final case class Laptop(ram: Ram, cpu: Cpu, hdd: Hdd, screen: Screen, formFactor
               laptop: (ram: Ram, cpu: Cpu, hdd: Hdd, screen: Screen, formFactor: FormFactor) => A): A =
     laptop(ram, cpu, hdd)
 }
-~~~
+```
 
 This is quite a simple case. More complex data, such as `List`, is defined recursively. Recall that a `List[A]` is either:
 
@@ -98,7 +98,7 @@ This is quite a simple case. More complex data, such as `List`, is defined recur
 
 The pair is a recursive case, as it contains a `List`. The pattern for `fold` in this case is to recursively call `fold`. Once again the code mirrors the data definition.
 
-~~~ scala
+```scala
 sealed trait List[A] {
   def fold[B](zero: B)(f: (A, B) => B): B
 }
@@ -110,7 +110,7 @@ final case class Nil[A] extends List[A] {
   def fold[B](zero: B)(f: (A, B) => B): B =
     zero
 }
-~~~
+```
 
 Fold has a universal property meaning that any transformation of an algebraic data type can be written using that data type's fold.
 
@@ -125,11 +125,11 @@ A binary tree can be defined as follows:
 Implement this algebraic data type.
 
 <div class="solution">
-~~~ scala
+```scala
 sealed trait Tree[A]
 final case class Node[A](val l: Tree[A], val r: Tree[A]) extends Tree[A]
 final case class Leaf[A](val elt: A) extends Tree[A]
-~~~
+```
 </div>
 
 
@@ -138,7 +138,7 @@ final case class Leaf[A](val elt: A) extends Tree[A]
 Write a `fold` for `Tree`.
 
 <div class="solution">
-~~~ scala
+```scala
 sealed trait Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B
 }
@@ -150,7 +150,7 @@ final case class Leaf[A](val elt: A) extends Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B =
     leaf(elt)
 }
-~~~
+```
 </div>
 
 
@@ -159,7 +159,7 @@ final case class Leaf[A](val elt: A) extends Tree[A] {
 Use your `fold` method to calculate the sum and product of the tree `Node(Leaf(1), Node(Node(Leaf(2), Leaf(3)), Leaf(4)))`
 
 <div class="solution">
-~~~ scala
+```scala
 scala> val tree = Node(Leaf(1), Node(Node(Leaf(2), Leaf(3)), Leaf(4)))
 tree: Node[Int] = Node(Leaf(1),Node(Node(Leaf(2),Leaf(3)),Leaf(4)))
 
@@ -168,7 +168,7 @@ sum: Int = 10
 
 scala> val product = tree.fold((l: Int, r: Int) => l * r, (x: Int) => x, tree)
 product: Int = 24
-~~~
+```
 </div>
 
 
@@ -177,7 +177,7 @@ product: Int = 24
 Using your `fold`, write `map`.
 
 <div class="solution">
-~~~ scala
+```scala
 sealed trait Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B
   def map[B](f: A => B): Tree[B] =
@@ -191,7 +191,7 @@ final case class Leaf[A](val elt: A) extends Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B =
     leaf(elt)
 }
-~~~
+```
 
 As `map` is defined entirely in terms of `fold` we don't need to implement it on `Node` and `Leaf`. Notice how I've used the companion class constructor, `Node.apply`, in the call to `fold`.
 </div>
