@@ -4,6 +4,14 @@ Written by [Dave Gurnell](http://twitter.com/davegurnell) and
 [Noel Welsh](http://twitter.com/noelwelsh).
 Copyright [Underscore Consulting LLP](http://underscore.io), 2015--2017.
 
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
+## Overview
+
+[Essential Scala][essential-scala] is an introduction to Scala for professional developers.
+Essential Scala covers the core Scala patterns that new developers need to be productive in the language.
+It's designed to get you productive as quickly as possible, and avoid the dark and confusing corners of the language.
+
 
 ## Building
 
@@ -22,3 +30,4 @@ This will open a `bash` shell running inside the Docker container which contains
 Within `sbt` you can issue the commands `pdf`, `html`, `epub`, or `all` to build the desired version(s) of the book. Targets are placed in the `dist` directory:
 
 [ebook-template]: https://github.com/underscoreio/underscore-ebook-template
+[essential-scala]: http://underscore.io/books/essential-scala/
