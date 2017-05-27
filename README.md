@@ -1,5 +1,4 @@
 # Essential Scala
----------------
 
 Written by [Dave Gurnell](http://twitter.com/davegurnell) and
 [Noel Welsh](http://twitter.com/noelwelsh).
