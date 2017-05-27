@@ -15,18 +15,18 @@ In order to get started with Core Scala, you will need to have the following sof
 
 To start with, clone our template SBT project from Github:
 
-~~~ scala
+```scala
 bash:~$ git clone git://github.com/underscoreconsulting/essential-scala-template.git myproject
 Cloning into myproject...
 
 bash:~$ cd myproject
 
 bash:~/myproject$
-~~~
+```
 
 The SBT launcher script is provided for you in the file `sbt`. Run it now to start a Scala console. SBT will download JAR files for Scala and various dependencies and cache them on your hard drive. At the end of the process you will see a `scala>` command prompt:
 
-~~~ scala
+```scala
 Trip:~/myproject$ ./sbt console
 Detected sbt version 0.11.3
 Using /Users/me/.sbt/0.11.3 as sbt dir, -sbt-dir to override.
@@ -48,27 +48,27 @@ Type in expressions to have them evaluated.
 Type :help for more information.
 
 scala>
-~~~
+```
 
 Congratulations - you have installed Scala! You can now start interactively playing with Scala code:
 
-~~~ scala
+```scala
 scala> 1 + 1
 res0: Int = 2
 
 scala> println("Hello world!")
 Hello world!
-~~~
+```
 
 Issue the command `:quit` to leave the Scala console and return to your OS:
 
-~~~ bash
+```bash
 scala> :quit
 
 [success] Total time: 408 s, completed Sep 18, 2012 12:07:19 PM
 
 bash:~/myproject$
-~~~
+```
 
 ## SBT: The Rebel Cut
 

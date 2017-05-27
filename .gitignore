@@ -17,3 +17,6 @@ Thumbs.db
 essential-scala.sublime-workspace
 core-scala.sublime-workspace
 essential-scala
+
+target/
+project/target

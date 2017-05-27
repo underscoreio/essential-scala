@@ -24,14 +24,14 @@ In Scala 2.10 and onwards we'll be able to define our own value types, using a m
 
 We can declare a type for an expression by following the expression with a colon and then a type. For example, to type an `Int` expression as an `AnyVal` we could write:
 
-~~~ scala
+```scala
 scala> 42 : AnyVal
 res40: AnyVal = 42
-~~~
+```
 
 Note once we've done so we can only call methods that exist on `AnyVal`.
 
-~~~ scala
+```scala
 scala> (42: AnyVal).-(2)
 <console>:8: error: value - is not a member of AnyVal
               (42: AnyVal).-(2)
@@ -39,7 +39,7 @@ scala> (42: AnyVal).-(2)
 
 scala> (42: AnyVal).hashCode
 res44: Int = 42
-~~~
+```
 
 ## Type Inference
 

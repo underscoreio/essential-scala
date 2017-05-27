@@ -2,10 +2,9 @@
 
 We have already covered some of Scala's basic types. In this section we're going to round out that knowledge by covering all of Scala's *literal expressions*. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
-~~~ scala
+```tut:book
 42
-// res: Int = 42
-~~~
+```
 
 This interaction at the REPL shows us that the literal `42` evaluates to the `Int` `42`.
 
@@ -17,19 +16,12 @@ If you have prior programming experience, particularly Java experience, the lite
 
 Numbers share the same types available in Java: `Int` for 32-bit integers, `Double` for 64-bit floating point, `Float` for 32-bit floating point, and `Long` for 64-bit integers.
 
-~~~ scala
+```tut:book
 42
-// res: Int = 42
-
 42.0
-// res: Double = 42.0
-
 42.0f
-// res: Float = 42.0
-
 42L
-// res: Long = 42
-~~~
+```
 
 Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no literal syntax for creating them. Instead, we create them using methods called `toShort` and `toByte`.
 
@@ -37,22 +29,18 @@ Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no litera
 
 Booleans are exactly the same as Java: `true` or `false`.
 
-~~~ scala
+```tut:book
 true
-// res: Boolean = true
-
 false
-// res: Boolean = false
-~~~
+```
 
 ### Characters
 
 `Chars` are 16-bit Unicode values written as a single character enclosed in single quotes.
 
-~~~ scala
+```tut:book
 'a'
-// res: Char = a
-~~~
+```
 
 <div class="callout callout-info">
 #### Scala vs Java's Type Hierarchy {-}
@@ -66,24 +54,18 @@ In Scala all of these types act like objects with methods and fields. However, o
 
 Strings are exactly Java's strings, and are written the same way.
 
-~~~ scala
+```tut:book
 "this is a string"
-// res: java.lang.String = this is a string
-
 "the\nusual\tescape characters apply"
-// res: java.lang.String =
-// the
-//     usual escape characters apply
-~~~
+```
 
 ### Null
 
 Null is the same as Java, though not used nearly as often. Scala's `null` also has its own type: `Null`.
 
-~~~ scala
+```tut:book
 null
-// res: Null = null
-~~~
+```
 
 <div class="callout callout-info">
 #### Using Nulls in Scala {-}
@@ -99,18 +81,23 @@ Later we will see that Scala has the means to define optional values that *are* 
 
 Unit, written `()`, is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The console doesn't print unit but we can ask for the type of an expression to see that unit is in fact the result of some expressions.
 
-~~~ scala
+```tut:book
 ()
+```
 
+```scala
 :type ()
 // Unit
+```
 
+```tut:book
 println("something")
-// something
+```
 
+```scala
 :type println("something")
 // Unit
-~~~
+```
 
 Unit is an important concept in Scala. Many of Scala's syntactic constructs are *expressions* that have types and values. We need a placeholder for expressions that don't yield a useful value, and unit provides just that.
 
@@ -128,7 +115,7 @@ In the next section we will learn how to define our own object literals.
 
 What are the values and types of the following Scala literals?
 
-~~~ scala
+```tut:book:silent
 42
 
 true
@@ -136,7 +123,7 @@ true
 123L
 
 42.0
-~~~
+```
 
 <div class="solution">
 `42` is an `Int`. `true` is a `Boolean`. `123L` is a `Long`. `42.0` is a `Double`.
@@ -148,11 +135,11 @@ This exercise just gives you some experience using the Scala console or Workshee
 
 What is the difference between the following literals? What is the type and value of each?
 
-~~~ scala
+```tut:book:silent
 'a'
 
 "a"
-~~~
+```
 
 <div class="solution">
 The first is a literal `Char` and the second is a literal `String`.
@@ -162,11 +149,11 @@ The first is a literal `Char` and the second is a literal `String`.
 
 What is the difference between the following expressions? What is the type and value of each?
 
-~~~ scala
+```tut:book:silent
 "Hello world!"
 
 println("Hello world!")
-~~~
+```
 
 <div class="solution">
 The literal expression `"Hello world!"` evaluates to a `String` value. The expression `println("Hello world!")` evaluates to `Unit` and, as a side-effect, prints `"Hello world!"` on the console.
@@ -178,9 +165,9 @@ This an important distinction between a program that evaluates to a value and a 
 
 What is the type and value of the following literal? Try writing it on the REPL or in a Scala worksheet and see what happens!
 
-~~~ scala
+```scala
 'Hello world!'
-~~~
+```
 
 <div class="solution">
 You should see an error message. Take the time to read and get used to the error messages in your development environment---you'll see plenty more of them soon!

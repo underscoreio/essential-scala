@@ -18,51 +18,47 @@ A `List` is a singly linked list. It has constant time access to the first eleme
 
 A `Stream` is like a list except its elements are computed on demand, and thus it can have infinite size. Like other collections we can create streams by calling the `apply` method on the companion object.
 
-~~~ scala
+```tut:book
 Stream(1, 2, 3)
-// res: scala.collection.immutable.Stream[Int] = Stream(1, ?)
-~~~
+```
 
 Note that only the first element is printed. The others will be computed when we try to access them.
 
 We can also use the `#::` method to construct a stream from individual elements, starting from `Stream.empty`.
 
-~~~ scala
+```tut:book
 Stream.empty.#::(3).#::(2).#::(1)
-// res: scala.collection.immutable.Stream[Int] = Stream(1, ?)
-~~~
+```
 
 We can also use the more natural operator syntax.
 
-~~~ scala
+```tut:book
 1 #:: 2 #:: 3 #:: Stream.empty
-// res: scala.collection.immutable.Stream[Int] = Stream(1, ?)
-~~~
+```
 
 This method allows us to create a infinite stream. Here's an infinite stream of 1s:
 
-~~~ scala
+```tut:book:silent
 def streamOnes: Stream[Int] = 1 #:: streamOnes
+```
 
+```tut:book
 streamOnes
-// res: Stream[Int] = Stream(1, ?)
-~~~
+```
 
 Because elements are only evaluated as requested, calling `streamOnes` doesn't lead to infinte recursion. When we take the first five elements (and convert them to a `List`, so they'll all print out) we see we have what we want.
 
-~~~ scala
+```tut:book
 streamOnes.take(5).toList
-// res: List[Int] = List(1, 1, 1, 1, 1)
-~~~
+```
 
 #### Vector
 
 `Vector` is the final immutable sequence we'll consider. Unlike `Stream` and `List` it is an `IndexedSeq`, and thus offers fast random access and updates. It is the default immutable `IndexedSeq`, which we can see if we create one.
 
-~~~ scala
+```tut:book
 scala.collection.immutable.IndexedSeq(1, 2, 3)
-// res: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 2, 3)
-~~~
+```
 
 Vectors are a good choice if you want both random access and immutability.
 
@@ -77,16 +73,13 @@ The mutable collections are probably more familiar. In addition to linked lists 
 
 Buffers' add methods to support destructive prepends and appends. For example, the `+=` is destructive append.
 
-~~~ scala
+```tut:book
 val buffer = new scala.collection.mutable.ArrayBuffer[Int]()
-// buffer: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer()
 
 buffer += 1
-// res: buffer.type = ArrayBuffer(1)
 
 buffer
-// res: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1)
-~~~
+```
 
 
 #### StringBuilder

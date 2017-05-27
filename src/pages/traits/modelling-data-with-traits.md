@@ -15,18 +15,25 @@ The way we write this is to use a case class. We've already done this many times
 
 If `A` has a `b` (with type `B`) and a `c` (with type `C`) write
 
-~~~ scala
+```tut:invisible
+type A = Any
+type B = Any
+type C = Any
+type D = Any
+```
+
+```tut:book:silent
 case class A(b: B, c: C)
-~~~
+```
 
 or
 
-~~~ scala
+```tut:book:silent
 trait A {
   def b: B
   def c: C
 }
-~~~
+```
 </div>
 
 ## The Sum Type Pattern
@@ -40,11 +47,11 @@ We write this using the sealed trait / final case class pattern.
 
 If `A` is a `B` or `C` write
 
-~~~ scala
+```tut:book:silent
 sealed trait A
 final case class B() extends A
 final case class C() extends A
-~~~
+```
 </div>
 
 ### Algebraic Data Types
@@ -69,11 +76,11 @@ What about the missing two patterns?
 
 The "is-a and" pattern means that `A` is a `B` and `C`. This pattern is in some ways the inverse of the sum type pattern, and we can implement it as
 
-~~~ scala
+```tut:book:silent
 trait B
 trait C
 trait A extends B with C
-~~~
+```
 
 In Scala a trait can extend as many traits as we like using the `with` keyword like `A extends B with C with D` and so on. We aren't going to use this pattern in this course. If we want to represent that some data conforms to a number of different interfaces we will often be better off using a *type class*, which we will explore later. There are, however, several legitimate uses of this pattern:
 
@@ -82,22 +89,22 @@ In Scala a trait can extend as many traits as we like using the `with` keyword l
 
 The "has-a or" patterns means that `A` has a `B` or `C`. There are two ways we can implement this. We can say that `A` has a `d` of type `D`, where `D` is a `B` or `C`. We can mechanically apply our two patterns to implement this:
 
-~~~ scala
+```tut:book:silent
 trait A {
   def d: D
 }
 sealed trait D
 final case class B() extends D
 final case class C() extends D
-~~~
+```
 
 Alternatively we could implement this as `A` is a `D` or `E`, and `D` has a `B` and `E` has a `C`. Again this translates directly into code
 
-~~~ scala
+```tut:book:silent
 sealed trait A
 final case class D(b: B) extends A
 final case class E(c: C) extends A
-~~~
+```
 
 ### Take Home Points
 
@@ -112,12 +119,12 @@ A traffic light is red, green, or yellow. Translate this description into Scala 
 <div class="solution">
 This is a direct application of the sum type pattern.
 
-~~~ scala
+```tut:book:silent
 sealed trait TrafficLight
 final case object Red extends TrafficLight
 final case object Green extends TrafficLight
 final case object Yellow extends TrafficLight
-~~~
+```
 
 As there are fields or methods on the three cases, and thus there is no need to create than one instance of them, I used case objects instead of case classes.
 </div>
@@ -127,11 +134,11 @@ As there are fields or methods on the three cases, and thus there is no need to 
 A calculation may succeed (with an `Int` result) or fail (with a `String` message). Implement this.
 
 <div class="solution">
-~~~ scala
+```tut:book:silent
 sealed trait Calculation
 final case class Success(result: Int) extends Calculation
 final case class Failure(reason: String) extends Calculation
-~~~
+```
 </div>
 
 #### Water, Water, Everywhere
@@ -141,11 +148,11 @@ Bottled water has a size (an `Int`), a source (which is a well, spring, or tap),
 <div class="solution">
 Crank the handle on the product and sum type patterns.
 
-~~~ scala
-final case class BottledWater(size: Int, source: Source, carbonated: Boolean)
+```tut:book:silent
 sealed trait Source
 final case object Well extends Source
 final case object Spring extends Source
 final case object Tap extends Source
-~~~
+final case class BottledWater(size: Int, source: Source, carbonated: Boolean)
+```
 </div>

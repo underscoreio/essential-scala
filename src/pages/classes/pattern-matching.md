@@ -4,13 +4,13 @@ Until now we have interacted with objects by calling methods or accessing fields
 
 Pattern matching is like an extended `if` expression that allows us to evaluate an expression depending on the "shape" of the data. Recall the `Person` case class we've seen in previous examples:
 
-~~~ scala
+```tut:book:silent
 case class Person(firstName: String, lastName: String)
-~~~
+```
 
 Now imagine we wanted to implement a `Stormtrooper` that is looking for members of the rebellion. We could use pattern matching like this:
 
-~~~ scala
+```tut:book:silent
 object Stormtrooper {
   def inspect(person: Person): String =
     person match {
@@ -19,32 +19,29 @@ object Stormtrooper {
       case Person(first, last) => s"Move along, $first"
     }
 }
-~~~
+```
 
 Notice the syntax for a pattern (`Person("Luke", "Skywalker")`) matches the syntax for constructing the object the pattern matches (`Person("Luke", "Skywalker")`).
 
 Here it is in use:
 
-~~~ scala
+```tut:book
 Stormtrooper.inspect(Person("Noel", "Welsh"))
-// res: String = Move along, Noel
-
 Stormtrooper.inspect(Person("Han", "Solo"))
-// res: String = Stop, rebel scum!
-~~~
+```
 
 <div class="callout callout-info">
 #### Pattern Matching Syntax {-}
 
 The syntax of a pattern matching expression is
 
-~~~ scala
+```scala
 expr0 match {
   case pattern1 => expr1
   case pattern2 => expr2
   ...
 }
-~~~
+```
 
 where
 
@@ -62,15 +59,15 @@ Pattern matching is itself an expression and thus evaluates to a value---the val
 
 Scala has an expressive syntax for writing patterns or guards. For case classes the pattern syntax matches the constructor syntax. Take the data
 
-~~~ scala
+```tut:book
 Person("Noel", "Welsh")
-~~~
+```
 
 A pattern to match against the `Person` type is written
 
-~~~ scala
+```scala
 Person(pat0, pat1)
-~~~
+```
 
 where `pat0` and `pat1` are patterns to match against the `firstName` and `lastName` respectively. There are four possible patterns we could use in place of `pat0` or `pat1`:
 
@@ -91,13 +88,13 @@ Case classes allow a new form of interaction, called *pattern matching*. Pattern
 
 The syntax for pattern matching is
 
-~~~ scala
+```scala
 expr0 match {
   case pattern1 => expr1
   case pattern2 => expr2
   ...
 }
-~~~
+```
 
 A pattern can be one of
 
@@ -115,26 +112,30 @@ Define an object `ChipShop` with a method `willServe`. This method should accept
 <div class="solution">
 We can start by writing the skeleton suggested by the problem text.
 
-~~~ scala
+```tut:book:silent
+case class Cat(name: String, colour: String, food: String)
+```
+
+```scala
 object ChipShop {
   def willServe(cat: Cat): Boolean =
     cat match {
       case Cat(???, ???, ???) => ???
     }
 }
-~~~
+```
 
 As the return type is `Boolean` we know we need at least two cases, one for true and one for false. The text of the exercise tells us what they should be: cats that prefer chips, and all other cats. We can implement this with a literal pattern and an `_` pattern.
 
-~~~ scala
+```tut:book:silent
 object ChipShop {
   def willServe(cat: Cat): Boolean =
     cat match {
-      case Cat(_, "Chips") => true
-      case Cat(_, _) => false
+      case Cat(_, _, "Chips") => true
+      case Cat(_, _, _) => false
     }
 }
-~~~
+```
 </div>
 
 
@@ -143,7 +144,7 @@ object ChipShop {
 In this exercise we're going to write a simulator of my Dad, the movie critic. It's quite simple: any movie directed by Clint Eastwood gets a rating 10.0, any movie directed by John McTiernan gets a 7.0, while any other movie gets a 3.0. Implement an object called `Dad` with a method `rate` which accepts a `Film` and returns a `Double`. Use pattern matching.
 
 <div class="solution">
-~~~ scala
+```scala
 object Dad {
   def rate(film: Film): Double =
     film match {
@@ -152,7 +153,7 @@ object Dad {
       case _ => 3.0
     }
 }
-~~~
+```
 
-Pattern matching is a bit annoying in this case. Later on we'll learn how we can use pattern matching to match a particular value, called a *constant pattern*.
+Pattern matching is becoming quite verbose in this case. Later on we'll learn how we can use pattern matching to match a particular value, called a *constant pattern*.
 </div>

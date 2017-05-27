@@ -2,19 +2,19 @@
 
 Recall that is Scala we can use any method as an operator. In particular
 
-~~~ scala
+```scala
 a b c
-~~~
+```
 
 is equivalent to
 
-~~~ scala
+```scala
 a.b(c)
-~~~
+```
 
 This simple feature allows us to create a more natural notation in many domains. A straightforward example is representing mathematical notation for extended numeric types. Here we implement a simple vector type with element-wise addition and multiplication.
 
-~~~ scala
+```scala
 class Vector(val data: Array[Double]) {
   def +(other: Vector):Vector =
     new Vector(
@@ -40,7 +40,7 @@ vector: Vector = Vector@58bead4f
 
 scala> vector.data
 res6: Array[Double] = Array(4.0, 6.0)
-~~~
+```
 
 As a bonus we also defined a companion object with an `apply` constructor. This shows how we use variable arguments in Scala.
 
@@ -68,7 +68,7 @@ There are some more special method names that we either haven't yet seen or have
 
 The first allows us to write custom setters. For example, imagine a bank account class where we want to log to an audit trail whenever we change the balance. We can implement this as follows:
 
-~~~ scala
+```scala
 object Account {
   private var _balance = 0
   def balance = _balance
@@ -87,11 +87,11 @@ Account.balance: Int = 100
 
 scala> Account.balance
 res1: Int = 100
-~~~
+```
 
 Note how we can write `Account.balance = 100` and the method `balance_=` is called. These setter methods can only be used in tandem with a getter. If a getter is not defined we get a runtime error.
 
-~~~ scala
+```scala
 object NoGetter {
   private var _balance = 0
   def balance_=(newBalance: Int):Unit = {
@@ -107,7 +107,7 @@ val $ires1 = NoGetter.balance
 <console>:8: error: value balance is not a member of object NoGetter
        NoGetter.balance = 100
                 ^
-~~~
+```
 
 Note that whenever we write a `val` under the covers it is implemented use a getter and setter.
 
@@ -116,7 +116,7 @@ Note that whenever we write a `val` under the covers it is implemented use a get
 
 The unary methods allow us to define prefix operators that can be used with our objects. We can only define `+`, `-`, `~`, or `!`. Let's add a `-` prefix operator to our Vector:
 
-~~~ scala
+```scala
 class Vector(val data: Array[Double]) {
   def +(other: Vector):Vector =
     new Vector(
@@ -146,7 +146,7 @@ res6: Array[Double] = Array(-1.0, -2.0, -3.0)
 
 scala> (- Vector(1.0, 2.0, 3.0)).data
 res7: Array[Double] = Array(-1.0, -2.0, -3.0)
-~~~
+```
 
 
 ### Exercise

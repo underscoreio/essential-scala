@@ -13,7 +13,7 @@ Traits are very much like Java 8's *interfaces* with *default methods*. If you h
 
 Let's start with an example of a trait. Imagine we're modelling visitors to a website. There are two types of visitor: those who have registered on our site and those who are anonymous. We can model this with two classes:
 
-~~~ scala
+```tut:book:silent
 import java.util.Date
 
 case class Anonymous(id: String, createdAt: Date = new Date())
@@ -23,13 +23,13 @@ case class User(
   email: String,
   createdAt: Date = new Date()
 )
-~~~
+```
 
 With these class definitions we're saying that both anonymous and registered visitors have an id and a creation date. But we only know the email address of registered visitors.
 
 There is obvious duplication here, and it would be nice to not have to write the same definitions twice. More important though, is to create some common type for the two kinds of visitors. If they had some type in common (other than `AnyRef` and `Any`) we could write methods that worked on any kind of visitor. We can do this with a trait like so:
 
-~~~ scala
+```tut:book:silent
 import java.util.Date
 
 trait Visitor {
@@ -40,14 +40,17 @@ trait Visitor {
   def age: Long = new Date().getTime - createdAt.getTime
 }
 
-case class Anonymous(id: String, createdAt: Date = new Date()) extends Visitor
+case class Anonymous(
+  id: String,
+  createdAt: Date = new Date()
+) extends Visitor
 
 case class User(
   id: String,
   email: String,
   createdAt: Date = new Date()
 ) extends Visitor
-~~~
+```
 
 Note the two changes:
 
@@ -58,14 +61,14 @@ The `Visitor` trait expresses an interface that any subtype must implement: they
 
 By defining the `Visitor` trait we can write methods that work with any subtype of visitor, like so:
 
-~~~ scala
-scala> def older(v1: Visitor, v2: Visitor): Boolean =
-         v1.createdAt.before(v2.createdAt)
+```tut:book:silent
+def older(v1: Visitor, v2: Visitor): Boolean =
+  v1.createdAt.before(v2.createdAt)
+```
 
-scala> older(Anonymous("1"), User("2", "test@example.com"))
+```tut:book
 older(Anonymous("1"), User("2", "test@example.com"))
-res4: Boolean = true
-~~~
+```
 
 Here the method `older` can be called with either an `Anonymous` or a `User` as they are both subtypes of `Visitor`.
 
@@ -74,27 +77,27 @@ Here the method `older` can be called with either an `Anonymous` or a `User` as 
 
 To declare a trait we write
 
-~~~ scala
+```scala
 trait TraitName {
   declarationOrExpression ...
 }
-~~~
+```
 
 To declare that a class is a subtype of a trait we write
 
-~~~ scala
+```scala
 class Name(...) extends TraitName {
   ...
 }
-~~~
+```
 
 More commonly we'll use case classes, but the syntax is the same
 
-~~~ scala
+```scala
 case class Name(...) extends TraitName {
  ...
 }
-~~~
+```
 </div>
 
 ### Traits Compared to Classes
@@ -107,7 +110,7 @@ Like a class, a trait is a named set of field and method definitions. However, i
 
 Let's return to the `Visitor` trait to further explore abstract definitions. Recall the definition of `Visitor` is
 
-~~~ scala
+```tut:book:silent
 import java.util.Date
 
 trait Visitor {
@@ -117,22 +120,17 @@ trait Visitor {
   // How long has this visitor been around?
   def age: Long = new Date().getTime - createdAt.getTime
 }
-~~~
+```
 
 `Visitor` prescribes two abstract methods. That is, methods which do not have an implementation but must be implemented by extending classes. These are `id` and `createdAt`. It also defines a concrete method, `age`, that is defined in terms of one of the abstract methods.
 
 `Visitor` is used as a building block for two classes: `Anonymous` and `User`. Each class `extends Visitor`, meaning it inherits all of its fields and methods:
 
-~~~ scala
-scala> Anonymous("anon1")
-res14: Anonymous = Anonymous(anon1)
-
-scala> res14.createdAt
-res15: java.util.Date = Mon Mar 24 15:11:45 GMT 2014
-
-scala> res14.age
-res16: Long = 8871
-~~~
+```tut:book
+val anon = Anonymous("anon1")
+anon.createdAt
+anon.age
+```
 
 `id` and `createdAt` are abstract so they must be defined in extending classes. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as a more general version of `val`[^uap]. It is good practice to never define `val`s in a trait, but rather to use `def`. A concrete implementation can then implement it using using a `def` or `val` as appropriate.
 
@@ -146,19 +144,19 @@ Traits are a way of *abstracting over classes* that have similar properties, jus
 
 Using a traits has two parts. Declaring the trait
 
-~~~ scala
+```scala
 trait TraitName {
   declarationOrExpression ...
 }
-~~~
+```
 
 and extending the trait from a class (usually a case class)
 
-~~~ scala
+```scala
 case class Name(...) extends TraitName {
   ...
 }
-~~~
+```
 
 ### Exercises
 
@@ -174,46 +172,53 @@ Demand for Cat Simulator 1.0 is exploding! For v2 we're going to go beyond the d
 <div class="solution">
 This is mostly a finger exercise to get you used to trait syntax but there are a few interesting things in the solution.
 
-~~~ scala
+```tut:book:silent
 trait Feline {
   def colour: String
   def sound: String
 }
+
 case class Lion(colour: String, maneSize: Int) extends Feline {
   val sound = "roar"
 }
+
 case class Tiger(colour: String) extends Feline {
   val sound = "roar"
 }
+
 case class Panther(colour: String) extends Feline {
   val sound = "roar"
 }
+
 case class Cat(colour: String, food: String) extends Feline {
   val sound = "meow"
 }
-~~~
+```
 
 Notice that `sound` is not defined as a constructor argument. Since it is a constant, it doesn't make sense to give users a chance to modify it. There is a lot of duplication in the definition of `sound`. We could define a default value in `Feline` like so
 
-~~~ scala
+```tut:book:silent
 trait Feline {
   def colour: String
   def sound: String = "roar"
 }
-~~~
+```
 
 This is generally a bad practice. If we define a default implementation it should be an implementation that is suitable for all subtypes.
 
 Another alternative to define an intermediate type, perhaps called `BigCat` that defines sound as `"roar"`. This is a better solution.
 
-~~~ scala
+```tut:book:silent
 trait BigCat extends Feline {
-  val sound = "roar"
+  override val sound = "roar"
 }
+```
+
+```scala
 case class Tiger(...) extends BigCat
 case class Lion(...) extends BigCat
 case class Panther(...) extends BigCat
-~~~
+```
 </div>
 
 #### Shaping Up With Traits
@@ -229,7 +234,7 @@ Implement `Shape` with three classes: `Circle`, `Rectangle`, and `Square`. In ea
 **Tip:** The value of &pi; is accessible as `math.Pi`.
 
 <div class="solution">
-~~~ scala
+```tut:book:silent
 trait Shape {
   def sides: Int
   def perimeter: Double
@@ -242,7 +247,10 @@ case class Circle(radius: Double) extends Shape {
   val area = math.Pi * radius * radius
 }
 
-case class Rectangle(width: Double, height: Double) extends Shape {
+case class Rectangle(
+  width: Double,
+  height: Double
+) extends Shape {
   val sides = 4
   val perimeter = 2 * width + 2 * height
   val area = width * height
@@ -253,7 +261,7 @@ case class Square(size: Double) extends Shape {
   val perimeter = 4 * size
   val area = size * size
 }
-~~~
+```
 </div>
 
 #### Shaping Up 2 (Da Streets)
@@ -267,24 +275,27 @@ Refactor the solution to the last exercise so that `Square` and `Rectangle` are 
 <div class="solution">
 The new code looks like this:
 
-~~~ scala
+```tut:book:silent
 // trait Shape ...
 
 // case class Circle ...
 
 trait Rectangular extends Shape {
-  def width: Int
-  def height: Int
+  def width: Double
+  def height: Double
   val sides = 4
-  val perimeter = 2*width + 2*height
-  val area = width*height
+  override val perimeter = 2*width + 2*height
+  override val area = width*height
 }
 
-case class Square(val size: Int) extends Rectangular {
+case class Square(val size: Double) extends Rectangular {
   val width = size
   val height = size
 }
 
-case class Rectangle(val width: Int, val height: Int) extends Rectangular
-~~~
+case class Rectangle(
+  val width: Double,
+  val height: Double
+) extends Rectangular
+```
 </div>

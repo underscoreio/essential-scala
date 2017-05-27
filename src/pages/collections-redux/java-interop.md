@@ -2,44 +2,42 @@
 
 The prefered way to convert between Scala and Java collections is use the `JavaConverters` implicit conversions. We use it by importing `scala.collection.JavaConverters._` and then methods `asJava` and `asScala` become available on many of the collections.
 
-~~~ scala
+```tut:book:silent
 import scala.collection.JavaConverters._
+```
 
+```tut:book
 Seq(1, 2, 3).asJava
-// res: java.util.List[Int] = [1, 2, 3]
-~~~
+```
 
 Java does not distinguish mutable and immutable collections at the type level but the conversions do preserve this property by throwing `UnsupportOperationException` as appropriate.
 
-~~~ scala
-val java = Seq(1, 2, 3).asJava
-// java: java.util.List[Int] = [1, 2, 3]
+```tut:book
+val javaCollection = Seq(1, 2, 3).asJava
+```
 
-java.set(0, 5)
+```tut:book:fail:silent
+javaCollection.set(0, 5)
 // java.lang.UnsupportedOperationException
 // 	at java.util.AbstractList.set(AbstractList.java:115)
 //     ...
-~~~
+```
 
 The conversions go the other way as well.
 
-~~~ scala
+```tut:book
 val list: java.util.List[Int] = new java.util.ArrayList[Int]()
-// list: java.util.List[Int] = []
 
 list.asScala
-// res: scala.collection.mutable.Buffer[Int] = Buffer()
-~~~
+```
 
 Note that the Scala equivalent is a mutable collection. If we mutate an element we see that the underlying Java collection is also changed. This holds for all conversions; they always share data and are not copied.
 
-~~~ scala
+```tut:book
 list.asScala += 5
-// res: scala.collection.mutable.Buffer[Int] = Buffer(5)
 
 list
-// res: java.util.List[Int] = [5]
-~~~
+```
 
 ### JavaConversions
 

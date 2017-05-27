@@ -20,12 +20,12 @@ Implement this in Scala.
 <div class="solution">
 This is a straightforward algebraic data type.
 
-~~~ scala
+```tut:book:silent
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
 final case class Number(value: Double) extends Expression
-~~~
+```
 </div>
 
 Now implement a method `eval` that converts an `Expression` to a `Double`. Use polymorphism or pattern matching as you see fit. Explain your choice of implementation method.
@@ -33,7 +33,7 @@ Now implement a method `eval` that converts an `Expression` to a `Double`. Use p
 <div class="solution">
 I used pattern matching as it's more compact and I feel this makes the code easier to read.
 
-~~~ scala
+```scala
 sealed trait Expression {
   def eval: Double =
     this match {
@@ -45,20 +45,20 @@ sealed trait Expression {
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
 final case class Number(value: Int) extends Expression
-~~~
+```
 </div>
 
 We're now going to add some expressions that call fail: division and square root. Start by extending the abstract syntax tree to include representations for `Division` and `SquareRoot`.
 
 <div class="solution">
-~~~ scala
+```tut:book:silent
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
 final case class Division(left: Expression, right: Expression) extends Expression
 final case class SquareRoot(value: Expression) extends Expression
 final case class Number(value: Double) extends Expression
-~~~
+```
 </div>
 
 Now we're going to change `eval` to represent that a computation can fail. (`Double` uses `NaN` to indicate a computation failed, but we want to be helpful to the user and tell them why the computation failed.) Implement an appropriate algebraic data type.
@@ -66,26 +66,26 @@ Now we're going to change `eval` to represent that a computation can fail. (`Dou
 <div class="solution">
 We did this in the previous section.
 
-~~~ scala
+```tut:book:silent
 sealed trait Calculation
 final case class Success(result: Double) extends Calculation
 final case class Failure(reason: String) extends Calculation
-~~~
+```
 </div>
 
 Now change `eval` to return your result type, which I have called `Calculation` in my implementation. Here are some examples:
 
-~~~ scala
+```scala
 assert(Addition(SquareRoot(Number(-1.0)), Number(2.0)).eval ==
        Failure("Square root of negative number"))
 assert(Addition(SquareRoot(Number(4.0)), Number(2.0)).eval == Success(4.0))
 assert(Division(Number(4), Number(0)).eval == Failure("Division by zero"))
-~~~
+```
 
 <div class="solution">
 All this repeated pattern matching gets very tedious, doesn't it! We're going to see how we can abstract this in the next section.
 
-~~~ scala
+```scala
 sealed trait Expression {
   def eval: Calculation =
     this match {
@@ -137,7 +137,7 @@ final case class Subtraction(left: Expression, right: Expression) extends Expres
 final case class Division(left: Expression, right: Expression) extends Expression
 final case class SquareRoot(value: Expression) extends Expression
 final case class Number(value: Int) extends Expression
-~~~
+```
 </div>
 
 
@@ -192,7 +192,7 @@ Translate your representation to Scala code.
 <div class="solution">
 This should be a mechanical process. This is the point of algebraic data types---we do the work in modelling the data, and the code follows directly from that model.
 
-```scala
+```tut:book:silent
 sealed trait Json
 final case class JsNumber(value: Double) extends Json
 final case class JsString(value: String) extends Json
@@ -212,56 +212,61 @@ Now add a method to convert your JSON representation to a `String`. Make sure yo
 <div class="solution">
 This is an application of structural recursion, as all transformations on algebraic data types are, with the wrinkle that we have to treat the sequence types specially. Here is my solution.
 
-```scala
-sealed trait Json {
-  def print: String = {
-    def quote(s: String): String =
-      '"'.toString ++ s ++ '"'.toString
-    def seqToJson(seq: SeqCell): String =
-      seq match {
-        case SeqCell(h, t @ SeqCell(_, _)) =>
-          s"${h.print}, ${seqToJson(t)}"
-        case SeqCell(h, SeqEnd) => h.print
-      }
+```tut:reset:book:silent
+object json {
+  sealed trait Json {
+    def print: String = {
+      def quote(s: String): String =
+        '"'.toString ++ s ++ '"'.toString
+      def seqToJson(seq: SeqCell): String =
+        seq match {
+          case SeqCell(h, t @ SeqCell(_, _)) =>
+            s"${h.print}, ${seqToJson(t)}"
+          case SeqCell(h, SeqEnd) => h.print
+        }
 
-    def objectToJson(obj: ObjectCell): String =
-      obj match {
-        case ObjectCell(k, v, t @ ObjectCell(_, _, _)) =>
-          s"${quote(k)}: ${v.print}, ${objectToJson(t)}"
-        case ObjectCell(k, v, ObjectEnd) =>
-          s"${quote(k)}: ${v.print}"
-      }
+      def objectToJson(obj: ObjectCell): String =
+        obj match {
+          case ObjectCell(k, v, t @ ObjectCell(_, _, _)) =>
+            s"${quote(k)}: ${v.print}, ${objectToJson(t)}"
+          case ObjectCell(k, v, ObjectEnd) =>
+            s"${quote(k)}: ${v.print}"
+        }
 
-    this match {
-      case JsNumber(v) => v.toString
-      case JsString(v) => quote(v)
-      case JsBoolean(v) => v.toString
-      case JsNull => "null"
-      case s @ SeqCell(_, _) => "[" ++ seqToJson(s) ++ "]"
-      case SeqEnd => "[]"
-      case o @ ObjectCell(_, _, _) => "{" ++ objectToJson(o) ++ "}"
-      case ObjectEnd => "{}"
+      this match {
+        case JsNumber(v) => v.toString
+        case JsString(v) => quote(v)
+        case JsBoolean(v) => v.toString
+        case JsNull => "null"
+        case s @ SeqCell(_, _) => "[" ++ seqToJson(s) ++ "]"
+        case SeqEnd => "[]"
+        case o @ ObjectCell(_, _, _) => "{" ++ objectToJson(o) ++ "}"
+        case ObjectEnd => "{}"
+      }
     }
   }
+  final case class JsNumber(value: Double) extends Json
+  final case class JsString(value: String) extends Json
+  final case class JsBoolean(value: Boolean) extends Json
+  final case object JsNull extends Json
+  sealed trait JsSequence extends Json
+  final case class SeqCell(head: Json, tail: JsSequence) extends JsSequence
+  final case object SeqEnd extends JsSequence
+  sealed trait JsObject extends Json
+  final case class ObjectCell(key: String, value: Json, tail: JsObject) extends JsObject
+  final case object ObjectEnd extends JsObject
 }
-final case class JsNumber(value: Double) extends Json
-final case class JsString(value: String) extends Json
-final case class JsBoolean(value: Boolean) extends Json
-final case object JsNull extends Json
-sealed trait JsSequence extends Json
-final case class SeqCell(head: Json, tail: JsSequence) extends JsSequence
-final case object SeqEnd extends JsSequence
-sealed trait JsObject extends Json
-final case class ObjectCell(key: String, value: Json, tail: JsObject) extends JsObject
-final case object ObjectEnd extends JsObject
 ```
 </div>
 
 Test your method works. Here are some examples using the representation I chose.
 
-```scala
+```tut:invisible
+import json._
+```
+
+```tut:book
 SeqCell(JsString("a string"), SeqCell(JsNumber(1.0), SeqCell(JsBoolean(true), SeqEnd))).print
-// res: String = ["a string", 1.0, true]
 
 ObjectCell(
   "a", SeqCell(JsNumber(1.0), SeqCell(JsNumber(2.0), SeqCell(JsNumber(3.0), SeqEnd))),
@@ -269,13 +274,12 @@ ObjectCell(
     "b", SeqCell(JsString("a"), SeqCell(JsString("b"), SeqCell(JsString("c"), SeqEnd))),
     ObjectCell(
       "c", ObjectCell("doh", JsBoolean(true),
-             ObjectCell("ray", JsBoolean(false), 
+             ObjectCell("ray", JsBoolean(false),
                ObjectCell("me", JsNumber(1.0), ObjectEnd))),
       ObjectEnd
     )
   )
 ).print
-// res: String = {"a": [1.0, 2.0, 3.0], "b": ["a", "b", "c"], "c": {"doh": true, "ray": false, "me": 1.0}}
 ```
 
 #### Music
@@ -335,7 +339,7 @@ Finally we should get to means of composition of notes. There are two main ways:
 Phrase ::= Sequence | Parallek
 Sequence ::= SeqCell phrase:Phrase tail:Sequence
            | SeqEnd
-           
+
 Parallel ::= ParCell phrase:Phrase tail:Parallel
            | ParEnd
 ```
@@ -345,7 +349,7 @@ This representation allows us to arbitrarily nest parallel and sequential units 
 ```bash
 Sequence ::= SeqCell note:Note tail:Sequence
            | SeqEnd
-           
+
 Parallel ::= ParCell sequence:Sequence tail:Parallel
            | ParEnd
 ```
@@ -354,7 +358,7 @@ There are many things missing from this model. Some of them include:
 
 - We don't model musical dynamics in any way. Notes can be louder or softer, and volume can change while a note is being played. Notes do not always have constant pitch, either. Pitch bends or slurs are examples of changing pitches in a single note
 
-- We haven't modelled different instruments at all. 
+- We haven't modelled different instruments at all.
 
 - We haven't modelled effects, like echo and distortion, that make up an important part of modern music.
 </div>
