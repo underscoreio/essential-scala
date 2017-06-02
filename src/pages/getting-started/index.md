@@ -84,7 +84,7 @@ y: Int = 2
 res6: Int = 3
 ```
 
-If we have Scala code in a file, we can use `:paste` to paste the contents of the file into the console. This is much more convenient than re-entering expressions in the console. For example, with a file named `example.txt` containing `1 + 2 + 3` we can use `:paste` like so:
+If we have Scala code in a file, we can use `:paste` to paste the contents of the file into the console. This is much more convenient than re-entering expressions in the console. For example, with a file named `example.scala` containing `1 + 2 + 3` we can use `:paste` like so:
 
 ```scala
 scala> :paste example.scala
