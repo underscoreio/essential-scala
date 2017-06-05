@@ -84,7 +84,7 @@ trait A extends B with C
 
 In Scala a trait can extend as many traits as we like using the `with` keyword like `A extends B with C with D` and so on. We aren't going to use this pattern in this course. If we want to represent that some data conforms to a number of different interfaces we will often be better off using a *type class*, which we will explore later. There are, however, several legitimate uses of this pattern:
 
-- for modularity, using what's known as the [cake pattern](http://jonasboner.com/2008/10/06/real-world-scala-dependency-injection-di/); and
+- for modularity, using what's known as the [cake pattern](http://jonasboner.com/real-world-scala-dependency-injection-di/); and
 - sharing implementation across several classes where it doesn't make sense to make default implementations in the main trait.
 
 The "has-a or" patterns means that `A` has a `B` or `C`. There are two ways we can implement this. We can say that `A` has a `d` of type `D`, where `D` is a `B` or `C`. We can mechanically apply our two patterns to implement this:
