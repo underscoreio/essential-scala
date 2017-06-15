@@ -40,14 +40,11 @@ res0: Int = 4
 We can bind *any* value to a name using `val`.
 
 ```scala
-scala> aTuple
-res1: (Int, java.lang.String, Int) = (1,boo,3)
-
-scala> val aString = "this may be a string"
-aString: java.lang.String = this may be a string
+scala> val aString = "this is a string"
+aString: String = this is a string
 
 scala> aString
-res2: java.lang.String = this may be a string
+res2: String = this is a string
 ```
 -->
 
@@ -56,11 +53,11 @@ res2: java.lang.String = this may be a string
 Sometimes (though very rarely in Scala) we will want to change the value that a name is bound to. This is called *reassignment*, *mutation*, a *side-effect* or a *destructive* operation. A `val` does not allow mutation.
 
 ```scala
-scala> val aString = "this may be a string"
-aString: java.lang.String = this may be a string
+scala> val aString = "this is a string"
+aString: String = this is a string
 
 scala> aString
-res2: java.lang.String = this may be a string
+res2: String = this is a string
 
 scala> aString = "another string"
 <console>:8: error: reassignment to val
@@ -72,16 +69,16 @@ To allow a name to be rebound we must introduce the name using `var`.
 
 ```scala
 scala> var aMutatingString = "now I'm here!"
-aMutatingString: java.lang.String = now I'm here!
+aMutatingString: String = now I'm here!
 
 scala> aMutatingString
-res3: java.lang.String = now I'm here!
+res3: String = now I'm here!
 
 scala> aMutatingString = "now I'm not!"
-aMutatingString: java.lang.String = now I'm not!
+aMutatingString: String = now I'm not!
 
 scala> aMutatingString
-res4: java.lang.String = now I'm not!
+res4: String = now I'm not!
 ```
 
 Mutation is strongly discouraged in Scala. It makes reasoning about programs more difficult and makes concurrent programs almost impossible to get right.
@@ -153,10 +150,10 @@ scala> object anObject {
 defined module anObject
 
 scala> anObject.myName
-res19: java.lang.String = anObject
+res19: String = anObject
 
 scala> anObject.myMethod("Le Beouf")
-res20: java.lang.String = Le Beouf with icecream!
+res20: String = Le Beouf with icecream!
 ```
 
 Note that we refer to `val`s, `var`s, or `def`s within an object using the same syntax. This is called the *universal access property*. In fact, if we define a method with no arguments it is indistinguishable from a `val`.
@@ -169,10 +166,10 @@ scala> object tricky {
 defined module tricky
 
 scala> tricky.theVal
-res21: java.lang.String = I'm a method!
+res21: String = I'm a method!
 
 scala> tricky.theMethod
-res22: java.lang.String = I'm a var!
+res22: String = I'm a var!
 ```
 
 Methods with no arguments and methods with a single empty argument are different things in Scala as the example below demonstrates.

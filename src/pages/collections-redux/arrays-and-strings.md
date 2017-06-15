@@ -3,7 +3,7 @@
 Arrays and strings in Scala correspond to Java's arrays and strings.
 
 ```tut:book
-"this is not a string"
+"this is a string"
 ```
 
 Yet all the familiar collection methods are available on them.
