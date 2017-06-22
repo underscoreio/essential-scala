@@ -43,7 +43,7 @@ We want to write a method like
 def abstraction(end: Int, f: ???): Int =
   this match {
     case End => end
-    case Pair(hd, tl) => f(hd, tl.abstraction(f, end))
+    case Pair(hd, tl) => f(hd, tl.abstraction(end, f))
   }
 ```
 
