@@ -183,7 +183,7 @@ object wrapper {
     def sum: Int =
       fold(0, (hd, tl) => hd + tl)
   }
-  final case object End extends IntList
+  case object End extends IntList
   final case class Pair(head: Int, tail: IntList) extends IntList
 }; import wrapper._
 ```
@@ -253,7 +253,7 @@ object wrapper {
     def double: IntList =
       fold[IntList](End, (hd, tl) => Pair(hd * 2, tl))
   }
-  final case object End extends IntList
+  case object End extends IntList
   final case class Pair(head: Int, tail: IntList) extends IntList
 }; import wrapper._
 ```

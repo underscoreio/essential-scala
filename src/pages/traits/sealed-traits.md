@@ -171,7 +171,7 @@ sealed trait Color {
   def isDark = !isLight
 }
 
-final case object Red extends Color {
+case object Red extends Color {
   // Here we have implemented the RGB values as `vals`
   // because the values cannot change:
   val red = 1.0
@@ -179,7 +179,7 @@ final case object Red extends Color {
   val blue = 0.0
  }
 
-final case object Yellow extends Color {
+case object Yellow extends Color {
   // Here we have implemented the RGB values as `vals`
   // because the values cannot change:
   val red = 1.0
@@ -187,7 +187,7 @@ final case object Yellow extends Color {
   val blue = 0.0
 }
 
-final case object Pink extends Color {
+case object Pink extends Color {
   // Here we have implemented the RGB values as `vals`
   // because the values cannot change:
   val red = 1.0
@@ -329,7 +329,7 @@ sealed trait Color {
   def isDark = !isLight
 }
 
-final case object Red extends Color {
+case object Red extends Color {
   // Here we have implemented the RGB values as `vals`
   // because the values cannot change:
   val red = 1.0
@@ -337,7 +337,7 @@ final case object Red extends Color {
   val blue = 0.0
  }
 
-final case object Yellow extends Color {
+case object Yellow extends Color {
   // Here we have implemented the RGB values as `vals`
   // because the values cannot change:
   val red = 1.0
@@ -345,7 +345,7 @@ final case object Yellow extends Color {
   val blue = 0.0
 }
 
-final case object Pink extends Color {
+case object Pink extends Color {
   // Here we have implemented the RGB values as `vals`
   // because the values cannot change:
   val red = 1.0
@@ -465,7 +465,7 @@ Here's the code:
 ```tut:book:silent
 sealed trait DivisionResult
 final case class Finite(value: Int) extends DivisionResult
-final case object Infinite extends DivisionResult
+case object Infinite extends DivisionResult
 
 object divide {
   def apply(num: Int, den: Int): DivisionResult =

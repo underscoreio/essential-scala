@@ -26,7 +26,7 @@ final case class Some[A](x: A) extends Option[A] {
   // other methods...
 }
 
-final case object None extends Option[Nothing] {
+case object None extends Option[Nothing] {
   def getOrElse[B >: Nothing](default: B) = default
 
   def isEmpty: Boolean = true

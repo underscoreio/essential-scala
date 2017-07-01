@@ -24,7 +24,7 @@ final case class Empty[A]() extends Maybe[A]
 The way we use generics in `Maybe` is a bit inconvenient. We have to declare a generic type on the `Empty` case even though that case doesn't store any data. Ideally we would like to define `Empty` as a singleton object as follows:
 
 ```scala
-final case object Empty extends Maybe[Nothing]
+case object Empty extends Maybe[Nothing]
 ```
 
 However this will not work in the way we expect. Consider the following code, where we have a `val` of type `Maybe[Int]` that we try to assign to `Empty`:
@@ -55,7 +55,7 @@ Here's the code:
 ```scala
 sealed trait Maybe[+A]
 final case class Full[A](elt: A) extends Maybe[A]
-final case object Empty extends Maybe[Nothing]
+case object Empty extends Maybe[Nothing]
 ```
 
 `Maybe` is covariant so sub-types of `A` are allowed in a `Maybe[A]`. This allows `Empty` to extend `Maybe[Nothing]` and be the empty element for any `Maybe[A]`.
@@ -89,7 +89,7 @@ final case class Full[A](elt: A) extends Maybe[A] {
     full(elt)
 }
 
-final case object Empty extends Maybe[Nothing] {
+case object Empty extends Maybe[Nothing] {
   def fold[B](full: Nothing => B, accumulator: B): B =
     accumulator
 }
@@ -114,7 +114,7 @@ final case class Full[A](elt: A) extends Maybe[A] {
     f(elt)
 }
 
-final case object Empty extends Maybe[Nothing] {
+case object Empty extends Maybe[Nothing] {
   def map[B](f: Nothing => B): Maybe[B] =
     Empty
 
@@ -135,7 +135,7 @@ final case class Full[A](elt: A) extends Maybe[A] {
     f(elt)
 }
 
-final case object Empty extends Maybe[Nothing] {
+case object Empty extends Maybe[Nothing] {
   def foreach(f: Nothing => Unit): Unit =
     ()
 }

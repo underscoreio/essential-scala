@@ -206,8 +206,8 @@ With `Distribution` we can now define some interesting model. We could do some c
 
 ```tut:book:silent
 sealed trait Coin
-final case object Heads extends Coin
-final case object Tails extends Coin
+case object Heads extends Coin
+case object Tails extends Coin
 ```
 
 ```tut:invisible
@@ -261,15 +261,15 @@ First I constructed the model
 // We assume cooked food makes delicious smells with probability 1.0, and raw
 // food makes no smell with probability 0.0.
 sealed trait Food
-final case object Raw extends Food
-final case object Cooked extends Food
+case object Raw extends Food
+case object Cooked extends Food
 
 val food: Distribution[Food] =
   Distribution.discrete(List(Cooked -> 0.3, Raw -> 0.7))
 
 sealed trait Cat
-final case object Asleep extends Cat
-final case object Harassing extends Cat
+case object Asleep extends Cat
+case object Harassing extends Cat
 
 def cat(food: Food): Distribution[Cat] =
   food match {

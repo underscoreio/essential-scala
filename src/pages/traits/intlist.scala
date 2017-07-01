@@ -20,7 +20,7 @@ sealed trait IntList {
       case Pair(hd, tl) => hd + tl.sum
     }
 }
-final case object End extends IntList
+case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
 
 val example = Pair(1, Pair(2, Pair(3, End)))

@@ -121,9 +121,9 @@ This is a direct application of the sum type pattern.
 
 ```tut:book:silent
 sealed trait TrafficLight
-final case object Red extends TrafficLight
-final case object Green extends TrafficLight
-final case object Yellow extends TrafficLight
+case object Red extends TrafficLight
+case object Green extends TrafficLight
+case object Yellow extends TrafficLight
 ```
 
 As there are fields or methods on the three cases, and thus there is no need to create than one instance of them, I used case objects instead of case classes.
@@ -150,9 +150,9 @@ Crank the handle on the product and sum type patterns.
 
 ```tut:book:silent
 sealed trait Source
-final case object Well extends Source
-final case object Spring extends Source
-final case object Tap extends Source
+case object Well extends Source
+case object Spring extends Source
+case object Tap extends Source
 final case class BottledWater(size: Int, source: Source, carbonated: Boolean)
 ```
 </div>

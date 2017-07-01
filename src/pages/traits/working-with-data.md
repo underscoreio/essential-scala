@@ -159,9 +159,9 @@ We could represent food as a `String`, but we can do better and represent it wit
 
 ```tut:book:silent
 sealed trait Food
-final case object Antelope extends Food
-final case object TigerFood extends Food
-final case object Licorice extends Food
+case object Antelope extends Food
+case object TigerFood extends Food
+case object Licorice extends Food
 final case class CatFood(food: String) extends Food
 ```
 
@@ -260,9 +260,9 @@ In the previous section we implemented a `TrafficLight` data type like so:
 
 ```tut:book:silent
 sealed trait TrafficLight
-final case object Red extends TrafficLight
-final case object Green extends TrafficLight
-final case object Yellow extends TrafficLight
+case object Red extends TrafficLight
+case object Green extends TrafficLight
+case object Yellow extends TrafficLight
 ```
 
 Using polymorphism and then using pattern matching implement a method called `next` which returns the next `TrafficLight` in the standard `Red` -> `Green` -> `Yellow` -> `Red` cycle. Do you think it is better to implement this method inside or outside the class? If inside, would you use pattern matching or polymorphism? Why?
@@ -275,15 +275,15 @@ object wrapper {
   sealed trait TrafficLight {
     def next: TrafficLight
   }
-  final case object Red extends TrafficLight {
+  case object Red extends TrafficLight {
     def next: TrafficLight =
       Green
   }
-  final case object Green extends TrafficLight {
+  case object Green extends TrafficLight {
     def next: TrafficLight =
       Yellow
   }
-  final case object Yellow extends TrafficLight {
+  case object Yellow extends TrafficLight {
     def next: TrafficLight =
       Red
   }
@@ -302,9 +302,9 @@ object wrapper {
         case Yellow => Red
       }
   }
-  final case object Red extends TrafficLight
-  final case object Green extends TrafficLight
-  final case object Yellow extends TrafficLight
+  case object Red extends TrafficLight
+  case object Green extends TrafficLight
+  case object Yellow extends TrafficLight
 }; import wrapper._
 ```
 

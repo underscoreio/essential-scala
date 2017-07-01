@@ -28,7 +28,7 @@ object wrapper {
         case Pair(hd, tl) => hd + tl.sum
       }
   }
-  final case object End extends IntList
+  case object End extends IntList
   final case class Pair(head: Int, tail: IntList) extends IntList
 }; import wrapper._
 ```

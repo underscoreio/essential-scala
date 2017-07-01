@@ -11,7 +11,7 @@ sealed trait IntList {
   def sum: Int =
     fold(0, (hd, tl) => hd + tl)
 }
-final case object End extends IntList
+case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
 
 val example = Pair(1, Pair(2, Pair(3, End)))
@@ -44,6 +44,6 @@ object GenericFold {
     def double: IntList =
       fold[IntList](End, (hd, tl) => Pair(hd * 2, tl))
   }
-  final case object End extends IntList
+  case object End extends IntList
   final case class Pair(head: Int, tail: IntList) extends IntList
 }

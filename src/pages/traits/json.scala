@@ -32,10 +32,10 @@ sealed trait Json {
 final case class JsNumber(value: Double) extends Json
 final case class JsString(value: String) extends Json
 final case class JsBoolean(value: Boolean) extends Json
-final case object JsNull extends Json
+case object JsNull extends Json
 sealed trait JsSequence extends Json
 final case class SeqCell(head: Json, tail: JsSequence) extends JsSequence
-final case object SeqEnd extends JsSequence
+case object SeqEnd extends JsSequence
 sealed trait JsObject extends Json
 final case class ObjectCell(key: String, value: Json, tail: JsObject) extends JsObject
-final case object ObjectEnd extends JsObject
+case object ObjectEnd extends JsObject

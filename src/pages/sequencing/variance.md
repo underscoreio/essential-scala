@@ -15,7 +15,7 @@ Ideally we would like to drop the unused type parameter on `Empty` and write som
 ```scala
 sealed trait Maybe[A]
 final case class Full[A](value: A) extends Maybe[A]
-final case object Empty extends Maybe[???]
+case object Empty extends Maybe[???]
 ```
 
 Objects can't have type parameters. In order to make `Empty` an object we need to provide a concrete type in the `extends Maybe` part of the definition. But what type parameter should we use? In the absence of a preference for a particular data type, we could use something like `Unit` or `Nothing`. However this leads to type errors:
@@ -23,7 +23,7 @@ Objects can't have type parameters. In order to make `Empty` an object we need t
 ```tut:book
 sealed trait Maybe[A]
 final case class Full[A](value: A) extends Maybe[A]
-final case object Empty extends Maybe[Nothing]
+case object Empty extends Maybe[Nothing]
 ```
 
 ```tut:book:fail
@@ -98,7 +98,7 @@ Now we know about variance annotations we can solve our problem with `Maybe` by 
 ```tut:book:silent
 sealed trait Maybe[+A]
 final case class Full[A](value: A) extends Maybe[A]
-final case object Empty extends Maybe[Nothing]
+case object Empty extends Maybe[Nothing]
 ```
 
 In use we get the behaviour we expect. `Empty` is a subtype of all `Full` values.
@@ -117,7 +117,7 @@ If `A` of type `T` is a `B` or `C`, and `C` is not generic, write
 ```tut:book:silent
 sealed trait A[+T]
 final case class B[T](t: T) extends A[T]
-final case object C extends A[Nothing]
+case object C extends A[Nothing]
 ```
 
 This pattern extends to more than one type parameter. If a type parameter is not needed for a specific case of a sum type, we can substitute `Nothing` for that parameter.

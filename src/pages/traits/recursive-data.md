@@ -17,7 +17,7 @@ Here is a more useful recursive definition: an `IntList` is either the empty lis
 
 ```tut:book:silent
 sealed trait IntList
-final case object End extends IntList
+case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
 ```
 
@@ -112,7 +112,7 @@ When defining recursive algebraic data types, there must be at least two cases: 
 ```tut:book:silent
 sealed trait RecursiveExample
 final case class RecursiveCase(recursion: RecursiveExample) extends RecursiveExample
-final case object BaseCase extends RecursiveExample
+case object BaseCase extends RecursiveExample
 ```
 </div>
 
@@ -184,7 +184,7 @@ Using our definition of `IntList`
 
 ```tut:book:silent
 sealed trait IntList
-final case object End extends IntList
+case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
 ```
 
@@ -208,7 +208,7 @@ object wrapper {
         case Pair(hd, tl) => 1 + tl.length
       }
   }
-  final case object End extends IntList
+  case object End extends IntList
   final case class Pair(head: Int, tail: IntList) extends IntList
 }; import wrapper._
 ```
@@ -232,7 +232,7 @@ object wrapper {
         case Pair(hd, tl) => hd * tl.product
       }
   }
-  final case object End extends IntList
+  case object End extends IntList
   final case class Pair(head: Int, tail: IntList) extends IntList
 }; import wrapper._
 ```
@@ -256,7 +256,7 @@ object wrapper {
         case Pair(hd, tl) => Pair(hd * 2, tl.double)
       }
   }
-  final case object End extends IntList
+  case object End extends IntList
   final case class Pair(head: Int, tail: IntList) extends IntList
 }; import wrapper._
 ```
