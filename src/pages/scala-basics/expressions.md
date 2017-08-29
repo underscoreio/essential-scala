@@ -45,10 +45,10 @@ Strings are exactly Java's strings, and written the same way.
 
 ```scala
 scala> "this is a string"
-res8: java.lang.String = this is a string
+res8: String = this is a string
 
 scala> "the\nusual\tescape characters apply"
-res9: java.lang.String =
+res9: String =
 the
 usual	escape characters apply
 ```
@@ -180,7 +180,7 @@ If an object `foo` has a method called `update` we can call it using `foo(idx) =
 
 ```scala
 scala> "hi there!"(0) = 'b'
-<console>:8: error: value update is not a member of java.lang.String
+<console>:8: error: value update is not a member of String
               "hi there!"(0) = 'b'
               ^
 ```
