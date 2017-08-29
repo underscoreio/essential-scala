@@ -12,7 +12,7 @@ Tuples are a container for a *fixed number* of other values. They allow us to ea
 
 ```scala
 scala> (1, "tuple", true)
-res48: (Int, java.lang.String, Boolean) = (1,tuple,true)
+res48: (Int, String, Boolean) = (1,tuple,true)
 ```
 
 We can access the elements of tuples using the `_n` method, where `n` is the index (starting from 1) of the element.
@@ -22,7 +22,7 @@ scala> (1, "tuple", true)._1
 res49: Int = 1
 
 scala> (1, "tuple", true)._2
-res50: java.lang.String = tuple
+res50: String = tuple
 
 scala> (1, "tuple", true)._3
 res51: Boolean = true
@@ -34,10 +34,10 @@ The `->` method provides a shortcut way of constructing tuples of two elements, 
 
 ```scala
 scala> 1 -> "foo"
-res52: (Int, java.lang.String) = (1,foo)
+res52: (Int, String) = (1,foo)
 
 scala> 1.->"foo"
-res53: (Double, java.lang.String) = (1.0,foo)
+res53: (Double, String) = (1.0,foo)
 ```
 
 ## Functions
@@ -117,7 +117,7 @@ scala> foo(1) - 1
 res35: Int = 0
 
 scala> foo("hi!")
-res36: java.lang.String = hi!
+res36: String = hi!
 ```
 
 As we can see above, when we actually use `foo` the concrete type of it's argument is substituted for `A`.

@@ -66,7 +66,7 @@ Implement a ternary operator in Scala. It should be possible to write
 
 ```scala
 scala> ?(1 < 2) { "Numbers still work!" } { "Oh dear!" }
-res13: java.lang.String = Numbers still work!
+res13: String = Numbers still work!
 
 ```
 
