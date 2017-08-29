@@ -185,7 +185,7 @@ Lists have well known performance characteristics---constant-time prepend and he
 
 ### Importing Collections and Other Libraries
 
-The `Seq` and `List` types are so ubiquitous in Scala that they are made automatically available at all times. Other collections like `Vector` and `Queue` have to be brought into scope manually.
+The `Seq` and `List` types are so ubiquitous in Scala that they are made automatically available at all times. Other collections like `Stack` and `Queue` have to be brought into scope manually.
 
 The main collections package is called `scala.collection.immutable`. We can import specific collections from this package as follows:
 
