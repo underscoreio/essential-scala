@@ -52,7 +52,7 @@ Let's use the following model:
 Implement this.
 
 <div class="solution">
-We're now using the full power of `flatMap` to make decisions in our code that are dependent on what has happened before.
+We're now using the full power of `flatMap` and `map` (via our for comprehension) to make decisions in our code that are dependent on what has happened before.
 
 ```tut:book:silent
 def verbsFor(subject: String): List[String] =
