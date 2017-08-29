@@ -347,7 +347,7 @@ def map[C](f: B => C): Sum[A, C]
 <div class="solution">
 ```tut:book:silent
 object wrapper {
-  sealed trait Sum[+A, +B] {
+  sealed trait Sum[A, B] {
     def fold[C](error: A => C, success: B => C): C =
       this match {
         case Failure(v) => error(v)
