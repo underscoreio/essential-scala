@@ -127,8 +127,8 @@ Implement this algebraic data type.
 <div class="solution">
 ```scala
 sealed trait Tree[A]
-final case class Node[A](val l: Tree[A], val r: Tree[A]) extends Tree[A]
-final case class Leaf[A](val elt: A) extends Tree[A]
+final case class Node[A](l: Tree[A], r: Tree[A]) extends Tree[A]
+final case class Leaf[A](elt: A) extends Tree[A]
 ```
 </div>
 
@@ -142,11 +142,11 @@ Write a `fold` for `Tree`.
 sealed trait Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B
 }
-final case class Node[A](val l: Tree[A], val r: Tree[A]) extends Tree[A] {
+final case class Node[A](l: Tree[A], r: Tree[A]) extends Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B =
     node(l, r)
 }
-final case class Leaf[A](val elt: A) extends Tree[A] {
+final case class Leaf[A](elt: A) extends Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B =
     leaf(elt)
 }
@@ -183,11 +183,11 @@ sealed trait Tree[A] {
   def map[B](f: A => B): Tree[B] =
     fold(Node.apply[B] _, (elt: A) => Leaf(f(elt)))
 }
-final case class Node[A](val l: Tree[A], val r: Tree[A]) extends Tree[A] {
+final case class Node[A](l: Tree[A], r: Tree[A]) extends Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B =
     node(l, r)
 }
-final case class Leaf[A](val elt: A) extends Tree[A] {
+final case class Leaf[A](elt: A) extends Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B =
     leaf(elt)
 }

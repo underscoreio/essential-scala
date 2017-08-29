@@ -134,9 +134,7 @@ anon.age
 
 `id` and `createdAt` are abstract so they must be defined in extending classes. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as a more general version of `val`[^uap]. It is good practice to never define `val`s in a trait, but rather to use `def`. A concrete implementation can then implement it using using a `def` or `val` as appropriate.
 
-[^uap]: This is all part of the [uniform access principle] we saw in the exercises for [Object Literals](object-literals.html).
-
-[uniform access principle]: http://en.wikipedia.org/wiki/Uniform_access_principle
+[^uap]: This is all part of the [uniform access principle][link-uap] we saw in the exercises for [Object Literals](object-literals.html).
 
 ### Take Home Points
 
@@ -264,7 +262,7 @@ case class Square(size: Double) extends Shape {
 ```
 </div>
 
-#### Shaping Up 2 (Da Streets)
+#### Shaping Up 2 (Da Streets) {#sec:traits:shaping-up-2}
 
 The solution from the last exercise delivered three distinct types of shape. However, it doesn't model the relationships between the three correctly. A `Square` isn't just a `Shape`---it's also a type of `Rectangle` where the width and height are the same.
 
@@ -280,7 +278,7 @@ The new code looks like this:
 
 // case class Circle ...
 
-trait Rectangular extends Shape {
+sealed trait Rectangular extends Shape {
   def width: Double
   def height: Double
   val sides = 4
@@ -288,7 +286,7 @@ trait Rectangular extends Shape {
   override val area = width*height
 }
 
-case class Square(val size: Double) extends Rectangular {
+case class Square(size: Double) extends Rectangular {
   val width = size
   val height = size
 }
@@ -298,4 +296,8 @@ case class Rectangle(
   val height: Double
 ) extends Rectangular
 ```
+
+Ensure your trait is `sealed` so the compiler can
+check the exhaustiveness of any code you write
+that handles objects of type `Rectangular` or `Shape`.
 </div>

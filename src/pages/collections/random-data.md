@@ -52,7 +52,7 @@ Let's use the following model:
 Implement this.
 
 <div class="solution">
-We're now using the full power of `flatMap` to make decisions in our code that are dependent on what has happened before.
+We're now using the full power of `flatMap` and `map` (via our for comprehension) to make decisions in our code that are dependent on what has happened before.
 
 ```tut:book:silent
 def verbsFor(subject: String): List[String] =
@@ -142,7 +142,7 @@ final case class Distribution[A](events: List[(A, Double)]) {
 ```
 </div>
 
-Now implement `flatMap`. To do so you'll need to combine the probability of an event with the probability of the event it depends on. The correct way to do so is to multiply the probabilities together. The may lead to *unnormalised* probabilities---probabilities that do not sum up to 1. You might find the following two utilities useful, though you don't need to normalise probabilities or ensure that elements are unique for the model to work.
+Now implement `flatMap`. To do so you'll need to combine the probability of an event with the probability of the event it depends on. The correct way to do so is to multiply the probabilities together. This may lead to *unnormalised* probabilities---probabilities that do not sum up to 1. You might find the following two utilities useful, though you don't need to normalise probabilities or ensure that elements are unique for the model to work.
 
 
 ```tut:book:silent

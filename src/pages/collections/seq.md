@@ -98,10 +98,10 @@ sequence.filter(_ > 1)
 
 ### Sorting elements
 
-We can use the `sortWith` method to sort a list using a binary function. The function takes two list items as parameters and returns `true` if they are in the correct order and `false` if they are the wrong way around:
+We can use the `sortWith` method to sort a list using a binary function. The function takes two list items as parameters and returns `true` if they are in the correct order and `false` if they are the wrong way around. For example, to sort a list of `Ints` in descending order:
 
 ```tut:book
-sequence.sortWith(_ < _)
+sequence.sortWith(_ > _)
 ```
 
 ### Appending/prepending elements
@@ -150,7 +150,7 @@ sequence.updated(0, 5)
 
 ### Lists
 
-The default implementation of `Seq` is a `List`, which is a classic [linked list](http://en.wikipedia.org/wiki/Linked_list) data structure similar to the one we developed in an earlier exercise. Some Scala libraries work specifically with `Lists` rather than using more generic types like `Seq`. For this reason we should familiarize ourselves with a couple of list-specific methods.
+The default implementation of `Seq` is a `List`, which is a classic [linked list][link-linked-list] data structure similar to the one we developed in an earlier exercise. Some Scala libraries work specifically with `Lists` rather than using more generic types like `Seq`. For this reason we should familiarize ourselves with a couple of list-specific methods.
 
 We can write an empty list using the singleton object `Nil`:
 
@@ -185,7 +185,7 @@ Lists have well known performance characteristics---constant-time prepend and he
 
 ### Importing Collections and Other Libraries
 
-The `Seq` and `List` types are so ubiquitous in Scala that they are made automatically available at all times. Other collections like `Vector` and `Queue` have to be brought into scope manually.
+The `Seq` and `List` types are so ubiquitous in Scala that they are made automatically available at all times. Other collections like `Stack` and `Queue` have to be brought into scope manually.
 
 The main collections package is called `scala.collection.immutable`. We can import specific collections from this package as follows:
 
@@ -293,7 +293,7 @@ Discovering Scala's collection classes is all about knowing how to read the API 
  - There are two methods for retrieving the first item in a `List` --
    what are they called and how do they differ?
 
- - What method can be used used to display the elements of the sequence as a string?
+ - What method can be used to display the elements of the sequence as a string?
 
  - What method of `Option` can be used to determine whether the option contains a value?
 

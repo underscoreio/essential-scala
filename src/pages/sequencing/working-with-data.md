@@ -199,7 +199,7 @@ More important is the use of multiple parameter lists to ease type inference. Sc
 def fold[B](end: B, pair: (A, B) => B): B
 ```
 
-if Scala infers `B` for `end` it cannot then use this inferred type for the `B` in`pair`, so we must often write a type declaration on `pair`. However, Scala can use types inferred for one parameter list in another parameter *list*. So if we write `fold` as
+if Scala infers `B` for `end` it cannot then use this inferred type for the `B` in `pair`, so we must often write a type declaration on `pair`. However, Scala can use types inferred for one parameter list in another parameter *list*. So if we write `fold` as
 
 ```scala
 def fold[B](end: B)(pair: (A, B) => B): B
