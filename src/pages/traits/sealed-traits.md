@@ -82,7 +82,7 @@ The main advantages of this pattern are:
 
 #### Printing Shapes
 
-Let's revisit the `Shapes` example from the previous section.
+Let's revisit the `Shapes` example from Section [@sec:traits:shaping-up-2].
 
 First make `Shape` a sealed trait. Then write a singleton object called `Draw` with an `apply` method that takes a `Shape` as an argument and returns a description of it on the console. For example:
 
@@ -99,19 +99,22 @@ case class Circle(radius: Double) extends Shape {
   val area = math.Pi * radius * radius
 }
 
+sealed trait Rectangular extends Shape {
+  def width: Double
+  def height: Double
+  val sides = 4
+  override val perimeter = 2*width + 2*height
+  override val area = width*height
+}
+
 case class Rectangle(
   width: Double,
   height: Double
-) extends Shape {
-  val sides = 4
-  val perimeter = 2 * width + 2 * height
-  val area = width * height
-}
+) extends Rectangular
 
-case class Square(size: Double) extends Shape {
-  val sides = 4
-  val perimeter = 4 * size
-  val area = size * size
+case class Square(size: Double) extends Rectangular {
+  def width = size
+  def height = size
 }
 
 object Draw {
