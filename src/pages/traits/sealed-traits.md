@@ -460,7 +460,7 @@ val y = divide(1, 0)
 // y: DivisionResult = Infinite
 ```
 
-Finally, write a sample function that calls `divide`, matches on the result, and returns a sensible description.
+Finally, write some sample code that calls `divide`, matches on the result, and returns a sensible description.
 
 <div class="solution">
 Here's the code:
