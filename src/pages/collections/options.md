@@ -246,7 +246,7 @@ We saw this code in the [Traits](/traits/) chapter when we wrote the `DivisionRe
 
 ```tut:book:silent
 def divide(numerator: Int, denominator: Int) =
-  if(denominator < 1) None else Some(numerator / denominator)
+  if(denominator == 0) None else Some(numerator / denominator)
 ```
 </div>
 
