@@ -95,7 +95,7 @@ We can use *infix operator notation* with any method that takes one parameter, r
 
 Infix notation is one of several syntactic shorthands that allow us to write simple operator expressions instead of verbose method calls. There are also notations for *prefix*, *postfix*, *right-associative*, and *assignment-style operators*, but there are much less common than infix notation.
 
-A question poses itself---what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
+A question poses itself---what precedence rules should we associate with infix operators? Scala uses a set of [precedence rules][link-precedence-rules] derived from the identifiers we use as method names that follow our intuitive understanding from mathematics and logic:
 
 ```tut:book
 2 * 3 + 4 * 5
@@ -170,7 +170,5 @@ As programmers we must develop a mental model of how our code operates. The *sub
 </div>
 
 [^side-effects]: What exactly is a side-effect? One workable definition is anything that causes substitution to yield an incorrect result. Does substitution *always* work, in the absence of side-effects? To truly have a correct model of Scala we must define the order in which we apply substitutions. There are a number of possible orders. (For example, we perform substitution left-to-right, or right-to-left? Do we substitute as soon as possible or delay until we need a value?) Most of the time order of substitution doesn't matter, but there are cases where it does. Scala always applies substitution from left-to-right and at the earliest possible time.
-
-[precedence rules]: http://stackoverflow.com/questions/2922347/operator-precedence-in-scala
 
 [^patterns]: There is another way of interacting with objects, called pattern matching. We will introduce pattern matching later.

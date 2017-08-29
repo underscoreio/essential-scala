@@ -134,9 +134,7 @@ anon.age
 
 `id` and `createdAt` are abstract so they must be defined in extending classes. Our classes implement them as `vals` rather than `defs`. This is legal in Scala, which sees `def` as a more general version of `val`[^uap]. It is good practice to never define `val`s in a trait, but rather to use `def`. A concrete implementation can then implement it using using a `def` or `val` as appropriate.
 
-[^uap]: This is all part of the [uniform access principle] we saw in the exercises for [Object Literals](object-literals.html).
-
-[uniform access principle]: http://en.wikipedia.org/wiki/Uniform_access_principle
+[^uap]: This is all part of the [uniform access principle][link-uap] we saw in the exercises for [Object Literals](object-literals.html).
 
 ### Take Home Points
 
