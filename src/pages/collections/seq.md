@@ -293,7 +293,7 @@ Discovering Scala's collection classes is all about knowing how to read the API 
  - There are two methods for retrieving the first item in a `List` --
    what are they called and how do they differ?
 
- - What method can be used used to display the elements of the sequence as a string?
+ - What method can be used to display the elements of the sequence as a string?
 
  - What method of `Option` can be used to determine whether the option contains a value?
 
