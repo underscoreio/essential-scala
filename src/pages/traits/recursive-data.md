@@ -273,8 +273,8 @@ Implement this algebraic data type.
 <div class="solution">
 ```tut:book:silent
 sealed trait Tree
-final case class Node(val l: Tree, val r: Tree) extends Tree
-final case class Leaf(val elt: Int) extends Tree
+final case class Node(l: Tree, r: Tree) extends Tree
+final case class Leaf(elt: Int) extends Tree
 ```
 </div>
 
@@ -300,14 +300,14 @@ sealed trait Tree {
   def sum: Int
   def double: Tree
 }
-final case class Node(val l: Tree, val r: Tree) extends Tree {
+final case class Node(l: Tree, r: Tree) extends Tree {
   def sum: Int =
     l.sum + r.sum
 
   def double: Tree =
     Node(l.double, r.double)
 }
-final case class Leaf(val elt: Int) extends Tree {
+final case class Leaf(elt: Int) extends Tree {
   def sum: Int =
     elt
 

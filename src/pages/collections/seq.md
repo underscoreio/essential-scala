@@ -150,7 +150,7 @@ sequence.updated(0, 5)
 
 ### Lists
 
-The default implementation of `Seq` is a `List`, which is a classic [linked list](http://en.wikipedia.org/wiki/Linked_list) data structure similar to the one we developed in an earlier exercise. Some Scala libraries work specifically with `Lists` rather than using more generic types like `Seq`. For this reason we should familiarize ourselves with a couple of list-specific methods.
+The default implementation of `Seq` is a `List`, which is a classic [linked list][link-linked-list] data structure similar to the one we developed in an earlier exercise. Some Scala libraries work specifically with `Lists` rather than using more generic types like `Seq`. For this reason we should familiarize ourselves with a couple of list-specific methods.
 
 We can write an empty list using the singleton object `Nil`:
 

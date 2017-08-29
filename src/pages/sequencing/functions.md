@@ -202,7 +202,7 @@ object wrapper {
 Is it more convenient to rewrite methods in terms of `fold` if they were implemented using pattern matching or polymorphic? What does this tell us about the best use of `fold`?
 
 <div class="solution">
-When using `fold` in polymorphic implementations we have a lot of duplication; the polymorphic implementations without `fold` were simpler to write. The pattern matching implementations benefited from `fold` as we remove the duplication in the pattern matching.
+When using `fold` in polymorphic implementations we have a lot of duplication; the polymorphic implementations without `fold` were simpler to write. The pattern matching implementations benefitted from `fold` as we removed the duplication in the pattern matching.
 
 In general `fold` makes a good interface for users *outside* the class, but not necessarily for use *inside* the class.
 </div>

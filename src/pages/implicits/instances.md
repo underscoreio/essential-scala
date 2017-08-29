@@ -4,7 +4,7 @@ Type classes in Scala involve the interaction of a number of components. To simp
 
 ### Ordering
 
-A simple example of a type class is the [`Ordering`](http://www.scala-lang.org/api/current/#scala.math.Ordering) trait. For a type `A`, an `Ordering[A]` defines a comparison method `compare` that compares two instances of `A` by some ordering. To construct an `Ordering` we can use the convenience method `fromLessThan` defined the companion object.
+A simple example of a type class is the [`Ordering`](http://www.scala-lang.org/api/current/#scala.math.Ordering) trait. For a type `A`, an `Ordering[A]` defines a comparison method `compare` that compares two instances of `A` by some ordering. To construct an `Ordering` we can use the convenience method `fromLessThan` defined on the companion object.
 
 Imagine we want to sort a `List` of `Int`s. There are many different ways to sort such a list. For example, we could sort from highest to lowest, or we could sort from lowest to highest. There is a method `sorted` on `List` that will sort a list, but to use it we must pass in an `Ordering` to give the particular ordering we want.
 

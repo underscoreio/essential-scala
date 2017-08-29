@@ -214,7 +214,7 @@ assert(
 ```
 
 <div class="solution">
-To implement this extractor we define an `unapply` method on an object `Postiive`.
+To implement this extractor we define an `unapply` method on an object `Postiive`:
 
 ```tut:book:silent
 object Positive {

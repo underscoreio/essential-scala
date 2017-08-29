@@ -115,9 +115,9 @@ Instead of using `Option` to propagate errors we need a type that can carry info
 ```scala
 sealed trait Validation[E,A]
 
-case class Success[E,A](val success: A) extends Validation[E,A]
+case class Success[E,A](success: A) extends Validation[E,A]
 
-case class Failure[E,A](val failure: E) extends Validation[E,A]
+case class Failure[E,A](failure: E) extends Validation[E,A]
 ```
 
 Our base trait `Validation` is generic over two types, the failure type `E` and the success type `A`. It is sealed so we can be sure only the two concrete cases `Success` and `Failure` exist.

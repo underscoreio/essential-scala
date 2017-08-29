@@ -12,7 +12,7 @@ We already know how to do simple aggregation in simple cases using fields. Here 
 Generic types naturally arise in collections, so let's consider a really simple collection---a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
 ```tut
-case class Box[A](val value: A)
+case class Box[A](value: A)
 
 val a = Box(2)
 

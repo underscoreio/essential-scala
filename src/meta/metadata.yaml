@@ -88,6 +88,7 @@ pages:
   - collections-redux/mutable-seq.md
 
   - solutions.md
+  - links.md
 
 previewPages:
   - index.md

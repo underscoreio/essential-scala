@@ -58,6 +58,3 @@ Advanced callouts provide additional information on corner cases or underlying m
 <div class="callout callout-danger">
 Warning callouts indicate common pitfalls and gotchas. Make sure you read these to avoid problems, and come back to them if you're having trouble getting your code to run.
 </div>
-
-[link-underscore]: http://underscore.io
-[`Option`]: http://www.scala-lang.org/api/current/index.html#scala.Option

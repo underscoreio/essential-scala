@@ -288,7 +288,7 @@ sealed trait Rectangular extends Shape {
   override val area = width*height
 }
 
-case class Square(val size: Double) extends Rectangular {
+case class Square(size: Double) extends Rectangular {
   val width = size
   val height = size
 }
