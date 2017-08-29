@@ -114,7 +114,7 @@ Implicit parameters make type classes more convenient to use. We can make an ent
 def method[A](normalParam1: NormalType, ...)(implicit implicitParam1: ImplicitType[A], ...)
 ```
 
-If we call a method and do not explicitly supply an explicit parameter, the compiler will search for an implicit value of the correct type and insert it as the parameter.
+If we call a method and do not explicitly supply its implicit parameter list, the compiler will search for implicit values of the correct types to complete the parameter list for us.
 
 Using implicit parameters we can make more convenient interfaces using type class instances. If the desired interface to a type class is exactly the methods defined on the type class we can create a convenient interface using the pattern
 
