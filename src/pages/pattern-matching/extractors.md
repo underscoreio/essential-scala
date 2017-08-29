@@ -215,6 +215,7 @@ assert(
 
 <div class="solution">
 To implement this extractor we define an `unapply` method on an object `Postiive`.
+
 ```tut:book:silent
 object Positive {
   def unapply(in: Int): Option[Int] =
@@ -254,12 +255,11 @@ The model solution splits the string into a list of words and maps over the list
 
 ```tut:book:silent
 object Titlecase {
-  def unapply(str: String) = {
-    str.split(" ").toList.map {
+  def unapply(str: String) =
+    Some(str.split(" ").toList.map {
       case "" => ""
       case word => word.substring(0, 1).toUpperCase + word.substring(1)
-    }.mkString(" ")
-  }
+    }.mkString(" "))
 }
 ```
 </div>
