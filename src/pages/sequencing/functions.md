@@ -156,12 +156,22 @@ def abstraction(end: Int, f: ???): Int =
 Rename this function to `fold`, which is the name it is usually known as, and finish the implementation.
 
 <div class="solution">
-```scala
-def fold(end: Int, f: (Int, Int) => Int): Int =
-  this match {
-    case End => end
-    case Pair(hd, tl) => f(hd, tl.fold(f, end))
+Your `fold` method should look like this:
+
+```tut:book:silent
+object wrapper {
+  sealed trait IntList {
+    def fold(end: Int, f: (Int, Int) => Int): Int =
+      this match {
+        case End => end
+        case Pair(hd, tl) => f(hd, tl.fold(end, f))
+      }
+
+    // other methods...
   }
+  case object End extends IntList
+  final case class Pair(head: Int, tail: IntList) extends IntList
+}; import wrapper._
 ```
 </div>
 
