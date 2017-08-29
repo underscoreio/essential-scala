@@ -98,10 +98,10 @@ sequence.filter(_ > 1)
 
 ### Sorting elements
 
-We can use the `sortWith` method to sort a list using a binary function. The function takes two list items as parameters and returns `true` if they are in the correct order and `false` if they are the wrong way around:
+We can use the `sortWith` method to sort a list using a binary function. The function takes two list items as parameters and returns `true` if they are in the correct order and `false` if they are the wrong way around. For example, to sort a list of `Ints` in descending order:
 
 ```tut:book
-sequence.sortWith(_ < _)
+sequence.sortWith(_ > _)
 ```
 
 ### Appending/prepending elements
