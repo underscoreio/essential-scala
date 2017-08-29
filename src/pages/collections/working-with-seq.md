@@ -183,9 +183,15 @@ Starting with the definition of `nolan`, create a list containing the names of t
 // some definitions from previous section
 case class Film(name: String, yearOfRelease: Int, imdbRating: Double)
 case class Director(firstName: String, lastName: String, yearOfBirth: Int, films: Seq[Film])
-val mcTiernan = new Director("John", "McTiernan", 1951, Seq.empty)
+val mcTiernan = new Director("John", "McTiernan", 1951, Seq(
+  Film("Predator", 1987, 7.9),
+  Film("Die Hard", 1988, 8.3),
+  Film("The Hunt for Red October", 1990, 7.6),
+  Film("The Thomas Crown Affair", 1999, 6.8)
+))
 val nolan = new Director("Christopher", "Nolan", 1970, Seq.empty)
-val directors = Seq(mcTiernan, nolan)
+val someBody = new Director("Just", "Some Body", 1990, Seq.empty)
+val directors = Seq(mcTiernan, nolan, someBody)
 ```
 
 <div class="solution">
@@ -226,6 +232,24 @@ mcTiernan.films.foldLeft(Int.MaxValue) { (current, film) =>
   math.min(current, film.yearOfRelease)
 }
 ```
+
+**A quick aside:**
+
+There's a far simpler solution to this problem using a convenient method on sequences called `min`. This method finds the smallest item in a list of naturally comparable elements. We don't even need to sort them:
+
+```tut:book:silent
+mcTiernan.films.map(_.yearOfRelease).min
+```
+
+We didn't introduce `min` in this section because our focus is on working with general-purpose methods like `map` and `flatMap`. However, you may come across `min` in the documentation for the Scala standard library, and you may wonder how it is implemented.
+
+Not all data types have a natural sort order. We might naturally wonder how `min` would work on a list of values of an unsortable data type. A quick experiment shows that the call doesn't even compile:
+
+```tut:book:fail
+mcTiernan.films.min
+```
+
+The `min` method is a strange beast---it only compiles when it is called on a list of *sortable values*. This is an example of something called the *type class pattern*. We don't know enough Scala to implement type classes yet---we'll learn all about how they work in Chapter [@sec:type-classes].
 </div>
 
 *High Score Table*
@@ -273,13 +297,19 @@ directors.foreach { director =>
 Finally, starting with `directors` again, find the *earliest film* by any director:
 
 <div class="solution">
-Here's the solution:
+Here's the solution written using `sortWith`:
 
 ```tut:book:silent
 directors.
   flatMap(director => director.films).
   sortWith((a, b) => a.yearOfRelease < b.yearOfRelease).
   headOption
+```
+
+We have to be careful in this solution to handle situations where there are no films. We can't use the `head` method, or even the `min` method we saw in the solution to *Vintage McTiernan*, because these methods throw exceptions if the sequence is empty:
+
+```tut:book:fail
+someBody.films.map(_.yearOfRelease).min
 ```
 </div>
 

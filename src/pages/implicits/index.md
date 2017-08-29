@@ -1,4 +1,4 @@
-# Type Classes
+# Type Classes {#sec:type-classes}
 
 *Type classes* are a powerful feature of Scala that allow us to extend existing libraries with new functionality, without using inheritance and without having access to the original library source code. In this chapter we will learn how to use and implement type classes, using a Scala feature called *implicits*.
 
