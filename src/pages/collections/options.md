@@ -39,7 +39,7 @@ Here is a typical example of code for generating an option---reading an integer 
 
 ```tut:book:silent
 def readInt(str: String): Option[Int] =
-  if(str matches "\\d+") Some(str.toInt) else None
+  if(str matches "-?\\d+") Some(str.toInt) else None
 ```
 
 The `toInt` method of `String` throws a `NumberFormatException` if the string isn't a valid series of digits, so we guard its use with a regular expression. If the number is correctly formatted we return `Some` of the `Int` result. Otherwise we return `None`. Example usage:
