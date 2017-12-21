@@ -156,12 +156,22 @@ def abstraction(end: Int, f: ???): Int =
 Rename this function to `fold`, which is the name it is usually known as, and finish the implementation.
 
 <div class="solution">
-```scala
-def fold(end: Int, f: (Int, Int) => Int): Int =
-  this match {
-    case End => end
-    case Pair(hd, tl) => f(hd, tl.fold(f, end))
+Your `fold` method should look like this:
+
+```tut:book:silent
+object wrapper {
+  sealed trait IntList {
+    def fold(end: Int, f: (Int, Int) => Int): Int =
+      this match {
+        case End => end
+        case Pair(hd, tl) => f(hd, tl.fold(end, f))
+      }
+
+    // other methods...
   }
+  case object End extends IntList
+  final case class Pair(head: Int, tail: IntList) extends IntList
+}; import wrapper._
 ```
 </div>
 
@@ -192,7 +202,7 @@ object wrapper {
 Is it more convenient to rewrite methods in terms of `fold` if they were implemented using pattern matching or polymorphic? What does this tell us about the best use of `fold`?
 
 <div class="solution">
-When using `fold` in polymorphic implementations we have a lot of duplication; the polymorphic implementations without `fold` were simpler to write. The pattern matching implementations benefited from `fold` as we remove the duplication in the pattern matching.
+When using `fold` in polymorphic implementations we have a lot of duplication; the polymorphic implementations without `fold` were simpler to write. The pattern matching implementations benefitted from `fold` as we removed the duplication in the pattern matching.
 
 In general `fold` makes a good interface for users *outside* the class, but not necessarily for use *inside* the class.
 </div>

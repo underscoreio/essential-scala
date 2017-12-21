@@ -121,7 +121,7 @@ object wrapper {
 
 A type like `F[A]` with a `map` method is called a *functor*. If a functor also has a `flatMap` method it is called a *monad*[^monads].
 
-[^monads:] There is a little bit more to being a functor or monad.  For a monad we require a constructor, typically called `point`, and there are some algebraic laws that our `map` and `flatMap` operations must obey. A quick search online will find more information on monads, or they are covered in more detail in our "Advanced Scala" book.
+[^monads]: There is a little bit more to being a functor or monad.  For a monad we require a constructor, typically called `point`, and there are some algebraic laws that our `map` and `flatMap` operations must obey. A quick search online will find more information on monads, or they are covered in more detail in our book on [Scala with Cats][link-advanced-scala].
 
 Although the most immediate applications of `map` and `flatMap` are in collection classes like lists, the bigger picture is sequencing computations. Imagine we have a number of computations that can fail. For instance
 
@@ -347,7 +347,7 @@ def map[C](f: B => C): Sum[A, C]
 <div class="solution">
 ```tut:book:silent
 object wrapper {
-  sealed trait Sum[+A, +B] {
+  sealed trait Sum[A, B] {
     def fold[C](error: A => C, success: B => C): C =
       this match {
         case Failure(v) => error(v)

@@ -88,6 +88,7 @@ pages:
   - collections-redux/mutable-seq.md
 
   - solutions.md
+  - links.md
 
 previewPages:
   - index.md
@@ -118,4 +119,6 @@ previewPages:
   - traits/recursive-data.md
   - traits/extended-examples.md
   - traits/conclusions.md
+
+  - links.md
 ...

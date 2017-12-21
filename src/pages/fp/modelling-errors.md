@@ -60,12 +60,12 @@ sealed trait Try[+A] {
   }
 }
 
-final case class Failure[A](val error: Throwable) extends Try[A] {
+final case class Failure[A](error: Throwable) extends Try[A] {
   def fold[B](failure: Throwable => B, success: A => B): B =
     failure(error)
 }
 
-final case class Success[A](val elt: A) extends Try[A] {
+final case class Success[A](elt: A) extends Try[A] {
   def fold[B](failure: Throwable => B, success: A => B): B =
     success(elt)
 }

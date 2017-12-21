@@ -3,10 +3,7 @@ layout: page
 title: "This and That: Traits as Mixins"
 ---
 
-In the previous section we looked at categorising objects using a single set of traits. In this section we will look at objects that can simultaneously be categorised using several type hierarchies. In functional programming these are known as [product types]. In object oriented programming there is a related concept: [multiple inheritance].
-
-[product types]: http://en.wikipedia.org/wiki/Product_type
-[multiple inheritance]: http://en.wikipedia.org/wiki/Multiple_inheritance
+In the previous section we looked at categorising objects using a single set of traits. In this section we will look at objects that can simultaneously be categorised using several type hierarchies. In functional programming these are known as [product types][link-product-types]. In object oriented programming there is a related concept: [multiple inheritance][link-multiple-inheritance].
 
 ## Traits as Mixins
 

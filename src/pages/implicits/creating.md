@@ -52,7 +52,7 @@ object HtmlWriter {
 }
 ```
 
-This implementation has its own issues. We have lost type safety because there is no useful supertype that covers just the elements we want to render and no more. We can't have more than one implemnetation of rendering for a given type. We also have to modify this code whenever we want to render a new type.
+This implementation has its own issues. We have lost type safety because there is no useful supertype that covers just the elements we want to render and no more. We can't have more than one implementation of rendering for a given type. We also have to modify this code whenever we want to render a new type.
 
 We can overcome all of these problems by moving our HTML rendering to an adapter class:
 

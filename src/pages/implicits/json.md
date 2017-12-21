@@ -69,14 +69,14 @@ sealed trait Visitor {
 }
 
 final case class Anonymous(
-  val id: String,
-  val createdAt: Date = new Date()
+  id: String,
+  createdAt: Date = new Date()
 ) extends Visitor
 
 final case class User(
-  val id: String,
-  val email: String,
-  val createdAt: Date = new Date()
+  id: String,
+  email: String,
+  createdAt: Date = new Date()
 ) extends Visitor
 ```
 
