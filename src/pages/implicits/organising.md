@@ -16,9 +16,8 @@ def sorted[B >: A](implicit ord: math.Ordering[B]): List[A]
 
 The compiler will look in the following places for `Ordering` instances:
 
-- the companion object of `List`;
 - the companion object of `Ordering`; and
-- the companion object of the type `B`, which is the type of elements in the list or any superclass.
+- the companion object of the type `B` (which is `A` or a supertype).
 
 The practical upshot is we can define type class instances in the companion object of our types (the type `A` in this example) and they will be found by the compiler without the user having to import them explicitly.
 
