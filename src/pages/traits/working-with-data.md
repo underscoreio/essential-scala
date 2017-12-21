@@ -8,7 +8,7 @@ Just as we have two patterns for building algebraic data types, we will have two
 
 ### Structural Recursion using Polymorphism
 
-Polymorphic dispatch, or just polymorphism for short, is a fundamental object-oriented technique. If we define a method in a trait, and have different implementations in classes extending that trait, when we call that method the implementation on the actual concrete instance will be used. Here's a very simple example. We start with a simple definition using the familiar product type (or) pattern.
+Polymorphic dispatch, or just polymorphism for short, is a fundamental object-oriented technique. If we define a method in a trait, and have different implementations in classes extending that trait, when we call that method the implementation on the actual concrete instance will be used. Here's a very simple example. We start with a simple definition using the familiar sum type (or) pattern.
 
 ```tut:book:silent
 sealed trait A {
