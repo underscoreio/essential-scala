@@ -232,10 +232,10 @@ We have also seen the difference between methods and fields---fields refer to va
 
 #### Cat-o-matique
 
-The table below shows the names, colour, and favourite foods of three cats. Define an object for each cat. (For experienced programmers: we haven't covered classes yet.)
+The table below shows the names, color, and favourite foods of three cats. Define an object for each cat. (For experienced programmers: we haven't covered classes yet.)
 
 +-----------+-----------------+-------+
-| Name      | Colour          | Food  |
+| Name      | Color          | Food  |
 +===========+=================+=======+
 | Oswald    | Black           | Milk  |
 +-----------+-----------------+-------+
@@ -251,17 +251,17 @@ This is just a finger exercise to get you used to the syntax of defining objects
 
 ```tut:book:silent
 object Oswald {
-  val colour: String = "Black"
+  val color: String = "Black"
   val food: String = "Milk"
 }
 
 object Henderson {
-  val colour: String = "Ginger"
+  val color: String = "Ginger"
   val food: String = "Chips"
 }
 
 object Quentin {
-  val colour: String = "Tabby and white"
+  val color: String = "Tabby and white"
   val food: String = "Curry"
 }
 ```

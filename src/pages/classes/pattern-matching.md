@@ -113,7 +113,7 @@ Define an object `ChipShop` with a method `willServe`. This method should accept
 We can start by writing the skeleton suggested by the problem text.
 
 ```tut:book:silent
-case class Cat(name: String, colour: String, food: String)
+case class Cat(name: String, color: String, food: String)
 ```
 
 ```scala

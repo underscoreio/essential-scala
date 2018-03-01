@@ -226,7 +226,7 @@ We now have enough machinery to have some fun playing with classes.
 Recall the cats from a previous exercise:
 
 +-----------+-----------------+-------+
-| Name      | Colour          | Food  |
+| Name      | Color          | Food  |
 +===========+=================+=======+
 | Oswald    | Black           | Milk  |
 +-----------+-----------------+-------+
@@ -242,7 +242,7 @@ Define a class `Cat` and then create an object for each cat in the table above.
 This is a finger exercise to get you used to the syntax of defining classes.
 
 ```tut:book:silent
-class Cat(val colour: String, val food: String)
+class Cat(val color: String, val food: String)
 
 val oswald = new Cat("Black", "Milk")
 val henderson = new Cat("Ginger", "Chips")
