@@ -241,7 +241,7 @@ def fold(end: Int, f: (Int, Int) => Int): Int
 Replacing the return type and tracing it back we arrive at
 
 ```scala
-def fold[A](list: IntList, f: (Int, A) => A, end: A): A
+def fold[A](end: A, f: (Int, A) => A): A
 ```
 
 where we've used a generic type on the method to capture the changing return type. With this we can implement `double`. When we try to do so we'll see that type inference fails, so we have to give it a bit of help.
