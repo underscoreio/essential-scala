@@ -14,7 +14,7 @@ export KEY_FILENAME="book_deploy_rsa"
 #    Only deploy for non-PR commits to this branch.
 export DEPLOY_BRANCH="feature/cd"
 # 3. Folder inside target of where to place the artifacts:
-export TARGET_PATH=books/essential-scala/
+export TARGET_DIR=books/essential-scala/
 # 4. Commit message prefix (for the "books" repository)
 export COMMIT_PREFIX="deploy essential scala via travis"
 # End of configuration
@@ -29,11 +29,14 @@ if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "${DEPLOY_BRA
   git config --global user.name "Travis Build"
 
   export SRC_DIR=`pwd` # e.g., /home/travis/build/underscoreio/insert-book-name-here
-  export TARGET_DIR=/tmp/dist
-  mkdir $TARGET_DIR
-  cd $TARGET_DIR
+
+  export TEMP_DIR=/tmp/dist
+  mkdir -p $TEMP_DIR
+  cd $TEMP_DIR
   git clone git@github.com:underscoreio/books.git
-  cd $TARGET_PATH
+
+  mkdir -p $TARGET_DIR
+  cd $TARGET_DIR
 
   cp $SRC_DIR/dist/*.pdf .
   cp $SRC_DIR/dist/*.html .
@@ -43,5 +46,5 @@ if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "${DEPLOY_BRA
   git commit -m "$COMMIT_PREFIX $TRAVIS_JOB_NUMBER $TRAVIS_COMMIT [ci skip]"
   git push git@github.com:underscoreio/books.git master:master
 
-  rm -rf $TARGET_DIR
+  rm -rf $TEMP_DIR
 fi
