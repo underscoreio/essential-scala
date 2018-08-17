@@ -25,7 +25,8 @@ if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "${DEPLOY_BRA
   echo -e "Host github.com\n\tStrictHostKeyChecking no\nIdentityFile ~/.ssh/${KEY_FILENAME}\n" >> ~/.ssh/config
   echo cp ${KEY_FILENAME} ~/.ssh/${KEY_FILENAME}
   cp ${KEY_FILENAME} ~/.ssh/${KEY_FILENAME}
-  chmod 600 "~/.ssh/${KEY_FILENAME}"
+  echo chmod 600 ~/.ssh/${KEY_FILENAME}
+  chmod 600 ~/.ssh/${KEY_FILENAME}
   ls -l ~/.ssh/
   cat ~/.ssh/config
 
