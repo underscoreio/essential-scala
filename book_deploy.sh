@@ -23,7 +23,8 @@ if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "${DEPLOY_BRA
   echo "Starting deploy to Github Pages"
   mkdir -p "~/.ssh"
   echo -e "Host github.com\n\tStrictHostKeyChecking no\nIdentityFile ~/.ssh/${KEY_FILENAME}\n" >> ~/.ssh/config
-  cp "${KEY_FILENAME}" "~/.ssh/${KEY_FILENAME}"
+  echo cp ${KEY_FILENAME} ~/.ssh/${KEY_FILENAME}
+  cp ${KEY_FILENAME} ~/.ssh/${KEY_FILENAME}
   chmod 600 "~/.ssh/${KEY_FILENAME}"
   ls -l ~/.ssh/
   cat ~/.ssh/config
