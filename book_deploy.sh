@@ -21,10 +21,12 @@ export COMMIT_PREFIX="deploy essential scala via travis"
 
 if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "${DEPLOY_BRANCH}" ]]; then
   echo "Starting deploy to Github Pages"
-  echo -e "Host github.com\n\tStrictHostKeyChecking no\nIdentityFile ~/.ssh/${KEY_FILENAME}\n" >> ~/.ssh/config
   mkdir -p "~/.ssh"
+  echo -e "Host github.com\n\tStrictHostKeyChecking no\nIdentityFile ~/.ssh/${KEY_FILENAME}\n" >> ~/.ssh/config
   cp "${KEY_FILENAME}" "~/.ssh/${KEY_FILENAME}"
   chmod 600 "~/.ssh/${KEY_FILENAME}"
+  ls -l ~/.ssh/
+  cat ~/.ssh/config
 
   git config --global user.email "hello@underscore.io"
   git config --global user.name "Travis Build"
