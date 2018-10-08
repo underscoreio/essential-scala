@@ -192,7 +192,7 @@ Test7.simpleField
 Test7.simpleField
 ```
 
-The body of a method, on the other hand, is evaluated every time we call the method---notice the repreated println output below.
+The body of a method, on the other hand, is evaluated every time we call the method---notice the repeated println output below.
 
 ```tut:book
 Test7.noParameterMethod
