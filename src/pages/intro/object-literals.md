@@ -2,7 +2,7 @@
 
 So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own design using *object literals*.
 
-When we write an object literal we use a *declaration*, which is a different kind of program to an expression. A declaration does not evaluate to a value. Instead is gives a name to a value. This name can then be used to refer to the value in other code.
+When we write an object literal we use a *declaration*, which is a different kind of program to an expression. A declaration does not evaluate to a value. Instead it gives a name to a value. This name can then be used to refer to the value in other code.
 
 We can declare an empty object as follows:
 
