@@ -173,7 +173,7 @@ object Test7 {
 
 Here we have used a `println` expression to print something to the console, and a block expression (expressions surrounded by `{` and `}`) to group expressions. We'll see more about block expressions in the next section.
 
-Notice how the console says we've defined a object, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
+Notice how the console says we've defined an object, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
 
 Objects and classes (which we'll see later) aren't loaded until they are referenced by other code. This is what prevents Scala loading the entire standard library into memory to run a simple `"Hello world!"` app.
 
