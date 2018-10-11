@@ -2,7 +2,7 @@
 
 So far we've seen how to create objects of built-in types like `Int` and `String` and combine them into expressions. In this section we will see how to create objects of our own design using *object literals*.
 
-When we write an object literal we use a *declaration*, which is a different kind of program to an expression. A declaration does not evaluate to a value. Instead is gives a name to a value. This name can then be used to refer to the value in other code.
+When we write an object literal we use a *declaration*, which is a different kind of program to an expression. A declaration does not evaluate to a value. Instead it associates a name with a value. This name can then be used to refer to the value in other code.
 
 We can declare an empty object as follows:
 
@@ -99,7 +99,7 @@ where
 
 Method parameters are optional, but if a method has parameters their type must be given. Although the result type is optional it is good practice to define it as it serves as (machine checked!) documentation.
 
-The term *argument* may be used interchangably with *parameter*.
+The term *argument* may be used interchangeably with *parameter*.
 </div>
 
 <div class="callout callout-info">
@@ -173,7 +173,7 @@ object Test7 {
 
 Here we have used a `println` expression to print something to the console, and a block expression (expressions surrounded by `{` and `}`) to group expressions. We'll see more about block expressions in the next section.
 
-Notice how the console says we've defined a object, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
+Notice how the console says we've defined an object, but it hasn't run either of our `println` statements? This is due to a quirk of Scala and Java called *lazy loading*.
 
 Objects and classes (which we'll see later) aren't loaded until they are referenced by other code. This is what prevents Scala loading the entire standard library into memory to run a simple `"Hello world!"` app.
 
@@ -192,7 +192,7 @@ Test7.simpleField
 Test7.simpleField
 ```
 
-The body of a method, on the other hand, is evaluated every time we call the method---notice the repreated println output below.
+The body of a method, on the other hand, is evaluated every time we call the method---notice the repeated println output below.
 
 ```tut:book
 Test7.noParameterMethod

@@ -47,7 +47,7 @@ mutableCollection
 <div class="callout callout-info">
 #### Using Mutable Collections Safely
 
-Scala programmers tend to favour immutable collections and only bring in mutable ones in specific circumastances. Using `import scala.collection.mutable._` at the top of a file tends to create a whole series of naming collisions that we have to work around.
+Scala programmers tend to favour immutable collections and only bring in mutable ones in specific circumstances. Using `import scala.collection.mutable._` at the top of a file tends to create a whole series of naming collisions that we have to work around.
 
 To work around this, I suggest importing the `mutable` package iteself rather than its contents. We can then explicitly refer to any mutable collection using the package name as a prefix, leaving the unprefixed names referring to the immutable versions:
 
