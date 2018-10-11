@@ -6,7 +6,7 @@ Our goal in this section is to see how to translate a data model into Scala code
 
 ### The Product Type Pattern
 
-Our first pattern is to model data that contains other data. We might describe this as "`A` *has a* `B` *and* `C`". For example, a `Cat` has a colour and a favourite food; a `Visitor` has an id and a creation date; and so on.
+Our first pattern is to model data that contains other data. We might describe this as "`A` *has a* `B` *and* `C`". For example, a `Cat` has a color and a favourite food; a `Visitor` has an id and a creation date; and so on.
 
 The way we write this is to use a case class. We've already done this many times in exercises; now we're formalising the pattern.
 

@@ -162,7 +162,7 @@ case class Name(...) extends TraitName {
 
 Demand for Cat Simulator 1.0 is exploding! For v2 we're going to go beyond the domestic cat to model `Tiger`s, `Lion`s, and `Panther`s in addition to the `Cat`. Define a trait `Feline` and then define all the different species as subtypes of `Feline`. To make things interesting, define:
 
-- on `Feline` a `colour` as before;
+- on `Feline` a `color` as before;
 - on `Feline` a `String` `sound`, which for a cat is `"meow"` and is `"roar"` for all other felines;
 - only `Cat` has a favourite food; and
 - `Lion`s have an `Int` `maneSize`.
@@ -172,23 +172,23 @@ This is mostly a finger exercise to get you used to trait syntax but there are a
 
 ```tut:book:silent
 trait Feline {
-  def colour: String
+  def color: String
   def sound: String
 }
 
-case class Lion(colour: String, maneSize: Int) extends Feline {
+case class Lion(color: String, maneSize: Int) extends Feline {
   val sound = "roar"
 }
 
-case class Tiger(colour: String) extends Feline {
+case class Tiger(color: String) extends Feline {
   val sound = "roar"
 }
 
-case class Panther(colour: String) extends Feline {
+case class Panther(color: String) extends Feline {
   val sound = "roar"
 }
 
-case class Cat(colour: String, food: String) extends Feline {
+case class Cat(color: String, food: String) extends Feline {
   val sound = "meow"
 }
 ```
@@ -197,7 +197,7 @@ Notice that `sound` is not defined as a constructor argument. Since it is a cons
 
 ```tut:book:silent
 trait Feline {
-  def colour: String
+  def color: String
   def sound: String = "roar"
 }
 ```

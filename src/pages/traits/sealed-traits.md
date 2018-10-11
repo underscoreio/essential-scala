@@ -168,7 +168,7 @@ sealed trait Color {
   def green: Double
   def blue: Double
 
-  // We decided to define a "light" colour as one with
+  // We decided to define a "light" color as one with
   // an average RGB of more than 0.5:
   def isLight = (red + green + blue) / 3.0 > 0.5
   def isDark = !isLight
@@ -263,7 +263,7 @@ object Draw {
 Write a sealed trait `Color` to make our shapes more interesting.
 
  - give `Color` three properties for its RGB values;
- - create three predefined colours: `Red`, `Yellow`, and `Pink`;
+ - create three predefined colors: `Red`, `Yellow`, and `Pink`;
  - provide a means for people to produce their own custom `Colors`
    with their own RGB values;
  - provide a means for people to tell whether any `Color` is
@@ -271,22 +271,22 @@ Write a sealed trait `Color` to make our shapes more interesting.
 
 A lot of this exercise is left deliberately open to interpretation. The important thing is to practice working with traits, classes, and objects.
 
-Decisions such as how to model colours and what is considered a light or dark colour can either be left up to you or discussed with other class members.
+Decisions such as how to model colors and what is considered a light or dark color can either be left up to you or discussed with other class members.
 
-Edit the code for `Shape` and its subtypes to add a colour to each shape.
+Edit the code for `Shape` and its subtypes to add a color to each shape.
 
-Finally, update the code for `Draw.apply` to print the colour of the argument as well as its shape and dimensions:
+Finally, update the code for `Draw.apply` to print the color of the argument as well as its shape and dimensions:
 
- - if the argument is a predefined colour, print that colour by name:
+ - if the argument is a predefined color, print that color by name:
 
 ```tut:book
 Draw(Circle(10, Yellow))
 ```
 
- - if the argument is a custom colour rather than a predefined one,
+ - if the argument is a custom color rather than a predefined one,
    print the word "light" or "dark" instead.
 
-You may want to deal with the colour in a helper method.
+You may want to deal with the color in a helper method.
 
 <div class="solution">
 One solution to this exercise is presented below. Remember that a lot of the implementation details are unimportant---the crucial aspects of a correct solution are:
@@ -296,13 +296,13 @@ One solution to this exercise is presented below. Remember that a lot of the imp
     - The trait should contains the `isLight` method,
       defined in terms of the RGB values.
 
- - There must be three objects representing the predefined colours:
+ - There must be three objects representing the predefined colors:
     - Each object must `extend Color`.
     - Each object should override the RGB values as `vals`.
     - Marking the objects as `final` is optional.
     - Making the objects `case objects` is also optional.
 
- - There must be a class representing custom colours:
+ - There must be a class representing custom colors:
     - The class must `extend Color`.
     - Marking the class `final` is optional.
     - Making the class a `case class` is optional (although highly recommended).
@@ -326,7 +326,7 @@ sealed trait Color {
   def green: Double
   def blue: Double
 
-  // We decided to define a "light" colour as one with
+  // We decided to define a "light" color as one with
   // an average RGB of more than 0.5:
   def isLight = (red + green + blue) / 3.0 > 0.5
   def isDark = !isLight

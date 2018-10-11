@@ -308,7 +308,7 @@ val favoriteLolcats = Map(
 
 Use the code as test data for the following exercises:
 
-Write a method `favoriteColor` that accepts a person's name as a parameter and returns their favorite colour.
+Write a method `favoriteColor` that accepts a person's name as a parameter and returns their favorite color.
 
 <div class="solution">
 The person may or may not be a key in the `favoriteColors` map so the function should return an `Option` result:
