@@ -1,6 +1,6 @@
 ## Sequence Implementations
 
-We've seen that the Scala collections seperate interface from implementation. This means we can work with all collections in a generic manner. However different concrete implementations have different performance characteristics, so we must be aware of the available implementations so we can choose appropriately. Here we look at the mostly frequently used implementations of `Seq`. For full details on all the available implementation see [the docs](http://docs.scala-lang.org/overviews/collections/introduction.html).
+We've seen that the Scala collections separate interface from implementation. This means we can work with all collections in a generic manner. However different concrete implementations have different performance characteristics, so we must be aware of the available implementations so we can choose appropriately. Here we look at the mostly frequently used implementations of `Seq`. For full details on all the available implementation see [the docs](http://docs.scala-lang.org/overviews/collections/introduction.html).
 
 ### Peformance Characteristics
 
