@@ -220,7 +220,7 @@ Here is a type table of all the methods we have seen so far:
 +------------+------------+-------------------------------------------+---------------+
 
 
-Here are the extras for mutable Sets:
+Here are the extras for mutable Maps:
 
 +------------+------------+-------------------+-------------+
 | Method     | We have    | We provide        | We get      |
