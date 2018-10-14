@@ -1,8 +1,8 @@
 ## Sequence Implementations
 
-We've seen that the Scala collections seperate interface from implementation. This means we can work with all collections in a generic manner. However different concrete implementations have different performance characteristics, so we must be aware of the available implementations so we can choose appropriately. Here we look at the mostly frequently used implementations of `Seq`. For full details on all the available implementation see [the docs](http://docs.scala-lang.org/overviews/collections/introduction.html).
+We've seen that the Scala collections separate interface from implementation. This means we can work with all collections in a generic manner. However different concrete implementations have different performance characteristics, so we must be aware of the available implementations so we can choose appropriately. Here we look at the mostly frequently used implementations of `Seq`. For full details on all the available implementation see [the docs](http://docs.scala-lang.org/overviews/collections/introduction.html).
 
-### Peformance Characteristics
+### Performance Characteristics
 
 The collections framework distinguishes at the type level two general classes of sequences. Sequences implementing `IndexedSeq` have efficient `apply`, `length`, and (if mutable) `update` operations, while `LinearSeq`s have efficient `head` and `tail` operations. Neither have any additional operations over `Seq`.
 
@@ -48,7 +48,7 @@ streamOnes
 // res: Stream[Int] = Stream(1, ?)
 ~~~
 
-Because elements are only evaluated as requested, calling `streamOnes` doesn't lead to infinte recursion. When we take the first five elements (and convert them to a `List`, so they'll all print out) we see we have what we want.
+Because elements are only evaluated as requested, calling `streamOnes` doesn't lead to infinite recursion. When we take the first five elements (and convert them to a `List`, so they'll all print out) we see we have what we want.
 
 ~~~ scala
 streamOnes.take(5).toList
