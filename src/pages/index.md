@@ -1,6 +1,6 @@
 # Foreword #{-}
 
-This book is aimed to programmer learning Scala for the first time. We assume you have some familiarity with an object-oriented programming language such as Java, but little or no experience with functional programming.
+This book is aimed to programmers learning Scala for the first time. We assume you have some familiarity with an object-oriented programming language such as Java, but little or no experience with functional programming.
 
 Our goal is to describe how to use Scala in-the-small. To this end our focus is on the core patterns used in idiomatic Scala code, and we introduce Scala's features in the context of the patterns they enable. We are not aiming for exhaustive coverage of Scala's features, and this text is not a reference manual.
 
