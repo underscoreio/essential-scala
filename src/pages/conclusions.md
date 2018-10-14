@@ -18,6 +18,6 @@ The journey to mastering Scala has not finished with this book. You will benefit
 
 If you have enjoyed Essential Scala we hope you'll consider our followup book [Advanced Scala](http://underscore.io/training/courses/advanced-scala). As the name suggests, it covers more advanced concepts with an emphasis on patterns for larger programs.
 
-Finally, we would love hear your thoughts on Essential Scala. Any feedback---good or bad---helps to improve the book. We can be reached at [hello@underscore.io](mailto:hello@underscore.io). Any improvements we make to Essential Scala will of course be made available to every reader as part of our policy of free liftime updates. 
+Finally, we would love hear your thoughts on Essential Scala. Any feedback---good or bad---helps to improve the book. We can be reached at [hello@underscore.io](mailto:hello@underscore.io). Any improvements we make to Essential Scala will of course be made available to every reader as part of our policy of free lifetime updates.
 
 Thank you for reading Essential Scala, and we hope you future coding in Scala is productive and fun.
