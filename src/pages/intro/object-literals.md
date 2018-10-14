@@ -149,7 +149,7 @@ where
 
 Using `val` defines an *immutable* field, meaning we cannot change the value bound to the name. A `var` field is *mutable*, allowing us to change the bound value.
 
-*Always prefer `val` to `var`.* Scala programmers prefer to use immutable fields wherever possible, as this maintains substitution. While you will no doubt create the occassional mutable field in your application code, we will stay away from `var` for most of this course and you should do the same in your Scala programming.
+*Always prefer `val` to `var`.* Scala programmers prefer to use immutable fields wherever possible, as this maintains substitution. While you will no doubt create the occasional mutable field in your application code, we will stay away from `var` for most of this course and you should do the same in your Scala programming.
 
 
 ### Methods versus fields
