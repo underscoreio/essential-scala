@@ -108,7 +108,7 @@ final case class E(c: C) extends A
 
 ### Take Home Points
 
-We have seen that we can mechanically translate data using the "has-a and" and "is-a or" patterns (or, more succintly, the product and sum types) into Scala code. This type of data is known as an algebraic data type. Understanding these patterns is very important for writing idiomatic Scala code.
+We have seen that we can mechanically translate data using the "has-a and" and "is-a or" patterns (or, more succinctly, the product and sum types) into Scala code. This type of data is known as an algebraic data type. Understanding these patterns is very important for writing idiomatic Scala code.
 
 ### Exercises
 
