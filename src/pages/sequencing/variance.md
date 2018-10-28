@@ -233,7 +233,7 @@ case class A[+T]() {
 ```tut:reset
 ```
 
-We have see some type bounds above, in the contravariant position pattern. Type bounds extend to specify subtypes as well as supertypes. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
+We have seen some type bounds above, in the contravariant position pattern. Type bounds extend to specify subtypes as well as supertypes. The syntax is `A <: Type` to declare `A` must be a subtype of `Type` and `A >: Type` to declare a supertype.
 
 For example, the following type allows us to store a `Visitor` or any subtype:
 
@@ -290,7 +290,7 @@ which of the following can I pass to `groom`?
 - A function of type `Animal => Sound`
 
 <div class="solution">
-The only function that will work is the the function of type `Animal => Purr`. The `Siamese => Purr` function will not work because the Oswald is a not a Siamese cat. The `Animal => Sound` function will not work because we require the return type is a `CatSound`.
+The only function that will work is the the function of type `Animal => Purr`. The `Siamese => Purr` function will not work because the Oswald is a not a Siamese cat. The `Animal => Sound` function will not work because we require the return type to be a `CatSound`.
 </div>
 
 
