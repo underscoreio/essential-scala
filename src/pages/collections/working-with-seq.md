@@ -158,7 +158,7 @@ We've seen the four major traversal functions, `map`, `flatMap`, `fold`, and `fo
 | `Seq[A]` | `B` and `(A, B) => B` | `B`       | `foldRight` |
 +----------+-----------------------+-----------+-------------+
 
-This type of analysis may see foreign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
+This type of analysis may seem foreign at first, but you will quickly get used to it. Your two steps in solving any problem with sequences should be: think about the types, and experiment on the REPL!
 
 ### Exercises
 
@@ -397,7 +397,7 @@ def reverse[A](seq: Seq[A]): Seq[A] = {
 }
 ```
 
-We need to work out the function to provide to `foldLeft` and the zero or identity element. For the function, the type of `foldLeft` requires it is `(Seq[A], A) => Seq[A]`. If we flip the types around the `+:` method on `Seq` has the right types.
+We need to work out the function to provide to `foldLeft` and the zero or identity element. For the function, the type of `foldLeft` is required to be of type `(Seq[A], A) => Seq[A]`. If we flip the types around the `+:` method on `Seq` has the right types.
 
 For the zero element we know that it must have the same type as the return type of `reverse` (because the result of the fold is the result of `reverse`). Thus it's a `Seq[A]`. Which sequence? There are a few ways to answer this:
 

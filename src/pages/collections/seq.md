@@ -180,7 +180,7 @@ List(1, 2, 3) ::: List(4, 5, 6)
 
 `::` and `:::` are specific to lists whereas `+:`, `:+` and `++` work on any type of sequence.
 
-Lists have well known performance characteristics---constant-time prepend and head/tail operations and linear-time append and search operations. Other immutable sequences are available in Scala with different [performance characteristics](http://www.scala-lang.org/docu/files/collections-api/collections_40.html) to match all situations. It is up to us as developers to decide whether we want to tie our code to a specific sequence type like `List` or refer to our sequences as `Seqs` to simplify swapping implementations.
+Lists have well known performance characteristics---constant-time in prepend, head and tail operations and linear-time in append, apply and update operations. Other immutable sequences are available in Scala with different [performance characteristics](https://docs.scala-lang.org/overviews/collections/performance-characteristics.html) to match all situations. So it is up to us as developers to decide whether we want to tie our code to a specific sequence type like `List` or prefer the sequence type `Seq` which is normally used to simplify swapping implementations.
 
 
 ### Importing Collections and Other Libraries
@@ -201,6 +201,7 @@ We can also use *wildcard imports* to import everything in a package:
 
 ```tut:book:silent
 import scala.collection.immutable._
+```
 
 ```tut:book
 Queue(1, 2, 3)
@@ -228,7 +229,7 @@ def someMethod = {
   empty[Int]
 }
 
-// `empty` is unbound again here
+// `empty` is unbound here again
 ```
 
 <div class="callout callout-info">
@@ -359,7 +360,7 @@ In most real code appending an `Int` to a `Seq[String]` would be an error. In pr
 
 Let's revisit our films and directors example from the [Classes](/classes) chapter.
 
-The code below is a partial rewrite of the previous sample code in which `Films` are stored as a field of `Director` instead of the other way around. Copy and paste this into a new Scala worksheet and continue with the exercises below:
+The code below is a partial rewrite of the previous sample code in which `Films` is stored as a field of `Director` instead of the other way around. Copy and paste this into a new Scala worksheet and continue with the exercises below:
 
 ```tut:book:silent
 case class Film(
