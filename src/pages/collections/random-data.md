@@ -1,6 +1,6 @@
 ## Generating Random Data
 
-In this section we have an extended case study generating random data. The ideas here have many applications. For example, in generating data for testing, as used in *property based testing*, in *probabilistic programming*, a new area of machine learning, and, if you're going through the extended case study, in *generative art*.
+In this section we have an extended case study of generating random data. The ideas here have many applications. For example, in generating data for testing, as used in *property based testing*, in *probabilistic programming*, a new area of machine learning, and, if you're going through the extended case study, in *generative art*.
 
 ### Random Words
 
@@ -308,8 +308,8 @@ This example also shows us that to use this library for real we'd probably want 
 
 ### Next Steps
 
-The current library is limited to working with discrete events. If we wanted to work with continuous domains, such as coordinates in the plane, we need a different representation as we clearly can't represent all possible outcomes. We can even run into issues with complex discrete models, as the number of events increases exponentially with each `flatMap`.
+The current library is limited to working with discrete events. If we wanted to work with continuous domains, such as coordinates in the plane, we would need a different representation as we clearly can't represent all possible outcomes. Also, we can easily run into issues when working with complex discrete models, as the number of events increases exponentially with each `flatMap`.
 
 Instead of representing all events we can sample from the distributions of interest and maintain a set of samples. Varying the size of the set allows us to tradeoff accuracy with computational resources.
 
-We could use the same style of implementation with a sampling representation, but this requires we fix the number of samples in advance. It's more useful to be able to repeatedly sample from the same model, so the user can ask for more samples if they decide they need higher accuracy. To do so requires we separate defining the structure of the model from the process of sampling from it, and reify the model. We're not going to go further into this implementation here, but if you're going through the case study you'll pick up the techniques need to implement it.
+We could use the same style of implementation with a sampling representation, but this would require us to fix the number of samples in advance. It's more useful to be able to repeatedly sample from the same model, so that the user can ask for more samples if they decide they need higher accuracy. Doing so requires that we separate defining the structure of the model from the process of sampling, hence reifying the model. We're not going to go further into this implementation here, but if you're going through the case study you'll pick up the techniques needed to implement it.

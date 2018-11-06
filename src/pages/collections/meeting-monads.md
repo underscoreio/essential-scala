@@ -1,6 +1,6 @@
 ## Monads
 
-We've seen that by implementing a few methods (`map`, `flatMap`, and optionally `filter` and `foreach`), we can use any class with a *for comprehension*. In the previous chapter we learned this such a class is called a *monad*. Here we are going to look in a bit more depth at monads.
+We've seen that by implementing a few methods (`map`, `flatMap`, and optionally `filter` and `foreach`), we can use any class with a *for comprehension*. In the previous chapter we learned that such a class is called a *monad*. Here we are going to look in a bit more depth at monads.
 
 ### What's in a Monad?
 
