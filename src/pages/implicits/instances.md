@@ -43,9 +43,9 @@ List(2, 4, 3).sorted
 List(1, 7 ,5).sorted
 ```
 
-Note we didn't supply an ordering to `sorted`. Instead, the compiler provides it for us.
+Note that we didn't supply an ordering to `sorted`. Instead, the compiler provided it for us.
 
-We have to tell the compiler which values it is allowed pass to methods for us. We do this by annotating a value with `implicit`, as in the declaration `implicit val ordering = ...`. The method must also indicate that it accepts implicit values. If you look at the [documentation for the `sorted` method on `List`](http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.List) you see that the single parameter is declared `implicit`. We'll talk more about implicit parameter lists in a bit. For now we just need to know that we can get the compiler to supply implicit values to parameters that are themselves marked implicit.
+We have to tell the compiler which values it should pass to the methods for us. We do this by annotating the value with an `implicit` modifier, as in the declaration `implicit val ordering = ...`. The method must also indicate that it accepts implicit values. If you look at the [documentation for the `sorted` method on `List`](https://www.scala-lang.org/api/current/scala/collection/immutable/List.html#sorted[B>:A](implicitord:scala.math.Ordering[B]):Repr) you see that the single parameter is declared `implicit`. We'll talk more about implicit parameter lists in a bit. For now we just need to know that we can get the compiler to supply implicit values to parameters that are themselves marked implicit.
 
 ### Declaring Implicit Values
 

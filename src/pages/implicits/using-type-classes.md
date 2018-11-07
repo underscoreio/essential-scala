@@ -65,4 +65,4 @@ implicitly[Example]
 implicitly[Example] == implicitExample
 ```
 
-The `implicitly` method takes no parameters but has a generic type parameters. It returns the implicit matching the given type, assuming there is no ambiguity.
+The `implicitly` method takes no parameters but has a generic type parameter. It returns the implicit matching the given type, assuming there is no ambiguity.

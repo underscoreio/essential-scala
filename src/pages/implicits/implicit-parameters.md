@@ -16,7 +16,7 @@ object PersonWriter extends HtmlWriter[Person] {
 }
 ```
 
-This issue with this code is that we need manage a lot of `HtmlWriter` instances when we render any complex data. We have already seen that we can manage this complexity using implicit values and have mentioned *implicit parameters* in passing. In this section we go in depth on implicit parameters.
+This issue with this code is that we need to manage a lot of `HtmlWriter` instances when we render any complex data. We have already seen that we can manage this complexity using implicit values when we mentioned about *implicit parameters* in passing. In this section we go in depth on implicit parameters.
 
 ### Implicit Parameter Lists
 
@@ -108,7 +108,7 @@ object TypeClass {
 
 ### Take Home Points
 
-Implicit parameters make type classes more convenient to use. We can make an entire parameter list with the `implicit` keyword to make it an implicit parameter list.
+Implicit parameters make type classes more convenient to use. We can make an entire parameter list using the `implicit` keyword. To make it an implicit parameter list we write as
 
 ```scala
 def method[A](normalParam1: NormalType, ...)(implicit implicitParam1: ImplicitType[A], ...)
