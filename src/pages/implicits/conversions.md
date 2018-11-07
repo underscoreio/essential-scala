@@ -82,6 +82,8 @@ object IntImplicits {
     def times(func: Int => Unit) =
       for(i <- 0 until n) func(i)
   }
+  
+  import scala.language.implicitConversions
 
   implicit def intToIntOps(value: Int) =
     new IntOps(value)

@@ -1,6 +1,6 @@
 ## Organising Type Class Instances
 
-In section we'll learn about the places the compiler searches for type class instances (implicit values), known as the *implicit scope*, and we'll discuss how to organise type class instances to make their use more convenient.
+In this section we'll learn about the places the compiler searches for type class instances (implicit values), known as the *implicit scope*, and we'll discuss how to organise type class instances to make their use more convenient.
 
 ### Implicit Scope
 
@@ -17,7 +17,7 @@ def sorted[B >: A](implicit ord: math.Ordering[B]): List[A]
 The compiler will look in the following places for `Ordering` instances:
 
 - the companion object of `Ordering`; and
-- the companion object of the type `B` (which is `A` or a supertype).
+- the companion object of the type `B` (which is `A`) a supertype of `A`.
 
 The practical upshot is we can define type class instances in the companion object of our types (the type `A` in this example) and they will be found by the compiler without the user having to import them explicitly.
 
@@ -103,7 +103,7 @@ This leads us to our first pattern for packaging type class instances.
 <div class="callout callout-info">
 #### Type Class Instance Packaging: Companion Objects {-}
 
-When defining a type class instance, if
+When defining a type class instance, and
 
 1. there is a single instance for the type; and
 2. you can edit the code for the type that you are defining the instance for
@@ -166,7 +166,7 @@ then *define the type class instance in the companion object of the type*. This 
 
 ### Packaging Implicit Values Without Companion Objects
 
-If there is no good default instance for a type class instance, or if there are several good defaults, we should not place an type class instances in the companion object but instead require the user to explicitly import an instance into the local scope.
+If there is no good default instance for a type class instance, or if there are several good defaults, we should not place any type class instances in the companion object but instead require the user to explicitly import an instance into the local scope.
 
 In this case, one simple way to package instances is to place each in its own object that the user can import into the local scope. For instance, we might define orderings for `Rational` as follows:
 

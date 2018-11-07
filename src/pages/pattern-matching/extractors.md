@@ -33,7 +33,7 @@ import scala.util.matching.Regex
 ```
 
 ```tut:book
-val r = new Regex("""(\d+)\.(\d+)\.(\d+)\.(\d+)""")
+val r: Regex = """(\d+)\.(\d+)\.(\d+)\.(\d+)""".r
 
 "192.168.0.1" match {
   case r(a, b, c, d) => List(a, b, c, d)
