@@ -109,6 +109,7 @@ Write companion objects for `Director` and `Film` as follows:
  - the `Film` companion object should contain:
     - an `apply` method that accepts the same parameters as the constructor of the class
       and returns a new `Film`;
+    - a method `newer` that accepts two `Films` and returns the most recently-released `Film`;
     - a method `highestRating` that accepts two `Films` and returns the highest
       `imdbRating` of the two;
     - a method `oldestDirectorAtTheTime` that accepts two `Films` and returns the `Director`
@@ -149,7 +150,7 @@ class Film(
   val director: Director) {
 
   def directorsAge =
-    director.yearOfBirth - yearOfRelease
+    yearOfRelease - director.yearOfBirth
 
   def isDirectedBy(director: Director) =
     this.director == director
