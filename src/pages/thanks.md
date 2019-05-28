@@ -9,14 +9,15 @@ to use [Tut][link-tut] and increased our code quality 100% overnight!
 
 Thanks also to
 Amir Aryanpour,
-Konstantine Gadyrka,
-Rebecca Grenier,
+Audrey Welsh,
+Daniel Watford,
+Jason Scott,
 Joe Halliwell,
 Jon Pearce,
-Jason Scott,
+Konstantine Gadyrka,
 N. Sriram,
-Daniel Watford,
-and Audrey Welsh
+Rebecca Grenier,
+and Raffael Dzikowski,
 who sent us corrections and suggestions
 while the book was in early access.
 Knowing that our work was being used
