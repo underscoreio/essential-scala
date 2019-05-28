@@ -166,7 +166,7 @@ then *define the type class instance in the companion object of the type*. This 
 
 ### Packaging Implicit Values Without Companion Objects
 
-If there is no good default instance for a type class instance, or if there are several good defaults, we should not place an type class instances in the companion object but instead require the user to explicitly import an instance into the local scope.
+If there is no good default instance for a type class instance, or if there are several good defaults, we should not place type class instances in the companion object but instead require the user to explicitly import an instance into the local scope.
 
 In this case, one simple way to package instances is to place each in its own object that the user can import into the local scope. For instance, we might define orderings for `Rational` as follows:
 
