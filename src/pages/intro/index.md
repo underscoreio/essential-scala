@@ -141,7 +141,7 @@ Type is `Int` and value is `3`.
 ```
 
 <div class="solution">
-Type is `Int`, but this one doesn't evaluate to a value---it raises an exception instead, and a raised exception is not a value. How can we tell this? We can't continuing computing with the result of the expression. For example, we can't print it. Compare
+Type is `Int`, but this one doesn't evaluate to a value---it raises an exception instead, and a raised exception is not a value. How can we tell this? We can't continue computing with the result of the expression. For example, we can't print it. Compare
 
 ```tut:book
 println("foo")
