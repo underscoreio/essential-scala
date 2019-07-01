@@ -69,7 +69,7 @@ Because every value in Scala is an object we can also call methods on primitive 
 123.toByte // this is how we define a `Byte`
 ```
 
-But if an `Int` is an object, what are the basic methematical operators such as `+` and `-`? Are they also methods? Yes---Scala methods can have symbolic names as well as alphanumeric ones!
+But if an `Int` is an object, what are the basic mathematical operators such as `+` and `-`? Are they also methods? Yes---Scala methods can have symbolic names as well as alphanumeric ones!
 
 ```tut:book
 43 - 3 + 2
