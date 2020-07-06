@@ -34,12 +34,12 @@ try {
 }
 ```
 
-There are still several problems with this approach. Firstly, there is no static check that we've doing error handling correctly. In Java we'd have to at least declare which exceptions our methods throw (generally considered a design mistake) but this is not the case in Scala. Either way we're free to ignore this information (beyond annotating a method as `throws Exception` in Java) and carry on as if errors never occurred.
+There are still several problems with this approach. Firstly, there is no static check that we're doing error handling correctly. In Java we'd have to at least declare which exceptions our methods throw but this is not the case in Scala. Either way we're free to ignore this information (beyond annotating a method as `throws Exception` in Java) and carry on as if errors never occurred.
 
 More insidious is the case in a concurrent program. Here we often delegate work to threads we obtain from a pool (an `ExecutorService` for example). Remember that exceptions are propagated up the stack. When we hand off work to another thread its stack is not our stack! This means:
 
 1. We might not receive exceptions that happened in the delegated thread.
-2. Even if we do receive an exception, the stack trace is often useless for debugging as it often contains no context information (since it doesn't share the stack of the thread that invoked the worker thread).
+2. Even if we do receive an exception, the stack trace is often useless for debugging as it often contains little context information (since it doesn't share the stack of the thread that invoked the worker thread).
 
 Now we've seen the justification for a different method of error handling, let's set out our desiderata:
 
@@ -110,7 +110,7 @@ This pattern is good, but we still don't have useful information on error---`Non
 
 ## Try Either or Validation
 
-Instead of using `Option` to propagate errors we need a type that can carry information in the error case. There is a type called `Either` in the standard library, but it not specialised to error handling and there a little bit involved to use here. It's also instructive to create our own. Our type, called `Validation`, is loosely based on the type of the same name in the Scalaz library. Here's the basic definition:
+Instead of using `Option` to propagate errors we need a type that can carry information in the error case. There is a such type called `Either` in the standard library, but it not specialised to error handling and so is a little bit involved to use. It's also instructive to roll our own. Our type, called `Validation`, is loosely based on the type of the same name in the Scalaz library. Here's the basic definition:
 
 ```scala
 sealed trait Validation[E,A]
@@ -122,7 +122,7 @@ case class Failure[E,A](failure: E) extends Validation[E,A]
 
 Our base trait `Validation` is generic over two types, the failure type `E` and the success type `A`. It is sealed so we can be sure only the two concrete cases `Success` and `Failure` exist.
 
-To make the definition above useful we need to define `flatMap` and `map` so we can use `Validation` in a for comprehension, and a way of getting a value out of a `Validation` (we used `getOrElse` on `Option` above for this purpose). If you recall from [../collections/index.md](collections) the generic traversal operator is conventionally called `fold`, so that we're going to call our "get a value out" method. The defintions are straightforward. We just need to make sure that `flatMap` and `map` don't do any further processing once a `Failure` has occurred.
+To make the definition above useful we need to define `flatMap` and `map` so we can use `Validation` in a for comprehension, and a way of getting a value out of a `Validation` (we used `getOrElse` on `Option` above for this purpose). If you recall from [../collections/index.md](collections) the generic traversal operator is conventionally called `fold`, so that we're going to call our "get a value out" method. The definitions are straightforward. We just need to make sure that `flatMap` and `map` don't do any further processing once a `Failure` has occurred.
 
 ```scala
 sealed trait Validation[E,A] {
@@ -154,7 +154,9 @@ case class Failure[E,A](val failure: E) extends Validation[E,A] {
 }
 ```
 
-We can now rewrite our original example using `Validation` and receive useful information on error. *Note the implementation of `errorHandling` has not changed!* This is a consequence of using a high-level general abstraction. We can swap out the implementation but keep the code the same.
+We can now rewrite our original example using `Validation` and receive useful information on error.
+
+*Note the implementation of `errorHandling` has not changed!* This is a consequence of using a high-level general abstraction. We can swap out the implementation but keep the code the same.
 
 ```scala
 def doSomething(x: Int): Validation[String, Int] =
@@ -180,7 +182,7 @@ res16: Validation[String,Int] = Failure(Cannot be zero)
 
 For real code [Scalaz's](https://github.com/scalaz/scalaz) Validation class is a good implementation. In Scala 2.10 the [Try](http://www.scala-lang.org/api/milestone/index.html#scala.util.Try) type is a credible alternative.
 
-This is a pattern we use extensively in real deployed code. An example is a high-performance REST service. In this scenario the API is the user interface, so returning good error messages is very important. Hence using the type system to enforce error handling is justified in this case.
+Monadic error handling is a pattern we use extensively in real deployed code. An example is a high-performance REST service. In this scenario the API is the user interface, so returning good error messages is very important.
 
 We represent errors using a type called [`Problem`](https://github.com/bigtop/bigtop/blob/master/core/src/main/scala/bigtop/problem/Problem.scala). The key idea here is that we can convert a `Problem` to an HTTP response.
 
