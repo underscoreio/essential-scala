@@ -182,8 +182,8 @@ bcrypt-pbkdf@^1.0.0:
     tweetnacl "^0.14.3"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
-  version "4.11.6"
-  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
+  version "4.11.9"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.9.tgz#26d556829458f9d1e81fc48952493d0ba3507828"
 
 body-parser@~1.13.3:
   version "1.13.3"
@@ -846,8 +846,8 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
 elliptic@^6.0.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.4.0.tgz#cac9af8762c85836187003c8dfe193e5e2eae5df"
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.3.tgz#cb59eb2efdaf73a0bd78ccd7015a62ad6e0f93d6"
   dependencies:
     bn.js "^4.4.0"
     brorand "^1.0.1"
@@ -1184,10 +1184,11 @@ has@^1.0.0:
     function-bind "^1.0.2"
 
 hash.js@^1.0.0, hash.js@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.0.3.tgz#1332ff00156c0a0ffdd8236013d07b77a0451573"
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.1.7.tgz#0babca538e8d4ee4a0f8988d68866537a003cf42"
   dependencies:
-    inherits "^2.0.1"
+    inherits "^2.0.3"
+    minimalistic-assert "^1.0.1"
 
 hawk@~3.1.3:
   version "3.1.3"
@@ -1275,9 +1276,9 @@ inherits@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-1.0.2.tgz#ca4309dadee6b54cc0b8d247e8d7c7a0975bdc9b"
 
-inherits@2, inherits@^2.0.1, inherits@~2.0.1:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
+inherits@2, inherits@^2.0.1, inherits@^2.0.3, inherits@~2.0.1:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
 
 inherits@2.0.1:
   version "2.0.1"
@@ -1496,9 +1497,9 @@ mime@1.3.4, mime@^1.2.11:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.4.tgz#115f9e3b6b3daf2959983cb38f149a2d40eb5d53"
 
-minimalistic-assert@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.0.tgz#702be2dda6b37f4836bcb3f5db56641b64a1d3d3"
+minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
 
 minimalistic-crypto-utils@^1.0.0, minimalistic-crypto-utils@^1.0.1:
   version "1.0.1"
@@ -1666,9 +1667,9 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
-pandoc-filter@0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/pandoc-filter/-/pandoc-filter-0.1.4.tgz#ff18d0bd701b010eed2667cbcc96f01d82df3f3a"
+pandoc-filter@0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/pandoc-filter/-/pandoc-filter-0.1.6.tgz#263d54de26da9d7db6aeb6e0f0fe19ac7a764ad2"
   dependencies:
     get-stdin "~0.1.0"
 
@@ -2250,9 +2251,10 @@ umd@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/umd/-/umd-3.0.1.tgz#8ae556e11011f63c2596708a8837259f01b3d60e"
 
-"underscore-ebook-template@git+https://github.com/underscoreio/underscore-ebook-template.git#0.3.0":
-  version "0.3.0"
-  resolved "git+https://github.com/underscoreio/underscore-ebook-template.git#8e040f91be67fe54e272f29d3093d8b69d6b3615"
+"underscore-ebook-template@git+https://github.com/underscoreio/underscore-ebook-template.git#0.5.0":
+  version "0.5.0"
+  uid "3a4fe1b525193b141267944bffbc8ee5c340587f"
+  resolved "git+https://github.com/underscoreio/underscore-ebook-template.git#3a4fe1b525193b141267944bffbc8ee5c340587f"
   dependencies:
     grunt "0.4.5"
     grunt-browserify "3.3.0"
@@ -2263,7 +2265,7 @@ umd@^3.0.0:
     grunt-contrib-watch "0.6.1"
     grunt-css-url-embed "1.5.0"
     js-yaml "3.2.6"
-    pandoc-filter "0.1.4"
+    pandoc-filter "0.1.6"
 
 underscore.string@~2.2.1:
   version "2.2.1"
