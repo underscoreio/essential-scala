@@ -126,7 +126,7 @@ case object Green extends TrafficLight
 case object Yellow extends TrafficLight
 ```
 
-As there are fields or methods on the three cases, and thus there is no need to create than one instance of them, I used case objects instead of case classes.
+As there are no fields or methods on the three cases, and thus there is no need to create more than one instance of them, I used case objects instead of case classes.
 </div>
 
 #### Calculator
