@@ -1,8 +1,8 @@
 ## Literal Objects
 
-We have already covered some of Scala's basic types. In this section we're going to round out that knowledge by covering all of Scala's *literal expressions*. A literal expression represents a fixed value that stands "for itself". Here's an example:
+We have already covered some of Scala's basic types. In this section we're going to round out that knowledge by covering all of Scala's _literal expressions_. A literal expression represents a fixed value that stands "for itself". Here's an example:
 
-```tut:book
+```scala mdoc
 42
 ```
 
@@ -16,7 +16,7 @@ If you have prior programming experience, particularly Java experience, the lite
 
 Numbers share the same types available in Java: `Int` for 32-bit integers, `Double` for 64-bit floating point, `Float` for 32-bit floating point, and `Long` for 64-bit integers.
 
-```tut:book
+```scala mdoc
 42
 42.0
 42.0f
@@ -29,7 +29,7 @@ Scala also has 16-bit `Short` integers and 8-bit `Byte`s, but there is no litera
 
 Booleans are exactly the same as Java: `true` or `false`.
 
-```tut:book
+```scala mdoc
 true
 false
 ```
@@ -38,7 +38,7 @@ false
 
 `Chars` are 16-bit Unicode values written as a single character enclosed in single quotes.
 
-```tut:book
+```scala mdoc
 'a'
 ```
 
@@ -48,13 +48,14 @@ false
 Although they are written with initial capitals, Scala's `Int`, `Double`, `Float`, `Long`, `Short`, `Byte`, `Boolen` and `Char` refer to exactly the same things as `int`, `double`, `float`, `long`, `short`, `byte`, `boolean`, and `char` in Java.
 
 In Scala all of these types act like objects with methods and fields. However, once your code is compiled, a Scala `Int` is exactly the same as a Java `int`. This makes interoperability between the two languages a breeze.
+
 </div>
 
 ### Strings
 
 Strings are exactly Java's strings, and are written the same way.
 
-```tut:book
+```scala mdoc
 "this is a string"
 "the\nusual\tescape characters apply"
 ```
@@ -63,7 +64,7 @@ Strings are exactly Java's strings, and are written the same way.
 
 Null is the same as Java, though not used nearly as often. Scala's `null` also has its own type: `Null`.
 
-```tut:book
+```scala
 null
 ```
 
@@ -72,16 +73,17 @@ null
 
 Although `null`s are common in Java code, they are considered very bad practice in Scala.
 
-The main use of `null` in Java is to implement *optional* values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
+The main use of `null` in Java is to implement _optional_ values that have some or no value at different points of a program's execution. However, `null` values cannot be checked by the compiler, leading to possible runtime errors in the form of `NullPointerExceptions`.
 
-Later we will see that Scala has the means to define optional values that *are* checked by the compiler. This removes the necessity of using `null`, making our programs much safer.
+Later we will see that Scala has the means to define optional values that _are_ checked by the compiler. This removes the necessity of using `null`, making our programs much safer.
+
 </div>
 
 ### Unit
 
 Unit, written `()`, is the Scala equivalent of Java's `void`. Unit is the result of expressions that evaluate to no interesting value, such as printing to standard output using `println`. The console doesn't print unit but we can ask for the type of an expression to see that unit is in fact the result of some expressions.
 
-```tut:book
+```scala mdoc
 ()
 ```
 
@@ -90,7 +92,7 @@ Unit, written `()`, is the Scala equivalent of Java's `void`. Unit is the result
 // Unit
 ```
 
-```tut:book
+```scala mdoc
 println("something")
 ```
 
@@ -99,13 +101,13 @@ println("something")
 // Unit
 ```
 
-Unit is an important concept in Scala. Many of Scala's syntactic constructs are *expressions* that have types and values. We need a placeholder for expressions that don't yield a useful value, and unit provides just that.
+Unit is an important concept in Scala. Many of Scala's syntactic constructs are _expressions_ that have types and values. We need a placeholder for expressions that don't yield a useful value, and unit provides just that.
 
 ### Take home points
 
-In this section we have seen *literal* expressions, which evaluate to basic data types. These basics types are mostly identical to Java, except for `Unit` which has no equivalent.
+In this section we have seen _literal_ expressions, which evaluate to basic data types. These basics types are mostly identical to Java, except for `Unit` which has no equivalent.
 
-We note that every literal expression has a *type*, and evaluates to a *value*---something which is also true for more complex Scala expressions.
+We note that every literal expression has a _type_, and evaluates to a _value_---something which is also true for more complex Scala expressions.
 
 In the next section we will learn how to define our own object literals.
 
@@ -115,7 +117,7 @@ In the next section we will learn how to define our own object literals.
 
 What are the values and types of the following Scala literals?
 
-```tut:book:silent
+```scala mdoc:silent
 42
 
 true
@@ -129,13 +131,14 @@ true
 `42` is an `Int`. `true` is a `Boolean`. `123L` is a `Long`. `42.0` is a `Double`.
 
 This exercise just gives you some experience using the Scala console or Worksheet.
+
 </div>
 
 #### Quotes and Misquotes
 
 What is the difference between the following literals? What is the type and value of each?
 
-```tut:book:silent
+```scala mdoc:silent
 'a'
 
 "a"
@@ -149,7 +152,7 @@ The first is a literal `Char` and the second is a literal `String`.
 
 What is the difference between the following expressions? What is the type and value of each?
 
-```tut:book:silent
+```scala mdoc:silent
 "Hello world!"
 
 println("Hello world!")
@@ -159,6 +162,7 @@ println("Hello world!")
 The literal expression `"Hello world!"` evaluates to a `String` value. The expression `println("Hello world!")` evaluates to `Unit` and, as a side-effect, prints `"Hello world!"` on the console.
 
 This an important distinction between a program that evaluates to a value and a program that prints a value as a side-effect. The former can be used in a larger expression but the latter cannot.
+
 </div>
 
 #### Learning By Mistakes

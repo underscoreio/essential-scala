@@ -19,25 +19,25 @@ for(i = 99; i > 0; i--) {
 
 Scala provides the `Range` class for these occasions. A `Range` represents a sequence of integers from some starting value to less than the end value with a non-zero step. We can construct a `Range` using the `until` method on `Int`.
 
-```tut:book
+```scala mdoc
 1 until 10
 ```
 
 By default the step size is 1, so trying to go from high to low gives us an empty `Range`.
 
-```tut:book
+```scala mdoc
 10 until 1
 ```
 
 We can rectify this by specifying a different step, using the `by` method on `Range`.
 
-```tut:book
+```scala mdoc
 10 until 1 by -1
 ```
 
 Now we can write the Scala equivalent of our Java program.
 
-```tut:book:silent
+```scala mdoc:silent
 for(i <- 99 until 0 by -1) println(i + " bottles of beer on the wall!")
 // 99 bottles of beer on the wall!
 // 98 bottles of beer on the wall!
@@ -46,7 +46,7 @@ for(i <- 99 until 0 by -1) println(i + " bottles of beer on the wall!")
 
 This gives us a hint of the power of ranges. Since they are sequences we can combine them with other sequences in interesting ways. For example, to create a range with a gap in the middle we can concatenate two ranges:
 
-```tut:book
+```scala mdoc
 (1 until 10) ++ (20 until 30)
 ```
 

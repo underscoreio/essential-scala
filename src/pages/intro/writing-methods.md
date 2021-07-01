@@ -1,10 +1,10 @@
 ## Writing Methods
 
-In the previous section we saw the syntax of methods. One of our main goals in this course is to go beyond syntax and give you systematic methods for constructing Scala programs. This is our first section dealing with such matters. In this section we're going to look at a systematic method for constructing methods. As you gain experience with Scala you can drop some of the steps of this method, but we *strongly* suggest you follow this method during the course.
+In the previous section we saw the syntax of methods. One of our main goals in this course is to go beyond syntax and give you systematic methods for constructing Scala programs. This is our first section dealing with such matters. In this section we're going to look at a systematic method for constructing methods. As you gain experience with Scala you can drop some of the steps of this method, but we _strongly_ suggest you follow this method during the course.
 
 To make the advice concrete we'll use this exercise from the previous section as an example:
 
-*Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input, calling `square` as part of its result calculation.*
+_Define an object called `calc` with a method `square` that accepts a `Double` as an argument and... you guessed it... squares its input. Add a method called `cube` that cubes its input, calling `square` as part of its result calculation._
 
 ### Identify the Input and Output
 
@@ -28,7 +28,7 @@ assert(square(-2.0) == 4.0)
 
 With types and test cases ready we can now write the method declaration. We haven't developed the body yet so use `???`, another nifty Scala feature, in its place.
 
-```tut:book:silent
+```scala mdoc:silent
 def square(in: Double): Double =
   ???
 ```
@@ -53,7 +53,7 @@ Our next technique is to look at the type of input parameters to the method. In 
 
 We can now write our complete method as
 
-```tut:book:silent
+```scala mdoc:silent:reset
 def square(in: Double): Double =
   in * in
 ```
@@ -77,6 +77,7 @@ We have a six-step process for writing methods in a systematic way.
 def name(parameter: type, ...): resultType =
  ???
 ```
+
 4. Run the code to check the test cases do in fact fail.
 5. Write the body of the method. We currently have two techniques to apply here:
    - consider the result type and how we can create an instance of it; and

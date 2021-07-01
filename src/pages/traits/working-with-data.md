@@ -1,6 +1,6 @@
 ## Working With Data
 
-In the previous section we saw how to define algebraic data types using a combination of the sum (or) and product type (and) patterns. In this section we'll see a pattern for using algebraic data types, known as *structural recursion*. We'll actually see two variants of this pattern: one using *polymorphism* and one using *pattern matching*.
+In the previous section we saw how to define algebraic data types using a combination of the sum (or) and product type (and) patterns. In this section we'll see a pattern for using algebraic data types, known as _structural recursion_. We'll actually see two variants of this pattern: one using _polymorphism_ and one using _pattern matching_.
 
 Structural recursion is the precise opposite of the process of building an algebraic data type. If `A` has a `B` and `C` (the product-type pattern), to construct an `A` we must have a `B` and a `C`. The sum and product type patterns tell us how to combine data to make bigger data. Structural recursion says that if we have an `A` as defined before, we must break it into its constituent `B` and `C` that we then combine in some way to get closer to our desired answer. Structural recursion is essentially the process of breaking down data into smaller pieces.
 
@@ -10,7 +10,7 @@ Just as we have two patterns for building algebraic data types, we will have two
 
 Polymorphic dispatch, or just polymorphism for short, is a fundamental object-oriented technique. If we define a method in a trait, and have different implementations in classes extending that trait, when we call that method the implementation on the actual concrete instance will be used. Here's a very simple example. We start with a simple definition using the familiar sum type (or) pattern.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait A {
   def foo: String
 }
@@ -26,7 +26,7 @@ final case class C() extends A {
 
 We declare a value with type `A` but we see the concrete implementation on `B` or `C` is used.
 
-```tut:book
+```scala mdoc
 val anA: A = B()
 
 anA.foo
@@ -38,7 +38,7 @@ anA.foo
 
 We can define an implementation in a trait, and change the implementation in an extending class using the `override` keyword.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait A {
   def foo: String =
     "It's A!"
@@ -55,7 +55,7 @@ final case class C() extends A {
 
 The behaviour is as before; the implementation on the concrete class is selected.
 
-```tut:book
+```scala mdoc
 val anA: A = B()
 
 anA.foo
@@ -70,26 +70,26 @@ Now we understand how polymorphism works, how do we use it with an algebraic dat
 
 If `A` has a `b` (with type `B`) and a `c` (with type `C`), and we want to write a method `f` returning an `F`, simply write the method in the usual way.
 
-```tut:invisible
+```scala mdoc:invisible
 type F = Any
 ```
 
-```tut:book:silent
+```scala mdoc:silent
 case class A(b: B, c: C) {
   def f: F = ???
 }
 ```
 
 In the body of the method we must use `b`, `c`, and any method parameters to construct the result of type `F`.
-</div>
 
+</div>
 
 <div class="callout callout-info">
 #### The Sum Type Polymorphism Pattern {-}
 
 If `A` is a `B` or `C`, and we want to write a method `f` returning an `F`, define `f` as an abstract method on `A` and provide concrete implementations in `B` and `C`.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait A {
   def f: F
 }
@@ -102,8 +102,8 @@ final case class C() extends A {
     ???
 }
 ```
-</div>
 
+</div>
 
 ### Structural Recursion using Pattern Matching
 
@@ -122,21 +122,22 @@ def f(a: A): F =
 ```
 
 In the body of the method we use `b` and `c` to construct the result of type `F`.
-</div>
 
+</div>
 
 <div class="callout callout-info">
 #### The Sum Type Pattern Matching Pattern {-}
 
 If `A` is a `B` or `C`, and we want to write a method `f` accepting an `A` and returning an `F`, define a pattern matching case for `B` and `C`.
 
-```tut:book:silent
+```scala mdoc:silent
 def f(a: A): F =
   a match {
     case B() => ???
     case C() => ???
   }
 ```
+
 </div>
 
 ### A Complete Example
@@ -145,7 +146,7 @@ Let's look at a complete example of the algebraic data type and structural recur
 
 We start with a description of the data. A `Feline` is a `Lion`, `Tiger`, `Panther`, or `Cat`. We're going to simplify the data description, and just say that a `Cat` has a `String` `favouriteFood`. From this description we can immediately apply our pattern to define the data.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Feline
 final case class Lion() extends Feline
 final case class Tiger() extends Feline
@@ -157,7 +158,7 @@ Now let's implement a method using both polymorphism and pattern matching. Our m
 
 We could represent food as a `String`, but we can do better and represent it with a type. This avoids, for example, spelling mistakes in our code. So let's define our `Food` type using the now familiar patterns.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Food
 case object Antelope extends Food
 case object TigerFood extends Food
@@ -167,7 +168,7 @@ final case class CatFood(food: String) extends Food
 
 Now we can implement `dinner` as a method returning `Food`. First using polymorphism:
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Feline {
   def dinner: Food
 }
@@ -242,13 +243,12 @@ One advantage of functional style is it allows the compiler to help us more. By 
 This doesn't mean functional style is to be preferred in all cases. There is a fundamental difference between the kind of extensibility that object-oriented style and functional style gives us. With OO style we can easily add new data, by extending a trait, but adding a new method requires us to change existing code. With functional style we can easily add a new method but adding new data requires us to modify existing code. In tabular form:
 
 +--------+-------------------------+-------------------------+
-|        | Add new method          | Add new data            |
+| | Add new method | Add new data |
 +========+=========================+=========================+
-| **OO** | Change existing code    | Existing code unchanged |
+| **OO** | Change existing code | Existing code unchanged |
 +--------+-------------------------+-------------------------+
-| **FP** | Existing code unchanged | Change existing code    |
+| **FP** | Existing code unchanged | Change existing code |
 +--------+-------------------------+-------------------------+
-
 
 In Scala we have the flexibility to use both polymorphism and pattern matching, and we should use whichever is appropriate. However we generally prefer sealed traits as it gives us greater guarantees about our code's semantics, and we can use typeclasses, which we'll explore later, to get us OO-style extensibility.
 
@@ -258,7 +258,7 @@ In Scala we have the flexibility to use both polymorphism and pattern matching, 
 
 In the previous section we implemented a `TrafficLight` data type like so:
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait TrafficLight
 case object Red extends TrafficLight
 case object Green extends TrafficLight
@@ -270,54 +270,51 @@ Using polymorphism and then using pattern matching implement a method called `ne
 <div class="solution">
 First with polymorphism:
 
-```tut:book:silent
-object wrapper {
-  sealed trait TrafficLight {
-    def next: TrafficLight
-  }
-  case object Red extends TrafficLight {
-    def next: TrafficLight =
-      Green
-  }
-  case object Green extends TrafficLight {
-    def next: TrafficLight =
-      Yellow
-  }
-  case object Yellow extends TrafficLight {
-    def next: TrafficLight =
-      Red
-  }
-}; import wrapper._
+```scala mdoc:silent
+sealed trait TrafficLight {
+  def next: TrafficLight
+}
+case object Red extends TrafficLight {
+  def next: TrafficLight =
+    Green
+}
+case object Green extends TrafficLight {
+  def next: TrafficLight =
+    Yellow
+}
+case object Yellow extends TrafficLight {
+  def next: TrafficLight =
+    Red
+}
 ```
 
 Now with pattern matching:
 
-```tut:book:silent
-object wrapper {
-  sealed trait TrafficLight {
-    def next: TrafficLight =
-      this match {
-        case Red => Green
-        case Green => Yellow
-        case Yellow => Red
-      }
-  }
-  case object Red extends TrafficLight
-  case object Green extends TrafficLight
-  case object Yellow extends TrafficLight
-}; import wrapper._
+```scala mdoc:silent
+sealed trait TrafficLight {
+  def next: TrafficLight =
+    this match {
+      case Red => Green
+      case Green => Yellow
+      case Yellow => Red
+    }
+}
+case object Red extends TrafficLight
+case object Green extends TrafficLight
+case object Yellow extends TrafficLight
 ```
 
 In this case I think implementing inside the class using pattern matching is best. `Next` doesn't depend on any external data and we probably only want one implementation of it. Pattern matching makes the structure of the state machine clearer than polymorphism.
 
 Ultimately there are no hard-and-fast rules, and we must consider our design decisions in the context of the larger program we are writing.
+
 </div>
 
 #### Calculation
 
 In the last section we created a `Calculation` data type like so:
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Calculation
 final case class Success(result: Int) extends Calculation
 final case class Failure(reason: String) extends Calculation
@@ -336,7 +333,7 @@ assert(Calculator.+(Failure("Badness"), 1) == Failure("Badness"))
 <div class="solution">
 Start by implementing the framework the exercise calls for:
 
-```tut:book:silent
+```scala mdoc:silent
 object Calculator {
   def +(calc: Calculation, operand: Int): Calculation = ???
   def -(calc: Calculation, operand: Int): Calculation = ???
@@ -345,7 +342,7 @@ object Calculator {
 
 Now apply the structural recursion pattern:
 
-```tut:book:silent
+```scala mdoc:silent
 object Calculator {
   def +(calc: Calculation, operand: Int): Calculation =
     calc match {
@@ -360,9 +357,9 @@ object Calculator {
 }
 ```
 
-To write the remaining bodies of the methods we can no longer rely on the patterns. However, a bit of thought quickly leads us to the correct answer. We know that `+` and `-` are binary operations; we need two integers to use them. We also know we need to return a `Calculation`. Looking at the `Failure` cases, we don't have two `Int`s available. The only result that makes sense to return is `Failure`. On the `Success` side, we *do* have two `Int`s and thus we should return `Success`. This gives us:
+To write the remaining bodies of the methods we can no longer rely on the patterns. However, a bit of thought quickly leads us to the correct answer. We know that `+` and `-` are binary operations; we need two integers to use them. We also know we need to return a `Calculation`. Looking at the `Failure` cases, we don't have two `Int`s available. The only result that makes sense to return is `Failure`. On the `Success` side, we _do_ have two `Int`s and thus we should return `Success`. This gives us:
 
-```tut:book:silent
+```scala mdoc:silent
 object Calculator {
   def +(calc: Calculation, operand: Int): Calculation =
     calc match {
@@ -376,6 +373,7 @@ object Calculator {
     }
 }
 ```
+
 </div>
 
 Now write a division method that fails if the divisor is 0. The following tests should pass. Note the behavior for the last test. This indicates "fail fast" behavior. If a calculation has already failed we keep that failure and don't process any more data even if, as is the case in the test, doing so would lead to another failure.
@@ -389,10 +387,10 @@ assert(Calculator./(Failure("Badness"), 0) == Failure("Badness"))
 <div class="solution">
 The important points here are:
 
-1. We have the same general pattern as before, matching on the `Calculation` *first* to implement our fail fast behavior.
+1. We have the same general pattern as before, matching on the `Calculation` _first_ to implement our fail fast behavior.
 2. After matching on our `Calculation` we then check for division by zero.
 
-```tut:book:silent
+```scala mdoc:silent
 def /(calc: Calculation, operand: Int): Calculation =
   calc match {
     case Success(result) =>
@@ -403,6 +401,7 @@ def /(calc: Calculation, operand: Int): Calculation =
     case Failure(reason) => Failure(reason)
   }
 ```
+
 </div>
 
 #### Email

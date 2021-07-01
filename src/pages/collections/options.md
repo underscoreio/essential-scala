@@ -8,7 +8,7 @@ Let's look into Scala's built-in `Option` type in more detail.
 
 `Option` is a generic sealed trait with two subtypes---`Some` and `None`. Here is an abbreviated version of the code---we will fill in more methods as we go on:
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Option[+A] {
   def getOrElse[B >: A](default: B): B
 
@@ -37,14 +37,14 @@ case object None extends Option[Nothing] {
 
 Here is a typical example of code for generating an option---reading an integer from the user:
 
-```tut:book:silent
+```scala mdoc:silent
 def readInt(str: String): Option[Int] =
   if(str matches "-?\\d+") Some(str.toInt) else None
 ```
 
 The `toInt` method of `String` throws a `NumberFormatException` if the string isn't a valid series of digits, so we guard its use with a regular expression. If the number is correctly formatted we return `Some` of the `Int` result. Otherwise we return `None`. Example usage:
 
-```tut:book
+```scala mdoc
 readInt("123")
 
 readInt("abc")
@@ -56,13 +56,13 @@ There are several ways to safely extract the value in an option without the risk
 
 **Alternative 1: the `getOrElse` method**---useful if we want to fall back to a default value:
 
-```tut:book
+```scala mdoc
 readInt("abc").getOrElse(0)
 ```
 
 **Alternative 2: pattern matching**---`Some` and `None` both have associated patterns that we can use in a `match` expression:
 
-```tut:book
+```scala mdoc
 readInt("123") match {
   case Some(number) => number + 1
   case None         => 0
@@ -75,7 +75,7 @@ readInt("123") match {
 
 One way of thinking about an `Option` is as a sequence of 0 or 1 elements. In fact, `Option` supports many of the sequence operations we have seen so far:
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Option[+A] {
   def getOrElse[B >: A](default: B): B
 
@@ -94,7 +94,7 @@ sealed trait Option[+A] {
 }
 ```
 
-```tut:invisible:reset
+```scala mdoc:invisible:reset
 // clear all the previously defined Option types so we're using the normal Scala lib Option from now on.
 // Also redefine readInt as we still need it.
 def readInt(str: String): Option[Int] =
@@ -103,12 +103,12 @@ def readInt(str: String): Option[Int] =
 
 Because of the limited size of `0` or `1`, there is a bit of redundancy here: `filter` and `find` effectively do the same thing, and `foldLeft` and `foldRight` only differ in the order of their arguments. However, these methods give us a lot flexibility for manipulating optional values. For example, we can use `map` and `flatMap` to define optional versions of common operations:
 
-```tut:book:silent
+```scala mdoc:silent
 def sum(optionA: Option[Int], optionB: Option[Int]): Option[Int] =
   optionA.flatMap(a => optionB.map(b => a + b))
 ```
 
-```tut:book
+```scala mdoc
 sum(readInt("1"), readInt("2"))
 
 sum(readInt("1"), readInt("b"))
@@ -118,25 +118,25 @@ sum(readInt("a"), readInt("2"))
 
 The implementation of `sum` looks complicated at first, so let's break it down:
 
- - If `optionA` is `None`, the result of `optionA.flatMap(foo)` is also `None`. The return value of `sum` is therefore `None`.
+- If `optionA` is `None`, the result of `optionA.flatMap(foo)` is also `None`. The return value of `sum` is therefore `None`.
 
- - If `optionA` is `Some`, the result of `optionA.flatMap(foo)` is whatever value `foo` returns. This value is determined by the outcome of `optionB.map`:
+- If `optionA` is `Some`, the result of `optionA.flatMap(foo)` is whatever value `foo` returns. This value is determined by the outcome of `optionB.map`:
 
-    - If `optionB` is `None`, the result of `optionB.map(bar)` is also `None`. The return value of `sum` is therefore `None`.
+  - If `optionB` is `None`, the result of `optionB.map(bar)` is also `None`. The return value of `sum` is therefore `None`.
 
-    - If `optionB` is `Some`, the result of `optionB.map(bar)` is `Some` of the result of `bar`. In our case, the return value of `sum` is `a + b`.
+  - If `optionB` is `Some`, the result of `optionB.map(bar)` is `Some` of the result of `bar`. In our case, the return value of `sum` is `a + b`.
 
-Although `map` and `flatMap` don't allow us to *extract* values from our `Options`, they allow us to *compose computations together* in a safe manner. If all arguments to the computation are `Some`, the result is a `Some`. If any of the arguments are `None`, the result is `None`.
+Although `map` and `flatMap` don't allow us to _extract_ values from our `Options`, they allow us to _compose computations together_ in a safe manner. If all arguments to the computation are `Some`, the result is a `Some`. If any of the arguments are `None`, the result is `None`.
 
 We can use `map` and `flatMap` in combination with pattern matching or `getOrElse` to combine several `Options` and yield a single non-optional result:
 
-```tut:book
+```scala mdoc
 sum(readInt("1"), readInt("b")).getOrElse(0)
 ```
 
 It's worth noting that `Option` and `Seq` are also compatible in some sense. We can turn a `Seq[Option[A]]` into a `Seq[A]` using `flatMap`:
 
-```tut:book
+```scala mdoc
 Seq(readInt("1"), readInt("b"), readInt("3")).flatMap(x => x)
 ```
 
@@ -144,7 +144,7 @@ Seq(readInt("1"), readInt("b"), readInt("3")).flatMap(x => x)
 
 Because `Option` supports `map` and `flatMap`, it also works with for comprehensions. This gives us a nice syntax for combining values without resorting to building custom methods like `sum` to keep our code clean:
 
-```tut:book:silent
+```scala mdoc:silent
 val optionA = readInt("123")
 val optionB = readInt("234")
 
@@ -158,15 +158,15 @@ In this code snippet `a` and `b` are both `Ints`---we can add them together dire
 
 Let's stop to think about this block of code for a moment. There are three ways of looking at it:
 
- 1. We can expand the block into calls to `map` and `flatMap`. You will be unsurprised to see that the resulting code is identical to our implementation of `sum` above:
+1.  We can expand the block into calls to `map` and `flatMap`. You will be unsurprised to see that the resulting code is identical to our implementation of `sum` above:
 
-    ```tut:book:silent
+    ```scala mdoc:silent
     optionA.flatMap(a => optionB.map(b => a + b))
     ```
 
- 2. We can think of `optionA` and `optionB` as sequences of zero or one elements, in which case the result is going to be a flattened sequence of length `optionA.size * optionB.size`. If either `optionA` or `optionB` is `None` then the result is of length `0`.
+2.  We can think of `optionA` and `optionB` as sequences of zero or one elements, in which case the result is going to be a flattened sequence of length `optionA.size * optionB.size`. If either `optionA` or `optionB` is `None` then the result is of length `0`.
 
- 3. We can think of each clause in the for comprehension as an expression that says: *if this clause results in a `Some`, extract the value and continue... if it results in a `None`, exit the for comprehension and return `None`*.
+3.  We can think of each clause in the for comprehension as an expression that says: _if this clause results in a `Some`, extract the value and continue... if it results in a `None`, exit the for comprehension and return `None`_.
 
 Once we get past the initial foreignness of using for comprehensions to "iterate through" options, we find a useful control structure that frees us from excessive use of `map` and `flatMap`.
 
@@ -179,13 +179,14 @@ Write a method `addOptions` that accepts two parameters of type `Option[Int]` an
 <div class="solution">
 We can reuse code from the text above for this:
 
-```tut:book:silent
+```scala mdoc:silent
 def addOptions(opt1: Option[Int], opt2: Option[Int]) =
   for {
     a <- opt1
     b <- opt2
   } yield a + b
 ```
+
 </div>
 
 Write a second version of your code using `map` and `flatMap` instead of a for comprehension.
@@ -193,7 +194,7 @@ Write a second version of your code using `map` and `flatMap` instead of a for c
 <div class="solution">
 The pattern is to use `flatMap` for all clauses except the innermost, which becomes a `map`:
 
-```tut:book:silent
+```scala mdoc:silent
 def addOptions2(opt1: Option[Int], opt2: Option[Int]) =
   opt1 flatMap { a =>
     opt2 map { b =>
@@ -201,6 +202,7 @@ def addOptions2(opt1: Option[Int], opt2: Option[Int]) =
     }
   }
 ```
+
 </div>
 
 #### Adding All of the Things
@@ -210,7 +212,7 @@ Overload `addOptions` with another implementation that accepts three `Option[Int
 <div class="solution">
 For comprehensions can have as many clauses as we want so all we need to do is add an extra line to the previous solution:
 
-```tut:book:silent
+```scala mdoc:silent
 def addOptions(opt1: Option[Int], opt2: Option[Int], opt3: Option[Int]) =
   for {
     a <- opt1
@@ -218,6 +220,7 @@ def addOptions(opt1: Option[Int], opt2: Option[Int], opt3: Option[Int]) =
     c <- opt3
   } yield a + b + c
 ```
+
 </div>
 
 Write a second version of your code using `map` and `flatMap` instead of a for comprehension.
@@ -225,7 +228,7 @@ Write a second version of your code using `map` and `flatMap` instead of a for c
 <div class="solution">
 Here we can start to see the simplicity of for comprehensions:
 
-```tut:book:silent
+```scala mdoc:silent
 def addOptions2(opt1: Option[Int], opt2: Option[Int], opt3: Option[Int]) =
   opt1 flatMap { a =>
     opt2 flatMap { b =>
@@ -235,6 +238,7 @@ def addOptions2(opt1: Option[Int], opt2: Option[Int], opt3: Option[Int]) =
     }
   }
 ```
+
 </div>
 
 #### A(nother) Short Division Exercise
@@ -244,10 +248,11 @@ Write a method `divide` that accepts two `Int` parameters and divides one by the
 <div class="solution">
 We saw this code in the [Traits](/traits/) chapter when we wrote the `DivisionResult` class. The implementation is much simpler now we can use `Option` to do the heavy lifting:
 
-```tut:book:silent
+```scala mdoc:silent
 def divide(numerator: Int, denominator: Int) =
   if(denominator == 0) None else Some(numerator / denominator)
 ```
+
 </div>
 
 Using your `divide` method and a for comprehension, write a method called `divideOptions` that accepts two parameters of type `Option[Int]` and divides one by the other:
@@ -255,7 +260,7 @@ Using your `divide` method and a for comprehension, write a method called `divid
 <div class="solution">
 In this example the `divide` operation returns an `Option[Int]` instead of an `Int`. In order to process the result we need to move the calculation from the `yield` block to a for-clause:
 
-```tut:book:silent
+```scala mdoc:silent
 def divideOptions(numerator: Option[Int], denominator: Option[Int]) =
   for {
     a <- numerator
@@ -263,33 +268,34 @@ def divideOptions(numerator: Option[Int], denominator: Option[Int]) =
     c <- divide(a, b)
   } yield c
 ```
+
 </div>
 
 #### A Simple Calculator
 
 A final, longer exercise. Write a method called `calculator` that accepts three string parameters:
 
-```tut:book:silent
+```scala mdoc:silent
 def calculator(operand1: String, operator: String, operand2: String): Unit = ???
 ```
 
 and behaves as follows:
 
- 1. Convert the operands to `Ints`;
+1.  Convert the operands to `Ints`;
 
- 2. Perform the desired mathematical operator on the two operands:
+2.  Perform the desired mathematical operator on the two operands:
 
-     - provide support for at least four operations: `+`, `-`, `*` and `/`;
-     - use `Option` to guard against errors (invalid inputs or division by zero).
+    - provide support for at least four operations: `+`, `-`, `*` and `/`;
+    - use `Option` to guard against errors (invalid inputs or division by zero).
 
- 3. Finally print the result or a generic error message.
+3.  Finally print the result or a generic error message.
 
 **Tip:** Start by supporting just one operator before extending your method to other cases.
 
 <div class="solution">
 The trick to this one is realising that each clause in the *for* comprehension can contain an entire block of Scala code:
 
-```tut:book:silent
+```scala mdoc:silent
 def calculator(operand1: String, operator: String, operand2: String): Unit = {
   val result = for {
     a   <- readInt(operand1)
@@ -312,7 +318,7 @@ def calculator(operand1: String, operator: String, operand2: String): Unit = {
 
 Another approach involves factoring the calculation part out into its own private function:
 
-```tut:book:silent
+```scala mdoc:silent
 def calculator(operand1: String, operator: String, operand2: String): Unit = {
   def calcInternal(a: Int, b: Int) =
     operator match {
@@ -335,6 +341,7 @@ def calculator(operand1: String, operator: String, operand2: String): Unit = {
   }
 }
 ```
+
 </div>
 
 For the enthusiastic only, write a second version of your code using `flatMap` and `map`.
@@ -342,7 +349,7 @@ For the enthusiastic only, write a second version of your code using `flatMap` a
 <div class="solution">
 This version of the code is much clearer if we factor out the calculation part into its own function. Without this it would be very hard to read:
 
-```tut:book:silent
+```scala mdoc:silent
 def calculator(operand1: String, operator: String, operand2: String): Unit = {
   def calcInternal(a: Int, b: Int) =
     operator match {
@@ -368,4 +375,5 @@ def calculator(operand1: String, operator: String, operand2: String): Unit = {
   }
 }
 ```
+
 </div>

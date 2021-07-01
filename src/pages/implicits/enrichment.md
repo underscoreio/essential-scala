@@ -1,27 +1,26 @@
 ## Enriched Interfaces
 
-A second type of type class interface, called *type enrichment*[^pimping] allow us to create
- interfaces that act as if they were methods defined on the classes of interest. For example, suppose we have a method called `numberOfVowels`:
+A second type of type class interface, called _type enrichment_[^pimping] allow us to create
+interfaces that act as if they were methods defined on the classes of interest. For example, suppose we have a method called `numberOfVowels`:
 
-```tut:book:silent
+```scala mdoc:silent
 def numberOfVowels(str: String) =
   str.filter(Seq('a', 'e', 'i', 'o', 'u').contains(_)).length
 ```
 
-```tut:book
+```scala mdoc
 numberOfVowels("the quick brown fox")
 ```
 
 [^pimping]: Type enrichment is sometimes referred to as pimping in older literature. We will not use that term.
 
-
-This is a method that we use all the time. It would be great if `numberOfVowels` was a built-in method of `String` so we could write `"a string".numberOfVowels`, but of course we can't change the source code for `String`. Scala has a feature called *implicit classes* that allow us to add new functionality to an existing class without editing its source code. This is a similar concept to *categories* in Objective C or *extension methods* in C#, but the implementation is different in each case.
+This is a method that we use all the time. It would be great if `numberOfVowels` was a built-in method of `String` so we could write `"a string".numberOfVowels`, but of course we can't change the source code for `String`. Scala has a feature called _implicit classes_ that allow us to add new functionality to an existing class without editing its source code. This is a similar concept to _categories_ in Objective C or _extension methods_ in C#, but the implementation is different in each case.
 
 ### Implicit Classes
 
 Let's build up implicit classes piece by piece. We can wrap `String` in a class that adds our `numberOfVowels`:
 
-```tut:book:silent
+```scala mdoc:silent
 class ExtraStringMethods(str: String) {
   val vowels = Seq('a', 'e', 'i', 'o', 'u')
 
@@ -32,7 +31,7 @@ class ExtraStringMethods(str: String) {
 
 We can use this to wrap up our `String` and gain access to our new method:
 
-```tut:book:silent
+```scala mdoc:silent
 new ExtraStringMethods("the quick brown fox").numberOfVowels
 ```
 
@@ -42,7 +41,7 @@ Writing `new ExtraStringMethods` every time we want to use `numberOfVowels` is u
 implicit class ExtraStringMethods(str: String) { /* ... */ }
 ```
 
-```tut:invisible
+```scala mdoc:invisible
 implicit class ExtraStringMethods(str: String) {
   val vowels = Seq('a', 'e', 'i', 'o', 'u')
 
@@ -51,7 +50,7 @@ implicit class ExtraStringMethods(str: String) {
 }
 ```
 
-```tut:book
+```scala mdoc
 "the quick brown fox".numberOfVowels
 ```
 
@@ -65,7 +64,7 @@ There is one additional restriction for implicit classes: only a single implicit
 
 Implicit classes can be used on their own but we most often combine them with type classes to create a more natural style of interface. We keep the type class (`HtmlWriter`) and adapters (`PersonWriter`, `DateWriter` and so on) from our type class example, and add an implicit class with methods that themselves take implicit parameters. For example:
 
-```tut:invisible
+```scala mdoc:invisible
 trait HtmlWriter[A] {
   def toHtml(a: A): String
 }
@@ -76,26 +75,26 @@ implicit object PersonWriter extends HtmlWriter[Person] {
 }
 ```
 
-```tut:book:silent
+```scala mdoc:silent
 implicit class HtmlOps[T](data: T) {
   def toHtml(implicit writer: HtmlWriter[T]) =
     writer.toHtml(data)
 }
 ```
 
-This allows us to invoke our type-class pattern on any type for which we have an adapter *as if it were a built-in feature of the class*:
+This allows us to invoke our type-class pattern on any type for which we have an adapter _as if it were a built-in feature of the class_:
 
-```tut:book
+```scala mdoc
 Person("John", "john@example.com").toHtml
 ```
 
-This gives us many benefits. We can extend existing types to give them new functionality, use simple syntax to invoke the functionality, *and* choose our preferred implementation by controlling which implicits we have in scope.
+This gives us many benefits. We can extend existing types to give them new functionality, use simple syntax to invoke the functionality, _and_ choose our preferred implementation by controlling which implicits we have in scope.
 
 ### Take Home Points
 
-*Implicit classes* are a Scala language feature that allows us to define extra functionality on existing data types without using conventional inheritance. This is a programming pattern called *type enrichment*.
+_Implicit classes_ are a Scala language feature that allows us to define extra functionality on existing data types without using conventional inheritance. This is a programming pattern called _type enrichment_.
 
-The Scala compiler uses implicit classes to *fix type errors in our code*. When it encounters us accessing a method or field that doesn't exist, it looks through the available implicits to find some code it can insert to fix the error.
+The Scala compiler uses implicit classes to _fix type errors in our code_. When it encounters us accessing a method or field that doesn't exist, it looks through the available implicits to find some code it can insert to fix the error.
 
 The rules for implicit classes are the same as for implicit values, with the additional restriction that only a single implicit class will be used to fix a type error.
 
@@ -117,23 +116,25 @@ Use your newfound powers to add a method `yeah` to `Int`, which prints `Oh yeah!
 When you have written your implicit class, package it in an `IntImplicits` object.
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 object IntImplicits {
   implicit class IntOps(n: Int) {
     def yeah() = for{ _ <- 0 until n } println("Oh yeah!")
   }
 }
 
-import IntImplicits._
-```
+import IntImplicits.\_
 
-```tut:book
+````
+
+```scala mdoc
 2.yeah()
-```
+````
 
 The solution uses a `for` comprehension and a range to iterate through the correct number of iterations. Remember that the range `0 until n` is the same as `0 to n-1`---it contains all numbers from `0` inclusive to `n` exclusive.
 
 The names `IntImplicits` and `IntOps` are quite vague---we would probably name them something more specific in a production codebase. However, for this exercise they will suffice.
+
 </div>
 
 #### Times
@@ -147,7 +148,7 @@ Extend your previous example to give `Int` an extra method called `times` that a
 For bonus points, re-implement `yeah` in terms of `times`.
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 object IntImplicits {
   implicit class IntOps(n: Int) {
     def yeah() =
@@ -155,20 +156,22 @@ object IntImplicits {
 
     def times(func: Int => Unit) =
       for(i <- 0 until n) func(i)
-  }
+
 }
-```
+}
+
+````
 </div>
 
 ### Easy Equality
 
 Recall our `Equal` type class from a previous section.
 
-```tut:book:silent
+```scala mdoc:silent
 trait Equal[A] {
   def equal(v1: A, v2: A): Boolean
 }
-```
+````
 
 Implement an enrichment so we can use this type class via a triple equal (`===`) method. For example, if the correct implicits are in scope the following should work.
 
@@ -179,7 +182,7 @@ Implement an enrichment so we can use this type class via a triple equal (`===`)
 <div class="solution">
 We just need to define an implicit class, which I have here placed in the companion object of `Equal`.
 
-```tut:book:silent
+```scala mdoc:silent
 trait Equal[A] {
   def equal(v1: A, v2: A): Boolean
 }
@@ -196,7 +199,7 @@ object Equal {
 
 Here is an example of use.
 
-```tut:book:silent
+```scala mdoc:silent
 implicit val caseInsensitiveEquals = new Equal[String] {
   def equal(s1: String, s2: String) =
     s1.toLowerCase == s2.toLowerCase
@@ -206,4 +209,5 @@ import Equal._
 
 "foo".===("FOO")
 ```
+
 </div>

@@ -1,13 +1,12 @@
 ## Generic Folds for Generic Data
 
-We've seen that when we define a class with generic data, we cannot implement very many methods on that class. The user supplies the generic type, and thus we must ask the user to supply functions that work with that type. Nonetheless, there are some common patterns for using generic data, which is what we explore in this section. We have already seen *fold* in the context of our `IntList`. Here we will explore fold in more detail, and learn the pattern for implementing fold for any algebraic data type.
-
+We've seen that when we define a class with generic data, we cannot implement very many methods on that class. The user supplies the generic type, and thus we must ask the user to supply functions that work with that type. Nonetheless, there are some common patterns for using generic data, which is what we explore in this section. We have already seen _fold_ in the context of our `IntList`. Here we will explore fold in more detail, and learn the pattern for implementing fold for any algebraic data type.
 
 ### Fold
 
 Last time we saw fold we were working with a list of integers. Let's generalise to a list of a generic type. We've already seen all the tools we need. First our data definition, in this instance slightly modified to use the invariant sum type pattern.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait LinkedList[A]
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
 final case class End[A]() extends LinkedList[A]
@@ -25,21 +24,19 @@ def fold[A](end: A, f: (Int, A) => A): A =
 
 It's reasonably straightforward to extend this to `LinkedList[A]`. We merely have to account for the head element of a `Pair` being of type `A` not `Int`.
 
-```tut:book:silent
-object wrapper {
-  sealed trait LinkedList[A] {
-    def fold[B](end: B, f: (A, B) => B): B =
-      this match {
-        case End() => end
-        case Pair(hd, tl) => f(hd, tl.fold(end, f))
-      }
-  }
-  final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
-  final case class End[A]() extends LinkedList[A]
-}; import wrapper._
+```scala mdoc:silent:reset
+sealed trait LinkedList[A] {
+  def fold[B](end: B, f: (A, B) => B): B =
+    this match {
+      case End() => end
+      case Pair(hd, tl) => f(hd, tl.fold(end, f))
+    }
+}
+final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
+final case class End[A]() extends LinkedList[A]
 ```
 
-Fold is just an adaptation of structural recursion where we allow the user to pass in the functions we apply at each case. As structural recursion is the generic pattern for writing any function that transforms an algebraic datatype, fold is the concrete realisation of this generic pattern. That is, fold is the generic transformation or iteration method. *Any function* you care to write on an algebraic datatype can be written in terms of fold.
+Fold is just an adaptation of structural recursion where we allow the user to pass in the functions we apply at each case. As structural recursion is the generic pattern for writing any function that transforms an algebraic datatype, fold is the concrete realisation of this generic pattern. That is, fold is the generic transformation or iteration method. _Any function_ you care to write on an algebraic datatype can be written in terms of fold.
 
 <div class="callout callout-info">
 #### Fold Pattern {-}
@@ -51,6 +48,7 @@ For an algebraic datatype `A`, fold converts it to a generic type `B`. Fold is a
 - if `A` is recursive, any function parameters that refer to a recursive field take a parameter of type `B`.
 
 The right-hand side of pattern matching cases, or the polymorphic methods as appropriate, consists of calls to the appropriate function.
+
 </div>
 
 Let's apply the pattern to derive the `fold` method above. We start with our basic template:
@@ -104,7 +102,7 @@ There are a few tricks in Scala for working with functions and methods that acce
 
 #### Placeholder syntax
 
-In very simple situations we can write inline functions using an extreme shorthand called *placeholder syntax*. It looks like this:
+In very simple situations we can write inline functions using an extreme shorthand called _placeholder syntax_. It looks like this:
 
 ```scala
 ((_: Int) * 2)
@@ -127,35 +125,35 @@ Placeholder syntax, while wonderfully terse, can be confusing for large expressi
 
 Scala contains another feature that is directly relevant to this section---the ability to convert method calls to functions. This is closely related to placeholder syntax---simply follow a method with an underscore:
 
-```tut:book:silent
+```scala mdoc:silent
 object Sum {
   def sum(x: Int, y: Int) = x + y
 }
 ```
 
-```tut:book:fail
+```scala mdoc:fail
 Sum.sum
 ```
 
-```tut:book
+```scala mdoc
 (Sum.sum _)
 ```
 
 In situations where Scala can infer that we need a function, we can even drop the underscore and simply write the method name---the compiler will promote the method to a function automatically:
 
-```tut:book:silent
+```scala mdoc:silent
 object MathStuff {
   def add1(num: Int) = num + 1
 }
 ```
 
-```tut:invisible
+```scala mdoc:invisible
 case class Counter(value: Int) {
   def adjust(f: Int => Int): Counter = Counter(f(value))
 }
 ```
 
-```tut:book
+```scala mdoc
 Counter(2).adjust(MathStuff.add1)
 ```
 
@@ -163,7 +161,7 @@ Counter(2).adjust(MathStuff.add1)
 
 Methods in Scala can actually have multiple parameter lists. Such methods work just like normal methods, except we must bracket each parameter list separately.
 
-```tut:book
+```scala mdoc
 def example(x: Int)(y: Int) = x + y
 
 example(1)(2)
@@ -199,7 +197,7 @@ More important is the use of multiple parameter lists to ease type inference. Sc
 def fold[B](end: B, pair: (A, B) => B): B
 ```
 
-if Scala infers `B` for `end` it cannot then use this inferred type for the `B` in `pair`, so we must often write a type declaration on `pair`. However, Scala can use types inferred for one parameter list in another parameter *list*. So if we write `fold` as
+if Scala infers `B` for `end` it cannot then use this inferred type for the `B` in `pair`, so we must often write a type declaration on `pair`. However, Scala can use types inferred for one parameter list in another parameter _list_. So if we write `fold` as
 
 ```scala
 def fold[B](end: B)(pair: (A, B) => B): B
@@ -208,7 +206,6 @@ def fold[B](end: B)(pair: (A, B) => B): B
 then inferring `B` from `end` (which is usually easy) allows `B` to be used when inferring the type `pair`. This means fewer type declarations and a smoother development process.
 
 ### Exercises
-
 
 #### Tree
 
@@ -221,7 +218,7 @@ Implement this algebraic data type along with a fold method.
 <div class="solution">
 This is another recursive data type just like list. Follow the patterns and you should be ok.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Tree[A] {
   def fold[B](node: (B, B) => B, leaf: A => B): B
 }
@@ -234,11 +231,12 @@ final case class Leaf[A](value: A) extends Tree[A] {
     leaf(value)
 }
 ```
+
 </div>
 
 Using `fold` convert the following `Tree` to a `String`
 
-```tut:book:silent
+```scala mdoc:silent
 val tree: Tree[String] =
   Node(Node(Leaf("To"), Leaf("iterate")),
        Node(Node(Leaf("is"), Leaf("human,")),
@@ -250,7 +248,8 @@ Remember you can append `String`s using the `+` method.
 <div class="solution">
 Note it is necessary to instantiate the generic type variable for `fold`. Type inference fails in this case.
 
-```tut:book:silent
+```scala mdoc:silent
 tree.fold[String]((a, b) => a + " " + b, str => str)
 ```
+
 </div>

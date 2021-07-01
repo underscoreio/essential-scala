@@ -1,10 +1,10 @@
 ## Companion Objects
 
-Sometimes we want to create a method that logically belongs to a class but is independent of any particular object. In Java we would use a *static method* for this, but Scala has a simpler solution that we've seen already: singleton objects.
+Sometimes we want to create a method that logically belongs to a class but is independent of any particular object. In Java we would use a _static method_ for this, but Scala has a simpler solution that we've seen already: singleton objects.
 
-One common use case is auxiliary constructors. Although Scala does have syntax that lets us define multiple constructors for a class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the *companion object* of the class. For example:
+One common use case is auxiliary constructors. Although Scala does have syntax that lets us define multiple constructors for a class, Scala programmers almost always prefer to implement additional constructors as `apply` methods on an object with the same name as the class. We refer to the object as the _companion object_ of the class. For example:
 
-```tut:book:silent
+```scala mdoc:silent
 class Timestamp(val seconds: Long)
 
 object Timestamp {
@@ -13,7 +13,7 @@ object Timestamp {
 }
 ```
 
-```tut:book
+```scala mdoc
 Timestamp(1, 1, 1).seconds
 ```
 
@@ -23,20 +23,21 @@ Timestamp(1, 1, 1).seconds
 Note our use of the `:paste` command in the transcript above. Companion objects must be defined in the same compilation unit as the classes they support. In a normal codebase this simply means defining the class and object in the same file, but on the REPL we have to enter then in one command using `:paste`.
 
 You can enter `:help` on the REPL to find out more.
+
 </div>
 
-As we saw earlier, Scala has two namespaces: a space of *type names* and a space of *value names*. This separation allows us to name our class and companion object the same thing without conflict.
+As we saw earlier, Scala has two namespaces: a space of _type names_ and a space of _value names_. This separation allows us to name our class and companion object the same thing without conflict.
 
-It is important to note that *the companion object is not an instance of the class*---it is a singleton object with its own type:
+It is important to note that _the companion object is not an instance of the class_---it is a singleton object with its own type:
 
-```tut:book
+```scala mdoc
 Timestamp // note that the type is `Timestamp.type`, not `Timestamp`
 ```
 
 <div class="callout callout-info">
 #### Companion Object Syntax {-}
 
-To define a companion object for a class, in the *same file* as the class define an object with the same name.
+To define a companion object for a class, in the _same file_ as the class define an object with the same name.
 
 ```scala
 class Name {
@@ -47,17 +48,18 @@ object Name {
   ...
 }
 ```
+
 </div>
 
 ### Take home points
 
-*Companion objects* provide us with a means to associate functionality with a class without associating it with any instance of that class. They are commonly used to provide additional constructors.
+_Companion objects_ provide us with a means to associate functionality with a class without associating it with any instance of that class. They are commonly used to provide additional constructors.
 
-Companion objects *replace Java's static methods*. They provide equivalent functionality and are more flexible.
+Companion objects _replace Java's static methods_. They provide equivalent functionality and are more flexible.
 
-*A companion object has the same name as its associated class.* This doesn't cause a naming conflict because Scala has two namespaces: the namespace of values and the namespace of types.
+_A companion object has the same name as its associated class._ This doesn't cause a naming conflict because Scala has two namespaces: the namespace of values and the namespace of types.
 
-*A companion object must be defined in the same file as the associated class.* When typing on the REPL, the class and companion object must be entered in the same block of code using `:paste` mode.
+_A companion object must be defined in the same file as the associated class._ When typing on the REPL, the class and companion object must be entered in the same block of code using `:paste` mode.
 
 ### Exercises
 
@@ -67,7 +69,7 @@ Implement a companion object for `Person` containing an `apply` method that acce
 
 Tip: you can split a `String` into an `Array` of components as follows:
 
-```tut:book
+```scala mdoc
 val parts = "John Doe".split(" ")
 parts(0)
 ```
@@ -75,7 +77,7 @@ parts(0)
 <div class="solution">
 Here is the code:
 
-```tut:book:silent
+```scala mdoc:silent
 class Person(val firstName: String, val lastName: String) {
   def name: String =
     s"$firstName $lastName"
@@ -91,34 +93,36 @@ object Person {
 
 And here it is in use:
 
-```tut:book
+```scala mdoc
 Person.apply("John Doe").firstName // full method call
 Person("John Doe").firstName // sugared apply syntax
 ```
+
 </div>
 
 #### Extended Body of Work
 
 Write companion objects for `Director` and `Film` as follows:
 
- - the `Director` companion object should contain:
-    - an `apply` method that accepts the same parameters as the constructor of the class
-      and returns a new `Director`;
-    - a method `older` that accepts two `Directors` and returns the oldest of the two.
+- the `Director` companion object should contain:
 
- - the `Film` companion object should contain:
-    - an `apply` method that accepts the same parameters as the constructor of the class
-      and returns a new `Film`;
-    - a method `highestRating` that accepts two `Films` and returns the highest
-      `imdbRating` of the two;
-    - a method `oldestDirectorAtTheTime` that accepts two `Films` and returns the `Director`
-      who was oldest at the respective time of filming.
+  - an `apply` method that accepts the same parameters as the constructor of the class
+    and returns a new `Director`;
+  - a method `older` that accepts two `Directors` and returns the oldest of the two.
+
+- the `Film` companion object should contain:
+  - an `apply` method that accepts the same parameters as the constructor of the class
+    and returns a new `Film`;
+  - a method `highestRating` that accepts two `Films` and returns the highest
+    `imdbRating` of the two;
+  - a method `oldestDirectorAtTheTime` that accepts two `Films` and returns the `Director`
+    who was oldest at the respective time of filming.
 
 <div class="solution">
 
 This exercise is inteded to provide more practice writing code. The model solution, including the class definitions from the previous section, is now:
 
-```tut:book:silent
+```scala mdoc:silent
 class Director(
   val firstName: String,
   val lastName: String,
@@ -188,9 +192,9 @@ object Film {
 
 #### Type or Value?
 
-The similarity in naming of classes and companion objects tends to cause confusion for new Scala developers. When reading a block of code it is important to know which parts refer to a class or *type* and which parts refer to a singleton object or *value*.
+The similarity in naming of classes and companion objects tends to cause confusion for new Scala developers. When reading a block of code it is important to know which parts refer to a class or _type_ and which parts refer to a singleton object or _value_.
 
-This is the inspiration for the new hit quiz, *Type or Value?*, which we will be piloting below. In each case identify whether the word `Film` refers to the type or value:
+This is the inspiration for the new hit quiz, _Type or Value?_, which we will be piloting below. In each case identify whether the word `Film` refers to the type or value:
 
 ```scala
 val prestige: Film = bestFilmByChristopherNolan()
@@ -219,7 +223,8 @@ Film("Last Action Hero", 1993, mcTiernan)
 Film.apply("Last Action Hero", 1993, mcTiernan)
 ```
 
-`apply` is a method defined on the *singleton object* (or value) `Film`.
+`apply` is a method defined on the _singleton object_ (or value) `Film`.
+
 </div>
 
 ```scala
@@ -240,4 +245,5 @@ Film.type
 *Value!*---This is tricky! You'd be forgiven for getting this one wrong.
 
 `Film.type` refers to the type of the singleton object `Film`, so in this case `Film` is a reference to a value. However, the whole fragment of code is a type.
+
 </div>

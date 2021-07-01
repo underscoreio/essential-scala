@@ -2,21 +2,21 @@
 
 The prefered way to convert between Scala and Java collections is use the `JavaConverters` implicit conversions. We use it by importing `scala.collection.JavaConverters._` and then methods `asJava` and `asScala` become available on many of the collections.
 
-```tut:book:silent
+```scala mdoc:silent
 import scala.collection.JavaConverters._
 ```
 
-```tut:book
+```scala mdoc
 Seq(1, 2, 3).asJava
 ```
 
 Java does not distinguish mutable and immutable collections at the type level but the conversions do preserve this property by throwing `UnsupportOperationException` as appropriate.
 
-```tut:book
+```scala mdoc
 val javaCollection = Seq(1, 2, 3).asJava
 ```
 
-```tut:book:fail:silent
+```scala mdoc:fail:silent
 javaCollection.set(0, 5)
 // java.lang.UnsupportedOperationException
 // 	at java.util.AbstractList.set(AbstractList.java:115)
@@ -25,7 +25,7 @@ javaCollection.set(0, 5)
 
 The conversions go the other way as well.
 
-```tut:book
+```scala mdoc
 val list: java.util.List[Int] = new java.util.ArrayList[Int]()
 
 list.asScala
@@ -33,7 +33,7 @@ list.asScala
 
 Note that the Scala equivalent is a mutable collection. If we mutate an element we see that the underlying Java collection is also changed. This holds for all conversions; they always share data and are not copied.
 
-```tut:book
+```scala mdoc
 list.asScala += 5
 
 list

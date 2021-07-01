@@ -18,7 +18,7 @@ A `List` is a singly linked list. It has constant time access to the first eleme
 
 A `Stream` is like a list except its elements are computed on demand, and thus it can have infinite size. Like other collections we can create streams by calling the `apply` method on the companion object.
 
-```tut:book
+```scala mdoc
 Stream(1, 2, 3)
 ```
 
@@ -26,29 +26,29 @@ Note that only the first element is printed. The others will be computed when we
 
 We can also use the `#::` method to construct a stream from individual elements, starting from `Stream.empty`.
 
-```tut:book
+```scala mdoc
 Stream.empty.#::(3).#::(2).#::(1)
 ```
 
 We can also use the more natural operator syntax.
 
-```tut:book
+```scala mdoc
 1 #:: 2 #:: 3 #:: Stream.empty
 ```
 
 This method allows us to create a infinite stream. Here's an infinite stream of 1s:
 
-```tut:book:silent
+```scala mdoc:silent
 def streamOnes: Stream[Int] = 1 #:: streamOnes
 ```
 
-```tut:book
+```scala mdoc
 streamOnes
 ```
 
 Because elements are only evaluated as requested, calling `streamOnes` doesn't lead to infinite recursion. When we take the first five elements (and convert them to a `List`, so they'll all print out) we see we have what we want.
 
-```tut:book
+```scala mdoc
 streamOnes.take(5).toList
 ```
 
@@ -56,12 +56,11 @@ streamOnes.take(5).toList
 
 `Vector` is the final immutable sequence we'll consider. Unlike `Stream` and `List` it is an `IndexedSeq`, and thus offers fast random access and updates. It is the default immutable `IndexedSeq`, which we can see if we create one.
 
-```tut:book
+```scala mdoc
 scala.collection.immutable.IndexedSeq(1, 2, 3)
 ```
 
 Vectors are a good choice if you want both random access and immutability.
-
 
 ### Mutable Implementations
 
@@ -69,18 +68,17 @@ The mutable collections are probably more familiar. In addition to linked lists 
 
 #### Buffers
 
-`Buffer`s are used when you want to efficiently create a data structure an item at a time. An `ArrayBuffer` is an `IndexedSeq` which also has constant time appends. A `ListBuffer` is like a `List` with constant time prepend *and* append (though note it is mutable, unlike `List`).
+`Buffer`s are used when you want to efficiently create a data structure an item at a time. An `ArrayBuffer` is an `IndexedSeq` which also has constant time appends. A `ListBuffer` is like a `List` with constant time prepend _and_ append (though note it is mutable, unlike `List`).
 
 Buffers' add methods to support destructive prepends and appends. For example, the `+=` is destructive append.
 
-```tut:book
+```scala mdoc
 val buffer = new scala.collection.mutable.ArrayBuffer[Int]()
 
 buffer += 1
 
 buffer
 ```
-
 
 #### StringBuilder
 

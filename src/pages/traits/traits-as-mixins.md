@@ -11,11 +11,11 @@ We achieve composition in Scala by separating each component into its own trait 
 
 The syntax is to write `extends` for the first trait and `with` for each following trait: `A extends B with C with D`. For example, imagine the following model of staff and students at a university:
 
-```tut:invisible
+```scala mdoc:invisible
 trait Course
 ```
 
-```tut:book:silent
+```scala mdoc:silent
 trait Person {
   def firstName: String
   def lastName: String
@@ -46,7 +46,7 @@ Don't confuse an is-a relationship with a **has a** relationship. A book has a p
 
 Traits and classes can mofidy the fields and methods they inherit from supertypes. We can use the `override` keyword to redefine an existing field or method, and use the `super` keyword to refer to the original definition that we are overriding. For example:
 
-```tut:book:silent
+```scala mdoc:silent
 trait Person {
   def firstName: String
   def lastName: String
@@ -63,7 +63,7 @@ trait Veteran extends Person {
 
 Overriding can lead to interesting interactions if we have many traits that each override a particular method. Consider the following code---what happens when we call `foo` on an instance of `Example`?
 
-```tut:book:silent
+```scala mdoc:silent
 trait Fooable { def foo: String }
 
 trait A extends Fooable { override def foo: String = "A" }
@@ -94,7 +94,7 @@ Traits solve the method resolution problems of multiple inheritance by defining 
 
 Multiple inheritance is one way (but not the only way) of modelling a **this and that** relationship between types. In functional programming, this is called a **product type**.
 
-We can also model product types using *generics*---we'll see these later.
+We can also model product types using _generics_---we'll see these later.
 
 ## Exercises
 
@@ -102,26 +102,26 @@ We can also model product types using *generics*---we'll see these later.
 
 Let's create a simple model for publisher data. Code a set of traits and classes according to the following description:
 
-  - A *publication* is a *book* or a *periodical*.
+- A _publication_ is a _book_ or a _periodical_.
 
-  - A *book* has an *author* while a *periodical* has an *editor*.
+- A _book_ has an _author_ while a _periodical_ has an _editor_.
 
-  - *Periodicals* have many *issues*, each of which has  a *volume* and an *issue number*.
+- _Periodicals_ have many _issues_, each of which has a _volume_ and an _issue number_.
 
-  - A *manuscript* is a document of a certain *length* written by an *author*.
+- A _manuscript_ is a document of a certain _length_ written by an _author_.
 
-  - A *book* is a *manuscript*, but an *issue* of a periodical contains a sequence of *manuscripts*.
+- A _book_ is a _manuscript_, but an _issue_ of a periodical contains a sequence of _manuscripts_.
 
 Tip: a sequence of type `A` has type `Seq[A]`.
 
 <div class="solution">
 This is as much a problem of parsing the problem description as it is writing code. However, looking at the final Scala code it is easy to verify that all of the initial requirements hold:
 
-```tut:invisible
+```scala mdoc:invisible
 trait Issue
 ```
 
-```tut:book:silent
+```scala mdoc:silent
 trait Publication {
   def title: String
 }
@@ -150,4 +150,5 @@ case class Issue(
   manuscripts: Seq[Manuscript]
 )
 ```
+
 </div>

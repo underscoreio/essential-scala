@@ -3,7 +3,7 @@ layout: page
 title: "This contains That: Generics"
 ---
 
-Scala gives us the ability to parameterise types. Parameterised types, known as *generic types*, are useful for representing all sorts of data structures including
+Scala gives us the ability to parameterise types. Parameterised types, known as _generic types_, are useful for representing all sorts of data structures including
 
 We already know how to do simple aggregation in simple cases using fields. Here we start generalising over the types in our fields using **generic types**.
 
@@ -11,7 +11,7 @@ We already know how to do simple aggregation in simple cases using fields. Here 
 
 Generic types naturally arise in collections, so let's consider a really simple collection---a box that stores a single value. We don't care what type is stored in the box, but we want to make sure we preserve that type when we get the value out of the box. To do this we use a generic type.
 
-```tut
+```scala mdoc
 case class Box[A](value: A)
 
 val a = Box(2)
@@ -27,7 +27,7 @@ The syntax `[A]` is called a **type parameter**---it binds a name to a type. Whe
 
 We can also add type parameters to methods, which limits the scope of the parameter to the method declaration and body:
 
-```tut
+```scala mdoc
 def generic[A](in: A): A = in
 
 generic[String]("foo")
@@ -37,13 +37,13 @@ generic(1) // again, if we omit the type parameter, scala will infer it
 
 ## Arrays
 
-*Arrays* are perhaps the best known compound data type. They represent fixed-length sequences of elements of the same type.
+_Arrays_ are perhaps the best known compound data type. They represent fixed-length sequences of elements of the same type.
 
 Scala has a built-in `Array` type that has the same underlying representation as a Java array. `Array` takes a single type parameter that determines its element type, for example `Array[Int]` or `Array[String]`.
 
 The code below shows how to create an array, determine its length, and retrieve elements by index using its `apply` method. Notice how the return type of `apply` matches the type parameter on the array---we always get out the type we put in:
 
-```tut
+```scala mdoc
 val array = Array(1, 2, 3, 4 ,5)
 
 array.length
@@ -55,9 +55,9 @@ val array2 = Array("a", "b", "c")
 array2(1)
 ```
 
-All of the items in an array must be of the same type. If we try to mix types in the constructor, Scala infers the overall type of the array as the *least common supertype* of the arguments. For example:
+All of the items in an array must be of the same type. If we try to mix types in the constructor, Scala infers the overall type of the array as the _least common supertype_ of the arguments. For example:
 
-```tut
+```scala mdoc
 val array3 = Array(1, true, 3.0)
 
 array3(2)
@@ -86,23 +86,23 @@ val a = Pair(1, b)
 
 In addition to being links in a chain, these data structures all represent complete sequences of integers:
 
- - `a` represents the sequence `1, 2, 3`
- - `b` represents the sequence `2, 3`
- - `c` represents the sequence `3` (only one element)
- - `d` represents an empty sequence
+- `a` represents the sequence `1, 2, 3`
+- `b` represents the sequence `2, 3`
+- `c` represents the sequence `3` (only one element)
+- `d` represents an empty sequence
 
 Using this implementation, we can build lists of arbitrary length by repeatedly taking an existing list and prepending a new element[^list].
 
-[^list]: This is how Scala's built-in `List` data structure works. We will be introduced to `List` in the chapter on *Collections*.
+[^list]: This is how Scala's built-in `List` data structure works. We will be introduced to `List` in the chapter on _Collections_.
 
 ### Exercise: Making a List
 
 To implement a `LinkedList` in Scala we need to combine our newfound knowledge of generic types with our existing knowledge of sealed traits. We can define a linked list as a sealed trait `LinkedList[A]` with two subtypes:
 
- - a class `Pair[A]` with two fields, `head` and `tail`:
-    - `head` is the item at this position in the list;
-    - `tail` is another `LinkedList[A]`---either another `Pair` or an `Empty`;
- - a class `Empty[A]` with no fields.
+- a class `Pair[A]` with two fields, `head` and `tail`:
+  - `head` is the item at this position in the list;
+  - `tail` is another `LinkedList[A]`---either another `Pair` or an `Empty`;
+- a class `Empty[A]` with no fields.
 
 Start by writing the simplest trait and classes you can so that you can build a list. You should be able to use your implementation as follows:
 
@@ -119,28 +119,29 @@ list.tail.tail // returns Pair(3, End()) as a LinkedList[Int]
 <div class="solution">
 Here is the model solution. `Empty` doesn't contain any data so it may seem more natural to define it as a singleton object. However, objects can't have type parameters so we have to define it as a class. We'll be able to work around this later when we learn about something called *variance* :
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait LinkedList[A]
 
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
 
 final case class Empty[A]() extends LinkedList[A]
 ```
+
 </div>
 
 ### Exercise: Checking it Twice
 
 Now we have our `LinkedList` class, let's give it some useful methods. Define the following:
 
- - a method called `length` that returns the length of the list;
- - a method `apply` that returns the <em>n<sup>th</sup></em> item in the list;
- - a method `contains` that determines whether or not an item is in the list.
+- a method called `length` that returns the length of the list;
+- a method `apply` that returns the <em>n<sup>th</sup></em> item in the list;
+- a method `contains` that determines whether or not an item is in the list.
 
 In each case, start by writing an abstract method definition in `LinkedList`. Think about the types of the arguments and the types of the results. Then implement the method for `Empty`---it should be pretty easy to provide a default implementation for an empty list. Finally, implement the method on `Pair`. The implementation will be recursive and defined in terms of `head` and `tail`.
 
 **Hint:** If you need to signal an error in your code (there's one situation in which you will need to do this), consider throwing an exception. Here is an example:
 
-```tut:book:fail
+```scala mdoc:fail
 throw new Exception("Bad things happened")
 ```
 
@@ -149,7 +150,7 @@ The hint about exceptions was for the implementation of `apply` in `Empty`. The 
 
 Strictly speaking we should throw Java's `IndexOutOfBoundsException` in this instance, but we will shortly see a way to remove exception handling from our code altogether.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait LinkedList[A] {
   def head: A
   def tail: LinkedList[A]
@@ -174,4 +175,5 @@ case class Empty[A]() extends LinkedList[A] {
   override def contains(item: A) = false
 }
 ```
+
 </div>

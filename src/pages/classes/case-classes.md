@@ -1,18 +1,18 @@
 ## Case Classes
 
-*Case classes* are an exceptionally useful shorthand for defining a class, a companion object, and a lot of sensible defaults in one go. They are ideal for creating lightweight data-holding classes with the minimum of hassle.
+_Case classes_ are an exceptionally useful shorthand for defining a class, a companion object, and a lot of sensible defaults in one go. They are ideal for creating lightweight data-holding classes with the minimum of hassle.
 
 Case classes are created simply by prepending a class definition with the keyword `case`:
 
-```tut:book:silent
+```scala mdoc:silent
 case class Person(firstName: String, lastName: String) {
   def name = firstName + " " + lastName
 }
 ```
 
-Whenever we declare a case class, Scala automatically generates a *class and companion object*:
+Whenever we declare a case class, Scala automatically generates a _class and companion object_:
 
-```tut:book
+```scala mdoc
 val dave = new Person("Dave", "Gurnell") // we have a class
 Person // and a companion object too
 ```
@@ -21,38 +21,38 @@ What's more, the class and companion are pre-populated with some very useful fea
 
 ### Features of a case class
 
-1. *A field for each constructor argument*---we don't even need to write `val` in our constructor definition, although there's no harm in doing so.
+1. _A field for each constructor argument_---we don't even need to write `val` in our constructor definition, although there's no harm in doing so.
 
-```tut:book
+```scala mdoc
 dave.firstName
 ```
 
-2. *A default `toString` method* that prints a sensible constructor-like representation of the class (no more `@` signs and cryptic hex numbers):
+2. _A default `toString` method_ that prints a sensible constructor-like representation of the class (no more `@` signs and cryptic hex numbers):
 
-```tut:book
+```scala mdoc
 dave
 ```
 
-3. *Sensible `equals`, and `hashCode` methods* that operate on the field values in the object.
+3. _Sensible `equals`, and `hashCode` methods_ that operate on the field values in the object.
 
    This makes it easy to use case classes with collections like `Lists`, `Sets` and `Maps`. It also means we can compare objects on the basis of their contents rather than their reference identity:
 
-```tut:book
+```scala mdoc
 new Person("Noel", "Welsh").equals(new Person("Noel", "Welsh"))
 new Person("Noel", "Welsh") == new Person("Noel", "Welsh")
 ```
 
-4. *A `copy` method* that creates a new object with the same field values as the current one:
+4. _A `copy` method_ that creates a new object with the same field values as the current one:
 
-```tut:book
+```scala mdoc
 dave.copy()
 ```
 
-   Note that the `copy` method creates and returns a *new object* of the class rather than returning the current one.
+Note that the `copy` method creates and returns a _new object_ of the class rather than returning the current one.
 
-   The `copy` method actually accepts optional parameters matching each of the constructor parameters. If a parameter is specified the new object uses that value instead of the existing value from the current object. This is ideal for use with keyword parameters to let us copy an object while changing the values of one or more fields:
+The `copy` method actually accepts optional parameters matching each of the constructor parameters. If a parameter is specified the new object uses that value instead of the existing value from the current object. This is ideal for use with keyword parameters to let us copy an object while changing the values of one or more fields:
 
-```tut:book
+```scala mdoc
 dave.copy(firstName = "Dave2")
 dave.copy(lastName = "Gurnell2")
 ```
@@ -65,10 +65,11 @@ Scala's `==` operator is different from Java's---it delegates to `equals` rather
 
 Scala has an operator called `eq` with the same behaviour as Java's `==`. However, it is rarely used in application code:
 
-```tut:book
+```scala mdoc
 new Person("Noel", "Welsh") eq (new Person("Noel", "Welsh"))
 dave eq dave
 ```
+
 </div>
 
 5. Case classes implement two traits: `java.io.Serializable` and `scala.Product`. Neither are used directly. The latter provides methods for inspecting the number of fields and the name of the case class.
@@ -77,12 +78,12 @@ dave eq dave
 
 The companion object contains an `apply` method with the same arguments as the class constructor. Scala programmers tend to prefer the `apply` method over the constructor for the brevity of omitting `new`, which makes constructors much easier to read inside expressions:
 
-```tut:book
+```scala mdoc
 Person("Dave", "Gurnell") == Person("Noel", "Welsh")
 Person("Dave", "Gurnell") == Person("Dave", "Gurnell")
 ```
 
-Finally, the companion object also contains code to implement an *extractor pattern* for use in *pattern matching*. We'll see this later this chapter.
+Finally, the companion object also contains code to implement an _extractor pattern_ for use in _pattern matching_. We'll see this later this chapter.
 
 <div class="callout callout-info">
 #### Case Class Declaration Syntax {-}
@@ -105,9 +106,9 @@ where
 
 ### Case objects
 
-A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a *case object*. A case object is defined just like a regular singleton object, but has a more meaningful `toString` method and extends the `Product` and `Serializable` traits:
+A final note. If you find yourself defining a case class with no constructor arguments you can instead a define a _case object_. A case object is defined just like a regular singleton object, but has a more meaningful `toString` method and extends the `Product` and `Serializable` traits:
 
-```tut:book:silent
+```scala mdoc:silent
 case object Citizen {
   def firstName = "John"
   def lastName  = "Doe"
@@ -115,13 +116,13 @@ case object Citizen {
 }
 ```
 
-```tut:book
+```scala mdoc
 Citizen.toString
 ```
 
 ### Take Home Points
 
-Case classes are the *bread and butter of Scala data types*. Use them, learn them, love them.
+Case classes are the _bread and butter of Scala data types_. Use them, learn them, love them.
 
 The syntax for declaring a case class is the same as for declaring a class, but with `case` appended
 
@@ -130,7 +131,6 @@ case class Name(parameter: type, ...) {
   declarationOrExpression ...
 }
 ```
-
 
 Case classes have numerous auto-generated methods and features that save typing. We can override this behaviour on a piece-by-piece basis by implementing the relevant methods ourselves.
 
@@ -145,9 +145,10 @@ Recall that a `Cat` has a `String` colour and food. Define a case class to repre
 <div class="solution">
 Another simple finger exercise.
 
-```tut:book:silent
+```scala mdoc:silent
 case class Cat(colour: String, food: String)
 ```
+
 </div>
 
 #### Roger Ebert Said it Best...
@@ -160,7 +161,7 @@ The same can't always be said for code, but in this case we can get rid of a lot
 
 Case classes provide our `copy` methods and our `apply` methods and remove the need to write val` before each constructor argument. The final codebase looks like this:
 
-```tut:book:silent
+```scala mdoc:silent
 case class Director(firstName: String, lastName: String, yearOfBirth: Int) {
   def name: String =
     s"$firstName $lastName"
@@ -200,6 +201,7 @@ object Film {
 ```
 
 Not only is this code significantly shorter, it also provides us with `equals` methods, `toString` methods, and pattern matching functionality that will set us up for later exercises.
+
 </div>
 
 #### Case Class Counter
@@ -207,7 +209,7 @@ Not only is this code significantly shorter, it also provides us with `equals` m
 Reimplement `Counter` as a case class, using `copy` where appropriate. Additionally initialise `count` to a default value of `0`.
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 case class Counter(count: Int = 0) {
   def dec = copy(count = count - 1)
   def inc = copy(count = count + 1)
@@ -216,11 +218,12 @@ case class Counter(count: Int = 0) {
 
 This is almost a trick exercise---there are very few differences with the previous implementation However, notice the extra functionality we got for free:
 
-```tut:book
+```scala mdoc
 Counter(0) // construct objects without `new`
 Counter().inc // printout shows the value of `count`
 Counter().inc.dec == Counter().dec.inc // semantic equality check
 ```
+
 </div>
 
 #### Application, Application, Application
@@ -232,7 +235,7 @@ Take our `Person` class from the previous section and turn it into a case class 
 <div class="solution">
 Here's the code:
 
-```tut:book:silent
+```scala mdoc:silent
 case class Person(firstName: String, lastName: String) {
   def name = firstName + " " + lastName
 }
@@ -258,4 +261,5 @@ def apply(name: String): Person =
 def apply(firstName: String, lastName: String): Person =
   // etc...
 ```
+
 </div>

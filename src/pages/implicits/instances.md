@@ -1,6 +1,6 @@
 ## Type Class Instances
 
-Type classes in Scala involve the interaction of a number of components. To simplify the presentation we are going to start by looking at *using* type classes before we look at how to *build them ourselves*.
+Type classes in Scala involve the interaction of a number of components. To simplify the presentation we are going to start by looking at _using_ type classes before we look at how to _build them ourselves_.
 
 ### Ordering
 
@@ -10,11 +10,11 @@ Imagine we want to sort a `List` of `Int`s. There are many different ways to sor
 
 Let's define some `Ordering`s and see them in action.
 
-```tut:book:silent
+```scala mdoc:silent
 import scala.math.Ordering
 ```
 
-```tut:book
+```scala mdoc
 val minOrdering = Ordering.fromLessThan[Int](_ < _)
 
 val maxOrdering = Ordering.fromLessThan[Int](_ > _)
@@ -24,20 +24,19 @@ List(3, 4, 2).sorted(minOrdering)
 List(3, 4, 2).sorted(maxOrdering)
 ```
 
-Here we define two orderings: `minOrdering`, which sorts from lowest to highest, and `maxOrdering`, which sorts from highest to lowest. When we call `sorted` we pass the `Ordering` we want to use. These implementations of a type class are called *type class instances*.
+Here we define two orderings: `minOrdering`, which sorts from lowest to highest, and `maxOrdering`, which sorts from highest to lowest. When we call `sorted` we pass the `Ordering` we want to use. These implementations of a type class are called _type class instances_.
 
-The type class pattern separates the implementation of functionality (the type class instance, an `Ordering[A]` in our example) from the type the functionality is provided for (the `A` in an `Ordering[A]`). *This is the basic pattern for type classes.* Everything else we will see just provides extra convenience.
-
+The type class pattern separates the implementation of functionality (the type class instance, an `Ordering[A]` in our example) from the type the functionality is provided for (the `A` in an `Ordering[A]`). _This is the basic pattern for type classes._ Everything else we will see just provides extra convenience.
 
 ### Implicit Values
 
-It can be inconvenient to continually pass the type class instance to a method when we want to repeatedly use the same instance. Scala provides a convenience, called an *implicit value*, that allows us to get the compiler to pass the type class instance for us. Here's an example of use:
+It can be inconvenient to continually pass the type class instance to a method when we want to repeatedly use the same instance. Scala provides a convenience, called an _implicit value_, that allows us to get the compiler to pass the type class instance for us. Here's an example of use:
 
-```tut:book:silent
+```scala mdoc:silent
 implicit val ordering = Ordering.fromLessThan[Int](_ < _)
 ```
 
-```tut:book
+```scala mdoc
 List(2, 4, 3).sorted
 
 List(1, 7 ,5).sorted
@@ -64,13 +63,13 @@ An implicit value must be declared within a surrounding object, class, or trait.
 
 What happens when multiple implicit values are in scope? Let's ask the console.
 
-```tut:book:silent
+```scala mdoc:silent
 implicit val minOrdering = Ordering.fromLessThan[Int](_ < _)
 
 implicit val maxOrdering = Ordering.fromLessThan[Int](_ > _)
 ```
 
-```tut:book:fail
+```scala mdoc:fail
 List(3,4,5).sorted
 //  <console>:12: error: ambiguous implicit values:
 //  both value ordering of type => scala.math.Ordering[Int]
@@ -81,7 +80,6 @@ List(3,4,5).sorted
 ```
 
 The rule is simple: the compiler will signal an error if there is any ambiguity in which implicit value should be used.
-
 
 ### Take Home Points
 
@@ -108,7 +106,7 @@ assert(List(-4, -3, -2, -1).sorted(absOrdering) == List(-1, -2, -3, -4))
 ```
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 val absOrdering = Ordering.fromLessThan[Int]{ (x, y) =>
   Math.abs(x) < Math.abs(y)
 }
@@ -125,18 +123,19 @@ assert(List(-4, -3, -2, -1).sorted == List(-1, -2, -3, -4))
 <div class="solution">
 Simply mark the value as implicit (and make sure it is in scope)
 
-```tut:book:silent
+```scala mdoc:silent
 implicit val absOrdering = Ordering.fromLessThan[Int]{ (x, y) =>
   Math.abs(x) < Math.abs(y)
 }
 ```
+
 </div>
 
 #### Rational Orderings
 
 Scala doesn't have a class to represent rational numbers, but we can easily implement one ourselves.
 
-```tut:book:silent
+```scala mdoc:silent
 final case class Rational(numerator: Int, denominator: Int)
 ```
 
@@ -148,7 +147,7 @@ assert(List(Rational(1, 2), Rational(3, 4), Rational(1, 3)).sorted ==
 ```
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 implicit val ordering = Ordering.fromLessThan[Rational]((x, y) =>
   (x.numerator.toDouble / x.denominator.toDouble) <
   (y.numerator.toDouble / y.denominator.toDouble)

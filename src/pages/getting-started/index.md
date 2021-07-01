@@ -2,9 +2,9 @@
 
 Throughout this book we will be working with short examples of Scala code. There are two recommended ways of doing this:
 
- 1. Using the *Scala console* (better for people who like command lines)
+1.  Using the _Scala console_ (better for people who like command lines)
 
- 2. Using *Worksheets* feature of *Scala IDE* (better for people who like IDEs)
+2.  Using _Worksheets_ feature of _Scala IDE_ (better for people who like IDEs)
 
 We'll walk through the setup for each process here.
 
@@ -21,9 +21,9 @@ Type :help for more information.
 scala>
 ```
 
-You can enter individual expressions at the `scala>` prompt and press *Enter* to compile and execute them:
+You can enter individual expressions at the `scala>` prompt and press _Enter_ to compile and execute them:
 
-```tut
+```scala mdoc
 "Hello world!"
 ```
 
@@ -31,27 +31,27 @@ You can enter individual expressions at the `scala>` prompt and press *Enter* to
 
 Let's try entering a simple expression:
 
-```tut
+```scala mdoc
 1 + 2 + 3
 ```
 
 When we press Enter, the console responds with three things:
 
- - an *identifier* `res1`;
- - a *type* `Int`;
- - a *value* `6`.
+- an _identifier_ `res1`;
+- a _type_ `Int`;
+- a _value_ `6`.
 
-As we will see in the next chapter, every expression in Scala has a *type* and a *value*. The type is determined at compile time and the value is determined by executing the expression. Both of these are reported here.
+As we will see in the next chapter, every expression in Scala has a _type_ and a _value_. The type is determined at compile time and the value is determined by executing the expression. Both of these are reported here.
 
 The identifier `res1` is a convenience provided by the console to allow us to refer to the result of the expression in future expressions. For example, we can multiply our result by two as follows:
 
-```tut
+```scala mdoc
 res1 * 2
 ```
 
 If we enter an expression that doesn't yield a useful value, the console won't print anything in response:
 
-```tut
+```scala mdoc
 println("Hello world!")
 ```
 
@@ -61,7 +61,7 @@ Here, the output `"Hello world!"` is from our `println` statement---the expressi
 
 We can split long expressions across multiple lines quite simply. If we press enter before the end of an expression, the console will print a `|` character to indicate that we can continue on the next line:
 
-```tut
+```scala mdoc
 for(i <- 1 to 3) {
   println(i)
 }
@@ -94,7 +94,7 @@ res0: Int = 6
 
 ### Printing the Type of an Expression
 
-One final tip for using the console. Occasionally we want to know the *type* of an expression without actually running it. To do this we can use the `:type` command:
+One final tip for using the console. Occasionally we want to know the _type_ of an expression without actually running it. To do this we can use the `:type` command:
 
 ```scala
 scala> :type println("Hello world!")
@@ -107,57 +107,57 @@ Notice that the console doesn't execute our `println` statement in this expressi
 
 ## Setting up Scala IDE
 
-*Scala IDE* is a plugin that adds Scala language support to [Eclipse](http://eclipse.org). A complete version of Scala IDE with Eclipse is also available as a standalone bundle from [http://scala-ide.org](). This is the easiest way to install the software so we recommend you install the standalone bundle for this course.
+_Scala IDE_ is a plugin that adds Scala language support to [Eclipse](http://eclipse.org). A complete version of Scala IDE with Eclipse is also available as a standalone bundle from [http://scala-ide.org](). This is the easiest way to install the software so we recommend you install the standalone bundle for this course.
 
 Go to [http://scala-ide.org](http://scala-ide.org) now, click the **Get the Bundle** button, and follow the on-screen instructions to download Scala IDE for your operating system:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
+
 ![Scala IDE: Main website](src/pages/getting-started/scala-ide-website.png)\
 
-
-Once you have downloaded and uncompressed the bundle you should find an application called **Eclipse**. Launch this. You will be asked to choose a folder for your *workspace*:
+Once you have downloaded and uncompressed the bundle you should find an application called **Eclipse**. Launch this. You will be asked to choose a folder for your _workspace_:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: Choose a workspace location](src/pages/getting-started/scala-ide-workspace-chooser.png)\
 
+![Scala IDE: Choose a workspace location](src/pages/getting-started/scala-ide-workspace-chooser.png)\
 
 Accept the default location and you will see an empty main Eclipse window:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: Empty workspace](src/pages/getting-started/scala-ide-empty-workspace.png)\
 
+![Scala IDE: Empty workspace](src/pages/getting-started/scala-ide-empty-workspace.png)\
 
 ### Creating your First Application
 
-Your *Eclipse workspace* is two things: a folder containing files and settings, and a main window where you will be doing most of your Scala programming. In your workspace you can find *projects* for each Scala application you work on.
+Your _Eclipse workspace_ is two things: a folder containing files and settings, and a main window where you will be doing most of your Scala programming. In your workspace you can find _projects_ for each Scala application you work on.
 
 Let's create a project for the book exercises now. Select the **File menu** and choose **New > Scala Project**:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: Create a new Scala project](src/pages/getting-started/scala-ide-new-project.png)\
 
+![Scala IDE: Create a new Scala project](src/pages/getting-started/scala-ide-new-project.png)\
 
 Enter a **Project name** of `essential-scala` and click **Finish**. The tree view on the left of your workspace should now contain an empty project:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
+
 ![Scala IDE: Empty project](src/pages/getting-started/scala-ide-empty-project.png)\
 
-
-A project is no good without code to run! Let's create our first simple Scala application - the obligatory *Hello World* app. Select the **File Menu** and choose **New > Scala Object**:
+A project is no good without code to run! Let's create our first simple Scala application - the obligatory _Hello World_ app. Select the **File Menu** and choose **New > Scala Object**:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: Create a Scala object](src/pages/getting-started/scala-ide-new-object.png)\
 
+![Scala IDE: Create a Scala object](src/pages/getting-started/scala-ide-new-object.png)\
 
 **Name** your object `HelloWorld` and click **Finish**. A new file called `HelloWorld.scala` should appear in the tree view on the left of the main window. Eclipse should open the new file in the main editor ready for you to start coding:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: Single Scala file](src/pages/getting-started/scala-ide-single-file.png)\
 
+![Scala IDE: Single Scala file](src/pages/getting-started/scala-ide-single-file.png)\
 
 The content of the file should read as follows:
 
-```tut:book:silent
+```scala mdoc:silent
 object HelloWorld {
 
 }
@@ -165,7 +165,7 @@ object HelloWorld {
 
 Replace this text with the following minimalist application:
 
-```tut:book:silent
+```scala mdoc:silent
 object HelloWorld {
   def main(args: Array[String]): Unit = {
     println("Hello world!")
@@ -173,11 +173,11 @@ object HelloWorld {
 }
 ```
 
-Select the **Run Menu** and choose **Run**. This should execute the code in your application, resulting in the words `Hello world!` appearing in the *Console* pane at the bottom of the window. Congratulations - you just ran your first Scala application!
+Select the **Run Menu** and choose **Run**. This should execute the code in your application, resulting in the words `Hello world!` appearing in the _Console_ pane at the bottom of the window. Congratulations - you just ran your first Scala application!
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: Hello World](src/pages/getting-started/scala-ide-hello-world.png)\
 
+![Scala IDE: Hello World](src/pages/getting-started/scala-ide-hello-world.png)\
 
 Developers with Java experience will notice the resemblance of the code above to the Java hello world app:
 
@@ -195,23 +195,23 @@ The resemblance is, of course, no coincidence. These two applications compile to
 
 Compiling and running code whenever you make a change is a time consuming process that isn't particularly suitable to a learning environment.
 
-Fortunately, Scala IDE allows us to create special files called *Scala Worksheets* that are specifically designed for training and experimentation. Every time you save a Worksheet, Eclipse automatically compiles and runs your code and displays the output on the right-hand side of your editor. This provides instant feedback, which is exactly what we need when investigating new concepts!
+Fortunately, Scala IDE allows us to create special files called _Scala Worksheets_ that are specifically designed for training and experimentation. Every time you save a Worksheet, Eclipse automatically compiles and runs your code and displays the output on the right-hand side of your editor. This provides instant feedback, which is exactly what we need when investigating new concepts!
 
 Create your first Scala Worksheet by selecting the **File Menu** and choosing **New > Scala Worksheet**:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: New Scala worksheet](src/pages/getting-started/scala-ide-new-worksheet.png)\
 
+![Scala IDE: New Scala worksheet](src/pages/getting-started/scala-ide-new-worksheet.png)\
 
 Enter a **Worksheet name** of `FirstSteps` and click **Finish**. A new file called `FirstSteps.sc` should appear in the tree view on the left of the main window, and should open it in the main editor in the middle:
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: Empty Scala worksheet](src/pages/getting-started/scala-ide-empty-worksheet.png)\
 
+![Scala IDE: Empty Scala worksheet](src/pages/getting-started/scala-ide-empty-worksheet.png)\
 
 Note that the object on the left contains a single line of Scala code:
 
-```tut:book:silent
+```scala mdoc:silent
 println("Welcome to the Scala worksheet")
 ```
 
@@ -250,7 +250,7 @@ object FirstSteps {
 ```
 
 <!-- Trailing slash and double newline are REQUIRED to prevent LaTeX repositioning this -->
-![Scala IDE: Completed Scala worksheet](src/pages/getting-started/scala-ide-completed-worksheet.png)\
 
+![Scala IDE: Completed Scala worksheet](src/pages/getting-started/scala-ide-completed-worksheet.png)\
 
 We'll dive into what all of the text on the right means as we proceed with the course ahead. For now you're all set to start honing your Scala skills!

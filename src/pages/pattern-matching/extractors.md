@@ -2,7 +2,7 @@
 
 In the last section we took an in-depth look at all of the types of pattern that are embedded into the pattern matching language. However, in that list we didn't see some of the patterns that we've been using in the course so far---case class and sequence patterns were nowhere to be seen!
 
-There is a final aspect of pattern matching that we haven't covered that truly makes it a universal tool---we can define our own custom *extractor* patterns using regular Scala code and use them along-side the built-in patterns in our `match` expressions.
+There is a final aspect of pattern matching that we haven't covered that truly makes it a universal tool---we can define our own custom _extractor_ patterns using regular Scala code and use them along-side the built-in patterns in our `match` expressions.
 
 ### Extractors
 
@@ -14,11 +14,11 @@ Extractor patterns are defined by creating objects with a method called `unapply
 
 The companion object of every `case class` is equipped with an extractor that creates a pattern of the same arity as the constructor. This makes it easy to capture fields in variables:
 
-```tut:invisible
+```scala mdoc:invisible
 case class Person(name: String, surname: String)
 ```
 
-```tut:book
+```scala mdoc
 Person("Dave", "Gurnell") match {
   case Person(f, l) => List(f, l)
 }
@@ -28,11 +28,11 @@ Person("Dave", "Gurnell") match {
 
 Scala's regular expression objects are outfitted with a pattern that binds each of the captured groups:
 
-```tut:book:silent
+```scala mdoc:silent
 import scala.util.matching.Regex
 ```
 
-```tut:book
+```scala mdoc
 val r = new Regex("""(\d+)\.(\d+)\.(\d+)\.(\d+)""")
 
 "192.168.0.1" match {
@@ -46,15 +46,15 @@ Lists and sequences can be captured in several ways:
 
 The `List` and `Seq` companion objects act as patterns that match fixed-length sequences.
 
-```tut:book
+```scala mdoc
 List(1, 2, 3) match {
    case List(a, b, c) => a + b + c
 }
 ```
 
- - `Nil` matches the empty list:
+- `Nil` matches the empty list:
 
-```tut:book
+```scala mdoc
 Nil match {
   case List(a) => "length 1"
   case Nil => "length 0"
@@ -63,7 +63,7 @@ Nil match {
 
 There is also a singleton object `::` that matches the head and tail of a list.
 
-```tut:book
+```scala mdoc
 List(1, 2, 3) match {
   case ::(head, tail) => s"head $head tail $tail"
   case Nil => "empty"
@@ -72,7 +72,7 @@ List(1, 2, 3) match {
 
 This perhaps makes more sense when you realise that binary extractor patterns can also be written infix.
 
-```tut:book
+```scala mdoc
 List(1, 2, 3) match {
   case head :: tail => s"head $head tail $tail"
   case Nil => "empty"
@@ -81,7 +81,7 @@ List(1, 2, 3) match {
 
 Combined use of `::`, `Nil`, and `_` allow us to match the first elements of any length of list.
 
-```tut:book
+```scala mdoc
 List(1, 2, 3) match {
   case Nil => "length 0"
   case a :: Nil => s"length 1 starting $a"
@@ -105,7 +105,7 @@ Each pattern matches values of type `A` and captures arguments of type `B`, `B1`
 
 For example, the extractor below matches email addresses and splits them into their user and domain parts:
 
-```tut:book:silent
+```scala mdoc:silent
 object Email {
   def unapply(str: String): Option[(String, String)] = {
     val parts = str.split("@")
@@ -114,7 +114,7 @@ object Email {
 }
 ```
 
-```tut:book
+```scala mdoc
 "dave@underscore.io" match {
   case Email(user, domain) => List(user, domain)
 }
@@ -127,14 +127,14 @@ object Email {
 
 This simpler pattern matches any string and uppercases it:
 
-```tut:book:silent
+```scala mdoc:silent
 object Uppercase {
   def unapply(str: String): Option[String] =
     Some(str.toUpperCase)
 }
 ```
 
-```tut:book
+```scala mdoc
 Person("Dave", "Gurnell") match {
   case Person(f, Uppercase(l)) => s"$f $l"
 }
@@ -152,13 +152,13 @@ Variable-length extractors match a value only if the pattern in the `case` claus
 
 The extractor below splits a string into its component words:
 
-```tut:book:silent
+```scala mdoc:silent
 object Words {
   def unapplySeq(str: String) = Some(str.split(" ").toSeq)
 }
 ```
 
-```tut:book
+```scala mdoc
 "the quick brown fox" match {
   case Words(a, b, c)    => s"3 words: $a $b $c"
   case Words(a, b, c, d) => s"4 words: $a $b $c $d"
@@ -167,9 +167,9 @@ object Words {
 
 #### Wildcard sequence patterns
 
-There is one final type of pattern that can only be used with variable-length extractors. The *wildcard sequence* pattern, written `_*`, matches zero or more arguments from a variable-length pattern and discards their values. For example:
+There is one final type of pattern that can only be used with variable-length extractors. The _wildcard sequence_ pattern, written `_*`, matches zero or more arguments from a variable-length pattern and discards their values. For example:
 
-```tut:book
+```scala mdoc
 List(1, 2, 3, 4, 5) match {
   case List(a, b, _*) => a + b
 }
@@ -181,7 +181,7 @@ List(1, 2, 3, 4, 5) match {
 
 We can combine wildcard patterns with the `@` operator to capture the remaining elements in the sequence.
 
-```tut:book
+```scala mdoc
 "the quick brown fox" match {
   case Words(a, b, rest @ _*) => rest
 }
@@ -195,7 +195,7 @@ Custom extractors allow us to abstract away complicated conditionals. In this ex
 
 Create an extractor `Positive` that matches any positive integer. Some test cases:
 
-```tut:book:silent:fail
+```scala mdoc:silent:fail
 assert(
   "No" ==
     (0 match {
@@ -216,7 +216,7 @@ assert(
 <div class="solution">
 To implement this extractor we define an `unapply` method on an object `Postiive`:
 
-```tut:book:silent
+```scala mdoc:silent
 object Positive {
   def unapply(in: Int): Option[Int] =
     if(in > 0)
@@ -225,13 +225,14 @@ object Positive {
       None
 }
 ```
+
 </div>
 
 #### Titlecase extractor
 
 Extractors can also transform their input. In this exercise we'll write an extractor that converts any string to titlecase by uppercasing the first letter of every word. A test case:
 
-```tut:book:silent:fail
+```scala mdoc:silent:fail
 assert(
   "Sir Lord Doctor David Gurnell" ==
     ("sir lord doctor david gurnell" match {
@@ -242,18 +243,18 @@ assert(
 
 Tips:
 
- - Java `Strings` have the methods `split(String)`, `toUpperCase` and `substring(Int, Int)`.
+- Java `Strings` have the methods `split(String)`, `toUpperCase` and `substring(Int, Int)`.
 
- - The method `split(String)` returns a Java `Array[String]`. You can convert this to a `List[String]` using `array.toList` so you can `map` over it and manipulate each word.
+- The method `split(String)` returns a Java `Array[String]`. You can convert this to a `List[String]` using `array.toList` so you can `map` over it and manipulate each word.
 
- - A `List[String]` can be converted back to a `String` with the code `list.mkString(" ")`.
+- A `List[String]` can be converted back to a `String` with the code `list.mkString(" ")`.
 
 This extractor isn't particularly useful, and in general defining your own extractors is not common in Scala. However it can be a useful tool in certain circumstances.
 
 <div class="solution">
 The model solution splits the string into a list of words and maps over the list, manipulating each word before re-combining the words into a string.
 
-```tut:book:silent
+```scala mdoc:silent
 object Titlecase {
   def unapply(str: String) =
     Some(str.split(" ").toList.map {
@@ -262,4 +263,5 @@ object Titlecase {
     }.mkString(" "))
 }
 ```
+
 </div>

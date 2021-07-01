@@ -1,6 +1,6 @@
 ## Recursive Data
 
-A particular use of algebraic data types that comes up very often is defining *recursive data*. This is data that is defined in terms of itself, and allows us to create data of potentially unbounded size (though any concrete instance will be finite).
+A particular use of algebraic data types that comes up very often is defining _recursive data_. This is data that is defined in terms of itself, and allows us to create data of potentially unbounded size (though any concrete instance will be finite).
 
 We can't define recursive data like[^lazy-data]
 
@@ -9,13 +9,13 @@ final case class Broken(broken: Broken)
 ```
 
 as we could never actually create an instance of such a type---the recursion never ends.
-To define valid recursive data we must define a *base case*, which is the case that ends the recursion.
+To define valid recursive data we must define a _base case_, which is the case that ends the recursion.
 
 [^lazy-data]: We actually can define data in this manner if we delay the construction of the recursive case, like `final case class LazyList(head: Int, tail: () => LazyList)`. This uses a feature of Scala, functions, that we haven't seen yet. We can do some fairly mind-bending things with this construction, such as defining an infinite stream of ones with the declaration `val ones: LazyList = LazyList(1, () => ones)`. Since we only ever realise a finite amount of this list we can use it to implement certain types of data that would be difficult to implement in other ways. If you're interested in exploring this area further, what we have implemented in called a lazy list, and an "odd lazy list" in particular. The "even list", described in [How to add laziness to a strict language wihtout even being odd](http://www.cs.rice.edu/~taha/publications/conference/sml98.pdf), is a better implementation. If you wish to explore further, there is a rich literature on lazy datastructures and more mind melting theory under the name of "coinductive data".
 
 Here is a more useful recursive definition: an `IntList` is either the empty list `End`, or a `Pair`[^pair] containing an `Int` and an `IntList`. We can directly translate this to code using our familiar patterns:
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait IntList
 case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
@@ -25,7 +25,7 @@ final case class Pair(head: Int, tail: IntList) extends IntList
 
 Here `End` is the base case. We construct the list containing `1`, `2`, and `3` as follows:
 
-```tut:book:silent
+```scala mdoc:silent
 Pair(1, Pair(2, Pair(3, End)))
 ```
 
@@ -40,14 +40,14 @@ val a = Pair(1, b)
 
 In addition to being links in a chain, these data structures all represent complete sequences of integers:
 
- - `a` represents the sequence `1, 2, 3`
- - `b` represents the sequence `2, 3`
- - `c` represents the sequence `3` (only one element)
- - `d` represents an empty sequence
+- `a` represents the sequence `1, 2, 3`
+- `b` represents the sequence `2, 3`
+- `c` represents the sequence `3` (only one element)
+- `d` represents an empty sequence
 
 Using this implementation, we can build lists of arbitrary length by repeatedly taking an existing list and prepending a new element[^list].
 
-[^list]: This is how Scala's built-in `List` data structure works. We will be introduced to `List` in the chapter on *Collections*.
+[^list]: This is how Scala's built-in `List` data structure works. We will be introduced to `List` in the chapter on _Collections_.
 
 We can apply the same structural recursion patterns to process a recursive algebraic data type. The only wrinkle is that we must make a recursive call when the data definition is recursion.
 
@@ -68,7 +68,7 @@ Note how the tests define `0` to be the sum of the elements of an `End` list. It
 
 Now we apply our structural recursion pattern to fill out the body of the method.
 
-```tut:book:silent
+```scala mdoc:silent
 def sum(list: IntList): Int =
   list match {
     case End => ???
@@ -88,7 +88,7 @@ def sum(list: IntList): Int =
 
 The recursive call will return the sum of the tail of the list, by definition. Thus the correct thing to do is to add `hd` to this result. This gives us our final result:
 
-```tut:book:silent
+```scala mdoc:silent
 def sum(list: IntList): Int =
   list match {
     case End => 0
@@ -100,7 +100,7 @@ def sum(list: IntList): Int =
 
 Our patterns will carry us most of the way to a correct answer, but we still need to supply the method bodies for the base and recursive cases. There is some general guidance we can use:
 
-- For the base case we should generally return the *identity* for the function we're trying to compute. The identity is an element that doesn't change the result. E.g. 0 is the identity for addition, because `a + 0 == a` for any `a`. If we were calculating the product of elements the identity would be 1 as `a * 1 == a` for all `a`.
+- For the base case we should generally return the _identity_ for the function we're trying to compute. The identity is an element that doesn't change the result. E.g. 0 is the identity for addition, because `a + 0 == a` for any `a`. If we were calculating the product of elements the identity would be 1 as `a * 1 == a` for all `a`.
 
 - For the recursive case, assume the recursion will return the correct result and work out what you need to add to get the correct answer. We saw this for `sum`, where we assume the recursive call will give us the correct result for the tail of the list and we then just add on the head.
 
@@ -109,11 +109,12 @@ Our patterns will carry us most of the way to a correct answer, but we still nee
 
 When defining recursive algebraic data types, there must be at least two cases: one that is recursive, and one that is not. Cases that are not recursive are known as base cases. In code, the general skeleton is:
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait RecursiveExample
 final case class RecursiveCase(recursion: RecursiveExample) extends RecursiveExample
 case object BaseCase extends RecursiveExample
 ```
+
 </div>
 
 <div class="callout callout-info">
@@ -127,11 +128,11 @@ When writing structurally recursive code on a recursive algebraic data type:
 
 ### Tail Recursion
 
-You may be concerned that recursive calls will consume excessive stack space. Scala can apply an optimisation, called *tail recursion*, to many recursive functions to stop them consuming stack space.
+You may be concerned that recursive calls will consume excessive stack space. Scala can apply an optimisation, called _tail recursion_, to many recursive functions to stop them consuming stack space.
 
 A tail call is a method call where the caller immediately returns the value. So this is a tail call
 
-```tut:book:silent
+```scala mdoc:silent
 def method1: Int =
   1
 
@@ -141,7 +142,7 @@ def tailCall: Int =
 
 because `tailCall` immediately returns the result of calling `method1` while
 
-```tut:book:silent
+```scala mdoc:silent
 def notATailCall: Int =
   method1 + 2
 ```
@@ -150,11 +151,11 @@ because `notATailCall` does not immediatley return---it adds an number to the re
 
 A tail call can be optimised to not use stack space. Due to limitations in the JVM, Scala only optimises tail calls where the caller calls itself. Since tail recursion is an important property to maintain, we can use the `@tailrec` annotation to ask the compiler to check that methods we believe are tail recursion really are. Here we have two versions of `sum` annotated. One is tail recursive and one is not. You can see the compiler complains about the method that is not tail recursive.
 
-```tut:book:silent
+```scala mdoc:silent
 import scala.annotation.tailrec
 ```
 
-```tut:book:fail
+```scala mdoc:fail
 @tailrec
 def sum(list: IntList): Int =
   list match {
@@ -163,7 +164,7 @@ def sum(list: IntList): Int =
   }
 ```
 
-```tut:book
+```scala mdoc
 @tailrec
 def sum(list: IntList, total: Int = 0): Int =
   list match {
@@ -182,7 +183,7 @@ In Scala we tend not to work directly with tail recursive functions as there is 
 
 Using our definition of `IntList`
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait IntList
 case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
@@ -199,19 +200,19 @@ assert(End.length == 0)
 ```
 
 <div class="solution">
-```tut:book:silent
-object wrapper {
-  sealed trait IntList {
-    def length: Int =
-      this match {
-        case End => 0
-        case Pair(hd, tl) => 1 + tl.length
-      }
-  }
-  case object End extends IntList
-  final case class Pair(head: Int, tail: IntList) extends IntList
-}; import wrapper._
+
+```scala mdoc:silent
+sealed trait IntList {
+  def length: Int =
+    this match {
+      case End => 0
+      case Pair(hd, tl) => 1 + tl.length
+    }
+}
+case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ```
+
 </div>
 
 Define a method to compute the product of the elements in an `IntList`. Test cases are below.
@@ -223,19 +224,19 @@ assert(End.product == 1)
 ```
 
 <div class="solution">
-```tut:book:silent
-object wrapper {
-  sealed trait IntList {
-    def product: Int =
-      this match {
-        case End => 1
-        case Pair(hd, tl) => hd * tl.product
-      }
-  }
-  case object End extends IntList
-  final case class Pair(head: Int, tail: IntList) extends IntList
-}; import wrapper._
+
+```scala mdoc:silent
+sealed trait IntList {
+  def product: Int =
+    this match {
+      case End => 1
+      case Pair(hd, tl) => hd * tl.product
+    }
+}
+case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ```
+
 </div>
 
 Define a method to double the value of each element in an `IntList`, returning a new `IntList`. The following test cases should hold:
@@ -247,19 +248,19 @@ assert(End.double == End)
 ```
 
 <div class="solution">
-```tut:book:silent
-object wrapper {
-  sealed trait IntList {
-    def double: IntList =
-      this match {
-        case End => End
-        case Pair(hd, tl) => Pair(hd * 2, tl.double)
-      }
-  }
-  case object End extends IntList
-  final case class Pair(head: Int, tail: IntList) extends IntList
-}; import wrapper._
+
+```scala mdoc:silent
+sealed trait IntList {
+  def double: IntList =
+    this match {
+      case End => End
+      case Pair(hd, tl) => Pair(hd * 2, tl.double)
+    }
+}
+case object End extends IntList
+final case class Pair(head: Int, tail: IntList) extends IntList
 ```
+
 </div>
 
 #### The Forest of Trees
@@ -271,7 +272,7 @@ A `Tree` is a `Node` with a left and right `Tree` or a `Leaf` with an element of
 Implement this algebraic data type.
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Tree
 final case class Node(l: Tree, r: Tree) extends Tree
 final case class Leaf(elt: Int) extends Tree
@@ -281,7 +282,7 @@ final case class Leaf(elt: Int) extends Tree
 Implement `sum` and `double` on `Tree` using polymorphism and pattern matching.
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 object TreeOps {
   def sum(tree: Tree): Int =
     tree match {
@@ -289,30 +290,32 @@ object TreeOps {
       case Node(l, r) => sum(l) + sum(r)
     }
 
-  def double(tree: Tree): Tree =
-    tree match {
-      case Leaf(elt) => Leaf(elt * 2)
-      case Node(l, r) => Node(double(l), double(r))
-    }
+def double(tree: Tree): Tree =
+tree match {
+case Leaf(elt) => Leaf(elt \* 2)
+case Node(l, r) => Node(double(l), double(r))
+}
 }
 
 sealed trait Tree {
-  def sum: Int
-  def double: Tree
+def sum: Int
+def double: Tree
 }
 final case class Node(l: Tree, r: Tree) extends Tree {
-  def sum: Int =
-    l.sum + r.sum
+def sum: Int =
+l.sum + r.sum
 
-  def double: Tree =
-    Node(l.double, r.double)
+def double: Tree =
+Node(l.double, r.double)
 }
 final case class Leaf(elt: Int) extends Tree {
-  def sum: Int =
-    elt
+def sum: Int =
+elt
 
-  def double: Tree =
-    Leaf(elt * 2)
+def double: Tree =
+Leaf(elt \* 2)
 }
+
 ```
 </div>
+```

@@ -2,7 +2,7 @@
 
 In the final exercise of the previous section, we defined a class called `Adder`:
 
-```tut:book:silent
+```scala mdoc:silent
 class Adder(amount: Int) {
   def add(in: Int): Int = in + amount
 }
@@ -10,23 +10,23 @@ class Adder(amount: Int) {
 
 In the discussion we described an `Adder` as an object representing a computation---a bit like having a method that we can pass around as a value.
 
-This is such a powerful concept that Scala has a fully blown set of language features for creating objects that behave like computations. These objects are called *functions*, and are the basis of *functional programming*.
+This is such a powerful concept that Scala has a fully blown set of language features for creating objects that behave like computations. These objects are called _functions_, and are the basis of _functional programming_.
 
 ### The apply method
 
-For now we are going to look at just one of Scala's features supporting functional programming---*function application syntax*.
+For now we are going to look at just one of Scala's features supporting functional programming---_function application syntax_.
 
 In Scala, by convention, an object can be "called" like a function if it has a method called `apply`. Naming a method `apply` affords us a special shortened call syntax: `foo.apply(args)` becomes `foo(args)`.
 
 For example, let's rename the `add` method in `Adder` to `apply`:
 
-```tut:book:silent
+```scala mdoc:silent
 class Adder(amount: Int) {
   def apply(in: Int): Int = in + amount
 }
 ```
 
-```tut:book
+```scala mdoc
 val add3 = new Adder(3)
 add3.apply(2)
 add3(4) // shorthand for add3.apply(4)
@@ -44,7 +44,7 @@ The method call `object.apply(parameter, ...)` can also be written as `object(pa
 
 ### Take home points
 
-In this section we looked at *function application syntax*, which lets us "call" an object as if it is a function.
+In this section we looked at _function application syntax_, which lets us "call" an object as if it is a function.
 
 Function application syntax is available for any object defining an `apply` method.
 
@@ -66,4 +66,5 @@ At the moment we can define a class called `Adder` to capture the idea of adding
 We could define a library of common function types with names like `Handler`, `Callback`, `Adder`, `BinaryAdder`, and so on, but this quickly becomes impractical.
 
 Later on we will see how Scala copes with this problem by defining a generic set of function types that we can use in a wide variety of situations.
+
 </div>

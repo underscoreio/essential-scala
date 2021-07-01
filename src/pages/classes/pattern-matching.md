@@ -1,16 +1,16 @@
 ## Pattern Matching
 
-Until now we have interacted with objects by calling methods or accessing fields. With case classes we can interact in another way, via *pattern matching*.
+Until now we have interacted with objects by calling methods or accessing fields. With case classes we can interact in another way, via _pattern matching_.
 
 Pattern matching is like an extended `if` expression that allows us to evaluate an expression depending on the "shape" of the data. Recall the `Person` case class we've seen in previous examples:
 
-```tut:book:silent
+```scala mdoc:silent
 case class Person(firstName: String, lastName: String)
 ```
 
 Now imagine we wanted to implement a `Stormtrooper` that is looking for members of the rebellion. We could use pattern matching like this:
 
-```tut:book:silent
+```scala mdoc:silent
 object Stormtrooper {
   def inspect(person: Person): String =
     person match {
@@ -25,7 +25,7 @@ Notice the syntax for a pattern (`Person("Luke", "Skywalker")`) matches the synt
 
 Here it is in use:
 
-```tut:book
+```scala mdoc
 Stormtrooper.inspect(Person("Noel", "Welsh"))
 Stormtrooper.inspect(Person("Han", "Solo"))
 ```
@@ -46,20 +46,20 @@ expr0 match {
 where
 
 - the expression `expr0` evaluates to the value we match;
-- the patterns, or *guards*, `pattern1`, `pattern2`, and so on are checked against this value in order; and
+- the patterns, or _guards_, `pattern1`, `pattern2`, and so on are checked against this value in order; and
 - the right-hand side expression (`expr1`, `expr2`, and so on) of the first pattern that matches is evaluated[^compilation].
 
 Pattern matching is itself an expression and thus evaluates to a value---the value of the matched expression.
+
 </div>
 
 [^compilation]: In reality patterns are compiled to a more efficient form than a sequence of tests, but the semantics are the same.
-
 
 ### Pattern Syntax
 
 Scala has an expressive syntax for writing patterns or guards. For case classes the pattern syntax matches the constructor syntax. Take the data
 
-```tut:book
+```scala mdoc
 Person("Noel", "Welsh")
 ```
 
@@ -81,10 +81,9 @@ where `pat0` and `pat1` are patterns to match against the `firstName` and `lastN
 
 Note there is a lot more we can do with pattern matching, and pattern matching is actually extensible. We'll look at these features in a later section.
 
-
 ### Take Home Points
 
-Case classes allow a new form of interaction, called *pattern matching*. Pattern matching allows us to take apart a case class, and evaluate different expressions depending on what the case class contains.
+Case classes allow a new form of interaction, called _pattern matching_. Pattern matching allows us to take apart a case class, and evaluate different expressions depending on what the case class contains.
 
 The syntax for pattern matching is
 
@@ -112,7 +111,7 @@ Define an object `ChipShop` with a method `willServe`. This method should accept
 <div class="solution">
 We can start by writing the skeleton suggested by the problem text.
 
-```tut:book:silent
+```scala mdoc:silent
 case class Cat(name: String, colour: String, food: String)
 ```
 
@@ -127,7 +126,7 @@ object ChipShop {
 
 As the return type is `Boolean` we know we need at least two cases, one for true and one for false. The text of the exercise tells us what they should be: cats that prefer chips, and all other cats. We can implement this with a literal pattern and an `_` pattern.
 
-```tut:book:silent
+```scala mdoc:silent
 object ChipShop {
   def willServe(cat: Cat): Boolean =
     cat match {
@@ -136,8 +135,8 @@ object ChipShop {
     }
 }
 ```
-</div>
 
+</div>
 
 #### Get Off My Lawn!
 
@@ -155,5 +154,6 @@ object Dad {
 }
 ```
 
-Pattern matching is becoming quite verbose in this case. Later on we'll learn how we can use pattern matching to match a particular value, called a *constant pattern*.
+Pattern matching is becoming quite verbose in this case. Later on we'll learn how we can use pattern matching to match a particular value, called a _constant pattern_.
+
 </div>

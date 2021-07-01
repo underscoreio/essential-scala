@@ -6,7 +6,7 @@ To test your skills with algebraic data types and structural recursion here are 
 
 In this exercise we'll implement a simple interpreter for programs containing only numeric operations.
 
-We start by defining some types to represent the expressions we'll be operating on. In the compiler literature this is known as an *abstract syntax tree*.
+We start by defining some types to represent the expressions we'll be operating on. In the compiler literature this is known as an _abstract syntax tree_.
 
 Our representation is:
 
@@ -20,12 +20,13 @@ Implement this in Scala.
 <div class="solution">
 This is a straightforward algebraic data type.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
 final case class Number(value: Double) extends Expression
 ```
+
 </div>
 
 Now implement a method `eval` that converts an `Expression` to a `Double`. Use polymorphism or pattern matching as you see fit. Explain your choice of implementation method.
@@ -46,12 +47,13 @@ final case class Addition(left: Expression, right: Expression) extends Expressio
 final case class Subtraction(left: Expression, right: Expression) extends Expression
 final case class Number(value: Int) extends Expression
 ```
+
 </div>
 
 We're now going to add some expressions that call fail: division and square root. Start by extending the abstract syntax tree to include representations for `Division` and `SquareRoot`.
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Expression
 final case class Addition(left: Expression, right: Expression) extends Expression
 final case class Subtraction(left: Expression, right: Expression) extends Expression
@@ -66,11 +68,12 @@ Now we're going to change `eval` to represent that a computation can fail. (`Dou
 <div class="solution">
 We did this in the previous section.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Calculation
 final case class Success(result: Double) extends Calculation
 final case class Failure(reason: String) extends Calculation
 ```
+
 </div>
 
 Now change `eval` to return your result type, which I have called `Calculation` in my implementation. Here are some examples:
@@ -138,8 +141,8 @@ final case class Division(left: Expression, right: Expression) extends Expressio
 final case class SquareRoot(value: Expression) extends Expression
 final case class Number(value: Int) extends Expression
 ```
-</div>
 
+</div>
 
 #### JSON
 
@@ -185,6 +188,7 @@ JsSequence ::= SeqCell head:Json tail:JsSequence
 JsObject ::= ObjectCell key:String value:Json tail:JsObject
            | ObjectEnd
 ```
+
 </div>
 
 Translate your representation to Scala code.
@@ -192,7 +196,7 @@ Translate your representation to Scala code.
 <div class="solution">
 This should be a mechanical process. This is the point of algebraic data types---we do the work in modelling the data, and the code follows directly from that model.
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait Json
 final case class JsNumber(value: Double) extends Json
 final case class JsString(value: String) extends Json
@@ -205,6 +209,7 @@ sealed trait JsObject extends Json
 final case class ObjectCell(key: String, value: Json, tail: JsObject) extends JsObject
 case object ObjectEnd extends JsObject
 ```
+
 </div>
 
 Now add a method to convert your JSON representation to a `String`. Make sure you enclose strings in quotes, and handle arrays and objects properly.
@@ -212,7 +217,7 @@ Now add a method to convert your JSON representation to a `String`. Make sure yo
 <div class="solution">
 This is an application of structural recursion, as all transformations on algebraic data types are, with the wrinkle that we have to treat the sequence types specially. Here is my solution.
 
-```tut:reset:book:silent
+```scala mdoc:reset:book:silent
 object json {
   sealed trait Json {
     def print: String = {
@@ -257,15 +262,16 @@ object json {
   case object ObjectEnd extends JsObject
 }
 ```
+
 </div>
 
 Test your method works. Here are some examples using the representation I chose.
 
-```tut:invisible
+```scala mdoc:invisible
 import json._
 ```
 
-```tut:book
+```scala mdoc
 SeqCell(JsString("a string"), SeqCell(JsNumber(1.0), SeqCell(JsBoolean(true), SeqEnd))).print
 
 ObjectCell(

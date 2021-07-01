@@ -1,10 +1,10 @@
 ## This or That and Nothing Else: Sealed Traits
 
-In many cases we can enumerate all the possible classes that can extend a trait. For example, we previously modelled a website visitor as `Anonymous` or a logged in `User`. These two cases cover all the possibilities as one is the negation of the other. We can model this case with a *sealed trait*, which allows the compiler to provide extra checks for us.
+In many cases we can enumerate all the possible classes that can extend a trait. For example, we previously modelled a website visitor as `Anonymous` or a logged in `User`. These two cases cover all the possibilities as one is the negation of the other. We can model this case with a _sealed trait_, which allows the compiler to provide extra checks for us.
 
 We create a sealed trait by simply writing `sealed` in front of our trait declaration:
 
-```tut:book:silent
+```scala mdoc:silent
 import java.util.Date
 
 sealed trait Visitor {
@@ -14,21 +14,21 @@ sealed trait Visitor {
 }
 ```
 
-When we mark a trait as `sealed` we *must* define all of its subtypes in the same file. Once the trait is sealed, the compiler knows the complete set of subtypes and will warn us if a pattern matching expression is missing a case:
+When we mark a trait as `sealed` we _must_ define all of its subtypes in the same file. Once the trait is sealed, the compiler knows the complete set of subtypes and will warn us if a pattern matching expression is missing a case:
 
-```tut:invisible
+```scala mdoc:invisible
 final case class User(id: String, createdAt: Date, override val age: Long) extends Visitor
 final case class Anonymous(id: String, createdAt: Date) extends Visitor
 ```
 
-```tut:book:fail
+```scala mdoc:fail
 def missingCase(v: Visitor) =
   v match {
     case User(_, _, _) => "Got a user"
   }
 ```
 
-We will *not* get a similar warning from an unsealed trait.
+We will _not_ get a similar warning from an unsealed trait.
 
 We can still extend the subtypes of a sealed trait outside of the file where they are defined. For example, we could extend `User` or `Anonymous` further elsewhere. If we want to prevent this possibility we should declare them as `sealed` (if we want to allow extensions within the file) or `final` if we want to disallow all extensions. For the visitors example it probably doesn't make sense to allow any extension to `User` or `Anonymous`, so the simplified code should look like this:
 
@@ -60,23 +60,22 @@ final case class Name(...) extends TraitName {
 ```
 
 Remember subtypes must be defined in the same file as a sealed trait.
+
 </div>
 
 ### Take home points
 
-Sealed traits and final (case) classes allow us to control extensibility of types. *The majority of cases* should use the sealed trait / final case class pattern.
+Sealed traits and final (case) classes allow us to control extensibility of types. _The majority of cases_ should use the sealed trait / final case class pattern.
 
 ```scala
 sealed trait TraitName { ... }
 final case class Name(...) extends TraitName
 ```
 
-
 The main advantages of this pattern are:
 
 - the compiler will warn if we miss a case in pattern matching; and
 - we can control extension points of sealed traits and thus make stronger guarantees about the behaviour of subtypes.
-
 
 ### Exercises
 
@@ -86,7 +85,7 @@ Let's revisit the `Shapes` example from Section [@sec:traits:shaping-up-2].
 
 First make `Shape` a sealed trait. Then write a singleton object called `Draw` with an `apply` method that takes a `Shape` as an argument and returns a description of it on the console. For example:
 
-```tut:book:invisible
+```scala mdoc:invisible
 trait Shape {
   def sides: Int
   def perimeter: Double
@@ -131,7 +130,7 @@ object Draw {
 }
 ```
 
-```tut:book
+```scala mdoc
 Draw(Circle(10))
 Draw(Rectangle(3, 4))
 ```
@@ -139,7 +138,7 @@ Draw(Rectangle(3, 4))
 Finally, verify that the compiler complains when you comment out a `case` clause.
 
 <div class="solution">
-```tut:book:silent
+```scala mdoc:silent
 object Draw {
   def apply(shape: Shape): String = shape match {
     case Rectangle(width, height) =>
@@ -150,14 +149,16 @@ object Draw {
 
     case Circle(radius) =>
       s"A circle of radius ${radius}cm"
-  }
+
 }
-```
+}
+
+````
 </div>
 
 #### The Color and the Shape
 
-```tut:book:invisible
+```scala mdoc:invisible
 // Shape uses Color so we define Color first:
 sealed trait Color {
   // We decided to store RGB values as doubles between 0.0 and 1.0.
@@ -258,16 +259,16 @@ object Draw {
     case color  => if(color.isLight) "light" else "dark"
   }
 }
-```
+````
 
 Write a sealed trait `Color` to make our shapes more interesting.
 
- - give `Color` three properties for its RGB values;
- - create three predefined colours: `Red`, `Yellow`, and `Pink`;
- - provide a means for people to produce their own custom `Colors`
-   with their own RGB values;
- - provide a means for people to tell whether any `Color` is
-   "light" or "dark".
+- give `Color` three properties for its RGB values;
+- create three predefined colours: `Red`, `Yellow`, and `Pink`;
+- provide a means for people to produce their own custom `Colors`
+  with their own RGB values;
+- provide a means for people to tell whether any `Color` is
+  "light" or "dark".
 
 A lot of this exercise is left deliberately open to interpretation. The important thing is to practice working with traits, classes, and objects.
 
@@ -277,45 +278,49 @@ Edit the code for `Shape` and its subtypes to add a colour to each shape.
 
 Finally, update the code for `Draw.apply` to print the colour of the argument as well as its shape and dimensions:
 
- - if the argument is a predefined colour, print that colour by name:
+- if the argument is a predefined colour, print that colour by name:
 
-```tut:book
+```scala mdoc
 Draw(Circle(10, Yellow))
 ```
 
- - if the argument is a custom colour rather than a predefined one,
-   print the word "light" or "dark" instead.
+- if the argument is a custom colour rather than a predefined one,
+  print the word "light" or "dark" instead.
 
 You may want to deal with the colour in a helper method.
 
 <div class="solution">
 One solution to this exercise is presented below. Remember that a lot of the implementation details are unimportant---the crucial aspects of a correct solution are:
 
- - There must be a `sealed trait Color`:
-    - The trait should contain three `def` methods for the RGB values.
-    - The trait should contains the `isLight` method,
-      defined in terms of the RGB values.
+- There must be a `sealed trait Color`:
 
- - There must be three objects representing the predefined colours:
-    - Each object must `extend Color`.
-    - Each object should override the RGB values as `vals`.
-    - Marking the objects as `final` is optional.
-    - Making the objects `case objects` is also optional.
+  - The trait should contain three `def` methods for the RGB values.
+  - The trait should contains the `isLight` method,
+    defined in terms of the RGB values.
 
- - There must be a class representing custom colours:
-    - The class must `extend Color`.
-    - Marking the class `final` is optional.
-    - Making the class a `case class` is optional (although highly recommended).
+- There must be three objects representing the predefined colours:
 
- - There should ideally be two methods in `Draw`:
-    - One method should accept a `Color` as a parameter and one a `Shape`.
-    - The method names are unimportant.
-    - Each method should perform a `match` on the supplied value and provide
-      enough `cases` to cover all possible subtypes.
+  - Each object must `extend Color`.
+  - Each object should override the RGB values as `vals`.
+  - Marking the objects as `final` is optional.
+  - Making the objects `case objects` is also optional.
 
- - The whole codebase should compile and produce sensible values when tested!
+- There must be a class representing custom colours:
 
-```tut:book:silent
+  - The class must `extend Color`.
+  - Marking the class `final` is optional.
+  - Making the class a `case class` is optional (although highly recommended).
+
+- There should ideally be two methods in `Draw`:
+
+  - One method should accept a `Color` as a parameter and one a `Shape`.
+  - The method names are unimportant.
+  - Each method should perform a `match` on the supplied value and provide
+    enough `cases` to cover all possible subtypes.
+
+- The whole codebase should compile and produce sensible values when tested!
+
+```scala mdoc:silent
 // Shape uses Color so we define Color first:
 sealed trait Color {
   // We decided to store RGB values as doubles between 0.0 and 1.0.
@@ -422,7 +427,7 @@ object Draw {
 }
 ```
 
-```tut:book
+```scala mdoc
 // Test code:
 
 Draw(Circle(10, Pink))
@@ -438,11 +443,11 @@ Good Scala developers don't just use types to model data. Types are a great way 
 
 Dividing by zero is a tricky problem---it can lead to exceptions. The JVM has us covered as far as floating point division is concerned but integer division is still a problem:
 
-```tut:book
+```scala mdoc
 1.0 / 0.0
 ```
 
-```tut:book:fail
+```scala mdoc:fail
 1 / 0
 ```
 
@@ -465,7 +470,7 @@ Finally, write some sample code that calls `divide`, matches on the result, and 
 <div class="solution">
 Here's the code:
 
-```tut:book:silent
+```scala mdoc:silent
 sealed trait DivisionResult
 final case class Finite(value: Int) extends DivisionResult
 case object Infinite extends DivisionResult
@@ -476,7 +481,7 @@ object divide {
 }
 ```
 
-```tut:book
+```scala mdoc
 divide(1, 0) match {
   case Finite(value) => s"It's finite: ${value}"
   case Infinite      => s"It's infinite"
@@ -488,4 +493,5 @@ The result of `divide.apply` is a `DivisionResult`, which is a `sealed trait` wi
 The implementation of `divide.apply` is simple - we perform a test and return a result. Note that we haven't annotated the method with a result type---Scala is capable of inferring the type `DivisionResult` as the least upper bound of `Infinite` and `Finite`.
 
 Finally, the match illustrates a case class pattern with the parentheses, and a case object pattern without.
+
 </div>
