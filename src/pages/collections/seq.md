@@ -460,9 +460,9 @@ def directorBornBeforeWithBackCatalogOfSize(year: Int, numberOfFilms: Int): Seq[
 ```tut:book:silent
 def directorsSortedByAge(ascending: Boolean = true) =
   if(ascending) {
-    directors.sortWith((a, b) => a.yearOfBirth < b.yearOfBirth)
-  } else {
     directors.sortWith((a, b) => a.yearOfBirth > b.yearOfBirth)
+  } else {
+    directors.sortWith((a, b) => a.yearOfBirth < b.yearOfBirth)
   }
 ```
 
@@ -472,9 +472,9 @@ def directorsSortedByAge(ascending: Boolean = true) =
 def directorsSortedByAge(ascending: Boolean = true) = {
   val comparator: (Director, Director) => Boolean =
     if(ascending) {
-      (a, b) => a.yearOfBirth < b.yearOfBirth
-    } else {
       (a, b) => a.yearOfBirth > b.yearOfBirth
+    } else {
+      (a, b) => a.yearOfBirth < b.yearOfBirth
     }
 
   directors.sortWith(comparator)
@@ -488,9 +488,9 @@ def directorsSortedByAge(ascending: Boolean = true) = {
 def directorsSortedByAge(ascending: Boolean = true) =
   directors.sortWith { (a, b) =>
     if(ascending) {
-      a.yearOfBirth < b.yearOfBirth
-    } else {
       a.yearOfBirth > b.yearOfBirth
+    } else {
+      a.yearOfBirth < b.yearOfBirth
     }
   }
 ```
