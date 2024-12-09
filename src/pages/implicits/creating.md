@@ -84,7 +84,7 @@ object DateWriter extends HtmlWriter[Date] {
 DateWriter.write(new Date)
 ```
 
-We can also write another `HtmlWriter` for writing `People` on our homepage:
+We can also write another `HtmlWriter` for writing `Person`s on our homepage:
 
 ```tut:book:silent
 object ObfuscatedPersonWriter extends HtmlWriter[Person] {
