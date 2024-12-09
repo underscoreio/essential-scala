@@ -206,9 +206,9 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap@3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.1.tgz#43a408cd24859fdbe876e3d37ab2876d31e256a2"
+bootstrap@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.4.1.tgz#c3a347d419e289ad11f4033e3c4132b87c081d72"
 
 brace-expansion@^1.0.0:
   version "1.1.7"
@@ -1666,9 +1666,9 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
-pandoc-filter@0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/pandoc-filter/-/pandoc-filter-0.1.4.tgz#ff18d0bd701b010eed2667cbcc96f01d82df3f3a"
+pandoc-filter@0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/pandoc-filter/-/pandoc-filter-0.1.6.tgz#263d54de26da9d7db6aeb6e0f0fe19ac7a764ad2"
   dependencies:
     get-stdin "~0.1.0"
 
@@ -2250,9 +2250,10 @@ umd@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/umd/-/umd-3.0.1.tgz#8ae556e11011f63c2596708a8837259f01b3d60e"
 
-"underscore-ebook-template@git+https://github.com/underscoreio/underscore-ebook-template.git#0.3.0":
-  version "0.3.0"
-  resolved "git+https://github.com/underscoreio/underscore-ebook-template.git#8e040f91be67fe54e272f29d3093d8b69d6b3615"
+"underscore-ebook-template@git+https://github.com/underscoreio/underscore-ebook-template.git#0.5.0":
+  version "0.5.0"
+  uid "3a4fe1b525193b141267944bffbc8ee5c340587f"
+  resolved "git+https://github.com/underscoreio/underscore-ebook-template.git#3a4fe1b525193b141267944bffbc8ee5c340587f"
   dependencies:
     grunt "0.4.5"
     grunt-browserify "3.3.0"
@@ -2263,7 +2264,7 @@ umd@^3.0.0:
     grunt-contrib-watch "0.6.1"
     grunt-css-url-embed "1.5.0"
     js-yaml "3.2.6"
-    pandoc-filter "0.1.4"
+    pandoc-filter "0.1.6"
 
 underscore.string@~2.2.1:
   version "2.2.1"
